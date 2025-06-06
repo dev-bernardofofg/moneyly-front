@@ -4,6 +4,8 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { SignInRequest } from "@/app/(http)/auth.http";
+import { useAuth } from "@/app/(contexts)/auth-provider";
+import { useRouter } from "next/navigation";
 import {
   SignInDefaultValues,
   SignInFormValues,
@@ -18,14 +20,19 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const SignInForm = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(SignInSchema),
     defaultValues: SignInDefaultValues,
   });
 
+  const { setAuth } = useAuth();
+
   const { mutate, isPending } = SignInRequest({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuth(data);
       toast.success("Login efetuado com sucesso.");
+      router.push("/dashboard");
     },
     onError: ({ data }: any) => {
       toast.error(data.error);

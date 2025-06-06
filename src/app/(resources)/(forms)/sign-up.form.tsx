@@ -4,6 +4,8 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { SignUpRequest } from "@/app/(http)/auth.http";
+import { useAuth } from "@/app/(contexts)/auth-provider";
+import { useRouter } from "next/navigation";
 import {
   SignUpDefaultValues,
   SignUpFormValues,
@@ -18,14 +20,19 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const SignUpForm = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(SignUpSchema),
     defaultValues: SignUpDefaultValues,
   });
 
+  const { setAuth } = useAuth();
+
   const { mutate, isPending } = SignUpRequest({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuth(data);
       toast.success("Conta criada com sucesso. Você será redirecionado..");
+      router.push("/dashboard");
     },
     onError: ({ data }: any) => {
       toast.error(data.error);
