@@ -3,7 +3,7 @@ export declare interface SignInParams {
   password: string;
 }
 
-export declare interface SignInResponse {
+export declare interface AuthResponse {
   user: {
     id: string;
     name: string;

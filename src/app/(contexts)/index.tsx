@@ -1,20 +1,14 @@
-"use client"
+"use client";
 
-import { ThemeProvider } from './theme-provider'
-import {
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "./theme-provider";
 
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient();
 
 export const Contexts = ({ children }: ChildrenProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        {children}
-      </ThemeProvider>
+      <ThemeProvider>{children}</ThemeProvider>
     </QueryClientProvider>
-  )
-}
+  );
+};

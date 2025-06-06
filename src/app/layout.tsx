@@ -1,6 +1,7 @@
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
-import "./globals.css";
 import { Contexts } from "./(contexts)";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Moneyly - Financeiro",
@@ -13,12 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning >
-      <body
-        className="antialiased"
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased">
         <Contexts>
           {children}
+          <Toaster richColors position="bottom-center" />
         </Contexts>
       </body>
     </html>
