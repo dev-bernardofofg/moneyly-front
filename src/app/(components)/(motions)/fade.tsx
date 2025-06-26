@@ -54,9 +54,9 @@ export const Fade = ({
         delay: delay,
         ease: "easeOut",
       }}
-      className={cn(className)}
+      className={cn(className, "max-w-[calc(100%-16rem)] w-full ml-auto p-4")}
     >
       {children}
-    </motion.div>
+    </motion.div >
   );
 };

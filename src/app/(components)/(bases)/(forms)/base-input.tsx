@@ -81,7 +81,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                   ) : (
                     <motion.div
                       className={cn(
-                        "relative group rounded-md border bg-input focus-within:border-primary focus-within:ring-1 focus-within:ring-primary focus-within:outline-none",
+                        "relative group rounded-md border bg-input focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-none",
                         Icon && "pl-6",
                         (isPassword || readOnly) && "pr-10",
                         rightElement && "pr-24",

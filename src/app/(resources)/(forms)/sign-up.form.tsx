@@ -3,19 +3,19 @@
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
-import { SignUpRequest } from "@/app/(http)/auth.http";
 import { useAuth } from "@/app/(contexts)/auth-provider";
-import { useRouter } from "next/navigation";
 import {
   SignUpDefaultValues,
   SignUpFormValues,
   SignUpSchema,
 } from "@/app/(resources)/(schemas)/sign-up.schema";
+import { SignUpRequest } from "@/app/(services)/auth.service";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Key, Mail, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
