@@ -13,8 +13,6 @@ import { SignUpRequest } from "@/app/(services)/auth.service";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Key, Mail, User } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -45,57 +43,33 @@ export const SignUpForm = () => {
   return (
     <Form {...form}>
       <BaseForm onSubmit={form.handleSubmit(handleForm)}>
-        <Image
-          src="/logo-single.png"
-          alt="logo-moneyly"
-          width={100}
-          height={100}
-          className="mx-auto mb-4"
+        <BaseInput
+          control={form.control}
+          name="name"
+          Icon={User}
+          label="Nome"
+          placeholder="Insira seu nome"
+          autoFocus
         />
-        <h1 className="text-center text-2xl font-bold mb-4 drop-shadow shadow-primary">
-          Criar sua conta
-        </h1>
-        <p className="text-center text-sm text-muted-foreground mb-4">
-          Insira seus dados
-        </p>
-        <div className="space-y-4">
-          <BaseInput
-            control={form.control}
-            name="name"
-            Icon={User}
-            label="Nome"
-            placeholder="Insira seu nome"
-            autoFocus
-          />
-          <BaseInput
-            control={form.control}
-            name="email"
-            Icon={Mail}
-            label="Email"
-            placeholder="Insira seu email"
-            autoFocus
-          />
-          <BaseInput
-            control={form.control}
-            name="password"
-            Icon={Key}
-            label="Senha"
-            placeholder="Insira sua senha"
-            type="password"
-          />
-          <BaseButton isLoading={isPending} className="w-full" type="submit">
-            Criar conta
-          </BaseButton>
-        </div>
-
-        <div className="flex items-center">
-          <Link
-            href="/"
-            className="text-neutral-500 hover:text-primary transition-colors duration-200"
-          >
-            Já possui uma conta? Entre agora
-          </Link>
-        </div>
+        <BaseInput
+          control={form.control}
+          name="email"
+          Icon={Mail}
+          label="Email"
+          placeholder="Insira seu email"
+          autoFocus
+        />
+        <BaseInput
+          control={form.control}
+          name="password"
+          Icon={Key}
+          label="Senha"
+          placeholder="Insira sua senha"
+          type="password"
+        />
+        <BaseButton isLoading={isPending} className="w-full" type="submit">
+          Criar conta
+        </BaseButton>
       </BaseForm>
     </Form>
   );
