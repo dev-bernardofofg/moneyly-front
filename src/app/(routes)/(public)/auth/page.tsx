@@ -28,11 +28,11 @@ const AuthPage = () => {
 
       <div className="w-full max-w-md relative z-30 px-4">
         <Card
-          className="dark:bg-slate-800/95 dark:border-slate-700/50 dark:shadow-black/20 bg-white/95 backdrop-blur-sm border border-slate-200/50 shadow-slate-900/10"
+          className="dark:bg-slate-800/95 dark:border-slate-700/50 dark:shadow-black/20 bg-white/95 backdrop-blur-xs border border-slate-200/50 shadow-slate-900/10"
         >
           <CardHeader className="text-center space-y-4 pb-8">
             <StaggeredFade>
-              <div className="mx-auto size-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg shadow-primary/25 animate-float">
+              <div className="mx-auto size-12 bg-linear-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg shadow-primary/25 animate-float">
                 <DollarSign className="size-6 text-white" />
               </div>
               <div className="space-y-2">
