@@ -35,7 +35,7 @@ export const Fade = ({
   };
 
   return (
-    <motion.div
+    <motion.main
       initial={{
         opacity: 0,
         ...getDirectionalAnimation(),
@@ -54,9 +54,9 @@ export const Fade = ({
         delay: delay,
         ease: "easeOut",
       }}
-      className={cn(className, "max-w-[calc(100%-16rem)] w-full ml-auto p-4")}
+      className={cn(className, "w-full h-full bg-slate-200 dark:bg-slate-800")}
     >
       {children}
-    </motion.div >
+    </motion.main >
   );
 };

@@ -1,21 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-
 interface HeaderProps {
   actions?: React.ReactNode
+  title: string
 }
 
-export const Header = ({ actions }: HeaderProps) => {
+export const Header = ({ actions, title }: HeaderProps) => {
   return (
-    <header className="flex items-center justify-between gap-3 h-20 p-4 border-b border-border">
-      <Link href="/dashboard" className="relative w-20 h-20">
-        <Image src="/logo-single.png" alt="logo" fill />
-      </Link>
-      {actions && (
-        <div className="flex items-center gap-3 w-fit">
-          {actions}
+    <header className="h-20 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+      <div className="flex items-center justify-between gap-3 px-4 h-full">
+        <div className="flex items-center gap-3 w-full">
+          <h1 className="text-lg font-bold text-slate-950 dark:text-white">{title}</h1>
         </div>
-      )}
+        {actions && (
+          <div className="flex items-center gap-3 w-fit">
+            {actions}
+          </div>
+        )}
+      </div>
     </header>
   );
 };

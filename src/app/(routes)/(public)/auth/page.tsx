@@ -1,5 +1,6 @@
 "use client";
 
+import { Logo } from "@/app/(components)/(elements)/logo";
 import { FloatingElements } from "@/app/(components)/(motions)/floating-elements";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { SignInForm } from "@/app/(resources)/(forms)/sign-in.form";
@@ -32,9 +33,7 @@ const AuthPage = () => {
         >
           <CardHeader className="text-center space-y-4 pb-8">
             <StaggeredFade>
-              <div className="mx-auto size-12 bg-linear-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg shadow-primary/25 animate-float">
-                <DollarSign className="size-6 text-white" />
-              </div>
+              <Logo className="w-full" />
               <div className="space-y-2">
                 <CardTitle
                   className="text-3xl font-bold transition-colors duration-300 dark:text-white text-slate-800"

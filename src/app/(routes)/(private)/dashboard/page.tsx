@@ -13,6 +13,7 @@ const DashboardPage = () => {
   return (
     <Fade>
       <Header
+        title="Dashboard"
         actions={
           <BaseDialog
             title="Nova transação"

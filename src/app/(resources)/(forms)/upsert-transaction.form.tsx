@@ -26,7 +26,6 @@ export const UpsertTransactionForm = () => {
     onSuccess: () => {
       toast.success("Transação criada com sucesso");
       form.reset();
-      // Fecha o modal programaticamente
       closeRef.current?.click();
     },
     onError: () => {

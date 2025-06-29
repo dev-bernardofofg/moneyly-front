@@ -10,7 +10,6 @@ interface BaseDialogProps {
 }
 
 export const BaseDialog = ({ trigger, children, title, description, open, onOpenChange }: BaseDialogProps) => {
-  // Se não passou open/onOpenChange, usa modo não controlado
   if (open === undefined || onOpenChange === undefined) {
     return (
       <Dialog>
@@ -27,8 +26,6 @@ export const BaseDialog = ({ trigger, children, title, description, open, onOpen
       </Dialog>
     )
   }
-
-  // Modo controlado
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>

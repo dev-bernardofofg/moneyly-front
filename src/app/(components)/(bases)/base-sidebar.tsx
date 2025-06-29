@@ -8,9 +8,10 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { IconType } from "@/lib/utils";
-import { Home } from "lucide-react";
+import { Home, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "../(elements)/logo";
 
 interface SidebarItemProps {
   href: string;
@@ -26,38 +27,42 @@ const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
     <Link
       href={href}
       id="sidebar-item"
-      className={`group/item flex gap-3 w-full items-center transition-all ${
-        active && "text-primary"
-      } hover:text-primary`}
+      className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm  ${active && "text-primary"
+        } hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
     >
       <div
-        className={`w-1 h-full ${
-          active
-            ? "bg-primary"
-            : "group-hover/item:bg-primary  bg-neutral-100/10 "
-        } rounded-full`}
+        className={`w-1 h-full ${active
+          ? "bg-primary"
+          : "group-hover/item:bg-primary  bg-neutral-900/40 dark:bg-neutral-200/40 "
+          } rounded-full`}
       />
       <div className="flex items-center gap-3">
-        <Icon size={16} />
+        <Icon className="size-4" />
         {title}
       </div>
     </Link>
   );
 };
 
+
 export const BaseSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <SidebarItem Icon={Home} href="/dashboard" title="Início" />
+        <Logo className="w-full" fullName href animate={false} />
       </SidebarHeader>
 
-      <SidebarSeparator />
-      <SidebarContent className="p-2 space-y-2">
+      <SidebarContent className="p-2">
         <SidebarItem Icon={Home} href="/route1" title="Rota 1" />
         <SidebarItem Icon={Home} href="/route2" title="Rota 2" />
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarSeparator />
+      <SidebarFooter>
+        <div className="flex items-center gap-2 p-2">
+          <User className="size-4" />
+          <span className="text-sm">Perfil</span>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 };
