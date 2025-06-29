@@ -67,10 +67,9 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
               <FormItem>
                 {label && (
                   <div className="flex justify-between">
-                    <FormLabel>{label}</FormLabel>
-                    {fieldState.error && showError && (
-                      <FormLabel>{fieldState.error.message}</FormLabel>
-                    )}
+                    {fieldState.error && showError ? (
+                      <FormLabel className="text-destructive">{fieldState.error.message}</FormLabel>
+                    ) : <FormLabel>{label}</FormLabel>}
                   </div>
                 )}
                 <FormControl>
@@ -81,7 +80,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                   ) : (
                     <motion.div
                       className={cn(
-                        "relative group rounded-md border bg-input focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-none",
+                        "relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95 dark:border-slate-700/50 dark:shadow-black/20 bg-white/95 border-slate-200/50 shadow-slate-900/10 dark:text-slate-300 text-slate-600",
                         Icon && "pl-6",
                         (isPassword || readOnly) && "pr-10",
                         rightElement && "pr-24",
@@ -102,7 +101,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                         type={inputType}
                         readOnly={readOnly}
                         autoFocus={autoFocus}
-                        className="h-10 w-full bg-transparent border-none outline-none ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-none focus:outline-none focus-visible:outline-none px-3 py-2 text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                        className="h-10 w-full bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                         {...rest}
                       />
                       {Icon && (

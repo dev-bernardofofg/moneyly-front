@@ -1,7 +1,14 @@
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { Lexend } from "next/font/google";
 import { Contexts } from "./(contexts)";
 import "./globals.css";
+
+const LexendFont = Lexend({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Moneyly - Financeiro",
@@ -15,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased" suppressHydrationWarning>
+      <body className={cn("antialiased", LexendFont.className)} suppressHydrationWarning>
         <Contexts>
           {children}
           <Toaster richColors position="bottom-center" />

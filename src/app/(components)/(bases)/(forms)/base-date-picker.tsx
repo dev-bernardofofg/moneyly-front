@@ -224,7 +224,7 @@ export function BaseDatePicker<T extends FieldValues>({
                     day: cn(
                       "h-8 w-8 p-0 font-normal",
                       "hover:bg-accent hover:text-accent-foreground",
-                      "focus:bg-accent focus:text-accent-foreground focus:outline-none",
+                      "focus:bg-accent focus:text-accent-foreground focus:outline-hidden",
                     ),
                     day_selected: cn(
                       "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
