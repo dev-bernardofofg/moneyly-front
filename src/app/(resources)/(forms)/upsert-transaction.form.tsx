@@ -4,6 +4,7 @@ import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
+import { GetCategoriesRequest } from "@/app/(services)/category.service";
 import { CreateTransactionRequest } from "@/app/(services)/transaction.service";
 import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -12,7 +13,7 @@ import { BrushCleaning } from "lucide-react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTransactionSchema } from "../(schemas)/upsert-transaction.schema";
+import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTransactionSchema } from "../(schemas)/transaction.schema";
 
 export const UpsertTransactionForm = () => {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -21,6 +22,8 @@ export const UpsertTransactionForm = () => {
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: UpsertTransactionDefaultValues,
   });
+
+  const { data: categories } = GetCategoriesRequest();
 
   const { mutate, isPending } = CreateTransactionRequest({
     onSuccess: () => {
@@ -37,7 +40,6 @@ export const UpsertTransactionForm = () => {
     const payload = {
       ...data,
       amount: Number(data.amount),
-      category: "Teste",
     }
 
     mutate(payload);
@@ -59,7 +61,7 @@ export const UpsertTransactionForm = () => {
             ]}
           />
           <BaseInput control={form.control} name="amount" label="Valor" />
-          <BaseSelect control={form.control} name="category" label="Categoria" options={[]} />
+          <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.map((category) => ({ label: category.name, value: category.id })) || []} />
           <BaseTextarea control={form.control} name="description" label="Descrição" />
           <BaseDatePicker control={form.control} name="date" label="Data" />
 

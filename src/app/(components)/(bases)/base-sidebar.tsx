@@ -53,8 +53,8 @@ export const BaseSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent className="p-2">
-        <SidebarItem Icon={Home} href="/route1" title="Rota 1" />
-        <SidebarItem Icon={Home} href="/route2" title="Rota 2" />
+        <SidebarItem Icon={Home} href="/transactions" title="Transações" />
+        <SidebarItem Icon={Home} href="/categories" title="Categorias" />
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter>

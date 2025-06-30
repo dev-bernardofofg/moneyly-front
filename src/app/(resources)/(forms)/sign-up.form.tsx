@@ -8,7 +8,7 @@ import {
   SignUpDefaultValues,
   SignUpFormValues,
   SignUpSchema,
-} from "@/app/(resources)/(schemas)/sign-up.schema";
+} from "@/app/(resources)/(schemas)/auth.schema";
 import { SignUpRequest } from "@/app/(services)/auth.service";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";

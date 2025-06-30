@@ -8,7 +8,7 @@ import {
   SignInDefaultValues,
   SignInFormValues,
   SignInSchema,
-} from "@/app/(resources)/(schemas)/sign-in.schema";
+} from "@/app/(resources)/(schemas)/auth.schema";
 import { SignInRequest } from "@/app/(services)/auth.service";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";

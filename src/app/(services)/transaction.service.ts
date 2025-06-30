@@ -1,7 +1,11 @@
-import { UpsertTransactionFormValues } from "@/app/(resources)/(schemas)/upsert-transaction.schema";
+import { UpsertTransactionFormValues } from "@/app/(resources)/(schemas)/transaction.schema";
 import api from "@/app/(utils)/axios";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+
+const transactionQueryData = {
+  getTransaction: "GET_TRANSACTION",
+};
 
 export const transactionService = {
   getTransactions: async () => {
@@ -38,3 +42,12 @@ export const CreateTransactionRequest = (
     },
   });
 };
+
+// export const GetTransactionsRequest = (
+//   options?: UseQueryOptions<Transaction[], AxiosError, Transaction[]>
+// ) => {
+//   return useQuery<Transaction[], AxiosError, Transaction[]>({
+//     queryKey: [transactionQueryData.getTransaction],
+//     queryFn: transactionService.getTransactions,
+//   });
+// };
