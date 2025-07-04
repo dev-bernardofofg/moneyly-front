@@ -54,7 +54,7 @@ export const Fade = ({
         delay: delay,
         ease: "easeOut",
       }}
-      className={cn(className, "w-full h-full bg-slate-200 dark:bg-slate-800")}
+      className={cn(className, "w-full h-screen bg-white dark:bg-slate-900")}
     >
       {children}
     </motion.main >

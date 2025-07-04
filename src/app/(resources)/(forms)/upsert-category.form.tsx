@@ -4,7 +4,9 @@ import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form'
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input'
 import { BaseButton } from '@/app/(components)/(bases)/base-button'
 import { queryClient } from '@/app/(contexts)'
-import { categoryQueryData, CreateCategoryRequest } from '@/app/(services)/category.service'
+import { getErrorMessage } from '@/app/(helpers)/errors'
+import { categoryQueryData, CreateCategoryRequest, UpdateCategoryRequest } from '@/app/(services)/category.service'
+import { Category } from '@/app/(types)/category'
 import { DialogClose } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,28 +15,52 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { CreateCategoryDefaultValues, CreateCategoryFormValues, CreateCategorySchema } from '../(schemas)/category.schema'
 
-export const CreateCategoryForm = () => {
+interface UpsertCategoryFormProps {
+  category?: Category
+}
+
+export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
+  const isUpdate = !!category;
+
   const closeRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<CreateCategoryFormValues>({
     resolver: zodResolver(CreateCategorySchema),
-    defaultValues: CreateCategoryDefaultValues,
+    defaultValues: isUpdate ? category : CreateCategoryDefaultValues,
   })
 
-  const { mutate, isPending } = CreateCategoryRequest({
+
+
+  const createMutation = CreateCategoryRequest({
     onSuccess: () => {
       toast.success("Categoria criada com sucesso");
       form.reset();
       closeRef.current?.click();
       queryClient.invalidateQueries({ queryKey: [categoryQueryData.getCategories] });
     },
-    onError: () => {
-      toast.error("Erro ao criar categoria");
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+
+  const updateMutation = UpdateCategoryRequest({
+    onSuccess: () => {
+      toast.success("Categoria atualizada com sucesso");
+      form.reset();
+      closeRef.current?.click();
+      queryClient.invalidateQueries({ queryKey: [categoryQueryData.getCategories] });
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
     },
   });
 
   const handleForm = (data: CreateCategoryFormValues) => {
-    mutate(data)
+    if (isUpdate) {
+      updateMutation.mutate({ id: category?.id || '', name: data.name })
+    } else {
+      createMutation.mutate({ name: data.name })
+    }
   }
 
   return (
@@ -45,12 +71,12 @@ export const CreateCategoryForm = () => {
           <BaseInput name="name" label="Nome" control={form.control} />
           <BaseButton
             type="submit"
-            isLoading={isPending}
+            isLoading={isUpdate ? updateMutation.isPending : createMutation.isPending}
           >
-            Criar categoria
+            {isUpdate ? "Atualizar categoria" : "Criar categoria"}
           </BaseButton>
         </BaseForm>
       </Form>
     </>
-  )
-}
+  );
+};
