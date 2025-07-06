@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DollarSign, Shield, Target, TrendingUp, User, Zap } from "lucide-react";
 
 const AuthPage = () => {
-
   return (
     <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
       {/* Elementos flutuantes com variedade de ícones */}
@@ -57,13 +56,13 @@ const AuthPage = () => {
                 >
                   <TabsTrigger
                     value="login"
-                    className="data-[state=active]:bg-primary data-[state=active]:text-white font-medium transition-colors duration-300 dark:text-slate-300 text-slate-600"
+                    className="data-[state=active]:bg-primary data-[state=active]:text-slate-700 dark:data-[state=active]:text-slate-700 font-medium transition-colors duration-300  dark:text-slate-300 text-slate-600"
                   >
                     Entrar
                   </TabsTrigger>
                   <TabsTrigger
                     value="register"
-                    className="data-[state=active]:bg-primary data-[state=active]:text-white font-medium transition-colors duration-300 dark:text-slate-300 text-slate-600"
+                    className="data-[state=active]:bg-primary data-[state=active]:text-slate-700 dark:data-[state=active]:text-slate-700 font-medium transition-colors duration-300  dark:text-slate-300 text-slate-600"
                   >
                     Criar Conta
                   </TabsTrigger>

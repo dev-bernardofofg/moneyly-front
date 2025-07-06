@@ -4,6 +4,7 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { useAuth } from "@/app/(contexts)/auth-provider";
+import { getErrorMessage } from "@/app/(helpers)/errors";
 import {
   SignUpDefaultValues,
   SignUpFormValues,
@@ -28,18 +29,33 @@ export const SignUpForm = () => {
 
   const { mutate, isPending } = SignUpRequest({
     onSuccess: (data) => {
+
       setAuth(data);
       toast.success("Conta criada com sucesso. Você será redirecionado..");
-      router.push("/dashboard");
+
+      const user = data.data.user;
+      const needsConfig = !user ||
+        !user.monthlyIncome ||
+        user.monthlyIncome === 0 ||
+        user.financialDayStart === undefined ||
+        user.financialDayEnd === undefined;
+
+      if (needsConfig) {
+        router.push("/initial-config");
+      } else {
+        router.push("/dashboard");
+      }
     },
-    onError: ({ data }: any) => {
-      toast.error(data.error);
+    onError: (error) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
     },
   });
 
   const handleForm = (data: SignUpFormValues) => {
     mutate(data);
   };
+
   return (
     <Form {...form}>
       <BaseForm onSubmit={form.handleSubmit(handleForm)}>
@@ -57,7 +73,6 @@ export const SignUpForm = () => {
           Icon={Mail}
           label="Email"
           placeholder="Insira seu email"
-          autoFocus
         />
         <BaseInput
           control={form.control}
@@ -68,7 +83,7 @@ export const SignUpForm = () => {
           type="password"
         />
         <BaseButton isLoading={isPending} className="w-full" type="submit">
-          Criar conta
+          Criar Conta
         </BaseButton>
       </BaseForm>
     </Form>

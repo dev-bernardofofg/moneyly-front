@@ -4,16 +4,29 @@ export declare interface SignInParams {
 }
 
 export declare interface AuthResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
+  success: boolean;
+  data: {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      monthlyIncome?: number;
+      financialDayStart?: number;
+      financialDayEnd?: number;
+      createdAt: string;
+    };
+    token: string;
   };
-  token: string;
 }
 
 export declare interface SignUpParams {
   name: string;
   email: string;
   password: string;
+}
+
+export declare interface InitialConfigParams {
+  monthlyIncome: number;
+  financialDayStart: number;
+  financialDayEnd: number;
 }

@@ -114,7 +114,7 @@ export function BaseDatePicker<T extends FieldValues>({
                 <BaseButton
                   variant="input"
                   className={cn(
-                    "w-full justify-start text-left font-normal",
+                    "w-full justify-start text-left font-normal dark:bg-slate-800 bg-slate-100",
                     !field.value && "text-muted-foreground",
                   )}
                   disabled={isDisable && !isDateDisabled}
@@ -130,7 +130,7 @@ export function BaseDatePicker<T extends FieldValues>({
                 </BaseButton>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <div className="flex items-center justify-between border-b p-3">
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 p-3">
                   <div className="flex items-center gap-2">
                     <Select
                       value={currentYear.toString()}

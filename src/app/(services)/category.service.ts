@@ -1,9 +1,9 @@
-import { ErrorResponse } from "@/app/(helpers)/errors";
 import {
   Category,
   CreateCategoryParams,
   UpdateCategoryParams,
 } from "@/app/(types)/category";
+import { CustomAxiosError } from "@/app/(types)/error";
 import api from "@/app/(utils)/axios";
 import {
   useMutation,
@@ -43,9 +43,9 @@ export const categoryService = {
 };
 
 export const CreateCategoryRequest = (
-  options?: UseMutationOptions<Category, ErrorResponse, CreateCategoryParams>
+  options?: UseMutationOptions<Category, CustomAxiosError, CreateCategoryParams>
 ) => {
-  return useMutation<Category, ErrorResponse, CreateCategoryParams>({
+  return useMutation<Category, CustomAxiosError, CreateCategoryParams>({
     mutationFn: categoryService.createCategory,
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);
@@ -57,9 +57,9 @@ export const CreateCategoryRequest = (
 };
 
 export const GetCategoriesRequest = (
-  options?: UseQueryOptions<Category[], ErrorResponse, Category[]>
+  options?: UseQueryOptions<Category[], CustomAxiosError, Category[]>
 ) => {
-  return useQuery<Category[], ErrorResponse, Category[]>({
+  return useQuery<Category[], CustomAxiosError, Category[]>({
     queryKey: [categoryQueryData.getCategories],
     queryFn: categoryService.getCategories,
     staleTime: Infinity,
@@ -68,9 +68,9 @@ export const GetCategoriesRequest = (
 };
 
 export const UpdateCategoryRequest = (
-  options?: UseMutationOptions<Category, ErrorResponse, UpdateCategoryParams>
+  options?: UseMutationOptions<Category, CustomAxiosError, UpdateCategoryParams>
 ) => {
-  return useMutation<Category, ErrorResponse, UpdateCategoryParams>({
+  return useMutation<Category, CustomAxiosError, UpdateCategoryParams>({
     mutationFn: categoryService.updateCategory,
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);
@@ -82,9 +82,9 @@ export const UpdateCategoryRequest = (
 };
 
 export const DeleteCategoryRequest = (
-  options?: UseMutationOptions<Category, ErrorResponse, string>
+  options?: UseMutationOptions<Category, CustomAxiosError, string>
 ) => {
-  return useMutation<Category, ErrorResponse, string>({
+  return useMutation<Category, CustomAxiosError, string>({
     mutationFn: categoryService.deleteCategory,
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);

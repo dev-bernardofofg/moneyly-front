@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("antialiased", LexendFont.className)} suppressHydrationWarning>
+      <body className={cn("antialiased bg-background text-foreground", LexendFont.className)} suppressHydrationWarning>
         <Contexts>
           {children}
           <Toaster richColors position="bottom-center" />

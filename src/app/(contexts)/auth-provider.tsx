@@ -1,10 +1,11 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { AuthResponse } from '../(types)/auth'
 
 interface AuthContextProps {
-  user: AuthResponse['user'] | null
+  user: AuthResponse['data']['user'] | null
   token: string | null
   setAuth: (data: AuthResponse) => void
   signOut: () => void
@@ -13,8 +14,9 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: ChildrenProps) => {
-  const [user, setUser] = useState<AuthResponse['user'] | null>(null)
+  const [user, setUser] = useState<AuthResponse['data']['user'] | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const storedUser = localStorage.getItem('auth_user')
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
     }
   }, [])
 
-  const setAuth = (data: AuthResponse) => {
+  const setAuth = ({ data }: AuthResponse) => {
     setUser(data.user)
     setToken(data.token)
     localStorage.setItem('auth_user', JSON.stringify(data.user))
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
     setToken(null)
     localStorage.removeItem('auth_user')
     localStorage.removeItem('auth_token')
+    router.push('/auth')
   }
 
   return (

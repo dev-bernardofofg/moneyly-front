@@ -42,7 +42,7 @@ export function BaseTable<T>({
   loading = false,
 }: BaseTableProps<T>) {
   return (
-    <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-900 px-3 py-2 text-slate-950 dark:text-white">
+    <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white">
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export function BaseTable<T>({
         </div>
       ) : (
         <Table>
-          <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
+          <TableHeader>
             <TableRow>
               {columns.map((column) => (
                 <TableHead

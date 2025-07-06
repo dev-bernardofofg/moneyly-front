@@ -4,18 +4,20 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { useAuth } from "@/app/(contexts)/auth-provider";
+import { getErrorMessage } from "@/app/(helpers)/errors";
 import {
   SignInDefaultValues,
   SignInFormValues,
   SignInSchema,
 } from "@/app/(resources)/(schemas)/auth.schema";
-import { SignInRequest } from "@/app/(services)/auth.service";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Key, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { SignInRequest } from "@/app/(services)/auth.service";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -30,10 +32,23 @@ export const SignInForm = () => {
     onSuccess: (data) => {
       setAuth(data);
       toast.success("Login efetuado com sucesso.");
-      router.push("/dashboard");
+
+      const user = data.data.user;
+      const needsConfig = !user ||
+        !user.monthlyIncome ||
+        user.monthlyIncome === 0 ||
+        user.financialDayStart === undefined ||
+        user.financialDayEnd === undefined;
+
+      if (needsConfig) {
+        router.push("/initial-config");
+      } else {
+        router.push("/dashboard");
+      }
     },
-    onError: ({ data }: any) => {
-      toast.error(data.error);
+    onError: (error) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
     },
   });
 

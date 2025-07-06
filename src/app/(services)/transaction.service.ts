@@ -1,7 +1,7 @@
 import { UpsertTransactionFormValues } from "@/app/(resources)/(schemas)/transaction.schema";
 import api from "@/app/(utils)/axios";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { CustomAxiosError } from "../(types)/error";
 
 const transactionQueryData = {
   getTransaction: "GET_TRANSACTION",
@@ -24,13 +24,13 @@ export const transactionService = {
 export const CreateTransactionRequest = (
   options?: UseMutationOptions<
     UpsertTransactionFormValues,
-    AxiosError,
+    CustomAxiosError,
     UpsertTransactionFormValues
   >
 ) => {
   return useMutation<
     UpsertTransactionFormValues,
-    AxiosError,
+    CustomAxiosError,
     UpsertTransactionFormValues
   >({
     mutationFn: transactionService.createTransaction,

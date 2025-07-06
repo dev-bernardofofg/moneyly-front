@@ -4,6 +4,7 @@ import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
+import { getErrorMessage } from "@/app/(helpers)/errors";
 import { GetCategoriesRequest } from "@/app/(services)/category.service";
 import { CreateTransactionRequest } from "@/app/(services)/transaction.service";
 import { DialogClose } from "@/components/ui/dialog";
@@ -31,8 +32,9 @@ export const UpsertTransactionForm = () => {
       form.reset();
       closeRef.current?.click();
     },
-    onError: () => {
-      toast.error("Erro ao criar transação");
+    onError: (error) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
     },
   });
 
