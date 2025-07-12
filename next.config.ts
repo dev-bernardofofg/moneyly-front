@@ -1,15 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  redirects: async () => {
-    return [
-      {
-        source: "/",
-        destination: "/auth",
-        permanent: true,
-      },
-    ];
-  },
+  // Removido o redirecionamento automático da raiz
+  // Os guards cuidam do redirecionamento de forma mais inteligente
 };
 
 export default nextConfig;
