@@ -1,11 +1,12 @@
 'use client'
 
+import { AuthResponse, User } from '@/app/(types)/auth'
+import { deleteCookie, getCookie, setCookie } from '@/app/(utils)/cookies'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { AuthResponse } from '../(types)/auth'
 
 interface AuthContextProps {
-  user: AuthResponse['data']['user'] | null
+  user: User | null
   token: string | null
   setAuth: (data: AuthResponse) => void
   signOut: () => void
@@ -14,21 +15,21 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: ChildrenProps) => {
-  const [user, setUser] = useState<AuthResponse['data']['user'] | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
     const storedUser = localStorage.getItem('auth_user')
-    const storedToken = localStorage.getItem('auth_token')
+    const cookieToken = getCookie('auth_token')
 
-    if (storedUser && storedToken) {
+    if (storedUser && cookieToken) {
       try {
         setUser(JSON.parse(storedUser))
-        setToken(storedToken)
+        setToken(cookieToken)
       } catch {
         localStorage.removeItem('auth_user')
-        localStorage.removeItem('auth_token')
+        deleteCookie('auth_token')
       }
     }
   }, [])
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
     setUser(data.user)
     setToken(data.token)
     localStorage.setItem('auth_user', JSON.stringify(data.user))
-    localStorage.setItem('auth_token', data.token)
+    setCookie('auth_token', data.token)
   }
 
   const signOut = () => {
@@ -45,6 +46,7 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
     setToken(null)
     localStorage.removeItem('auth_user')
     localStorage.removeItem('auth_token')
+    deleteCookie('auth_token')
     router.push('/auth')
   }
 

@@ -6,10 +6,12 @@ import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { getErrorMessage } from "@/app/(helpers)/errors";
 import { GetCategoriesRequest } from "@/app/(services)/category.service";
+import { overviewQueryData } from "@/app/(services)/overview.service";
 import { CreateTransactionRequest } from "@/app/(services)/transaction.service";
 import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { BrushCleaning } from "lucide-react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -18,7 +20,7 @@ import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTran
 
 export const UpsertTransactionForm = () => {
   const closeRef = useRef<HTMLButtonElement>(null);
-
+  const queryClient = useQueryClient();
   const form = useForm<UpsertTransactionFormValues>({
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: UpsertTransactionDefaultValues,
@@ -31,6 +33,7 @@ export const UpsertTransactionForm = () => {
       toast.success("Transação criada com sucesso");
       form.reset();
       closeRef.current?.click();
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
     },
     onError: (error) => {
       const errorMessage = getErrorMessage(error);

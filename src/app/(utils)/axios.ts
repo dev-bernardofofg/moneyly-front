@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { getCookie } from "./cookies";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "https://sua.api.com",
@@ -8,7 +9,7 @@ const api = axios.create({
 // Interceptor de request (headers, auth, etc.)
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
+    const token = getCookie("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
