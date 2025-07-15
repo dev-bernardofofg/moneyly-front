@@ -5,7 +5,7 @@ export const UpsertTransactionSchema = z.object({
   type: z.enum(["income", "expense"]),
   amount: z.coerce.number().min(1, "Valor é obrigatório"),
   category: z.string().optional(),
-  description: z.string().min(1, "Descrição é obrigatória"),
+  description: z.string().optional(),
   date: z.string().min(1, "Data é obrigatória"),
 });
 

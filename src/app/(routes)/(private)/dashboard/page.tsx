@@ -26,7 +26,7 @@ const DashboardPage = () => {
           <BaseDialog
             title="Nova transação"
             description="Adicione uma nova transação"
-            trigger={<BaseButton>
+            trigger={<BaseButton clickAction="create">
               Nova transação
             </BaseButton>}
           >

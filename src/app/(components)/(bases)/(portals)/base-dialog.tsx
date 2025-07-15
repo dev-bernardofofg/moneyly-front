@@ -1,15 +1,29 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface BaseDialogProps {
-  trigger: React.ReactNode
-  children: React.ReactNode
-  title: string
-  description?: string
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
+  trigger: React.ReactNode;
+  children: React.ReactNode;
+  title: string;
+  description?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export const BaseDialog = ({ trigger, children, title, description, open, onOpenChange }: BaseDialogProps) => {
+export const BaseDialog = ({
+  trigger,
+  children,
+  title,
+  description,
+  open,
+  onOpenChange,
+}: BaseDialogProps) => {
   if (open === undefined || onOpenChange === undefined) {
     return (
       <Dialog>
@@ -19,18 +33,18 @@ export const BaseDialog = ({ trigger, children, title, description, open, onOpen
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            {description && <DialogDescription>{description}</DialogDescription>}
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
           </DialogHeader>
           {children}
         </DialogContent>
       </Dialog>
-    )
+    );
   }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -39,5 +53,5 @@ export const BaseDialog = ({ trigger, children, title, description, open, onOpen
         {children}
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

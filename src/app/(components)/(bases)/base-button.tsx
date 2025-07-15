@@ -34,7 +34,7 @@ export const BaseButton = ({
         </>
       ) : (
         <>
-          {clickAction === "create" && <Plus className="mr-2 h-4 w-4" />}
+          {clickAction === "create" && <Plus className="mr-1 h-4 w-4" />}
           {children}
         </>
       )}
