@@ -6,6 +6,7 @@ import { BaseButton } from '@/app/(components)/(bases)/base-button'
 import { queryClient } from '@/app/(contexts)'
 import { categoryQueryData, DeleteCategoryRequest } from '@/app/(services)/category.service'
 import { Category } from '@/app/(types)/category'
+import { Pagination } from '@/app/(types)/pagination'
 import { format } from 'date-fns'
 import { PencilIcon } from 'lucide-react'
 import { toast } from 'sonner'
@@ -14,9 +15,14 @@ import { UpsertCategoryForm } from '../(forms)/upsert-category.form'
 
 interface CategoryTableProps {
   categories: Category[]
+  tableOptions: {
+    page: Pagination
+    totalCount: number
+  }
+  onPaginationChange?: (pagination: Pagination) => void
 }
 
-export const CategoryTable = ({ categories }: CategoryTableProps) => {
+export const CategoryTable = ({ categories, tableOptions, onPaginationChange }: CategoryTableProps) => {
   const { mutate } = DeleteCategoryRequest({
     onSuccess: () => {
       toast.success('Categoria deletada com sucesso');
@@ -36,6 +42,9 @@ export const CategoryTable = ({ categories }: CategoryTableProps) => {
       title='Categorias'
       data={categories || []}
       emptyMessage='Nenhuma categoria encontrada'
+      pagination={tableOptions.page}
+      totalItems={tableOptions.totalCount}
+      onPaginationChange={onPaginationChange}
       actions={(item) => (
         <div className="flex items-center gap-2">
           <BaseDialog
@@ -59,7 +68,8 @@ export const CategoryTable = ({ categories }: CategoryTableProps) => {
           header: "Criado em",
           accessorKey: "createdAt",
           cell: (value, item) => {
-            return <span className='text-sm text-muted-foreground'>{format(item.createdAt, 'dd/MM/yyyy HH:mm')}</span>
+            return <span className='text-sm text-muted-foreground'>{format(item.createdAt, 'dd/MM/yyyy HH:mm')}
+            </span>
           }
         },
         {

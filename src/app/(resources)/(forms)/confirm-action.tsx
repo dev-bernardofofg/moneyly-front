@@ -23,7 +23,7 @@ export const ConfirmActionForm = ({ onConfirm }: ConfirmActionFormProps) => {
     <BaseDialog
       title="Confirmar ação"
       description="Tem certeza que deseja confirmar a ação?"
-      trigger={<BaseButton variant="destructive">
+      trigger={<BaseButton variant="destructive" className='w-fit'>
         <TrashIcon className="size-4" />
       </BaseButton>}
       open={open}

@@ -3,6 +3,8 @@
 import { Loader2, Table2Icon } from "lucide-react";
 import Link from "next/link";
 
+import { Pagination } from "@/app/(components)/(bases)/(pagination)/pagination";
+import { Pagination as PaginationType } from "@/app/(types)/pagination";
 import {
   Table,
   TableBody,
@@ -29,6 +31,9 @@ interface BaseTableProps<T> {
   seeMoreLink?: string;
   emptyMessage?: string;
   loading?: boolean;
+  onPaginationChange?: (value: PaginationType) => void;
+  pagination?: PaginationType;
+  totalItems?: number;
 }
 
 export function BaseTable<T>({
@@ -40,6 +45,9 @@ export function BaseTable<T>({
   seeMoreLink,
   emptyMessage = "Nenhum dado encontrado",
   loading = false,
+  onPaginationChange,
+  pagination,
+  totalItems,
 }: BaseTableProps<T>) {
   return (
     <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white">
@@ -71,44 +79,65 @@ export function BaseTable<T>({
           <p className="text-muted-foreground text-sm">{emptyMessage}</p>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {columns.map((column) => (
-                <TableHead
-                  key={String(column.accessorKey)}
-                  className={column.className}
-                >
-                  {column.header}
-                </TableHead>
-              ))}
-              {actions && <TableHead className="w-14"></TableHead>}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item, index) => (
-              <TableRow
-                key={index}
-                onClick={() => onRowClick?.(item)}
-                className={cn(onRowClick && "cursor-pointer")}
-              >
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
                 {columns.map((column) => (
-                  <TableCell
+                  <TableHead
                     key={String(column.accessorKey)}
                     className={column.className}
                   >
-                    {column.cell
-                      ? column.cell(item[column.accessorKey], item)
-                      : (item[column.accessorKey] as React.ReactNode)}
-                  </TableCell>
+                    {column.header}
+                  </TableHead>
                 ))}
-                {actions && (
-                  <TableCell className="w-14">{actions(item)}</TableCell>
-                )}
+                {actions && <TableHead className="w-14"></TableHead>}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item, index) => (
+                <TableRow
+                  key={index}
+                  onClick={() => onRowClick?.(item)}
+                  className={cn(
+                    onRowClick && "cursor-pointer",
+                    "animate-in fade-in-0 slide-in-from-bottom-2 duration-300",
+                    `delay-${Math.min(index * 50, 500)}`
+                  )}
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  {columns.map((column) => (
+                    <TableCell
+                      key={String(column.accessorKey)}
+                      className={column.className}
+                    >
+                      {column.cell
+                        ? column.cell(item[column.accessorKey], item)
+                        : (item[column.accessorKey] as React.ReactNode)}
+                    </TableCell>
+                  ))}
+                  {actions && (
+                    <TableCell className="w-14">{actions(item)}</TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {pagination && totalItems && (
+            <div className="mt-4">
+              <Pagination
+                page={pagination.page}
+                limit={pagination.limit}
+                total={totalItems || 0}
+                onPageChange={onPaginationChange}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

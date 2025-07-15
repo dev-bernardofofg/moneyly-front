@@ -8,14 +8,14 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
-import { useAuth } from "@/app/(contexts)/auth-provider";
+import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import { GetOverviewRequest } from "@/app/(services)/overview.service";
 import { Button } from "@/components/ui/button";
+import { LinearProgress } from "@/components/ui/linear-progress";
 import { DollarSign, List, TrendingDown, TrendingUp } from "lucide-react";
 
 const DashboardPage = () => {
-  const { user } = useAuth();
   const { data: overview } = GetOverviewRequest();
 
   return (
@@ -35,10 +35,15 @@ const DashboardPage = () => {
         }
       />
       <StaggeredFade className="p-2 space-y-2">
-
-        {JSON.stringify(overview?.data.stats)}
-
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+          <BaseStats
+            name="Saldo"
+            value={overview?.data.stats.remainingBudget ?? 0}
+            Icon={DollarSign}
+            description="Saldo Disponível"
+            isMonetary={true}
+          />
+
           <BaseStats
             name="Entradas"
             value={overview?.data.stats.totalIncome ?? 0}
@@ -56,13 +61,7 @@ const DashboardPage = () => {
             variant="destructive"
           />
 
-          <BaseStats
-            name="Saldo"
-            value={overview?.data.stats.remainingBudget ?? 0}
-            Icon={DollarSign}
-            description="Saldo Disponível"
-            isMonetary={true}
-          />
+
 
           <BaseStats
             name="Transações"
@@ -103,8 +102,33 @@ const DashboardPage = () => {
               </StaggeredFade>
             )}
           </BaseCard>
+          <BaseCard
+            title="Melhores categorias"
+            description="Suas categorias mais gastas no mês"
+          >
+            <StaggeredFade className="space-y-2">
+              {overview?.data.expensesByCategory.length === 0 ? (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-sm text-muted-foreground">Nenhuma categoria encontrada</p>
+                </div>
+              ) : (
+                <StaggeredFade className="space-y-2">
+                  {overview?.data.expensesByCategory.map((category) => (
+                    <div key={category.id} className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p>{category.name}</p>
+                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount)}</p>
+                      </div>
+                      <LinearProgress value={category.amount} maxValue={overview?.data.stats.totalExpense ?? 0} />
+                    </div>
+                  ))}
+                </StaggeredFade>
+              )}
+            </StaggeredFade>
+          </BaseCard>
         </StaggeredFade>
       </StaggeredFade>
+
     </Fade>
   )
 };

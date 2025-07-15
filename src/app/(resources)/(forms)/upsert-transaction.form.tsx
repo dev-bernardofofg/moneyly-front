@@ -66,7 +66,7 @@ export const UpsertTransactionForm = () => {
             ]}
           />
           <BaseInput control={form.control} name="amount" label="Valor" />
-          <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.map((category) => ({ label: category.name, value: category.id })) || []} />
+          <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data.categories.map((category) => ({ label: category.name, value: category.id })) || []} />
           <BaseTextarea control={form.control} name="description" label="Descrição" />
           <BaseDatePicker control={form.control} name="date" label="Data" />
 
