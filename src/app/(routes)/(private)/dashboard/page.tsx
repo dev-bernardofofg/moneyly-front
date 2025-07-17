@@ -16,7 +16,7 @@ import { LinearProgress } from "@/components/ui/linear-progress";
 import { DollarSign, List, TrendingDown, TrendingUp } from "lucide-react";
 
 const DashboardPage = () => {
-  const { data: overview } = GetOverviewRequest();
+  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest();
 
   return (
     <Fade>
@@ -42,6 +42,7 @@ const DashboardPage = () => {
             Icon={DollarSign}
             description="Saldo Disponível"
             isMonetary={true}
+            loading={loadingOverview}
           />
 
           <BaseStats
@@ -50,6 +51,7 @@ const DashboardPage = () => {
             Icon={TrendingUp}
             description="Entradas totais"
             isMonetary={true}
+            loading={loadingOverview}
           />
 
           <BaseStats
@@ -59,16 +61,17 @@ const DashboardPage = () => {
             description="Gastos totais"
             isMonetary={true}
             variant="destructive"
+            loading={loadingOverview}
           />
-
-
 
           <BaseStats
             name="Transações"
             value={overview?.data.transactionsCount ?? 0}
             Icon={List}
             description="Total de transações"
+            loading={loadingOverview}
           />
+
         </StaggeredFade>
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <BaseCard

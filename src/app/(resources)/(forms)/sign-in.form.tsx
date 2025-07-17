@@ -17,7 +17,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { SignInRequest } from "@/app/(services)/auth.service";
+import { GoogleSignInRequest, SignInRequest } from "@/app/(services)/auth.service";
+import { Separator } from "@/components/ui/separator";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -52,8 +54,44 @@ export const SignInForm = () => {
     },
   });
 
+  const { mutate: googleSignIn } = GoogleSignInRequest({
+    onSuccess: (data) => {
+      setAuth(data);
+      toast.success("Login efetuado com sucesso.");
+
+      const user = data.data.user;
+      const needsConfig = !user ||
+        !user.monthlyIncome ||
+        user.monthlyIncome === 0 ||
+        user.financialDayStart === undefined ||
+        user.financialDayEnd === undefined;
+
+      if (needsConfig) {
+        router.push("/initial-config");
+      } else {
+        router.push("/dashboard");
+      }
+    },
+    onError: (error) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+    },
+  });
+
   const handleForm = (data: SignInFormValues) => {
     mutate(data);
+  };
+
+  const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
+    if (credentialResponse.credential) {
+      googleSignIn({ token: credentialResponse.credential });
+    } else {
+      toast.error("Erro ao obter credenciais do Google");
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast.error("Erro ao fazer login com o Google");
   };
 
   return (
@@ -78,6 +116,15 @@ export const SignInForm = () => {
         <BaseButton isLoading={isPending} className="w-full" type="submit">
           Logar
         </BaseButton>
+
+        <Separator />
+
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+          text="continue_with"
+          theme="filled_blue"
+        />
       </BaseForm>
     </Form>
   );

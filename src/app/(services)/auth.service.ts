@@ -1,4 +1,9 @@
-import { AuthResponse, SignInParams, SignUpParams } from "@/app/(types)/auth";
+import {
+  AuthResponse,
+  GoogleSignInParams,
+  SignInParams,
+  SignUpParams,
+} from "@/app/(types)/auth";
 import { CustomAxiosError } from "@/app/(types)/error";
 import api from "@/app/(utils)/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
@@ -12,6 +17,14 @@ export const authService = {
 
   signUp: async (params: SignUpParams): Promise<AuthResponse> => {
     const response = await api.post("/auth/sign-up", params);
+
+    return response.data;
+  },
+
+  googleSignIn: async (params: GoogleSignInParams): Promise<AuthResponse> => {
+    const response = await api.post("/auth/google", {
+      idToken: params.token,
+    });
 
     return response.data;
   },
@@ -36,6 +49,24 @@ export const SignUpRequest = (
 ) => {
   return useMutation<AuthResponse, CustomAxiosError, SignUpParams>({
     mutationFn: authService.signUp,
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context) => {
+      options?.onError?.(data, variables, context);
+    },
+  });
+};
+
+export const GoogleSignInRequest = (
+  options?: UseMutationOptions<
+    AuthResponse,
+    CustomAxiosError,
+    GoogleSignInParams
+  >
+) => {
+  return useMutation<AuthResponse, CustomAxiosError, GoogleSignInParams>({
+    mutationFn: authService.googleSignIn,
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);
     },

@@ -9,6 +9,7 @@ interface AuthContextProps {
   user: User | null
   token: string | null
   setAuth: (data: AuthResponse) => void
+  getMe: (data: AuthResponse) => void
   signOut: () => void
 }
 
@@ -41,6 +42,13 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
     setCookie('auth_token', data.token)
   }
 
+  const getMe = (data: AuthResponse) => {
+    setUser(data.data.user)
+    setToken(data.data.token)
+    localStorage.setItem('auth_user', JSON.stringify(data.data.user))
+    setCookie('auth_token', data.data.token)
+  }
+
   const signOut = () => {
     setUser(null)
     setToken(null)
@@ -51,7 +59,7 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, setAuth, signOut }}>
+    <AuthContext.Provider value={{ user, token, setAuth, getMe, signOut }}>
       {children}
     </AuthContext.Provider>
   )

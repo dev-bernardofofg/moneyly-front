@@ -3,6 +3,10 @@ export declare interface SignInParams {
   password: string;
 }
 
+export declare interface GoogleSignInParams {
+  token: string;
+}
+
 export declare interface User {
   id: string;
   name: string;

@@ -1,9 +1,10 @@
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
+import { useAuth } from "@/app/(contexts)/auth-provider"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { InitialConfigDefaultValues, InitialConfigFormValues, InitialConfigSchema } from "@/app/(resources)/(schemas)/initial-config.schema"
-import { userService } from "@/app/(services)/user.service"
+import { UpdateInitialConfigRequest } from "@/app/(services)/user.service"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,23 +18,29 @@ interface InitialConfigFormProps {
 }
 
 export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
+  const { getMe } = useAuth()
   const form = useForm<InitialConfigFormValues>({
     resolver: zodResolver(InitialConfigSchema),
     defaultValues: InitialConfigDefaultValues,
   })
 
-  const handleSubmit = async (data: InitialConfigFormValues) => {
-    try {
-      await userService.updateInitialConfig({
-        monthlyIncome: FN_UTILS_STRING.formatCurrencyToNumber(data.monthlyIncome),
-        financialDayStart: data.financialDayStart,
-        financialDayEnd: data.financialDayEnd,
-      })
-      toast.success('Configurações financeiras salvas com sucesso!')
+  const { mutate: updateInitialConfig } = UpdateInitialConfigRequest({
+    onSuccess: (data) => {
+      getMe(data)
+      toast.success("Configurações financeiras salvas com sucesso!")
       onSuccess()
-    } catch {
-      toast.error('Erro ao salvar configurações')
-    }
+    },
+    onError: () => {
+      toast.error("Erro ao salvar configurações")
+    },
+  })
+
+  const handleSubmit = async (data: InitialConfigFormValues) => {
+    updateInitialConfig({
+      monthlyIncome: FN_UTILS_STRING.formatCurrencyToNumber(data.monthlyIncome),
+      financialDayStart: data.financialDayStart,
+      financialDayEnd: data.financialDayEnd,
+    })
   }
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)
@@ -58,7 +65,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
           <BaseInput
             control={form.control}
-            ref={currencyInputRef as any}
+            ref={currencyInputRef}
             label="Qual é o seu rendimento mensal?"
             name="monthlyIncome"
             placeholder="Digite seu rendimento mensal"
