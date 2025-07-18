@@ -1,6 +1,7 @@
 "use client"
 
-import { BaseTable } from "@/app/(components)/(bases)/(tables)/base-table";
+import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog";
+import { BaseTable, BaseTableOptions } from "@/app/(components)/(bases)/(tables)/base-table";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { queryClient } from "@/app/(contexts)";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
@@ -12,12 +13,13 @@ import { format } from "date-fns";
 import { Info, PencilIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmActionForm } from "../(forms)/confirm-action";
+import { UpsertTransactionForm } from "../(forms)/upsert-transaction.form";
 
-interface TransactionTableProps {
+interface TransactionTableProps extends BaseTableOptions {
   transactions: Transaction[];
 }
 
-export const TransactionTable = ({ transactions }: TransactionTableProps) => {
+export const TransactionTable = ({ transactions, tableOptions, onPaginationChange }: TransactionTableProps) => {
   const { mutate } = DeleteTransactionRequest({
     onSuccess: () => {
       toast.success('Transação deletada com sucesso');
@@ -28,86 +30,93 @@ export const TransactionTable = ({ transactions }: TransactionTableProps) => {
     },
   });
 
-  return <BaseTable data={transactions} columns={[
-    {
-      header: "Tipo",
-      accessorKey: "type",
-      cell: (value) => {
-        return (
-          <Badge variant={value === "income" ? "default" : "destructive"} className="w-24">
-            {value === "income" ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
-            <span className="text-sm font-medium">{value === "income" ? "Entrada" : "Saída"}</span>
-          </Badge>
-        )
-      },
-    },
-    {
-      header: "Título",
-      accessorKey: "title",
-      cell: (value, item) => {
-        return <span className="text-sm font-medium text-muted-foreground">
-          {item.title}
-        </span>
-      }
-    },
-    {
-      header: "Categoria",
-      accessorKey: "category",
-      cell: (value, item) => {
-        return <span className="text-sm font-medium text-muted-foreground">
-          {item.category.name}
-        </span>
-      }
-    },
-    {
-      header: "Valor",
-      accessorKey: "amount",
-      cell: (value, item) => {
-        return <span className="text-sm font-medium text-muted-foreground">
-          {FN_UTILS_NUMBERS.formatCurrencyToNumber(item.amount)}
-        </span>
-      }
-    },
-    {
-      header: "Criação",
-      accessorKey: "createdAt",
-      cell: (value, item) => {
-        return <span className="text-sm font-medium text-muted-foreground">
-          {format(item.createdAt, "dd/MM/yyyy HH:mm")}
-        </span>
-      }
-    },
-    {
-      header: "Atualização",
-      accessorKey: "updatedAt",
-      cell: (value, item) => {
-        return <span className="text-sm font-medium text-muted-foreground">
-          {format(item.updatedAt, "dd/MM/yyyy HH:mm")}
-        </span>
-      }
-    },
-    {
-      header: "Ações",
-      accessorKey: "id",
-      cell: (value, item) => {
-        return <div className="flex items-center gap-2">
+  return <BaseTable data={transactions}
+    title="Transações"
+    emptyMessage="Nenhuma transação encontrada"
+    pagination={tableOptions.page}
+    totalItems={tableOptions.totalCount}
+    onPaginationChange={onPaginationChange}
+    actions={(item) => (
+      <div className="flex items-center gap-2">
+        <BaseDialog title="Editar transação" description="Editar transação" trigger={
           <BaseButton className='w-fit'>
             <PencilIcon className="size-4" />
           </BaseButton>
-          <ConfirmActionForm onConfirm={() => mutate(item.id)} />
-          <Tooltip>
-            <TooltipTrigger>
-              <Info className="size-4" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <span className="text-sm font-medium text-muted-foreground">
-                {item.description === "" ? "Nenhuma descrição" : item.description}
-              </span>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        }>
+          <UpsertTransactionForm transaction={item} />
+        </BaseDialog>
+        <ConfirmActionForm onConfirm={() => mutate(item.id)} />
+        <Tooltip>
+          <TooltipTrigger>
+            <Info className="size-4" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <span className="text-sm font-medium text-muted-foreground">
+              {item.description === "" ? "Nenhuma descrição" : item.description}
+            </span>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    )}
+    columns={[
+      {
+        header: "Tipo",
+        accessorKey: "type",
+        cell: (value) => {
+          return (
+            <Badge variant={value === "income" ? "default" : "destructive"} className="w-24">
+              {value === "income" ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
+              <span className="text-sm font-medium">{value === "income" ? "Entrada" : "Saída"}</span>
+            </Badge>
+          )
+        },
       },
-    }
+      {
+        header: "Título",
+        accessorKey: "title",
+        cell: (value, item) => {
+          return <span className="text-sm font-medium text-muted-foreground">
+            {item.title}
+          </span>
+        }
+      },
+      {
+        header: "Categoria",
+        accessorKey: "category",
+        cell: (value, item) => {
+          return <span className="text-sm font-medium text-muted-foreground">
+            {item.category.name}
+          </span>
+        }
+      },
+      {
+        header: "Valor",
+        accessorKey: "amount",
+        cell: (value, item) => {
+          return <span className="text-sm font-medium text-muted-foreground">
+            {FN_UTILS_NUMBERS.formatCurrencyToNumber(item.amount)}
+          </span>
+        }
+      },
+      {
+        header: "Criação",
+        accessorKey: "createdAt",
+        cell: (value, item) => {
+          return <span className="text-sm font-medium text-muted-foreground">
+            {format(item.createdAt, "dd/MM/yyyy HH:mm")}
+          </span>
+        }
+      },
+      {
+        header: "Atualização",
+        accessorKey: "updatedAt",
+        cell: (value, item) => {
+          return <span className="text-sm font-medium text-muted-foreground">
+            {format(item.updatedAt, "dd/MM/yyyy HH:mm")}
+          </span>
+        }
+      },
+    ]}
 
-  ]} />;
+  />;
 };  

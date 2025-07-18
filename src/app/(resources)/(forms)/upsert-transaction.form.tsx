@@ -7,7 +7,8 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { getErrorMessage } from "@/app/(helpers)/errors";
 import { GetCategoriesRequest } from "@/app/(services)/category.service";
 import { overviewQueryData } from "@/app/(services)/overview.service";
-import { CreateTransactionRequest } from "@/app/(services)/transaction.service";
+import { CreateTransactionRequest, transactionQueryData, UpdateTransactionRequest } from "@/app/(services)/transaction.service";
+import { Transaction } from "@/app/(types)/transaction";
 import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,22 +19,44 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTransactionSchema } from "../(schemas)/transaction.schema";
 
-export const UpsertTransactionForm = () => {
+export const UpsertTransactionForm = ({ transaction }: { transaction?: Transaction }) => {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const form = useForm<UpsertTransactionFormValues>({
     resolver: zodResolver(UpsertTransactionSchema),
-    defaultValues: UpsertTransactionDefaultValues,
+    defaultValues: transaction ? {
+      ...transaction,
+      amount: Number(transaction.amount),
+      date: transaction.date,
+      category: transaction.category.id,
+    } : UpsertTransactionDefaultValues,
   });
 
   const { data: categories } = GetCategoriesRequest();
 
   const { mutate, isPending } = CreateTransactionRequest({
     onSuccess: () => {
-      toast.success("Transação criada com sucesso");
+      if (transaction) {
+        toast.success("Transação atualizada com sucesso");
+        queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
+      } else {
+        toast.success("Transação criada com sucesso");
+        queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
+      }
       form.reset();
       closeRef.current?.click();
-      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
+    },
+    onError: (error) => {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+    },
+  });
+
+  const { mutate: updateTransaction, isPending: isUpdating } = UpdateTransactionRequest({
+    onSuccess: () => {
+      toast.success("Transação atualizada com sucesso");
+      queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
+      closeRef.current?.click();
     },
     onError: (error) => {
       const errorMessage = getErrorMessage(error);
@@ -42,12 +65,17 @@ export const UpsertTransactionForm = () => {
   });
 
   const handleUpsertTransaction = (data: UpsertTransactionFormValues) => {
-    const payload = {
-      ...data,
-      amount: Number(data.amount),
+    if (transaction) {
+      updateTransaction({
+        id: transaction.id,
+        params: {
+          ...data,
+          amount: Number(data.amount),
+        },
+      });
+    } else {
+      mutate(data);
     }
-
-    mutate(payload);
   };
 
   return (
@@ -74,7 +102,7 @@ export const UpsertTransactionForm = () => {
             <BaseButton type="button" className="w-fit" variant="destructive" onClick={() => form.reset()}>
               <BrushCleaning />
             </BaseButton>
-            <BaseButton type="submit" isLoading={isPending}>Salvar</BaseButton>
+            <BaseButton type="submit" isLoading={isPending || isUpdating}>{transaction ? "Atualizar" : "Criar"}</BaseButton>
           </div>
         </BaseForm>
       </Form>

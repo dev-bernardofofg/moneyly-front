@@ -7,18 +7,17 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { CustomAxiosError } from "../(types)/error";
-import {
-  TransactionRequest,
-  TransactionResponse,
-} from "../(types)/transaction";
+import { Pagination } from "../(types)/pagination";
+import { TransactionResponse } from "../(types)/transaction";
 
 export const transactionQueryData = {
   getTransaction: "GET_TRANSACTION",
   deleteTransaction: "DELETE_TRANSACTION",
+  updateTransaction: "UPDATE_TRANSACTION",
 };
 
 export const transactionService = {
-  getTransactions: async (params: TransactionRequest) => {
+  getTransactions: async (params?: Pagination) => {
     const response = await api.post("/transactions", params);
 
     return response.data;
@@ -32,6 +31,15 @@ export const transactionService = {
 
   deleteTransaction: async (id: string) => {
     const response = await api.delete(`/transactions/${id}`);
+
+    return response.data;
+  },
+
+  updateTransaction: async (
+    id: string,
+    params: UpsertTransactionFormValues
+  ) => {
+    const response = await api.put(`/transactions/${id}`, params);
 
     return response.data;
   },
@@ -60,7 +68,7 @@ export const CreateTransactionRequest = (
 };
 
 export const GetTransactionsRequest = (
-  params: TransactionRequest,
+  params?: Pagination,
   options?: UseQueryOptions<
     TransactionResponse,
     CustomAxiosError,
@@ -79,6 +87,29 @@ export const DeleteTransactionRequest = (
 ) => {
   return useMutation<void, CustomAxiosError, string>({
     mutationFn: transactionService.deleteTransaction,
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context) => {
+      options?.onError?.(data, variables, context);
+    },
+  });
+};
+
+export const UpdateTransactionRequest = (
+  options?: UseMutationOptions<
+    UpsertTransactionFormValues,
+    CustomAxiosError,
+    { id: string; params: UpsertTransactionFormValues }
+  >
+) => {
+  return useMutation<
+    UpsertTransactionFormValues,
+    CustomAxiosError,
+    { id: string; params: UpsertTransactionFormValues }
+  >({
+    mutationFn: ({ id, params }) =>
+      transactionService.updateTransaction(id, params),
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);
     },

@@ -11,32 +11,13 @@ import { DollarSign, TrendingDown, TrendingUp } from "lucide-react"
 
 import { TransactionTable } from "@/app/(resources)/(tables)/transaction.table"
 import { GetTransactionsRequest } from "@/app/(services)/transaction.service"
-import { Pagination } from "@/app/(types)/pagination"
-import { TransactionRequest } from "@/app/(types)/transaction"
-import { useState } from "react"
+import { usePagination } from "@/hooks/use-pagination"
 
 const TransactionsPage = () => {
-  const [params, setParams] = useState<TransactionRequest>({
-    pagination: {
-      page: 1,
-      limit: 10,
-    },
-  });
+  const { pagination, handlePaginationChange } = usePagination()
 
-  const handleChange = (value: Pagination) => {
-    setParams({ ...params, pagination: value });
-  };
+  const { data: transactions, isLoading: loadingTransactions } = GetTransactionsRequest(pagination);
 
-  const { data: transactions } = GetTransactionsRequest(params);
-
-  const tableOptions = {
-    title: "Transações",
-    columns: [],
-    pagination: params.pagination,
-    totalItems: transactions?.data.totalCount ?? 0,
-    onPaginationChange: (value: Pagination) => handleChange(value),
-    data: transactions?.data.transactions ?? [],
-  }
   return (
     <Fade>
       <Header
@@ -59,6 +40,7 @@ const TransactionsPage = () => {
             Icon={DollarSign}
             description="Saldo Disponível"
             isMonetary={true}
+            loading={loadingTransactions}
           />
 
           <BaseStats
@@ -67,6 +49,7 @@ const TransactionsPage = () => {
             Icon={TrendingUp}
             description="Entradas totais"
             isMonetary={true}
+            loading={loadingTransactions}
           />
 
           <BaseStats
@@ -76,10 +59,14 @@ const TransactionsPage = () => {
             description="Gastos totais"
             isMonetary={true}
             variant="destructive"
+            loading={loadingTransactions}
           />
         </StaggeredFade>
         <StaggeredFade>
-          <TransactionTable transactions={transactions?.data.transactions ?? []} />
+          <TransactionTable transactions={transactions?.data.transactions ?? []} tableOptions={{
+            page: pagination,
+            totalCount: transactions?.data.totalCount ?? 0
+          }} onPaginationChange={handlePaginationChange} />
         </StaggeredFade>
       </StaggeredFade>
     </Fade>

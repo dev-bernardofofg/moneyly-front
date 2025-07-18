@@ -36,6 +36,14 @@ interface BaseTableProps<T> {
   totalItems?: number;
 }
 
+export interface BaseTableOptions {
+  tableOptions: {
+    page: PaginationType
+    totalCount: number
+  }
+  onPaginationChange?: (value: PaginationType) => void
+}
+
 export function BaseTable<T>({
   data,
   columns,

@@ -1,25 +1,19 @@
 "use client"
 
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog'
-import { BaseTable } from '@/app/(components)/(bases)/(tables)/base-table'
+import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table'
 import { BaseButton } from '@/app/(components)/(bases)/base-button'
 import { queryClient } from '@/app/(contexts)'
 import { categoryQueryData, DeleteCategoryRequest } from '@/app/(services)/category.service'
 import { Category } from '@/app/(types)/category'
-import { Pagination } from '@/app/(types)/pagination'
 import { format } from 'date-fns'
 import { PencilIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmActionForm } from '../(forms)/confirm-action'
 import { UpsertCategoryForm } from '../(forms)/upsert-category.form'
 
-interface CategoryTableProps {
+interface CategoryTableProps extends BaseTableOptions {
   categories: Category[]
-  tableOptions: {
-    page: Pagination
-    totalCount: number
-  }
-  onPaginationChange?: (pagination: Pagination) => void
 }
 
 export const CategoryTable = ({ categories, tableOptions, onPaginationChange }: CategoryTableProps) => {

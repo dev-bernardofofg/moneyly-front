@@ -29,7 +29,7 @@ export type TransactionResponse = {
 };
 
 export type TransactionRequest = {
-  pagination: Pagination;
+  pagination?: Pagination;
   category?: string;
   startDate?: string;
   endDate?: string;

@@ -8,17 +8,12 @@ import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
 import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form'
 import { CategoryTable } from '@/app/(resources)/(tables)/category.table'
 import { GetCategoriesRequest } from '@/app/(services)/category.service'
-import { Pagination } from '@/app/(types)/pagination'
-import { useState } from 'react'
+import { usePagination } from '@/hooks/use-pagination'
 
 const CategoriesPage = () => {
-  const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10 })
+  const { pagination, handlePaginationChange } = usePagination()
 
   const { data } = GetCategoriesRequest(pagination)
-
-  const handlePaginationChange = (newPagination: Pagination) => {
-    setPagination(newPagination)
-  }
 
   return (
     <Fade>
