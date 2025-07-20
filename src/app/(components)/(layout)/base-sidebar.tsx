@@ -8,6 +8,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenuButton,
   SidebarSeparator,
@@ -33,11 +36,11 @@ const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
     <Link
       href={href}
       id="sidebar-item"
-      className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm  ${active && "text-primary"
+      className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm relative  ${active && "text-primary"
         } hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
     >
       <div
-        className={`w-1 h-full ${active
+        className={`w-1 h-5 absolute left-0 top-1/2 -translate-y-1/2 ${active
           ? "bg-primary"
           : "group-hover/item:bg-primary  bg-neutral-900/40 dark:bg-neutral-200/40 "
           } rounded-full`}
@@ -47,6 +50,19 @@ const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
         <span className={`${active ? "text-primary group-hover/item:text-primary" : "group-hover/item:text-neutral-200"}`}>{title}</span>
       </div>
     </Link>
+  );
+};
+
+const SidebarGroupCustom = ({ children, label }: { children: React.ReactNode, label: string }) => {
+  return (
+    <SidebarGroup className="flex flex-col gap-2">
+      <SidebarGroupLabel>
+        <span>{label}</span>
+      </SidebarGroupLabel>
+      <SidebarGroupContent>
+        {children}
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 };
 
@@ -65,8 +81,14 @@ export const BaseSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent className="p-2">
-        <SidebarItem Icon={Home} href="/transactions" title="Transações" />
-        <SidebarItem Icon={Home} href="/categories" title="Categorias" />
+        <SidebarGroupCustom label="Início">
+          <SidebarItem Icon={Home} href="/" title="Dashboard" />
+        </SidebarGroupCustom>
+        <SidebarGroupCustom label="Gestão">
+          <SidebarItem Icon={Home} href="/transactions" title="Transações" />
+          <SidebarItem Icon={Home} href="/categories" title="Categorias" />
+          <SidebarItem Icon={Home} href="/planner" title="Planejamento" />
+        </SidebarGroupCustom>
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter>
@@ -115,6 +137,6 @@ export const BaseSidebar = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarFooter>
-    </Sidebar>
+    </Sidebar >
   );
 };

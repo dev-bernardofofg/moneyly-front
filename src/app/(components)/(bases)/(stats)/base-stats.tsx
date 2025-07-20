@@ -9,13 +9,27 @@ interface BaseStatsProps {
   name: string
   value: number
   Icon: LucideIcon
-  description: string
+  description?: string
   isMonetary?: boolean
   variant?: "default" | "secondary" | "destructive"
   loading?: boolean
+  children?: React.ReactNode
+  onClick?: () => void
+  clickable?: boolean
 }
 
-export const BaseStats = ({ name, value, Icon, description, isMonetary = false, variant = "default", loading = false }: BaseStatsProps) => {
+export const BaseStats = ({
+  name,
+  value,
+  Icon,
+  description,
+  isMonetary = false,
+  variant = "default",
+  loading = false,
+  children,
+  onClick,
+  clickable = false
+}: BaseStatsProps) => {
   const variantsStats = cva(
     "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200", {
     variants: {
@@ -47,8 +61,24 @@ export const BaseStats = ({ name, value, Icon, description, isMonetary = false, 
     }
   })
 
+  const baseClasses = variantsStats({ variant });
+  const clickableClasses = clickable
+    ? "cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+    : "";
+
   return (
-    <div className={variantsStats({ variant })}>
+    <div
+      className={`${baseClasses} ${clickableClasses}`}
+      onClick={clickable ? onClick : undefined}
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      onKeyDown={clickable ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      } : undefined}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{name}</CardTitle>
         <Icon className={variantsIcon({ variant })} />
@@ -82,8 +112,9 @@ export const BaseStats = ({ name, value, Icon, description, isMonetary = false, 
             )}
           </AnimatePresence>
         </div>
-        <p className="text-xs text-muted-foreground">{description}</p>
+        {description && <p className="text-xs text-muted-foreground">{description}</p>}
       </CardContent>
+      {children}
     </div>
   )
 }

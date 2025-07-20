@@ -7,7 +7,7 @@ import { queryClient } from '@/app/(contexts)'
 import { categoryQueryData, DeleteCategoryRequest } from '@/app/(services)/category.service'
 import { Category } from '@/app/(types)/category'
 import { format } from 'date-fns'
-import { PencilIcon } from 'lucide-react'
+import { PencilIcon, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmActionForm } from '../(forms)/confirm-action'
 import { UpsertCategoryForm } from '../(forms)/upsert-category.form'
@@ -50,7 +50,11 @@ export const CategoryTable = ({ categories, tableOptions, onPaginationChange }: 
           >
             <UpsertCategoryForm category={item} />
           </BaseDialog>
-          <ConfirmActionForm onConfirm={() => handleConfirm(item.id)} />
+          <ConfirmActionForm onConfirm={() => handleConfirm(item.id)} title="Remover categoria" description="Tem certeza que deseja remover esta categoria?" trigger={
+            <BaseButton variant="destructive" className="w-fit">
+              <Trash2 className="size-4" />
+            </BaseButton>
+          } />
         </div>
       )}
       columns={[

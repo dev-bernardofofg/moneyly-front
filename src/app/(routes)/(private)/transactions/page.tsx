@@ -32,7 +32,7 @@ const TransactionsPage = () => {
           <UpsertTransactionForm />
         </BaseDialog>}
       />
-      <StaggeredFade className="p-2 space-y-2">
+      <StaggeredFade variant="page">
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <BaseStats
             name="Saldo"

@@ -5,9 +5,12 @@ import { useState } from 'react';
 
 interface ConfirmActionFormProps {
   onConfirm: () => void;
+  title: string;
+  description: string;
+  trigger: React.ReactNode;
 }
 
-export const ConfirmActionForm = ({ onConfirm }: ConfirmActionFormProps) => {
+export const ConfirmActionForm = ({ onConfirm, title, description, trigger }: ConfirmActionFormProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -21,16 +24,14 @@ export const ConfirmActionForm = ({ onConfirm }: ConfirmActionFormProps) => {
 
   return (
     <BaseDialog
-      title="Confirmar ação"
-      description="Tem certeza que deseja confirmar a ação?"
-      trigger={<BaseButton variant="destructive" className='w-fit'>
-        <TrashIcon className="size-4" />
-      </BaseButton>}
+      title={title}
+      description={description}
+      trigger={trigger}
       open={open}
       onOpenChange={setOpen}
     >
       <div className="flex items-center gap-2">
-        <BaseButton variant="secondary" onClick={handleClose}>
+        <BaseButton variant="outline" onClick={handleClose}>
           <XIcon className="size-4" />
           Cancelar
         </BaseButton>

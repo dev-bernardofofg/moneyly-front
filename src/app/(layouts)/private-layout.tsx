@@ -9,7 +9,9 @@ export const PrivateLayout = ({ children }: ChildrenProps) => {
     <InitialConfigGuard>
       <SidebarProvider>
         <BaseSidebar />
-        {children}
+        <div className="flex-1 overflow-hidden">
+          {children}
+        </div>
       </SidebarProvider>
     </InitialConfigGuard>
   );

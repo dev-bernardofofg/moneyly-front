@@ -7,4 +7,8 @@ export const FN_UTILS_NUMBERS = {
       currency: "BRL",
     });
   },
+
+  formatPercentageFormatted: (value: number) => {
+    return `${value.toFixed(2)}%`;
+  },
 };

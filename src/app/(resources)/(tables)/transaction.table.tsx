@@ -10,7 +10,7 @@ import { Transaction } from "@/app/(types)/transaction";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
-import { Info, PencilIcon, TrendingDown, TrendingUp } from "lucide-react";
+import { Info, PencilIcon, Trash2, TrendingDown, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmActionForm } from "../(forms)/confirm-action";
 import { UpsertTransactionForm } from "../(forms)/upsert-transaction.form";
@@ -45,7 +45,11 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
         }>
           <UpsertTransactionForm transaction={item} />
         </BaseDialog>
-        <ConfirmActionForm onConfirm={() => mutate(item.id)} />
+        <ConfirmActionForm onConfirm={() => mutate(item.id)} title="Remover transação" description="Tem certeza que deseja remover esta transação?" trigger={
+          <BaseButton variant="destructive" className="w-fit">
+            <Trash2 className="size-4" />
+          </BaseButton>
+        } />
         <Tooltip>
           <TooltipTrigger>
             <Info className="size-4" />

@@ -31,7 +31,7 @@ const CategoriesPage = () => {
           </BaseDialog>
         }
       />
-      <StaggeredFade className='p-2 bg-white/95 dark:bg-slate-900/50'>
+      <StaggeredFade variant="page">
         <CategoryTable
           categories={data?.data.categories || []}
           tableOptions={{

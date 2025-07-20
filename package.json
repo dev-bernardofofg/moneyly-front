@@ -38,6 +38,7 @@
     "react-hook-form": "^7.56.4",
     "react-number-format": "^5.4.4",
     "sonner": "^2.0.5",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.25.21"

@@ -22,3 +22,8 @@ export type CategoryResponse = {
   };
   message: string;
 };
+
+export type CategorySpecific = {
+  id: string;
+  name: string;
+};
