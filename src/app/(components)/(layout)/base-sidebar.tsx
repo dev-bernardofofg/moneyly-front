@@ -16,6 +16,7 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { IconType } from "@/lib/utils";
 import { ChevronUp, Home, LogOut, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -34,11 +35,12 @@ const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
   const pathname = usePathname();
   const active = pathname === href;
   const { toggleSidebar } = useSidebar();
+  const isMobile = useIsMobile()
 
   return (
     <Link
       href={href}
-      onClick={() => toggleSidebar()}
+      onClick={() => isMobile && toggleSidebar()}
       id="sidebar-item"
       className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm relative  ${active && "text-primary"
         } hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
@@ -86,7 +88,7 @@ export const BaseSidebar = () => {
 
       <SidebarContent className="p-2">
         <SidebarGroupCustom label="Início">
-          <SidebarItem Icon={Home} href="/" title="Dashboard" />
+          <SidebarItem Icon={Home} href="/dashboard" title="Dashboard" />
         </SidebarGroupCustom>
         <SidebarGroupCustom label="Gestão">
           <SidebarItem Icon={Home} href="/transactions" title="Transações" />
