@@ -20,29 +20,32 @@ export const goalQueryData = {
 
 export const goalsService = {
   create: async (data: UpsertGoalRequest) => {
-    const response = await api.post("/goals", data);
+    const response = await api.post("/savings-goals", data);
     return response.data;
   },
 
   get: async () => {
-    const response = await api.get("/goals");
+    const response = await api.get("/savings-goals");
     return response.data;
   },
 
   addValue: async (data: AddValueToGoalRequest) => {
-    const response = await api.post(`/goals/${data.goalId}/add-amount`, {
-      amount: data.amount,
-    });
+    const response = await api.post(
+      `/savings-goals/${data.goalId}/add-amount`,
+      {
+        amount: data.amount,
+      }
+    );
     return response.data;
   },
 
   update: async (data: UpsertGoalRequest) => {
-    const response = await api.put(`/goals/${data.id}`, data);
+    const response = await api.put(`/savings-goals/${data.id}`, data);
     return response.data;
   },
 
   delete: async (id: string) => {
-    const response = await api.delete(`/goals/${id}`);
+    const response = await api.delete(`/savings-goals/${id}`);
     return response.data;
   },
 };

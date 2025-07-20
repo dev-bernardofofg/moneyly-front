@@ -19,22 +19,22 @@ export const budgetQueryData = {
 
 export const budgetService = {
   create: async (data: CreateBudgetRequest) => {
-    const response = await api.post("/budgets", data);
+    const response = await api.post("/category-budgets", data);
     return response.data;
   },
   update: async (data: UpdateBudgetRequest) => {
-    const response = await api.put(`/budgets/${data.id}`, {
+    const response = await api.put(`/category-budgets/${data.id}`, {
       monthlyLimit: data.monthlyLimit,
     });
     return response.data;
   },
   get: async () => {
-    const response = await api.get("/budgets");
+    const response = await api.get("/category-budgets");
     return response.data;
   },
 
   delete: async (id: string) => {
-    const response = await api.delete(`/budgets/${id}`);
+    const response = await api.delete(`/category-budgets/${id}`);
     return response.data;
   },
 };

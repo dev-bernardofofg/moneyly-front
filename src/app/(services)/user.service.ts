@@ -17,17 +17,17 @@ export const userService = {
   async updateInitialConfig(
     params: InitialConfigParams
   ): Promise<AuthResponse> {
-    const response = await api.put("/users/income-and-period", params);
+    const response = await api.put("/user/income-and-period", params);
     return response.data;
   },
 
   async getProfile() {
-    const response = await api.get("/users/profile");
+    const response = await api.get("/user/profile");
     return response.data;
   },
 
   getMe: async (): Promise<AuthResponse> => {
-    const response = await api.get("/users/me");
+    const response = await api.get("/user/me");
 
     return response.data;
   },
