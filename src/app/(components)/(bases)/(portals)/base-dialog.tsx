@@ -30,7 +30,7 @@ export const BaseDialog = ({
         <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="overflow-y-auto max-h-full">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && (
