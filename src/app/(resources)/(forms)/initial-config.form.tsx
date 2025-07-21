@@ -57,7 +57,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <DollarSign className="size-4 text-green-600" />
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">Rendimento Mensal</h3>
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white">Renda Mensal</h3>
           </div>
 
           <BaseInput

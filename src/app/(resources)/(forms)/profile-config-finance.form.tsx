@@ -60,7 +60,7 @@ export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: Pro
       <BaseForm onSubmit={form.handleSubmit(onSubmit)} className="space-y-0 grid grid-cols-3 gap-3 w-full">
         <BaseInput
           control={form.control}
-          label="Rendimento Mensal"
+          label="Renda Mensal"
           name="monthlyIncome"
           placeholder="R$ 0,00"
           type="money"
