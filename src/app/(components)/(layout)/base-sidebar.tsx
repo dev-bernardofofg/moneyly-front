@@ -28,10 +28,9 @@ interface SidebarItemProps {
   href: string;
   title: string;
   Icon: IconType;
-  className?: string;
 }
 
-const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
+const SidebarItem = ({ Icon, href, title }: SidebarItemProps) => {
   const pathname = usePathname();
   const active = pathname === href;
   const { toggleSidebar } = useSidebar();

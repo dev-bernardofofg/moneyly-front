@@ -38,7 +38,9 @@ export default function ProfilePage() {
             <div className="flex items-center gap-2">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-muted-foreground" >Membro desde</Label>
-                <Input placeholder="Membro desde" value={format(user?.createdAt!, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })} readOnly />
+                {user?.createdAt && (
+                  <Input placeholder="Membro desde" value={format(user?.createdAt, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })} readOnly />
+                )}
               </div>
             </div>
           </StaggeredFade>
@@ -48,13 +50,15 @@ export default function ProfilePage() {
           Icon={Settings}
           title="Configurações Financeiras"
         >
-          <ProfileConfigFinanceForm
-            defaultValues={{
-              financialDayStart: user?.financialDayStart!,
-              financialDayEnd: user?.financialDayEnd!,
-              monthlyIncome: user?.monthlyIncome?.toString()!,
-            }}
-          />
+          {user?.financialDayStart && user?.financialDayEnd && user?.monthlyIncome && (
+            <ProfileConfigFinanceForm
+              defaultValues={{
+                financialDayStart: user?.financialDayStart,
+                financialDayEnd: user?.financialDayEnd,
+                monthlyIncome: user?.monthlyIncome?.toString(),
+              }}
+            />
+          )}
         </Section>
       </StaggeredFade>
     </Fade>
