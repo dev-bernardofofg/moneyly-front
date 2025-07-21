@@ -8,6 +8,10 @@ export const FN_UTILS_STRING = {
       .slice(0, 2);
   },
 
+  formatNumberToCurrency: (value: string) => {
+    return `R$ ${value.replace(".", ",")}`;
+  },
+
   formatCurrencyToNumber: (value: string) => {
     return Number(value.replace("R$", "").replace(".", "").replace(",", "."));
   },
@@ -18,5 +22,19 @@ export const FN_UTILS_STRING = {
 
   formatCentsToCurrency: (value: number) => {
     return `R$ ${value / 100}`;
+  },
+
+  formatCurrentStringToNumber: (value: string) => {
+    return Number(value.replace(".", "").replace(",", "."));
+  },
+
+  formatEndDayDate: (value: string) => {
+    const date = new Date(value);
+
+    // Define o final do dia em UTC
+    const endOfDayDate = new Date(date);
+    endOfDayDate.setUTCHours(23, 59, 59, 999);
+
+    return endOfDayDate.toISOString();
   },
 };

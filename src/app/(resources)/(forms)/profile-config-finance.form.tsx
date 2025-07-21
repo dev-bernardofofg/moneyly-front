@@ -44,7 +44,7 @@ export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: Pro
   const onSubmit = (data: ProfileConfigFinanceFormValues) => {
     if (form.formState.isDirty) {
       updateProfile({
-        monthlyIncome: FN_UTILS_STRING.formatCurrencyToNumber(data.monthlyIncome),
+        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
         financialDayStart: data.financialDayStart,
         financialDayEnd: data.financialDayEnd,
       })

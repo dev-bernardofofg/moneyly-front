@@ -5,6 +5,7 @@ import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { getErrorMessage } from "@/app/(helpers)/errors";
+import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { GetCategoriesRequest } from "@/app/(services)/category.service";
 import { overviewQueryData } from "@/app/(services)/overview.service";
 import { CreateTransactionRequest, transactionQueryData, UpdateTransactionRequest } from "@/app/(services)/transaction.service";
@@ -26,7 +27,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: transaction ? {
       ...transaction,
-      amount: Number(transaction.amount),
+      amount: FN_UTILS_STRING.formatCurrentStringToNumber(transaction.amount.toString()),
       date: transaction.date,
       category: transaction.category.id,
     } : UpsertTransactionDefaultValues,
@@ -70,7 +71,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         id: transaction.id,
         params: {
           ...data,
-          amount: Number(data.amount),
+          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount.toString()),
         },
       });
     } else {

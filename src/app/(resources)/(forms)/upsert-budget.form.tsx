@@ -5,6 +5,7 @@ import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
 import { BaseButton } from "@/app/(components)/(bases)/base-button"
 import { getErrorMessage } from "@/app/(helpers)/errors"
+import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { budgetQueryData, CreateBudget, GetBudgets, UpdateBudget } from "@/app/(services)/budget.service"
 import { GetCategoriesRequest } from "@/app/(services)/category.service"
 import { Budget } from "@/app/(types)/budget"
@@ -48,7 +49,6 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
       toast.success("Orçamento atualizado com sucesso");
       closeRef.current?.click();
       queryClient.invalidateQueries({ queryKey: [budgetQueryData.getBudgets] });
-
     },
     onError: (error) => {
       toast.error(getErrorMessage(error));
@@ -77,9 +77,13 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
 
   const handleForm = (data: CreateBudgetFormValues) => {
     if (budget) {
-      updateMutation.mutate({ id: budget.id, monthlyLimit: Number(data.monthlyLimit) })
+      updateMutation.mutate({ id: budget.id, monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) })
     } else {
-      createMutation.mutate({ categoryId: data.categoryId, monthlyLimit: Number(data.monthlyLimit) })
+      console.log({
+        categoryId: data.categoryId,
+        monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit)
+      })
+      createMutation.mutate({ categoryId: data.categoryId, monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) })
     }
   }
 

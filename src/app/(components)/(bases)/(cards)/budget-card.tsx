@@ -2,6 +2,7 @@
 
 import { getErrorMessage } from "@/app/(helpers)/errors";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
+import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
 import { budgetQueryData, DeleteBudget } from "@/app/(services)/budget.service";
@@ -90,8 +91,8 @@ export const BudgetCard = ({
     }
   };
 
-  const status = getBudgetStatus(budget.spent, budget.monthlyLimit);
-  const iconConfig = getBudgetIcon(budget.spent, budget.monthlyLimit);
+  const status = getBudgetStatus(Number(budget.spent), Number(budget.monthlyLimit));
+  const iconConfig = getBudgetIcon(Number(budget.spent), Number(budget.monthlyLimit));
   const IconComponent = iconConfig.icon;
 
   const getProgressBarColor = (percentage: number) => {
@@ -126,13 +127,13 @@ export const BudgetCard = ({
         <div className="flex justify-between text-sm">
           <span className="text-slate-400">Gasto</span>
           <span className="font-medium text-slate-200">
-            {FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.monthlyLimit)}
+            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.spent)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-slate-400">Limite</span>
           <span className="text-slate-400">
-            {FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.monthlyLimit)}
+            {FN_UTILS_STRING.formatNumberToCurrency(budget.monthlyLimit)}
           </span>
         </div>
 

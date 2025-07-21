@@ -44,7 +44,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
   const handleSubmit = async (data: InitialConfigFormValues) => {
     updateInitialConfig({
-      monthlyIncome: FN_UTILS_STRING.formatCurrencyToNumber(data.monthlyIncome),
+      monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
       financialDayStart: data.financialDayStart,
       financialDayEnd: data.financialDayEnd,
     })

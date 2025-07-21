@@ -8,6 +8,10 @@ export const FN_UTILS_NUMBERS = {
     });
   },
 
+  formatNumberToCurrency: (value: number) => {
+    return `R$ ${value.toFixed(2).replace(".", ",")}`;
+  },
+
   formatPercentageFormatted: (value: number) => {
     return `${value.toFixed(2)}%`;
   },

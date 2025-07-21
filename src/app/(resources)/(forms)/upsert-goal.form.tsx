@@ -6,6 +6,7 @@ import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
 import { BaseButton } from "@/app/(components)/(bases)/base-button"
 import { getErrorMessage } from "@/app/(helpers)/errors"
+import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { CreateGoal, UpdateGoal, goalQueryData } from "@/app/(services)/goal.service"
 import { Goal } from "@/app/(types)/goal"
 import { DialogClose } from "@/components/ui/dialog"
@@ -58,9 +59,15 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
 
   const handleForm = (data: GoalFormValues) => {
     if (goal) {
-      updateMutation.mutate({ id: goal.id, title: data.title, description: data.description, targetAmount: Number(data.targetAmount), targetDate: data.targetDate });
+      updateMutation.mutate({ id: goal.id, title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
     } else {
-      createMutation.mutate({ title: data.title, description: data.description, targetAmount: Number(data.targetAmount), targetDate: data.targetDate });
+      console.log({
+        title: data.title,
+        description: data.description,
+        targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount),
+        targetDate: data.targetDate
+      })
+      createMutation.mutate({ title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
     }
   }
 

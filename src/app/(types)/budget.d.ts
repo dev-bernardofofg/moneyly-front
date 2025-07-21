@@ -14,7 +14,7 @@ export type Budget = {
   id: string;
   userId: string;
   category: CategorySpecific;
-  monthlyLimit: number;
+  monthlyLimit: string;
   spent: number;
   remaining: number;
   percentage: number;
