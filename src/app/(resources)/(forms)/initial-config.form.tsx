@@ -1,7 +1,6 @@
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
-import { useAuth } from "@/app/(contexts)/auth-provider"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { InitialConfigDefaultValues, InitialConfigFormValues, InitialConfigSchema } from "@/app/(resources)/(schemas)/initial-config.schema"
 import { UpdateInitialConfigRequest } from "@/app/(services)/user.service"
@@ -18,15 +17,13 @@ interface InitialConfigFormProps {
 }
 
 export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
-  const { getMe } = useAuth()
   const form = useForm<InitialConfigFormValues>({
     resolver: zodResolver(InitialConfigSchema),
     defaultValues: InitialConfigDefaultValues,
   })
 
   const { mutate: updateInitialConfig } = UpdateInitialConfigRequest({
-    onSuccess: (data) => {
-      getMe(data)
+    onSuccess: () => {
       toast.success("Configurações financeiras salvas com sucesso!")
       onSuccess()
     },

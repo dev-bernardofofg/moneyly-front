@@ -74,6 +74,7 @@ export const StaggeredFade = ({
               duration: finalDuration,
               delay: initialDelay + (index * staggerDelay)
             }}
+            className="w-full"
           >
             {child}
           </motion.div>

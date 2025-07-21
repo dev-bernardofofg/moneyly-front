@@ -1,12 +1,12 @@
 import {
   useMutation,
   UseMutationOptions,
-  useQuery,
-  UseQueryOptions,
+  useQueryClient,
 } from "@tanstack/react-query";
 
 import { AuthResponse, InitialConfigParams } from "../(types)/auth";
 import { CustomAxiosError } from "../(types)/error";
+import { UpdateProfileResponse } from "../(types)/user";
 import api from "../(utils)/axios";
 
 export const userQueryData = {
@@ -21,8 +21,15 @@ export const userService = {
     return response.data;
   },
 
-  async getProfile() {
+  getProfile: async (): Promise<AuthResponse> => {
     const response = await api.get("/user/profile");
+    return response.data;
+  },
+
+  updateProfile: async (
+    params: InitialConfigParams
+  ): Promise<UpdateProfileResponse> => {
+    const response = await api.put("/user/income-and-period", params);
     return response.data;
   },
 
@@ -53,12 +60,43 @@ export const UpdateInitialConfigRequest = (
 };
 
 export const GetMeRequest = (
-  options?: UseQueryOptions<AuthResponse, CustomAxiosError>
+  options?: UseMutationOptions<AuthResponse, CustomAxiosError>
 ) => {
-  return useQuery<AuthResponse, CustomAxiosError>({
-    queryKey: [userQueryData.me],
-    queryFn: userService.getMe,
-    staleTime: Infinity,
+  return useMutation<AuthResponse, CustomAxiosError>({
+    mutationFn: userService.getMe,
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context) => {
+      options?.onError?.(data, variables, context);
+    },
+    ...options,
+  });
+};
+
+export const UpdateProfileRequest = (
+  options?: UseMutationOptions<
+    UpdateProfileResponse,
+    CustomAxiosError,
+    InitialConfigParams
+  >
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    UpdateProfileResponse,
+    CustomAxiosError,
+    InitialConfigParams
+  >({
+    mutationFn: userService.updateProfile,
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: [userQueryData.me] });
+
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context) => {
+      options?.onError?.(data, variables, context);
+    },
     ...options,
   });
 };

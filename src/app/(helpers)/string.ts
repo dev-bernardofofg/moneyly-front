@@ -11,4 +11,12 @@ export const FN_UTILS_STRING = {
   formatCurrencyToNumber: (value: string) => {
     return Number(value.replace("R$", "").replace(".", "").replace(",", "."));
   },
+
+  formatCurrencyToCents: (value: string) => {
+    return String(Number(value) * 100);
+  },
+
+  formatCentsToCurrency: (value: number) => {
+    return `R$ ${value / 100}`;
+  },
 };

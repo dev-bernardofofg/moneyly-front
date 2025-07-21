@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 type Option = { label: string; value: string | number; available?: boolean };
 type OptionGroup = { label: string; options: Option[] };
@@ -32,6 +33,7 @@ export interface IBaseSelect<T extends FieldValues> {
   description?: string;
   disabled?: string | boolean;
   selectDate?: string | boolean;
+  className?: string;
 }
 
 export const BaseSelect = <T extends FieldValues>({
@@ -44,13 +46,14 @@ export const BaseSelect = <T extends FieldValues>({
   description,
   disabled = false,
   selectDate = false,
+  className,
 }: IBaseSelect<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="relative w-full">
+        <FormItem className={cn("relative w-full", className)}>
           {label && (
             <motion.div
               initial={{ opacity: 0, y: -6 }}

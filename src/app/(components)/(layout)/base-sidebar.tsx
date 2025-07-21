@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { IconType } from "@/lib/utils";
-import { ChevronUp, Home, LogOut, Moon, Sun, User } from "lucide-react";
+import { ArrowRightLeft, ChevronUp, Goal, Home, LogOut, Moon, Sun, TableProperties, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -91,9 +91,9 @@ export const BaseSidebar = () => {
           <SidebarItem Icon={Home} href="/dashboard" title="Dashboard" />
         </SidebarGroupCustom>
         <SidebarGroupCustom label="Gestão">
-          <SidebarItem Icon={Home} href="/transactions" title="Transações" />
-          <SidebarItem Icon={Home} href="/categories" title="Categorias" />
-          <SidebarItem Icon={Home} href="/planner" title="Planejamento" />
+          <SidebarItem Icon={ArrowRightLeft} href="/transactions" title="Transações" />
+          <SidebarItem Icon={Goal} href="/planner" title="Planejamento" />
+          <SidebarItem Icon={TableProperties} href="/categories" title="Categorias" />
         </SidebarGroupCustom>
       </SidebarContent>
       <SidebarSeparator />
@@ -123,10 +123,10 @@ export const BaseSidebar = () => {
             sideOffset={4}
           >
             <DropdownMenuItem asChild>
-              <a href="#" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/profile" className="flex items-center gap-2 cursor-pointer">
                 <User className="size-4" />
                 <span>Perfil</span>
-              </a>
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2 cursor-pointer">

@@ -14,7 +14,7 @@ export const BaseForm = ({ children, className, ...props }: BaseFormProps) => {
       transition={{ duration: 0.3 }}
       {...props}
     >
-      <StaggeredFade className={cn("space-y-4", className)}>
+      <StaggeredFade className={cn("space-y-4", className)} variant="default">
         {children}
       </StaggeredFade>
     </motion.form>
