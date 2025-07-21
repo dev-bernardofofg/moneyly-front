@@ -17,11 +17,7 @@ export const InitialConfigGuard = ({ children }: InitialConfigGuardProps) => {
   const [isChecking, setIsChecking] = useState(true)
   const [showConfigDialog, setShowConfigDialog] = useState(false)
 
-  const needsInitialConfig = !user ||
-    !user.monthlyIncome ||
-    user.monthlyIncome === 0 ||
-    user.financialDayStart === undefined ||
-    user.financialDayEnd === undefined;
+  const needsInitialConfig = user?.firstAccess
 
   useEffect(() => {
     // Se não há usuário autenticado, não faz nada (será redirecionado pelo auth guard)

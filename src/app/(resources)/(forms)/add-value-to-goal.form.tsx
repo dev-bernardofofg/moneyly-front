@@ -13,7 +13,6 @@ import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { AddValueToGoalFormValues, AddValueToGoalSchema } from "../(schemas)/goal.schema"
-
 interface AddValueToGoalFormProps {
   goalId: string
 }
@@ -53,6 +52,8 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
             name="amount"
             label="Valor"
             control={form.control}
+            type="money"
+            placeholder="0,00"
           />
           <BaseButton
             type="submit"

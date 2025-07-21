@@ -29,8 +29,6 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
     defaultValues: isUpdate ? category : CreateCategoryDefaultValues,
   })
 
-
-
   const createMutation = CreateCategoryRequest({
     onSuccess: () => {
       toast.success("Categoria criada com sucesso");

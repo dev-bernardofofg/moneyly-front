@@ -1,13 +1,15 @@
+"use client"
+
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
+import { useAuth } from "@/app/(contexts)/auth-provider"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { InitialConfigDefaultValues, InitialConfigFormValues, InitialConfigSchema } from "@/app/(resources)/(schemas)/initial-config.schema"
-import { UpdateInitialConfigRequest } from "@/app/(services)/user.service"
+import { GetMeRequest, UpdateInitialConfigRequest } from "@/app/(services)/user.service"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useNumberFormat } from "@react-input/number-format"
 import { Calendar, DollarSign, Info } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -17,14 +19,22 @@ interface InitialConfigFormProps {
 }
 
 export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
+  const { updateUser } = useAuth()
   const form = useForm<InitialConfigFormValues>({
     resolver: zodResolver(InitialConfigSchema),
     defaultValues: InitialConfigDefaultValues,
   })
 
+  const { mutate: getMe } = GetMeRequest({
+    onSuccess: (data) => {
+      updateUser(data.data.user)
+    }
+  })
+
   const { mutate: updateInitialConfig } = UpdateInitialConfigRequest({
     onSuccess: () => {
       toast.success("Configurações financeiras salvas com sucesso!")
+      getMe()
       onSuccess()
     },
     onError: () => {
@@ -38,16 +48,12 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
       financialDayStart: data.financialDayStart,
       financialDayEnd: data.financialDayEnd,
     })
+
+
   }
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)
 
-  const currencyInputRef = useNumberFormat({
-    format: "currency",
-    currency: "BRL",
-    locales: "pt-BR",
-    maximumFractionDigits: 2,
-  })
 
   return (
     <Form {...form}>
@@ -62,10 +68,10 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
           <BaseInput
             control={form.control}
-            ref={currencyInputRef}
             label="Qual é o seu rendimento mensal?"
             name="monthlyIncome"
             placeholder="Digite seu rendimento mensal"
+            type="money"
           />
         </div>
 

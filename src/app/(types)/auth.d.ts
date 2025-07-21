@@ -14,6 +14,7 @@ export declare interface User {
   monthlyIncome?: number;
   financialDayStart?: number;
   financialDayEnd?: number;
+  firstAccess?: boolean;
   createdAt: string;
 }
 

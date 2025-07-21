@@ -13,7 +13,7 @@ export const InitialConfigSchema = z.object({
 });
 
 export const InitialConfigDefaultValues = {
-  monthlyIncome: '0.00',
+  monthlyIncome: '',
   financialDayStart: 1,
   financialDayEnd: 1,
 }

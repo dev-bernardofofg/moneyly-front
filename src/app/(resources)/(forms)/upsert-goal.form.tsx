@@ -71,7 +71,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
           <BaseInput name="title" label="Título" control={form.control} />
           <BaseTextarea name="description" label="Descrição" control={form.control} />
-          <BaseInput name="targetAmount" label="Valor alvo" control={form.control} />
+          <BaseInput name="targetAmount" label="Valor alvo" control={form.control} type="money" placeholder="0,00" />
           <BaseDatePicker name="targetDate" label="Data de término" control={form.control} />
           <BaseButton type="submit" isLoading={createMutation.isPending}>
             {goal ? "Atualizar" : "Criar"}

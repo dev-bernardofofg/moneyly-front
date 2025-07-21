@@ -52,8 +52,8 @@ const SidebarItem = ({ Icon, href, title, className }: SidebarItemProps) => {
           } rounded-full`}
       />
       <div className="flex items-center gap-3">
-        <Icon className={`size-4 ${active ? "text-primary group-hover/item:text-primary" : "group-hover/item:text-neutral-200"}`} />
-        <span className={`${active ? "text-primary group-hover/item:text-primary" : "group-hover/item:text-neutral-200"}`}>{title}</span>
+        <Icon className={`size-4 ${active ? "text-primary group-hover/item:text-primary" : "group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200"}`} />
+        <span className={`${active ? "text-primary group-hover/item:text-primary" : "group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200"}`}>{title}</span>
       </div>
     </Link>
   );

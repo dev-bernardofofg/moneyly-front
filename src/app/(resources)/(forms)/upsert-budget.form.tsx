@@ -100,7 +100,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
               Categorias com orçamento já existente estão desabilitadas
             </p>
           )}
-          <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} />
+          <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} type="money" placeholder="0,00" />
           <BaseButton type="submit" isLoading={budget ? updateMutation.isPending : createMutation.isPending}>
             {budget ? "Atualizar" : "Criar"}
           </BaseButton>
