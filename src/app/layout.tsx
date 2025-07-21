@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import { Contexts } from "./(contexts)";
+import { Analytics } from "@vercel/analytics/next"
+
 import "./globals.css";
 
 const LexendFont = Lexend({
@@ -26,6 +28,7 @@ export default function RootLayout({
         <Contexts>
           {children}
           <Toaster richColors position="bottom-center" />
+
         </Contexts>
       </body>
     </html>
