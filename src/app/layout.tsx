@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import { Contexts } from "./(contexts)";
-import { Analytics } from "@vercel/analytics/next"
 
 import "./globals.css";
 
@@ -28,7 +28,7 @@ export default function RootLayout({
         <Contexts>
           {children}
           <Toaster richColors position="bottom-center" />
-
+          <Analytics />
         </Contexts>
       </body>
     </html>
