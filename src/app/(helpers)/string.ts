@@ -24,8 +24,20 @@ export const FN_UTILS_STRING = {
     return `R$ ${value / 100}`;
   },
 
+  // Converte formato brasileiro (250,00) para formato americano (250.00)
+  formatCommaToDot: (value: string) => {
+    // Remove pontos de milhares e troca vírgula por ponto
+    return value.replace(/\./g, "").replace(",", ".");
+  },
+
+  // Converte formato americano (250.00) para formato brasileiro (250,00)
+  formatDotToComma: (value: string) => {
+    return value.replace(".", ",");
+  },
+
+  // Converte formato brasileiro para número
   formatCurrentStringToNumber: (value: string) => {
-    return Number(value.replace(".", "").replace(",", "."));
+    return Number(value.replace(/\./g, "").replace(",", "."));
   },
 
   formatEndDayDate: (value: string) => {

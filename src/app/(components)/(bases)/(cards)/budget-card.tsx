@@ -125,14 +125,14 @@ export const BudgetCard = ({
 
       <div className="space-y-3">
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">Gasto</span>
-          <span className="font-medium text-slate-200">
+          <span className="dark:text-slate-400 text-slate-600">Gasto</span>
+          <span className="font-medium dark:text-slate-200 text-slate-600">
             {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.spent)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-slate-400">Limite</span>
-          <span className="text-slate-400">
+          <span className="dark:text-slate-400 text-slate-600">Limite</span>
+          <span className="dark:text-slate-200 text-slate-600">
             {FN_UTILS_STRING.formatNumberToCurrency(budget.monthlyLimit)}
           </span>
         </div>

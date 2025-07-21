@@ -8,6 +8,7 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button"
 import { getErrorMessage } from "@/app/(helpers)/errors"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { CreateGoal, UpdateGoal, goalQueryData } from "@/app/(services)/goal.service"
+import { overviewQueryData } from "@/app/(services)/overview.service"
 import { Goal } from "@/app/(types)/goal"
 import { DialogClose } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
@@ -44,6 +45,9 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
     onError: (error) => {
       toast.error(getErrorMessage(error));
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverviewPlanner] });
+    },
   });
 
   const updateMutation = UpdateGoal({
@@ -55,18 +59,15 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
     onError: (error) => {
       toast.error(getErrorMessage(error));
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverviewPlanner] });
+    },
   });
 
   const handleForm = (data: GoalFormValues) => {
     if (goal) {
       updateMutation.mutate({ id: goal.id, title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
     } else {
-      console.log({
-        title: data.title,
-        description: data.description,
-        targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount),
-        targetDate: data.targetDate
-      })
       createMutation.mutate({ title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
     }
   }

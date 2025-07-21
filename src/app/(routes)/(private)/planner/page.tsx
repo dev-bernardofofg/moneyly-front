@@ -13,11 +13,13 @@ import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
 import { GetBudgets } from '@/app/(services)/budget.service'
 import { GetGoals } from '@/app/(services)/goal.service'
+import { GetOverviewPlannerRequest } from '@/app/(services)/overview.service'
 import { Target } from 'lucide-react'
 
 const PlannerPage = () => {
   const { data: budgets } = GetBudgets()
   const { data: goals } = GetGoals()
+  const { data: overviewPlanner } = GetOverviewPlannerRequest()
 
   return (
     <Fade>
@@ -47,10 +49,10 @@ const PlannerPage = () => {
 
       <StaggeredFade variant='page'>
         <PlannerStats
-          totalBudgeted={0}
-          savingsGoal={0}
-          alreadySaved={0}
-          alerts={[]}
+          totalBudgeted={overviewPlanner?.data.stats.totalBudgeted}
+          savingsGoal={overviewPlanner?.data.stats.totalSavingsGoal}
+          alreadySaved={overviewPlanner?.data.stats.totalSaved}
+          alerts={overviewPlanner?.data.alerts || []}
         />
 
         <Section
@@ -66,7 +68,6 @@ const PlannerPage = () => {
         >
           <GoalSwiper goals={goals?.data || []} />
         </Section>
-
       </StaggeredFade>
     </Fade>
   )

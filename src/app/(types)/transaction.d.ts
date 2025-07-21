@@ -2,7 +2,7 @@ export type Transaction = {
   id: string;
   userId: string;
   type: "income" | "expense";
-  amount: number;
+  amount: string;
   description: string;
   date: string;
   title: string;

@@ -38,7 +38,7 @@ const DashboardPage = () => {
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
           <BaseStats
             name="Saldo"
-            value={overview?.data.stats.remainingBudget ?? 0}
+            value={overview?.data.stats.balance ?? 0}
             Icon={DollarSign}
             description="Saldo Disponível"
             isMonetary={true}

@@ -41,7 +41,7 @@ const SidebarItem = ({ Icon, href, title }: SidebarItemProps) => {
       href={href}
       onClick={() => isMobile && toggleSidebar()}
       id="sidebar-item"
-      className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm relative  ${active && "text-primary"
+      className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm relative  ${active && "text-primary bg-primary/20"
         } hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
     >
       <div

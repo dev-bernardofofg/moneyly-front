@@ -4,7 +4,7 @@ import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog";
 import { BaseTable, BaseTableOptions } from "@/app/(components)/(bases)/(tables)/base-table";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { queryClient } from "@/app/(contexts)";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
+import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { DeleteTransactionRequest, transactionQueryData } from "@/app/(services)/transaction.service";
 import { Transaction } from "@/app/(types)/transaction";
 import { Badge } from "@/components/ui/badge";
@@ -98,7 +98,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
         accessorKey: "amount",
         cell: (value, item) => {
           return <span className="text-sm font-medium text-muted-foreground">
-            {FN_UTILS_NUMBERS.formatCurrencyToNumber(item.amount)}
+            {FN_UTILS_STRING.formatNumberToCurrency(item.amount.toString())}
           </span>
         }
       },

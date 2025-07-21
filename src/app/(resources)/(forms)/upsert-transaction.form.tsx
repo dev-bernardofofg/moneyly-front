@@ -27,7 +27,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: transaction ? {
       ...transaction,
-      amount: FN_UTILS_STRING.formatCurrentStringToNumber(transaction.amount.toString()),
+      amount: FN_UTILS_STRING.formatDotToComma(transaction.amount.toString()),
       date: transaction.date,
       category: transaction.category.id,
     } : UpsertTransactionDefaultValues,
@@ -35,15 +35,15 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
 
   const { data: categories } = GetCategoriesRequest();
 
-  const { mutate, isPending } = CreateTransactionRequest({
+  const { mutate: createTransaction, isPending } = CreateTransactionRequest({
     onSuccess: () => {
       if (transaction) {
         toast.success("Transação atualizada com sucesso");
-        queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
       } else {
         toast.success("Transação criada com sucesso");
-        queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
       }
+      queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
       form.reset();
       closeRef.current?.click();
     },
@@ -71,11 +71,14 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         id: transaction.id,
         params: {
           ...data,
-          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount.toString()),
+          amount: FN_UTILS_STRING.formatCommaToDot(data.amount),
         },
       });
     } else {
-      mutate(data);
+      createTransaction({
+        ...data,
+        amount: FN_UTILS_STRING.formatCommaToDot(data.amount),
+      });
     }
   };
 

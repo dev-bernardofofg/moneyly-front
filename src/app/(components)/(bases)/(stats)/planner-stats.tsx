@@ -1,15 +1,16 @@
 "use client"
 
-import { Alert, AlertsPopover } from '@/app/(components)/(bases)/(notifications)/alerts-popover'
+import { AlertsPopover } from '@/app/(components)/(bases)/(notifications)/alerts-popover'
 import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
+import { AlertsPlannerResponse } from '@/app/(types)/overview'
 import { Bell, PieChart, Target, TrendingUp } from 'lucide-react'
 
 interface PlannerStatsProps {
   totalBudgeted?: number
   savingsGoal?: number
   alreadySaved?: number
-  alerts?: Alert[]
+  alerts?: AlertsPlannerResponse[]
 }
 
 export const PlannerStats = ({

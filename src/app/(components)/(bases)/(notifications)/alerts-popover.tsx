@@ -1,22 +1,15 @@
 "use client";
 
+import { AlertsPlannerResponse } from "@/app/(types)/overview";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { AlertTriangle, Bell, CheckCircle, Info, XCircle } from "lucide-react";
 import { useState } from "react";
 
-export interface Alert {
-  id: string;
-  title: string;
-  message: string;
-  type: "info" | "warning" | "error" | "success";
-  timestamp: Date;
-  priority: "low" | "medium" | "high";
-}
 
 interface AlertsPopoverProps {
-  alerts: Alert[];
+  alerts: AlertsPlannerResponse[];
   trigger: React.ReactNode;
 }
 
@@ -26,9 +19,9 @@ export const AlertsPopover = ({
 }: AlertsPopoverProps) => {
   const [open, setOpen] = useState(false);
 
-  const getAlertIcon = (type: Alert["type"]) => {
+  const getAlertIcon = (type: AlertsPlannerResponse["type"]) => {
     switch (type) {
-      case "success":
+      case "info":
         return <CheckCircle className="size-4 text-green-600" />;
       case "warning":
         return <AlertTriangle className="size-4 text-yellow-600" />;
@@ -39,9 +32,9 @@ export const AlertsPopover = ({
     }
   };
 
-  const getAlertColor = (type: Alert["type"]) => {
+  const getAlertColor = (type: AlertsPlannerResponse["type"]) => {
     switch (type) {
-      case "success":
+      case "info":
         return "border-l-green-500 bg-green-50 dark:bg-green-950/20";
       case "warning":
         return "border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20";
@@ -52,37 +45,16 @@ export const AlertsPopover = ({
     }
   };
 
-  const getPriorityBadge = (priority: Alert["priority"]) => {
+  const getPriorityBadge = (priority: AlertsPlannerResponse["priority"]) => {
     switch (priority) {
       case "high":
-        return <Badge variant="destructive" className="text-xs">Alta</Badge>;
+        return <Badge variant="destructive" className="text-xs text-red-600">Alta</Badge>;
       case "medium":
-        return <Badge variant="secondary" className="text-xs">Média</Badge>;
+        return <Badge variant="secondary" className="text-xs text-yellow-600">Média</Badge>;
       case "low":
-        return <Badge variant="outline" className="text-xs">Baixa</Badge>;
+        return <Badge variant="secondary" className="text-xs text-green-600">Baixa</Badge>;
     }
   };
-
-  const formatTime = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (minutes < 1) return "Agora";
-    if (minutes < 60) return `${minutes}m atrás`;
-    if (hours < 24) return `${hours}h atrás`;
-    return `${days}d atrás`;
-  };
-
-  // Ordenar alertas por prioridade (alta -> média -> baixa) e depois por timestamp
-  const sortedAlerts = [...alerts].sort((a, b) => {
-    const priorityOrder = { high: 3, medium: 2, low: 1 };
-    const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
-    if (priorityDiff !== 0) return priorityDiff;
-    return b.timestamp.getTime() - a.timestamp.getTime();
-  });
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -109,9 +81,9 @@ export const AlertsPopover = ({
               <p className="text-xs mt-1">Tudo em ordem!</p>
             </div>
           ) : (
-            sortedAlerts.map((alert) => (
+            alerts.map((alert, index) => (
               <div
-                key={alert.id}
+                key={index}
                 className={`p-3 rounded-lg border-l-4 transition-colors ${getAlertColor(alert.type)}`}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -120,15 +92,12 @@ export const AlertsPopover = ({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm font-medium text-foreground">
-                          {alert.title}
+                          {alert.goal}
                         </p>
                         {getPriorityBadge(alert.priority)}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {alert.message}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {formatTime(alert.timestamp)}
                       </p>
                     </div>
                   </div>
