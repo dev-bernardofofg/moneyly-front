@@ -23,6 +23,7 @@ const TransactionsPage = () => {
       <Header
         title="Transações"
         actions={[<BaseDialog
+          key="new-transaction-dialog"
           title="Nova transação"
           description="Adicione uma nova transação"
           trigger={<BaseButton clickAction="create">

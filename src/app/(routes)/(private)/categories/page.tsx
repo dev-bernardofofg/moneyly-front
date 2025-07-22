@@ -21,6 +21,7 @@ const CategoriesPage = () => {
         title="Categorias"
         actions={
           [<BaseDialog
+            key="new-category-dialog"
             title="Nova categoria"
             description="Adicione uma nova categoria"
             trigger={<BaseButton>
