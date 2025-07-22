@@ -1,27 +1,14 @@
-import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { LoaderCircle } from 'lucide-react'
+import Image from 'next/image'
 
 export const LoadingScreen = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            <div className="flex justify-center">
-              <Skeleton className="h-12 w-12 rounded-full" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4 mx-auto" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-800">
+      <div className='flex flex-col items-center justify-center gap-4'>
+        <Image src="/logo-moneyly.png" alt="Moneyly" width={64} height={64} />
+        <span className='text-lg font-bold text-slate-950 dark:text-white'>Moneyly</span>
+        <LoaderCircle className='animate-spin size-10 text-primary' />
+      </div>
     </div>
   )
 } 
