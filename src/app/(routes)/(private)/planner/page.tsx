@@ -24,6 +24,7 @@ const PlannerPage = () => {
   return (
     <Fade>
       <Header title='Planejamento Financeiro' actions={[<BaseDialog
+        key="new-budget-dialog"
         title="Novo Orçamento"
         description="Adicione um novo orçamento"
         trigger={<BaseButton clickAction='create'>
@@ -32,6 +33,7 @@ const PlannerPage = () => {
       >
         <UpsertBudgetForm />
       </BaseDialog>, <BaseDialog
+        key="new-goal-dialog"
         title="Novo Objetivo de Poupança"
         description="Adicione um novo objetivo de poupança"
         trigger={<BaseButton clickAction='create'>

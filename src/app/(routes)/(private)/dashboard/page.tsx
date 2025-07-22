@@ -26,6 +26,7 @@ const DashboardPage = () => {
         title="Dashboard"
         actions={
           [<BaseDialog
+            key="new-transaction-dialog"
             title="Nova transação"
             description="Adicione uma nova transação"
             trigger={<BaseButton clickAction="create" className="flex items-center justify-start">
