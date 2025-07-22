@@ -23,28 +23,25 @@ const PlannerPage = () => {
 
   return (
     <Fade>
-      <Header title='Planejamento Financeiro' actions={
-        <div className='flex items-center gap-2'>
-          <BaseDialog
-            title="Novo Orçamento"
-            description="Adicione um novo orçamento"
-            trigger={<BaseButton clickAction='create'>
-              Novo Orçamento
-            </BaseButton>}
-          >
-            <UpsertBudgetForm />
-          </BaseDialog>
+      <Header title='Planejamento Financeiro' actions={[<BaseDialog
+        title="Novo Orçamento"
+        description="Adicione um novo orçamento"
+        trigger={<BaseButton clickAction='create'>
+          Novo Orçamento
+        </BaseButton>}
+      >
+        <UpsertBudgetForm />
+      </BaseDialog>, <BaseDialog
+        title="Novo Objetivo de Poupança"
+        description="Adicione um novo objetivo de poupança"
+        trigger={<BaseButton clickAction='create'>
+          Novo Objetivo
+        </BaseButton>}
+      >
+        <UpsertGoalForm />
+      </BaseDialog>]
 
-          <BaseDialog
-            title="Novo Objetivo de Poupança"
-            description="Adicione um novo objetivo de poupança"
-            trigger={<BaseButton clickAction='create'>
-              Novo Objetivo
-            </BaseButton>}
-          >
-            <UpsertGoalForm />
-          </BaseDialog>
-        </div>
+
       } />
 
       <StaggeredFade variant='page'>

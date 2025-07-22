@@ -11,31 +11,34 @@ import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import { GetOverviewRequest } from "@/app/(services)/overview.service";
-import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/app/(utils)/routes";
 import { LinearProgress } from "@/components/ui/linear-progress";
 import { DollarSign, List, TrendingDown, TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
   const { data: overview, isLoading: loadingOverview } = GetOverviewRequest();
+  const { push } = useRouter();
 
   return (
     <Fade>
       <Header
         title="Dashboard"
         actions={
-          <BaseDialog
+          [<BaseDialog
             title="Nova transação"
             description="Adicione uma nova transação"
-            trigger={<BaseButton clickAction="create">
+            trigger={<BaseButton clickAction="create" className="flex items-center justify-start">
               Nova transação
             </BaseButton>}
           >
             <UpsertTransactionForm />
           </BaseDialog>
+          ]
         }
       />
       <StaggeredFade variant="page">
-        <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+        <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
           <BaseStats
             name="Saldo"
             value={overview?.data.stats.balance ?? 0}
@@ -78,13 +81,14 @@ const DashboardPage = () => {
             title="Transações Recentes"
             description="Suas últimas movimentações financeiras"
             footer={
-              <Button
+              <BaseButton
                 variant="outline"
-                size="sm"
                 className="w-full"
+                clickAction="default"
+                onClick={() => push(ROUTES.TRANSACTIONS)}
               >
                 Ver mais
-              </Button>
+              </BaseButton>
             }
           >
             {overview?.data.monthlyHistory.length === 0 ? (

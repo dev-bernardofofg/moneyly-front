@@ -22,7 +22,7 @@ const TransactionsPage = () => {
     <Fade>
       <Header
         title="Transações"
-        actions={<BaseDialog
+        actions={[<BaseDialog
           title="Nova transação"
           description="Adicione uma nova transação"
           trigger={<BaseButton clickAction="create">
@@ -30,7 +30,8 @@ const TransactionsPage = () => {
           </BaseButton>}
         >
           <UpsertTransactionForm />
-        </BaseDialog>}
+        </BaseDialog>]
+        }
       />
       <StaggeredFade variant="page">
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">

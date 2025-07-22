@@ -5,7 +5,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeaderProps {
-  actions?: React.ReactNode
+  actions?: React.ReactNode[]
   title: string
 }
 
@@ -20,7 +20,7 @@ export const Header = ({ actions, title }: HeaderProps) => {
           <SidebarTrigger />
         )}
         <div className="flex items-center gap-3 w-full">
-          <h1 className="text-lg font-bold text-slate-950 dark:text-white">{title}</h1>
+          <h1 className="base:text-base md:text-lg font-bold text-slate-950 dark:text-white">{title}</h1>
         </div>
         {actions && (
           <>
@@ -28,7 +28,11 @@ export const Header = ({ actions, title }: HeaderProps) => {
               <MobileActionsMenu actions={actions} />
             ) : (
               <div className="flex items-center gap-3 w-fit">
-                {actions}
+                {actions.map((action, index) => (
+                  <div key={index}>
+                    {action}
+                  </div>
+                ))}
               </div>
             )}
           </>

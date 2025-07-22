@@ -88,17 +88,19 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleUpsertTransaction)}>
           <BaseInput control={form.control} name="title" label="Título" autoFocus />
-          <BaseSelect
-            control={form.control}
-            name="type"
-            label="Tipo"
-            options={[
-              { label: "Entrada", value: "income" },
-              { label: "Saída", value: "expense" }
-            ]}
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <BaseSelect
+              control={form.control}
+              name="type"
+              label="Tipo"
+              options={[
+                { label: "Entrada", value: "income" },
+                { label: "Saída", value: "expense" }
+              ]}
+            />
+            <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data.categories.map((category) => ({ label: category.name, value: category.id })) || []} />
+          </div>
           <BaseInput control={form.control} name="amount" label="Valor" type="money" placeholder="0,00" />
-          <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data.categories.map((category) => ({ label: category.name, value: category.id })) || []} />
           <BaseTextarea control={form.control} name="description" label="Descrição" />
           <BaseDatePicker control={form.control} name="date" label="Data" />
 

@@ -124,6 +124,7 @@ export const SignInForm = () => {
           onError={handleGoogleError}
           text="continue_with"
           theme="filled_blue"
+          size="large"
         />
       </BaseForm>
     </Form>
