@@ -68,9 +68,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
       label: category.name,
       value: category.id,
       available: budget ?
-        // Se estiver editando, só desabilita se não for a categoria atual
         category.id === budget.category.id || !categoriesWithBudget.includes(category.id) :
-        // Se estiver criando, desabilita todas que já têm orçamento
         !categoriesWithBudget.includes(category.id)
     }));
   }, [categories, budgets, budget]);
@@ -79,10 +77,6 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     if (budget) {
       updateMutation.mutate({ id: budget.id, monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) })
     } else {
-      console.log({
-        categoryId: data.categoryId,
-        monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit)
-      })
       createMutation.mutate({ categoryId: data.categoryId, monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) })
     }
   }

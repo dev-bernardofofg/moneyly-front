@@ -76,6 +76,9 @@
       transform: translateY(-10px);
     }
   }
+
+  --breakpoint-base: 320px;
+  --breakpoint-md: 997px;
 }
 
 @layer base {

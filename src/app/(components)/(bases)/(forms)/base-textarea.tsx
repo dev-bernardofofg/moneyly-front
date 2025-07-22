@@ -9,8 +9,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormLabel
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -39,7 +38,7 @@ export function BaseTextarea<T extends FieldValues>({
     <FormField
       control={finalControl}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className="relative w-full">
           {label && (
             <motion.div
@@ -48,8 +47,9 @@ export function BaseTextarea<T extends FieldValues>({
               transition={{ duration: 0.2 }}
               className="flex items-center justify-between"
             >
-              <FormLabel>{label}</FormLabel>
-              <FormMessage />
+              {fieldState.error ? (
+                <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
+              ) : <FormLabel>{label}</FormLabel>}
             </motion.div>
           )}
 

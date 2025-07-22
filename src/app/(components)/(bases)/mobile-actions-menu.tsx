@@ -6,14 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowDownCircleIcon } from "lucide-react";
 import { Children, isValidElement, ReactNode } from "react";
 
 interface MobileActionsMenuProps {
   actions: ReactNode;
 }
 
-// Função para converter actions em DropdownMenuItems
 const renderActionsInDropdown = (actions: ReactNode): ReactNode => {
   if (!actions) return null;
 
@@ -45,11 +44,9 @@ export const MobileActionsMenu = ({ actions }: MobileActionsMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-          <MoreHorizontal className="w-4 h-4" />
-        </button>
+        <ArrowDownCircleIcon className="size-6 text-slate-950 dark:text-white" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-auto max-w-56 space-y-1">
         {renderActionsInDropdown(actions)}
       </DropdownMenuContent>
     </DropdownMenu>

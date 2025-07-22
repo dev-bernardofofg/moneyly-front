@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 interface BaseButtonProps extends ComponentProps<typeof Button> {
   isLoading?: boolean;
   loadingText?: string;
-  clickAction?: "default" | "sign-out" | "create";
+  clickAction?: "default" | "sign-out" | "create"
 }
 
 export const BaseButton = ({
@@ -29,12 +29,13 @@ export const BaseButton = ({
     >
       {isLoading ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className="mr-2 size-4 animate-spin" />
           {loadingText || children}
         </>
       ) : (
         <>
-          {clickAction === "create" && <Plus className="mr-1 h-4 w-4" />}
+          {clickAction === "create" && <Plus className="mr-1 size-4 text-black" />}
+
           {children}
         </>
       )}

@@ -6,8 +6,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormLabel
 } from "@/components/ui/form";
 import {
   Select,
@@ -52,7 +51,7 @@ export const BaseSelect = <T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className={cn("relative w-full", className)}>
           {label && (
             <motion.div
@@ -61,8 +60,9 @@ export const BaseSelect = <T extends FieldValues>({
               transition={{ duration: 0.2 }}
               className="flex items-center justify-between"
             >
-              <FormLabel>{label}</FormLabel>
-              <FormMessage />
+              {fieldState.error ? (
+                <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
+              ) : <FormLabel>{label}</FormLabel>}
             </motion.div>
           )}
 

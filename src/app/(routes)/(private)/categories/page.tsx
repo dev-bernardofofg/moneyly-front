@@ -20,7 +20,7 @@ const CategoriesPage = () => {
       <Header
         title="Categorias"
         actions={
-          <BaseDialog
+          [<BaseDialog
             title="Nova categoria"
             description="Adicione uma nova categoria"
             trigger={<BaseButton>
@@ -29,6 +29,7 @@ const CategoriesPage = () => {
           >
             <UpsertCategoryForm />
           </BaseDialog>
+          ]
         }
       />
       <StaggeredFade variant="page">

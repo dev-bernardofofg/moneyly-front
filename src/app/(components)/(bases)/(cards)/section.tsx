@@ -21,7 +21,7 @@ export const Section = ({
         <CardHeader className='border-b border-slate-200 dark:border-slate-700'>
           <CardTitle className='flex items-center gap-2'>
             <Icon className='size-5 text-primary' />
-            <h1 className='text-lg font-bold'>{title}</h1>
+            <span className='text-lg font-bold'>{title}</span>
           </CardTitle>
         </CardHeader>
 
