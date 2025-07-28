@@ -1,8 +1,8 @@
 import { z } from "zod"
 
 export const profileConfigFinanceFormSchema = z.object({
-  financialDayStart: z.number().min(1).max(31),
-  financialDayEnd: z.number().min(1).max(31),
+  financialDayStart: z.coerce.string().min(1, { message: "O dia inicial é obrigatório" }),
+  financialDayEnd: z.coerce.string().min(1, { message: "O dia final é obrigatório" }),
   monthlyIncome: z.string().min(1, { message: "O valor mensal é obrigatório" }),
 })
 

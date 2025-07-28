@@ -34,6 +34,7 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
           variant="outline"
           size="sm"
           onClick={() => handlePageChange(page - 1)}
+          className="size-8 p-0 text-xs"
           disabled={page <= 1}
         >
           <ChevronLeft className="size-4" />
@@ -58,7 +59,7 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
                 variant={page === pageNumber ? "default" : "outline"}
                 size="sm"
                 onClick={() => handlePageChange(pageNumber)}
-                className="w-8 h-8 p-0"
+                className="size-8 p-0 text-xs"
               >
                 {pageNumber}
               </Button>
@@ -71,6 +72,8 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
           size="sm"
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= totalPages}
+          className="size-8 p-0 text-xs"
+
         >
           <ChevronRight className="size-4" />
         </Button>

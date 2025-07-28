@@ -6,10 +6,12 @@ import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
 import { useAuth } from "@/app/(contexts)/auth-provider"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { InitialConfigDefaultValues, InitialConfigFormValues, InitialConfigSchema } from "@/app/(resources)/(schemas)/initial-config.schema"
-import { GetMeRequest, UpdateInitialConfigRequest } from "@/app/(services)/user.service"
+import { overviewQueryData } from "@/app/(services)/overview.service"
+import { GetMeRequest, UpdateInitialConfigRequest, userQueryData } from "@/app/(services)/user.service"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import { Calendar, DollarSign, Info } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -20,6 +22,8 @@ interface InitialConfigFormProps {
 
 export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
   const { updateUser } = useAuth()
+  const queryClient = useQueryClient()
+
   const form = useForm<InitialConfigFormValues>({
     resolver: zodResolver(InitialConfigSchema),
     defaultValues: InitialConfigDefaultValues,
@@ -28,6 +32,8 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
   const { mutate: getMe } = GetMeRequest({
     onSuccess: (data) => {
       updateUser(data.data.user)
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] })
+      queryClient.invalidateQueries({ queryKey: [userQueryData.me] })
     }
   })
 
@@ -48,8 +54,6 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
       financialDayStart: data.financialDayStart,
       financialDayEnd: data.financialDayEnd,
     })
-
-
   }
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)

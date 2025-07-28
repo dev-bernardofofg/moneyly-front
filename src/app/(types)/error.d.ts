@@ -1,17 +1,17 @@
 export type ErrorDetails = {
-  field: string;
   message: string;
-  code: string;
+  name: string;
+  status: number;
 };
 
 export type ErrorResponse = {
-  details: ErrorDetails[];
+  details: ErrorDetails;
   error: string;
   success: boolean;
 };
 
 export type CustomAxiosError = {
-  status?: number;
-  message: string;
   data: ErrorResponse;
+  status: number;
+  message: string;
 };

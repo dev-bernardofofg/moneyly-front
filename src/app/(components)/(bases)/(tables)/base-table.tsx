@@ -4,7 +4,7 @@ import { Loader2, Table2Icon } from "lucide-react";
 import Link from "next/link";
 
 import { Pagination } from "@/app/(components)/(bases)/(pagination)/pagination";
-import { Pagination as PaginationType } from "@/app/(types)/pagination";
+import { PaginationType } from "@/app/(types)/pagination";
 import {
   Table,
   TableBody,
@@ -33,13 +33,11 @@ interface BaseTableProps<T> {
   loading?: boolean;
   onPaginationChange?: (value: PaginationType) => void;
   pagination?: PaginationType;
-  totalItems?: number;
 }
 
 export interface BaseTableOptions {
   tableOptions: {
-    page: PaginationType
-    totalCount: number
+    pagination: PaginationType
   }
   onPaginationChange?: (value: PaginationType) => void
 }
@@ -55,7 +53,6 @@ export function BaseTable<T>({
   loading = false,
   onPaginationChange,
   pagination,
-  totalItems,
 }: BaseTableProps<T>) {
   return (
     <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white">
@@ -135,13 +132,13 @@ export function BaseTable<T>({
             </TableBody>
           </Table>
 
-          {pagination && totalItems && (
+          {pagination && pagination.total && (
             <div className="mt-4">
               <Pagination
                 page={pagination.page}
                 limit={pagination.limit}
-                total={totalItems || 0}
-                onPageChange={onPaginationChange}
+                total={pagination.total || 0}
+                onPageChange={(pagination) => onPaginationChange?.(pagination as PaginationType)}
               />
             </div>
           )}

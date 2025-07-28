@@ -36,8 +36,7 @@ export const CategoryTable = ({ categories, tableOptions, onPaginationChange }: 
       title='Categorias'
       data={categories || []}
       emptyMessage='Nenhuma categoria encontrada'
-      pagination={tableOptions.page}
-      totalItems={tableOptions.totalCount}
+      pagination={tableOptions.pagination}
       onPaginationChange={onPaginationChange}
       actions={(item) => (
         <div className="flex items-center gap-2">

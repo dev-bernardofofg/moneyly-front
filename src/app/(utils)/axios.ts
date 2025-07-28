@@ -3,7 +3,6 @@ import { getCookie } from "./cookies";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "https://sua.api.com",
-  timeout: 10000,
 });
 
 // Interceptor de request (headers, auth, etc.)

@@ -122,7 +122,6 @@ export const SignInForm = () => {
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={handleGoogleError}
-          text="continue_with"
           theme="filled_blue"
           size="large"
         />

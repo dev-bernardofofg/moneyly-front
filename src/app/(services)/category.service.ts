@@ -12,7 +12,7 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { Pagination } from "../(types)/pagination";
+import { PaginationType } from "../(types)/pagination";
 
 export const categoryQueryData = {
   getCategories: "GET_CATEGORIES",
@@ -25,7 +25,7 @@ export const categoryService = {
     return response.data;
   },
 
-  getCategories: async (params?: Pagination) => {
+  getCategories: async (params?: PaginationType) => {
     const response = await api.post("/categories", params);
 
     return response.data;
@@ -59,7 +59,7 @@ export const CreateCategoryRequest = (
 };
 
 export const GetCategoriesRequest = (
-  params?: Pagination,
+  params?: PaginationType,
   options?: UseQueryOptions<
     CategoryResponse,
     CustomAxiosError,

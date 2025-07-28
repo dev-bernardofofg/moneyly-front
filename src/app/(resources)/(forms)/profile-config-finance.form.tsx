@@ -6,15 +6,18 @@ import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
 import { BaseButton } from "@/app/(components)/(bases)/base-button"
 import { useAuth } from "@/app/(contexts)/auth-provider"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
-import { GetMeRequest, UpdateProfileRequest } from "@/app/(services)/user.service"
+import { overviewQueryData } from "@/app/(services)/overview.service"
+import { GetMeRequest, UpdateProfileRequest, userQueryData } from "@/app/(services)/user.service"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { ProfileConfigFinanceFormValues, profileConfigFinanceFormSchema } from "../(schemas)/profile-config-finance.schema"
 
 export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: ProfileConfigFinanceFormValues }) => {
   const { updateUser } = useAuth()
+  const queryClient = useQueryClient()
 
   const form = useForm<ProfileConfigFinanceFormValues>({
     resolver: zodResolver(profileConfigFinanceFormSchema),
@@ -27,7 +30,9 @@ export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: Pro
   const { mutate: getMe } = GetMeRequest({
     onSuccess: (data) => {
       updateUser(data.data.user)
-    }
+      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] })
+      queryClient.invalidateQueries({ queryKey: [userQueryData.me] })
+    },
   })
 
   const { mutate: updateProfile } = UpdateProfileRequest({
@@ -45,8 +50,8 @@ export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: Pro
     if (form.formState.isDirty) {
       updateProfile({
         monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
-        financialDayStart: data.financialDayStart,
-        financialDayEnd: data.financialDayEnd,
+        financialDayStart: Number(data.financialDayStart),
+        financialDayEnd: Number(data.financialDayEnd),
       })
     } else {
       toast.info("Nenhuma alteração foi feita")

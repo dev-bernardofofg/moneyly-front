@@ -2,16 +2,10 @@ import { CustomAxiosError, ErrorDetails } from "../(types)/error";
 
 export const getErrorMessage = (error: CustomAxiosError) => {
   if (error?.data) {
-    const errorData = error.data;
+    const errorData = error.data.details;
 
-    if (errorData.details && errorData.details.length > 0) {
-      return errorData.details
-        .map((detail: ErrorDetails) => detail.message)
-        .join(", ");
-    }
-
-    if (errorData.error) {
-      return errorData.error;
+    if (errorData.message) {
+      return errorData.message;
     }
   }
 
@@ -21,7 +15,7 @@ export const getErrorMessage = (error: CustomAxiosError) => {
 export const getFieldError = (error: any, fieldName: string) => {
   if (error?.data?.details) {
     const fieldError = error.data.details.find(
-      (detail: ErrorDetails) => detail.field === fieldName
+      (detail: ErrorDetails) => detail.name === fieldName
     );
     return fieldError?.message || null;
   }

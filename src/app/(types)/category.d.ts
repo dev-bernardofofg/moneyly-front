@@ -18,7 +18,7 @@ export type CategoryResponse = {
   success: boolean;
   data: {
     categories: Category[];
-    totalCount: number;
+    pagination: PaginationType;
   };
   message: string;
 };

@@ -7,6 +7,10 @@ declare interface Overview {
   transactionsCount: number;
 }
 
+declare interface OverviewParams {
+  userId: string;
+}
+
 declare interface OverviewPlanner {
   stats: StatsPlannerResponse;
   currentPeriod: CurrentPeriodPlannerResponse;

@@ -1,4 +1,5 @@
 import {
+  OverviewParams,
   OverviewPlannerResponse,
   OverviewResponse,
 } from "@/app/(types)/overview";
@@ -12,8 +13,11 @@ export const overviewQueryData = {
 };
 
 const overviewService = {
-  getOverview: async (): Promise<OverviewResponse> => {
-    const response = await api.get<OverviewResponse>("/overview/dashboard");
+  getOverview: async (params: OverviewParams): Promise<OverviewResponse> => {
+    const response = await api.post<OverviewResponse>(
+      "/overview/dashboard",
+      params
+    );
     return response.data;
   },
 
@@ -26,6 +30,7 @@ const overviewService = {
 };
 
 export const GetOverviewRequest = (
+  params: OverviewParams,
   options?: UseQueryOptions<
     OverviewResponse,
     CustomAxiosError,
@@ -33,8 +38,8 @@ export const GetOverviewRequest = (
   >
 ) => {
   return useQuery<OverviewResponse, CustomAxiosError, OverviewResponse>({
-    queryKey: [overviewQueryData.getOverview],
-    queryFn: overviewService.getOverview,
+    queryKey: [overviewQueryData.getOverview, params],
+    queryFn: () => overviewService.getOverview(params),
     staleTime: Infinity,
     ...options,
   });

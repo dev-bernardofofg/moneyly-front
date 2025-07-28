@@ -8,6 +8,7 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
+import { useAuth } from "@/app/(contexts)/auth-provider";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import { GetOverviewRequest } from "@/app/(services)/overview.service";
@@ -17,7 +18,8 @@ import { DollarSign, List, TrendingDown, TrendingUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
-  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest();
+  const { user } = useAuth();
+  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest({ userId: user?.id ?? "" });
   const { push } = useRouter();
 
   return (

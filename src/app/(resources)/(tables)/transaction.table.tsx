@@ -33,8 +33,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
   return <BaseTable data={transactions}
     title="Transações"
     emptyMessage="Nenhuma transação encontrada"
-    pagination={tableOptions.page}
-    totalItems={tableOptions.totalCount}
+    pagination={tableOptions.pagination}
     onPaginationChange={onPaginationChange}
     actions={(item) => (
       <div className="flex items-center gap-2">
