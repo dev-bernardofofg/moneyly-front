@@ -37,14 +37,7 @@ const CategoriesPage = () => {
         <CategoryTable
           categories={data?.data.categories || []}
           tableOptions={{
-            pagination: data?.data.pagination || {
-              hasNext: false,
-              hasPrevious: false,
-              limit: 0,
-              page: 0,
-              totalCount: 0,
-              totalPages: 0
-            }
+            pagination: pagination,
           }}
           onPaginationChange={handlePaginationChange}
         />

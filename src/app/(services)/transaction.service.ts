@@ -7,7 +7,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { CustomAxiosError } from "../(types)/error";
-import { Pagination } from "../(types)/pagination";
+import { PaginationType } from "../(types)/pagination";
 import { TransactionResponse } from "../(types)/transaction";
 
 export const transactionQueryData = {
@@ -17,7 +17,7 @@ export const transactionQueryData = {
 };
 
 export const transactionService = {
-  getTransactions: async (params?: Pagination) => {
+  getTransactions: async (params?: PaginationType) => {
     const response = await api.post("/transactions", params);
 
     return response.data;
@@ -68,7 +68,7 @@ export const CreateTransactionRequest = (
 };
 
 export const GetTransactionsRequest = (
-  params?: Pagination,
+  params?: PaginationType,
   options?: UseQueryOptions<
     TransactionResponse,
     CustomAxiosError,

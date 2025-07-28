@@ -65,10 +65,11 @@ const TransactionsPage = () => {
           />
         </StaggeredFade>
         <StaggeredFade>
-          <TransactionTable transactions={transactions?.data.transactions ?? []} tableOptions={{
-            page: pagination,
-            totalCount: transactions?.data.totalCount ?? 0
-          }} onPaginationChange={handlePaginationChange} />
+          <TransactionTable
+            transactions={transactions?.data.transactions ?? []}
+            tableOptions={{
+              pagination: pagination,
+            }} onPaginationChange={handlePaginationChange} />
         </StaggeredFade>
       </StaggeredFade>
     </Fade>

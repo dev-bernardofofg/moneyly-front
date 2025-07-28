@@ -1,4 +1,4 @@
-import { Pagination } from "@/app/(types)/pagination";
+import { PaginationType } from "@/app/(types)/pagination";
 import { useCallback, useState } from "react";
 
 interface UsePaginationProps {
@@ -12,16 +12,24 @@ export const usePagination = ({
   initialLimit = 10,
   maxLimit = 100,
 }: UsePaginationProps = {}) => {
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState<PaginationType>({
     page: Math.max(1, initialPage),
     limit: Math.min(Math.max(1, initialLimit), maxLimit),
+    hasNext: false,
+    hasPrevious: false,
+    total: 0,
+    totalPages: 0,
   });
 
   const handlePaginationChange = useCallback(
-    (newPagination: Pagination) => {
+    (newPagination: PaginationType) => {
       setPagination({
         page: Math.max(1, newPagination.page),
         limit: Math.min(Math.max(1, newPagination.limit), maxLimit),
+        hasNext: newPagination.hasNext,
+        hasPrevious: newPagination.hasPrevious,
+        total: newPagination.total,
+        totalPages: newPagination.totalPages,
       });
     },
     [maxLimit]
@@ -31,6 +39,10 @@ export const usePagination = ({
     setPagination({
       page: Math.max(1, initialPage),
       limit: Math.min(Math.max(1, initialLimit), maxLimit),
+      hasNext: false,
+      hasPrevious: false,
+      total: 0,
+      totalPages: 0,
     });
   }, [initialPage, initialLimit, maxLimit]);
 
@@ -38,6 +50,10 @@ export const usePagination = ({
     setPagination((prev) => ({
       ...prev,
       page: Math.max(1, page),
+      hasNext: false,
+      hasPrevious: false,
+      total: 0,
+      totalPages: 0,
     }));
   }, []);
 
