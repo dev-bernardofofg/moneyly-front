@@ -53,8 +53,8 @@ export default function ProfilePage() {
           {user?.financialDayStart && user?.financialDayEnd && user?.monthlyIncome && (
             <ProfileConfigFinanceForm
               defaultValues={{
-                financialDayStart: user?.financialDayStart,
-                financialDayEnd: user?.financialDayEnd,
+                financialDayStart: user?.financialDayStart.toString(),
+                financialDayEnd: user?.financialDayEnd.toString(),
                 monthlyIncome: user?.monthlyIncome?.toString(),
               }}
             />
