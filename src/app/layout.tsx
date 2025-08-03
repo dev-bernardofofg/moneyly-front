@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Lexend } from "next/font/google";
-import { OfflineIndicator } from "./(components)/offline-indicator";
-import { PWAInstallPrompt } from "./(components)/pwa-install-prompt";
-import { ServiceWorkerRegister } from "./(components)/service-worker-register";
+import { OfflineIndicator } from "./(components)/(elements)/(pwa)/offline-indicator";
+import { PWAInstallPrompt } from "./(components)/(elements)/(pwa)/pwa-install-prompt";
+import { ServiceWorkerRegister } from "./(components)/(elements)/(pwa)/service-worker-register";
 import { Contexts } from "./(contexts)";
 
 import "./globals.css";
