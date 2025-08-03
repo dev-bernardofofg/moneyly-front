@@ -3,56 +3,40 @@
 import { useEffect, useState } from "react";
 
 export function usePWA() {
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    // Verificar se está rodando como PWA standalone
-    const checkStandalone = () => {
-      const standalone =
-        window.matchMedia("(display-mode: standalone)").matches ||
-        (window.navigator as any).standalone === true;
-      setIsStandalone(standalone);
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setIsInstallable(true);
     };
 
-    // Verificar se está online
-    const checkOnline = () => {
-      setIsOnline(navigator.onLine);
-    };
-
-    // Verificar se foi instalado
-    const checkInstalled = () => {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.ready.then((registration) => {
-          // Verificar se há um service worker ativo
-          if (registration.active) {
-            setIsInstalled(true);
-          }
-        });
-      }
-    };
-
-    checkStandalone();
-    checkOnline();
-    checkInstalled();
-
-    // Event listeners
-    window.addEventListener("online", checkOnline);
-    window.addEventListener("offline", checkOnline);
-    window.addEventListener("load", checkInstalled);
+    window.addEventListener("beforeinstallprompt", handler);
 
     return () => {
-      window.removeEventListener("online", checkOnline);
-      window.removeEventListener("offline", checkOnline);
-      window.removeEventListener("load", checkInstalled);
+      window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
 
+  const installPWA = async () => {
+    if (!deferredPrompt) return false;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setDeferredPrompt(null);
+      setIsInstallable(false);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return {
-    isInstalled,
-    isStandalone,
-    isOnline,
-    canInstall: "serviceWorker" in navigator && "PushManager" in window,
+    isInstallable,
+    installPWA,
   };
 }

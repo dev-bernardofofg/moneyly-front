@@ -1,56 +1,44 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { usePWA } from "@/hooks/use-pwa";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+const PWA_DISMISSED_KEY = "pwa-install-dismissed";
+
 export function PWAInstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const { isInstallable, installPWA } = usePWA();
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
-    const handler = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallPrompt(true);
-    };
+    // Check if user has previously dismissed the prompt
+    const hasDismissed = localStorage.getItem(PWA_DISMISSED_KEY);
+    if (hasDismissed || !isInstallable) return;
 
-    window.addEventListener("beforeinstallprompt", handler);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
-  }, []);
+    setShowInstallPrompt(true);
+  }, [isInstallable]);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-
-    if (outcome === "accepted") {
-      console.log("PWA installed successfully");
-    } else {
-      console.log("PWA installation declined");
-    }
-
-    setDeferredPrompt(null);
+    await installPWA();
     setShowInstallPrompt(false);
   };
 
   const handleDismiss = () => {
+    // Save to localStorage that user dismissed the prompt
+    localStorage.setItem(PWA_DISMISSED_KEY, "true");
     setShowInstallPrompt(false);
   };
 
   if (!showInstallPrompt) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 bg-background border rounded-lg shadow-lg p-4">
+    <div className="fixed bottom-4 left-4 right-4 z-50 dark:bg-slate-800  bg-white border border-border rounded-lg shadow-lg p-4 w-1/2 mx-auto">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <h3 className="font-semibold text-sm">Instalar Moneyly</h3>
           <p className="text-xs text-muted-foreground mt-1">
-            Instale o app para uma experiência melhor
+            Instale o app para uma experiência melhor e praticidade
           </p>
         </div>
         <div className="flex items-center gap-2 ml-4">
