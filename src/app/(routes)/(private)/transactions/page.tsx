@@ -3,9 +3,11 @@
 import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog"
 import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
 import { BaseButton } from "@/app/(components)/(bases)/base-button"
+import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/period-navigator-wrapper"
 import { Header } from "@/app/(components)/(layout)/header"
 import { Fade } from "@/app/(components)/(motions)/fade"
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade"
+import { usePeriod } from "@/app/(contexts)/period-provider"
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form"
 import { DollarSign, TrendingDown, TrendingUp } from "lucide-react"
 
@@ -15,8 +17,12 @@ import { usePagination } from "@/hooks/use-pagination"
 
 const TransactionsPage = () => {
   const { pagination, handlePaginationChange } = usePagination()
+  const { selectedPeriodId } = usePeriod()
 
-  const { data: transactions, isLoading: loadingTransactions } = GetTransactionsRequest(pagination);
+  const { data: transactions, isLoading: loadingTransactions } = GetTransactionsRequest({
+    ...pagination,
+    periodId: selectedPeriodId || undefined
+  });
 
   return (
     <Fade>
@@ -35,6 +41,7 @@ const TransactionsPage = () => {
         }
       />
       <StaggeredFade variant="page">
+        <PeriodNavigatorWrapper />
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <BaseStats
             name="Saldo"
