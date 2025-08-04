@@ -14,15 +14,26 @@ import { DollarSign, TrendingDown, TrendingUp } from "lucide-react"
 import { TransactionTable } from "@/app/(resources)/(tables)/transaction.table"
 import { GetTransactionsRequest } from "@/app/(services)/transaction.service"
 import { usePagination } from "@/hooks/use-pagination"
+import { useState } from "react"
 
 const TransactionsPage = () => {
-  const { pagination, handlePaginationChange } = usePagination()
+  const [currentPagination, setCurrentPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+
   const { selectedPeriodId } = usePeriod()
 
   const { data: transactions, isLoading: loadingTransactions } = GetTransactionsRequest({
-    ...pagination,
+    ...currentPagination,
     periodId: selectedPeriodId || undefined
   });
+
+  const { pagination, handlePaginationChange } = usePagination({
+    serverPagination: transactions?.data.pagination,
+    onPaginationChange: setCurrentPagination
+  })
+
 
   return (
     <Fade>
@@ -76,6 +87,7 @@ const TransactionsPage = () => {
             transactions={transactions?.data.transactions ?? []}
             tableOptions={{
               pagination: pagination,
+              size: "sm"
             }} onPaginationChange={handlePaginationChange} />
         </StaggeredFade>
       </StaggeredFade>

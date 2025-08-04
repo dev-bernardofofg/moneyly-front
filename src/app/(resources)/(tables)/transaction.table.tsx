@@ -35,6 +35,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
     emptyMessage="Nenhuma transação encontrada"
     pagination={tableOptions.pagination}
     onPaginationChange={onPaginationChange}
+    size={tableOptions.size}
     actions={(item) => (
       <div className="flex items-center gap-2">
         <BaseDialog title="Editar transação" description="Editar transação" trigger={
@@ -67,7 +68,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Título",
         accessorKey: "title",
-        cell: (value, item) => {
+        cell: (_, item) => {
           return <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
             <span>
               {item.title}
@@ -88,7 +89,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Categoria",
         accessorKey: "category",
-        cell: (value, item) => {
+        cell: (_, item) => {
           return <span className="text-sm font-medium text-muted-foreground">
             {item.category.name}
           </span>
@@ -97,7 +98,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Valor",
         accessorKey: "amount",
-        cell: (value, item) => {
+        cell: (_, item) => {
           return <span className="text-sm font-medium text-muted-foreground">
             {FN_UTILS_STRING.formatNumberToCurrency(item.amount.toString())}
           </span>
@@ -106,7 +107,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Criação",
         accessorKey: "createdAt",
-        cell: (value, item) => {
+        cell: (_, item) => {
           return <span className="text-sm font-medium text-muted-foreground">
             {format(item.createdAt, "dd/MM/yyyy HH:mm")}
           </span>
@@ -115,7 +116,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Atualização",
         accessorKey: "updatedAt",
-        cell: (value, item) => {
+        cell: (_, item) => {
           return <span className="text-sm font-medium text-muted-foreground">
             {format(item.updatedAt, "dd/MM/yyyy HH:mm")}
           </span>
