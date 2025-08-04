@@ -15,37 +15,37 @@ const variants = {
     containerClass: "",
     initial: { opacity: 0, y: -4 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { duration: 0.3, ease: "easeOut" as const }
   },
   wrapper: {
     containerClass: "overflow-hidden",
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   },
   page: {
     containerClass: "overflow-y-auto max-h-[calc(100vh-5rem)] p-2 space-y-2",
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5, ease: "easeOut" }
+    transition: { duration: 0.5, ease: "easeOut" as const }
   },
   "slide-up": {
     containerClass: "overflow-hidden",
     initial: { opacity: 0, y: 50 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   },
   "slide-down": {
     containerClass: "overflow-hidden",
     initial: { opacity: 0, y: -50 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   },
   scale: {
     containerClass: "",
     initial: { opacity: 0, scale: 0.95 },
     animate: { opacity: 1, scale: 1 },
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { duration: 0.3, ease: "easeOut" as const }
   }
 };
 
