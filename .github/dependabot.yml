@@ -18,6 +18,7 @@ updates:
     labels:
       - "dependencies"
       - "automated"
+      - "auto-merge"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]

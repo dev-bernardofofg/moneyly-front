@@ -1,0 +1,41 @@
+name: Auto Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]' || contains(github.event.pull_request.labels.*.name, 'auto-merge')
+
+    steps:
+      - name: Wait for status checks
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          check-name: "lint-and-test"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+
+      - name: Enable auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.pulls.enableAutoMerge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                merge_method: 'squash'
+              });
+              console.log('Auto-merge enabled successfully');
+            } catch (error) {
+              console.log('Could not enable auto-merge:', error.message);
+            }

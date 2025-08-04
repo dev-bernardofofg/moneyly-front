@@ -34,11 +34,13 @@ interface BaseTableProps<T> {
   loading?: boolean;
   onPaginationChange?: (value: PaginationType) => void;
   pagination?: PaginationType;
+  size?: "sm" | "md" | "lg";
 }
 
 export interface BaseTableOptions {
   tableOptions: {
     pagination: PaginationType
+    size?: "sm" | "md" | "lg"
   }
   onPaginationChange?: (value: PaginationType) => void
 }
@@ -54,10 +56,22 @@ export function BaseTable<T>({
   loading = false,
   onPaginationChange,
   pagination,
+  size = "md",
 }: BaseTableProps<T>) {
 
+  const tableSize = (size: "sm" | "md" | "lg") => {
+    switch (size) {
+      case "sm":
+        return "min-h-[calc(100dvh-17.8rem)]"
+      case "md":
+        return "min-h-[calc(100dvh-6rem)]"
+      case "lg":
+        return "min-h-[calc(100dvh-4rem)]"
+    }
+  }
+
   return (
-    <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white min-h-[calc(100dvh-6rem)] relative">
+    <div className={cn("border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white relative", tableSize(size))}>
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">

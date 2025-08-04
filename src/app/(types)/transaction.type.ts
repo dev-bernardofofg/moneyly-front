@@ -21,7 +21,7 @@ export type TransactionResponse = {
   message: string;
   data: {
     transactions: Transaction[];
-    totalCount: number;
+    pagination: PaginationType;
     totalExpense: number;
     totalIncome: number;
     monthlyIncome: number;
