@@ -1,8 +1,8 @@
 export type PaginationType = {
-  hasNext: boolean;
-  hasPrevious: boolean;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
   limit: number;
   page: number;
-  total: number;
-  totalPages: number;
+  total?: number;
+  totalPages?: number;
 };

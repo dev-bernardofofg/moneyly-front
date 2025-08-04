@@ -9,11 +9,20 @@ import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.fo
 import { CategoryTable } from '@/app/(resources)/(tables)/category.table'
 import { GetCategoriesRequest } from '@/app/(services)/category.service'
 import { usePagination } from '@/hooks/use-pagination'
+import { useState } from 'react'
 
 const CategoriesPage = () => {
-  const { pagination, handlePaginationChange } = usePagination()
+  const [currentPagination, setCurrentPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
 
-  const { data } = GetCategoriesRequest(pagination)
+  const { data } = GetCategoriesRequest(currentPagination)
+
+  const { pagination, handlePaginationChange } = usePagination({
+    serverPagination: data?.data.pagination,
+    onPaginationChange: setCurrentPagination
+  })
 
   return (
     <Fade>

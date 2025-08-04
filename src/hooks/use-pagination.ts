@@ -1,16 +1,20 @@
 import { PaginationType } from "@/app/(types)/pagination";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UsePaginationProps {
   initialPage?: number;
   initialLimit?: number;
   maxLimit?: number;
+  serverPagination?: PaginationType; // Paginação que vem da API
+  onPaginationChange?: (pagination: PaginationType) => void; // Callback para refazer requisição
 }
 
 export const usePagination = ({
   initialPage = 1,
   initialLimit = 10,
   maxLimit = 100,
+  serverPagination,
+  onPaginationChange,
 }: UsePaginationProps = {}) => {
   const [pagination, setPagination] = useState<PaginationType>({
     page: Math.max(1, initialPage),
@@ -21,18 +25,38 @@ export const usePagination = ({
     totalPages: 0,
   });
 
+  // Sincronizar com a paginação do servidor quando disponível
+  useEffect(() => {
+    if (serverPagination) {
+      setPagination({
+        page: Math.max(1, serverPagination.page),
+        limit: Math.min(Math.max(1, serverPagination.limit), maxLimit),
+        hasNext: serverPagination.hasNext,
+        hasPrevious:
+          (serverPagination as any).hasPrev || serverPagination.hasPrevious,
+        total: serverPagination.total,
+        totalPages: serverPagination.totalPages,
+      });
+    }
+  }, [serverPagination, maxLimit]);
+
   const handlePaginationChange = useCallback(
     (newPagination: PaginationType) => {
-      setPagination({
+      const updatedPagination = {
         page: Math.max(1, newPagination.page),
         limit: Math.min(Math.max(1, newPagination.limit), maxLimit),
         hasNext: newPagination.hasNext,
         hasPrevious: newPagination.hasPrevious,
         total: newPagination.total,
         totalPages: newPagination.totalPages,
-      });
+      };
+
+      setPagination(updatedPagination);
+
+      // Chamar callback para refazer a requisição
+      onPaginationChange?.(updatedPagination);
     },
-    [maxLimit]
+    [maxLimit, onPaginationChange]
   );
 
   const resetPagination = useCallback(() => {
@@ -50,10 +74,6 @@ export const usePagination = ({
     setPagination((prev) => ({
       ...prev,
       page: Math.max(1, page),
-      hasNext: false,
-      hasPrevious: false,
-      total: 0,
-      totalPages: 0,
     }));
   }, []);
 

@@ -49,23 +49,13 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
             <Trash2 className="size-4" />
           </BaseButton>
         } />
-        <Tooltip>
-          <TooltipTrigger>
-            <Info className="size-4" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <span className="text-sm font-medium text-muted-foreground">
-              {item.description === "" ? "Nenhuma descrição" : item.description}
-            </span>
-          </TooltipContent>
-        </Tooltip>
       </div>
     )}
     columns={[
       {
         header: "Tipo",
         accessorKey: "type",
-        cell: (value) => {
+        cell: (value, item) => {
           return (
             <Badge variant={value === "income" ? "default" : "destructive"} className="w-24">
               {value === "income" ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
@@ -78,9 +68,21 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
         header: "Título",
         accessorKey: "title",
         cell: (value, item) => {
-          return <span className="text-sm font-medium text-muted-foreground">
-            {item.title}
-          </span>
+          return <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+            <span>
+              {item.title}
+            </span>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="size-4" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <span>
+                  {item.description === "" ? "Nenhuma descrição" : item.description}
+                </span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         }
       },
       {
