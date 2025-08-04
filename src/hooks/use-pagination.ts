@@ -1,4 +1,4 @@
-import { PaginationType } from "@/app/(types)/pagination";
+import { PaginationType } from "@/app/(types)/pagination.type";
 import { useCallback, useEffect, useState } from "react";
 
 interface UsePaginationProps {

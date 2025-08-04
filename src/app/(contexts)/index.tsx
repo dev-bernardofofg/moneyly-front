@@ -1,5 +1,6 @@
 "use client";
 
+import { ChildrenProps } from '@/app/(types)/global.type';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./auth-provider";

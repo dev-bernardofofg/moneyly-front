@@ -5,7 +5,7 @@ import { AddValueToGoalForm } from '@/app/(resources)/(forms)/add-value-to-goal.
 import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
 import { DeleteGoal, goalQueryData } from '@/app/(services)/goal.service'
-import { Goal } from '@/app/(types)/goal'
+import { Goal } from '@/app/(types)/goal.type'
 import { differenceInDays, format } from 'date-fns'
 import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'

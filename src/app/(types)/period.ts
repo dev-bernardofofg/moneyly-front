@@ -1,4 +1,4 @@
-declare interface Period {
+export interface Period {
   id: string;
   label: string;
   startDate: string;
@@ -7,19 +7,19 @@ declare interface Period {
   isCurrent?: boolean;
 }
 
-declare interface PeriodNavigatorProps {
+export interface PeriodNavigatorProps {
   periods: Period[];
   selectedPeriodId: string;
   onPeriodSelect: (periodId: string) => void;
   loading?: boolean;
 }
 
-declare interface PeriodsResponse {
+export interface PeriodsResponse {
   success: boolean;
   message: string;
   data: Period[];
 }
 
-declare interface PeriodParams {
+export interface PeriodParams {
   periodId?: string;
 }

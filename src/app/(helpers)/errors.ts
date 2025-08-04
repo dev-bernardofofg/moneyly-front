@@ -1,4 +1,4 @@
-import { CustomAxiosError, ErrorDetails } from "../(types)/error";
+import { CustomAxiosError, ErrorDetails } from "../(types)/error.type";
 
 export const getErrorMessage = (error: CustomAxiosError) => {
   if (error?.data) {

@@ -4,9 +4,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { AuthResponse, InitialConfigParams } from "../(types)/auth";
-import { CustomAxiosError } from "../(types)/error";
-import { UpdateProfileResponse } from "../(types)/user";
+import { AuthResponse, InitialConfigParams } from "../(types)/auth.type";
+import { CustomAxiosError } from "../(types)/error.type";
+import { UpdateProfileResponse } from "../(types)/user.type";
 import api from "../(utils)/axios";
 
 export const userQueryData = {

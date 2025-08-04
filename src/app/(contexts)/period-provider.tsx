@@ -1,5 +1,6 @@
 "use client";
 
+import { Period } from "@/app/(types)/period.type";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface PeriodContextType {

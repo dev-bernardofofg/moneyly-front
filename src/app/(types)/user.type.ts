@@ -1,4 +1,4 @@
-export declare type UpdateProfileResponse = {
+export type UpdateProfileResponse = {
   success: boolean;
   data: {
     monthlyIncome: number;
