@@ -1,7 +1,7 @@
 # Moneyly - Sistema de Gestão Financeira
 
 <div align="center">
-  <img src="public/logo-single.png" alt="Moneyly Logo" width="120" height="120" />
+  <img src="public/logo-moneyly.png" alt="Moneyly Logo" width="120" height="120" />
   <h1>Moneyly</h1>
   <p><strong>Gerencie suas finanças de forma inteligente</strong></p>
 </div>
