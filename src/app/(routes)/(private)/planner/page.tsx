@@ -6,9 +6,11 @@ import { PlannerStats } from '@/app/(components)/(bases)/(stats)/planner-stats'
 import { BudgetSwiper } from '@/app/(components)/(bases)/(swipers)/budget-swiper'
 import { GoalSwiper } from '@/app/(components)/(bases)/(swipers)/goal-swiper'
 import { BaseButton } from '@/app/(components)/(bases)/base-button'
+import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/period-navigator-wrapper'
 import { Header } from '@/app/(components)/(layout)/header'
 import { Fade } from '@/app/(components)/(motions)/fade'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
+import { usePeriod } from '@/app/(contexts)/period-provider'
 import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
 import { GetBudgets } from '@/app/(services)/budget.service'
@@ -17,7 +19,8 @@ import { GetOverviewPlannerRequest } from '@/app/(services)/overview.service'
 import { Target } from 'lucide-react'
 
 const PlannerPage = () => {
-  const { data: budgets } = GetBudgets()
+  const { selectedPeriodId } = usePeriod()
+  const { data: budgets } = GetBudgets({ periodId: selectedPeriodId || undefined })
   const { data: goals } = GetGoals()
   const { data: overviewPlanner } = GetOverviewPlannerRequest()
 
@@ -45,8 +48,9 @@ const PlannerPage = () => {
 
 
       } />
-
       <StaggeredFade variant='page'>
+        <PeriodNavigatorWrapper />
+
         <PlannerStats
           totalBudgeted={overviewPlanner?.data.stats.totalBudgeted}
           savingsGoal={overviewPlanner?.data.stats.totalSavingsGoal}

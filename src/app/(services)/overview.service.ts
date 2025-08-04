@@ -13,7 +13,9 @@ export const overviewQueryData = {
 };
 
 const overviewService = {
-  getOverview: async (params: OverviewParams): Promise<OverviewResponse> => {
+  getOverview: async (
+    params: OverviewParams & { periodId?: string }
+  ): Promise<OverviewResponse> => {
     const response = await api.post<OverviewResponse>(
       "/overview/dashboard",
       params
@@ -30,7 +32,7 @@ const overviewService = {
 };
 
 export const GetOverviewRequest = (
-  params: OverviewParams,
+  params: OverviewParams & { periodId?: string },
   options?: UseQueryOptions<
     OverviewResponse,
     CustomAxiosError,

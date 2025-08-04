@@ -28,8 +28,8 @@ export const budgetService = {
     });
     return response.data;
   },
-  get: async () => {
-    const response = await api.get("/category-budgets");
+  get: async (params?: { periodId?: string }) => {
+    const response = await api.post("/category-budgets", params);
     return response.data;
   },
 
@@ -84,6 +84,7 @@ export const UpdateBudget = (
 };
 
 export const GetBudgets = (
+  params?: { periodId?: string },
   options?: UseQueryOptions<
     GetBudgetsResponse,
     CustomAxiosError,
@@ -91,8 +92,8 @@ export const GetBudgets = (
   >
 ) => {
   return useQuery<GetBudgetsResponse, CustomAxiosError, GetBudgetsResponse>({
-    queryKey: [budgetQueryData.getBudgets],
-    queryFn: budgetService.get,
+    queryKey: [budgetQueryData.getBudgets, params],
+    queryFn: () => budgetService.get(params),
     ...options,
   });
 };

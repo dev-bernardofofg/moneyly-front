@@ -17,7 +17,7 @@ export const transactionQueryData = {
 };
 
 export const transactionService = {
-  getTransactions: async (params?: PaginationType) => {
+  getTransactions: async (params?: PaginationType & { periodId?: string }) => {
     const response = await api.post("/transactions", params);
 
     return response.data;
@@ -68,7 +68,7 @@ export const CreateTransactionRequest = (
 };
 
 export const GetTransactionsRequest = (
-  params?: PaginationType,
+  params?: PaginationType & { periodId?: string },
   options?: UseQueryOptions<
     TransactionResponse,
     CustomAxiosError,

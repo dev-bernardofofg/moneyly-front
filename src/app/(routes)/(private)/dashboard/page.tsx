@@ -5,10 +5,12 @@ import { TransactionItem } from "@/app/(components)/(bases)/(list)/transaction-i
 import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog";
 import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats";
 import { BaseButton } from "@/app/(components)/(bases)/base-button";
+import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/period-navigator-wrapper";
 import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { useAuth } from "@/app/(contexts)/auth-provider";
+import { usePeriod } from "@/app/(contexts)/period-provider";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import { GetOverviewRequest } from "@/app/(services)/overview.service";
@@ -19,7 +21,11 @@ import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest({ userId: user?.id ?? "" });
+  const { selectedPeriodId } = usePeriod();
+  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest({
+    userId: user?.id ?? "",
+    periodId: selectedPeriodId || undefined
+  });
   const { push } = useRouter();
 
   return (
@@ -41,10 +47,11 @@ const DashboardPage = () => {
         }
       />
       <StaggeredFade variant="page">
+        <PeriodNavigatorWrapper />
         <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
           <BaseStats
             name="Saldo"
-            value={overview?.data.stats.balance ?? 0}
+            value={(overview?.data.stats.balance ?? 0) + (overview?.data.stats.totalIncome ?? 0)}
             Icon={DollarSign}
             description="Saldo Disponível"
             isMonetary={true}
