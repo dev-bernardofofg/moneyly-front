@@ -1,6 +1,7 @@
 'use client'
 
-import { AuthResponse, User } from '@/app/(types)/auth'
+import { AuthResponse, User } from '@/app/(types)/auth.type'
+import { ChildrenProps } from '@/app/(types)/global.type'
 import { deleteCookie, getCookie, setCookie } from '@/app/(utils)/cookies'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'

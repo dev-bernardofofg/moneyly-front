@@ -1,4 +1,4 @@
-import { CategorySpecific } from "./category";
+import { CategorySpecific } from "./category.type";
 
 export type CreateBudgetRequest = {
   categoryId: string;

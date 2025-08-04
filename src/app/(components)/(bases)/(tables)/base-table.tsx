@@ -5,7 +5,7 @@ import { Loader2, Table2Icon } from "lucide-react";
 import Link from "next/link";
 
 import { Pagination } from "@/app/(components)/(bases)/(pagination)/pagination";
-import { PaginationType } from "@/app/(types)/pagination";
+import { PaginationType } from "@/app/(types)/pagination.type";
 import {
   Table,
   TableBody,

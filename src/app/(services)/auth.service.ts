@@ -3,8 +3,8 @@ import {
   GoogleSignInParams,
   SignInParams,
   SignUpParams,
-} from "@/app/(types)/auth";
-import { CustomAxiosError } from "@/app/(types)/error";
+} from "@/app/(types)/auth.type";
+import { CustomAxiosError } from "@/app/(types)/error.type";
 import api from "@/app/(utils)/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 

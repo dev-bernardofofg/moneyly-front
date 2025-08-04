@@ -4,14 +4,14 @@ import {
   GetGoalsResponse,
   UpsertGoalRequest,
   UpsertGoalResponse,
-} from "@/app/(types)/goal";
+} from "@/app/(types)/goal.type";
 import {
   useMutation,
   UseMutationOptions,
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { CustomAxiosError } from "../(types)/error";
+import { CustomAxiosError } from "../(types)/error.type";
 import api from "../(utils)/axios";
 
 export const goalQueryData = {

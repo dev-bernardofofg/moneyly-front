@@ -1,4 +1,4 @@
-export declare type UpsertGoalRequest = {
+export type UpsertGoalRequest = {
   id?: string;
   title: string;
   description?: string;
@@ -6,7 +6,7 @@ export declare type UpsertGoalRequest = {
   targetDate: string;
 };
 
-export declare type Goal = {
+export type Goal = {
   id: string;
   userId: string;
   title: string;
@@ -21,7 +21,7 @@ export declare type Goal = {
   milestones: Milestone[];
 };
 
-declare type Milestone = {
+export type Milestone = {
   id: string;
   goalId: string;
   percentage: number;
@@ -31,24 +31,24 @@ declare type Milestone = {
   createdAt: string;
 };
 
-export declare type UpsertGoalResponse = {
+export type UpsertGoalResponse = {
   success: boolean;
   data: null;
   message: string;
 };
 
-export declare type AddValueToGoalRequest = {
+export type AddValueToGoalRequest = {
   goalId: string;
   amount: number;
 };
 
-export declare type AddValueToGoalResponse = {
+export type AddValueToGoalResponse = {
   success: boolean;
   data: null;
   message: string;
 };
 
-export declare type GetGoalsResponse = {
+export type GetGoalsResponse = {
   success: boolean;
   data: Goal[];
   message: string;

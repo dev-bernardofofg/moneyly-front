@@ -1,3 +1,5 @@
+import { PaginationType } from "./pagination.type";
+
 export type Category = {
   id: string;
   name: string;

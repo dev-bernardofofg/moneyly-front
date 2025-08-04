@@ -3,8 +3,8 @@ import {
   CategoryResponse,
   CreateCategoryParams,
   UpdateCategoryParams,
-} from "@/app/(types)/category";
-import { CustomAxiosError } from "@/app/(types)/error";
+} from "@/app/(types)/category.type";
+import { CustomAxiosError } from "@/app/(types)/error.type";
 import api from "@/app/(utils)/axios";
 import {
   useMutation,
@@ -12,7 +12,7 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { PaginationType } from "../(types)/pagination";
+import { PaginationType } from "../(types)/pagination.type";
 
 export const categoryQueryData = {
   getCategories: "GET_CATEGORIES",

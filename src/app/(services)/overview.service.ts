@@ -2,9 +2,9 @@ import {
   OverviewParams,
   OverviewPlannerResponse,
   OverviewResponse,
-} from "@/app/(types)/overview";
+} from "@/app/(types)/overview.type";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { CustomAxiosError } from "../(types)/error";
+import { CustomAxiosError } from "../(types)/error.type";
 import api from "../(utils)/axios";
 
 export const overviewQueryData = {

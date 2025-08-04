@@ -9,8 +9,8 @@ import {
   GetBudgetsResponse,
   UpdateBudgetRequest,
   UpsertBudgetResponse,
-} from "../(types)/budget";
-import { CustomAxiosError } from "../(types)/error";
+} from "../(types)/budget.type";
+import { CustomAxiosError } from "../(types)/error.type";
 import api from "../(utils)/axios";
 
 export const budgetQueryData = {

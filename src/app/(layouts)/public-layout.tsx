@@ -1,5 +1,7 @@
 "use client"
 
+import { ChildrenProps } from '@/app/(types)/global.type'
+
 export const PublicLayout = ({ children }: ChildrenProps) => {
   return (
     <div className="flex items-center justify-center h-screen dark:bg-slate-950 bg-slate-50">

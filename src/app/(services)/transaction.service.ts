@@ -6,9 +6,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { CustomAxiosError } from "../(types)/error";
-import { PaginationType } from "../(types)/pagination";
-import { TransactionResponse } from "../(types)/transaction";
+import { CustomAxiosError } from "../(types)/error.type";
+import { PaginationType } from "../(types)/pagination.type";
+import { TransactionResponse } from "../(types)/transaction.type";
 
 export const transactionQueryData = {
   getTransaction: "GET_TRANSACTION",

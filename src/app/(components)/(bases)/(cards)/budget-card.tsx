@@ -6,7 +6,7 @@ import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
 import { budgetQueryData, DeleteBudget } from "@/app/(services)/budget.service";
-import { Budget } from "@/app/(types)/budget";
+import { Budget } from "@/app/(types)/budget.type";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,

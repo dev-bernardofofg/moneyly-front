@@ -6,7 +6,7 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { queryClient } from "@/app/(contexts)";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { DeleteTransactionRequest, transactionQueryData } from "@/app/(services)/transaction.service";
-import { Transaction } from "@/app/(types)/transaction";
+import { Transaction } from "@/app/(types)/transaction.type";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
@@ -55,7 +55,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       {
         header: "Tipo",
         accessorKey: "type",
-        cell: (value, item) => {
+        cell: (value) => {
           return (
             <Badge variant={value === "income" ? "default" : "destructive"} className="w-24">
               {value === "income" ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}

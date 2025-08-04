@@ -1,4 +1,4 @@
-declare interface Overview {
+export interface Overview {
   stats: StatsResponse;
   currentPeriod: CurrentPeriodResponse;
   monthlyHistory: MonthlyHistoryResponse[];
@@ -7,17 +7,17 @@ declare interface Overview {
   transactionsCount: number;
 }
 
-declare interface OverviewParams {
+export interface OverviewParams {
   userId: string;
 }
 
-declare interface OverviewPlanner {
+export interface OverviewPlanner {
   stats: StatsPlannerResponse;
-  currentPeriod: CurrentPeriodPlannerResponse;
+  currentPeriod: CurrentPeriodResponse;
   alerts: AlertsPlannerResponse[];
 }
 
-declare interface StatsResponse {
+export interface StatsResponse {
   totalIncome: number;
   totalExpense: number;
   balance: number;
@@ -25,7 +25,7 @@ declare interface StatsResponse {
   remainingBudget: number;
 }
 
-declare interface StatsPlannerResponse {
+export interface StatsPlannerResponse {
   totalBudgeted: number;
   totalSavingsGoal: number;
   totalSaved: number;
@@ -36,13 +36,13 @@ declare interface StatsPlannerResponse {
   availableForBudget: number;
 }
 
-declare interface CurrentPeriodResponse {
+export interface CurrentPeriodResponse {
   startDate: string;
   endDate: string;
   description: string;
 }
 
-declare interface MonthlyHistoryResponse {
+export interface MonthlyHistoryResponse {
   id: string;
   type: "income" | "expense";
   amount: number;
@@ -51,7 +51,7 @@ declare interface MonthlyHistoryResponse {
   date: string;
 }
 
-declare interface AlertsPlannerResponse {
+export interface AlertsPlannerResponse {
   type: "info" | "warning" | "error";
   message: string;
   priority: string;
@@ -59,20 +59,20 @@ declare interface AlertsPlannerResponse {
   daysRemaining: number;
 }
 
-declare interface ExpensesByCategoryResponse {
+export interface ExpensesByCategoryResponse {
   id: string;
   name: string;
   amount: number;
   percentage: number;
 }
 
-export declare interface OverviewResponse {
+export interface OverviewResponse {
   success: boolean;
   message: string;
   data: Overview;
 }
 
-export declare interface OverviewPlannerResponse {
+export interface OverviewPlannerResponse {
   success: boolean;
   message: string;
   data: OverviewPlanner;

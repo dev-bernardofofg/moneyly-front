@@ -1,6 +1,6 @@
-import { PeriodsResponse } from "@/app/(types)/period";
+import { PeriodsResponse } from "@/app/(types)/period.type";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { CustomAxiosError } from "../(types)/error";
+import { CustomAxiosError } from "../(types)/error.type";
 import api from "../(utils)/axios";
 
 export const periodQueryData = {

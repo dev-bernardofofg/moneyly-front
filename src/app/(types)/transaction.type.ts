@@ -1,3 +1,5 @@
+import { PaginationType } from "./pagination.type";
+
 export type Transaction = {
   id: string;
   userId: string;
@@ -29,7 +31,7 @@ export type TransactionResponse = {
 };
 
 export type TransactionRequest = {
-  pagination?: Pagination;
+  pagination?: PaginationType;
   category?: string;
   startDate?: string;
   endDate?: string;

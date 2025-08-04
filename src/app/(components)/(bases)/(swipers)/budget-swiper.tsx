@@ -1,7 +1,7 @@
 "use client"
 
 import { BudgetCard } from '@/app/(components)/(bases)/(cards)/budget-card'
-import { Budget } from '@/app/(types)/budget'
+import { Budget } from '@/app/(types)/budget.type'
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
