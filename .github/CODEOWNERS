@@ -1,0 +1,16 @@
+# Global owners
+* @dev-bernardofofg
+
+# Frontend specific
+src/ @dev-bernardofofg
+components/ @dev-bernardofofg
+
+# Configuration files
+package.json @dev-bernardofofg
+pnpm-lock.yaml @dev-bernardofofg
+tsconfig.json @dev-bernardofofg
+next.config.ts @dev-bernardofofg
+eslint.config.mjs @dev-bernardofofg
+
+# GitHub Actions
+.github/ @dev-bernardofofg 

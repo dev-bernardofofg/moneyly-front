@@ -1,0 +1,45 @@
+name: Dependabot Checks
+
+on:
+  pull_request:
+    branches: [main]
+    if: github.actor == 'dependabot[bot]'
+
+jobs:
+  dependabot-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run quick checks
+        run: |
+          pnpm lint
+          pnpm type-check
+          pnpm build
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🔍 Dependabot checks completed successfully! The dependency update looks good.'
+            })
