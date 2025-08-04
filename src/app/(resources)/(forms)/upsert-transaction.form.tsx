@@ -9,7 +9,7 @@ import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { GetCategoriesRequest } from "@/app/(services)/category.service";
 import { overviewQueryData } from "@/app/(services)/overview.service";
 import { CreateTransactionRequest, transactionQueryData, UpdateTransactionRequest } from "@/app/(services)/transaction.service";
-import { Transaction } from "@/app/(types)/transaction";
+import { Transaction } from "@/app/(types)/transaction.type";
 import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";

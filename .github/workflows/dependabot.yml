@@ -5,6 +5,10 @@ on:
     branches: [main]
     if: github.actor == 'dependabot[bot]'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   dependabot-checks:
     runs-on: ubuntu-latest
@@ -36,9 +40,13 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '🔍 Dependabot checks completed successfully! The dependency update looks good.'
-            })
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🔍 Dependabot checks completed successfully! The dependency update looks good.'
+              });
+            } catch (error) {
+              console.log('Could not comment on PR:', error.message);
+            }

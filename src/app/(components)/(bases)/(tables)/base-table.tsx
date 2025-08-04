@@ -1,10 +1,11 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Table2Icon } from "lucide-react";
 import Link from "next/link";
 
 import { Pagination } from "@/app/(components)/(bases)/(pagination)/pagination";
-import { PaginationType } from "@/app/(types)/pagination";
+import { PaginationType } from "@/app/(types)/pagination.type";
 import {
   Table,
   TableBody,
@@ -54,8 +55,9 @@ export function BaseTable<T>({
   onPaginationChange,
   pagination,
 }: BaseTableProps<T>) {
+
   return (
-    <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white">
+    <div className="border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white min-h-[calc(100dvh-6rem)] relative">
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -84,65 +86,85 @@ export function BaseTable<T>({
           <p className="text-muted-foreground text-sm">{emptyMessage}</p>
         </div>
       ) : (
-        <>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableHead
-                    key={String(column.accessorKey)}
-                    className={column.className}
-                  >
-                    {column.header}
-                  </TableHead>
-                ))}
-                {actions && <TableHead className="w-14"></TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((item, index) => (
-                <TableRow
-                  key={index}
-                  onClick={() => onRowClick?.(item)}
-                  className={cn(
-                    onRowClick && "cursor-pointer",
-                    "animate-in fade-in-0 slide-in-from-bottom-2 duration-300",
-                    `delay-${Math.min(index * 50, 500)}`
-                  )}
-                  style={{
-                    animationDelay: `${index * 50}ms`,
-                    animationFillMode: 'both'
-                  }}
-                >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={JSON.stringify(data)}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1],
+              staggerChildren: 0.05
+            }}
+            className="w-full"
+          >
+            <Table>
+              <TableHeader>
+                <TableRow>
                   {columns.map((column) => (
-                    <TableCell
+                    <TableHead
                       key={String(column.accessorKey)}
                       className={column.className}
                     >
-                      {column.cell
-                        ? column.cell(item[column.accessorKey], item)
-                        : (item[column.accessorKey] as React.ReactNode)}
-                    </TableCell>
+                      {column.header}
+                    </TableHead>
                   ))}
-                  {actions && (
-                    <TableCell className="w-14">{actions(item)}</TableCell>
-                  )}
+                  {actions && <TableHead className="w-14"></TableHead>}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {data.map((item: any, index: number) => (
+                  <motion.tr
+                    key={`${JSON.stringify(item)}-${index}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: index * 0.05,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    onClick={() => onRowClick?.(item)}
+                    className={cn(
+                      onRowClick && "cursor-pointer",
+                      "hover:bg-muted/50 transition-colors"
+                    )}
+                  >
+                    {columns.map((column) => (
+                      <TableCell
+                        key={String(column.accessorKey)}
+                        className={column.className}
+                      >
+                        {column.cell
+                          ? column.cell(item[column.accessorKey], item)
+                          : (item[column.accessorKey] as React.ReactNode)}
+                      </TableCell>
+                    ))}
+                    {actions && (
+                      <TableCell className="w-14">{actions(item)}</TableCell>
+                    )}
+                  </motion.tr>
+                ))}
+              </TableBody>
+            </Table>
+          </motion.div>
+        </AnimatePresence>
+      )}
 
-          {pagination && pagination.total && (
-            <div className="mt-4">
-              <Pagination
-                page={pagination.page}
-                limit={pagination.limit}
-                total={pagination.total || 0}
-                onPageChange={(pagination) => onPaginationChange?.(pagination as PaginationType)}
-              />
-            </div>
-          )}
-        </>
+      {pagination && pagination.totalPages && pagination.totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          className="absolute bottom-0 right-1/2 translate-x-1/2"
+        >
+          <Pagination
+            page={pagination.page}
+            limit={pagination.limit}
+            total={pagination.total || 0}
+            onPageChange={(pagination) => onPaginationChange?.(pagination as PaginationType)}
+          />
+        </motion.div>
       )}
     </div>
   );

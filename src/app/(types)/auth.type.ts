@@ -1,13 +1,13 @@
-export declare interface SignInParams {
+export interface SignInParams {
   email: string;
   password: string;
 }
 
-export declare interface GoogleSignInParams {
+export interface GoogleSignInParams {
   token: string;
 }
 
-export declare interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -18,7 +18,7 @@ export declare interface User {
   createdAt: string;
 }
 
-export declare interface AuthResponse {
+export interface AuthResponse {
   success: boolean;
   data: {
     user: User;
@@ -26,13 +26,13 @@ export declare interface AuthResponse {
   };
 }
 
-export declare interface SignUpParams {
+export interface SignUpParams {
   name: string;
   email: string;
   password: string;
 }
 
-export declare interface InitialConfigParams {
+export interface InitialConfigParams {
   monthlyIncome: number;
   financialDayStart: number;
   financialDayEnd: number;

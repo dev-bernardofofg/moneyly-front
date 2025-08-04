@@ -6,9 +6,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { CustomAxiosError } from "../(types)/error";
-import { PaginationType } from "../(types)/pagination";
-import { TransactionResponse } from "../(types)/transaction";
+import { CustomAxiosError } from "../(types)/error.type";
+import { PaginationType } from "../(types)/pagination.type";
+import { TransactionResponse } from "../(types)/transaction.type";
 
 export const transactionQueryData = {
   getTransaction: "GET_TRANSACTION",
@@ -17,7 +17,7 @@ export const transactionQueryData = {
 };
 
 export const transactionService = {
-  getTransactions: async (params?: PaginationType) => {
+  getTransactions: async (params?: PaginationType & { periodId?: string }) => {
     const response = await api.post("/transactions", params);
 
     return response.data;
@@ -68,7 +68,7 @@ export const CreateTransactionRequest = (
 };
 
 export const GetTransactionsRequest = (
-  params?: PaginationType,
+  params?: PaginationType & { periodId?: string },
   options?: UseQueryOptions<
     TransactionResponse,
     CustomAxiosError,

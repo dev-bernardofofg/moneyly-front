@@ -5,7 +5,7 @@ import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)
 import { BaseButton } from '@/app/(components)/(bases)/base-button'
 import { queryClient } from '@/app/(contexts)'
 import { categoryQueryData, DeleteCategoryRequest } from '@/app/(services)/category.service'
-import { Category } from '@/app/(types)/category'
+import { Category } from '@/app/(types)/category.type'
 import { format } from 'date-fns'
 import { PencilIcon, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'

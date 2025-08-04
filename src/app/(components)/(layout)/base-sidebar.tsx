@@ -23,6 +23,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "../(elements)/logo";
+import { InstallPWAButton } from "./install-pwa-button";
 
 interface SidebarItemProps {
   href: string;
@@ -95,6 +96,9 @@ export const BaseSidebar = () => {
           <SidebarItem Icon={TableProperties} href="/categories" title="Categorias" />
         </SidebarGroupCustom>
       </SidebarContent>
+      <div className="p-2">
+        <InstallPWAButton />
+      </div>
       <SidebarSeparator />
       <SidebarFooter>
         <DropdownMenu>

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertsPlannerResponse } from "@/app/(types)/overview";
+import { AlertsPlannerResponse } from "@/app/(types)/overview.type";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";

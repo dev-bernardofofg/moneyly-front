@@ -6,7 +6,7 @@ import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { queryClient } from "@/app/(contexts)";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { DeleteTransactionRequest, transactionQueryData } from "@/app/(services)/transaction.service";
-import { Transaction } from "@/app/(types)/transaction";
+import { Transaction } from "@/app/(types)/transaction.type";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
@@ -49,16 +49,6 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
             <Trash2 className="size-4" />
           </BaseButton>
         } />
-        <Tooltip>
-          <TooltipTrigger>
-            <Info className="size-4" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <span className="text-sm font-medium text-muted-foreground">
-              {item.description === "" ? "Nenhuma descrição" : item.description}
-            </span>
-          </TooltipContent>
-        </Tooltip>
       </div>
     )}
     columns={[
@@ -78,9 +68,21 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
         header: "Título",
         accessorKey: "title",
         cell: (value, item) => {
-          return <span className="text-sm font-medium text-muted-foreground">
-            {item.title}
-          </span>
+          return <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+            <span>
+              {item.title}
+            </span>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="size-4" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <span>
+                  {item.description === "" ? "Nenhuma descrição" : item.description}
+                </span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         }
       },
       {
