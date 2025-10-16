@@ -29,7 +29,14 @@ export const PeriodNavigator = ({
   }
 
   if (!periods.length) {
-    return null;
+    return (
+      <div className="w-full p-3 flex items-center justify-center gap-2 text-center rounded-lg bg-muted/30 border border-dashed border-muted-foreground/30">
+        <Calendar className="h-4 w-4 text-muted-foreground/50" />
+        <p className="text-xs text-muted-foreground">
+          Nenhum período disponível
+        </p>
+      </div>
+    );
   }
 
   return (

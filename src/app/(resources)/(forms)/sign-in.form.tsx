@@ -17,7 +17,10 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { GoogleSignInRequest, SignInRequest } from "@/app/(services)/auth.service";
+import { usePostAuthSignIn } from "@/app/(resources)/(generated)/hooks/auth/auth";
+import { GoogleSignInRequest } from "@/app/(services)/auth.service";
+import type { AuthResponse } from "@/app/(types)/auth.type";
+import type { CustomAxiosError } from "@/app/(types)/error.type";
 import { Separator } from "@/components/ui/separator";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
@@ -30,27 +33,32 @@ export const SignInForm = () => {
 
   const { setAuth } = useAuth();
 
-  const { mutate, isPending } = SignInRequest({
-    onSuccess: (data) => {
-      setAuth(data);
-      toast.success("Login efetuado com sucesso.");
+  // Hook gerado pelo Orval para sign-in
+  const { mutate, isPending } = usePostAuthSignIn<CustomAxiosError>({
+    mutation: {
+      onSuccess: (axiosResponse) => {
+        // O Orval retorna AxiosResponse, então pegamos .data para obter AuthResponse
+        const authResponse = axiosResponse.data as AuthResponse;
+        setAuth(authResponse);
+        toast.success("Login efetuado com sucesso.");
 
-      const user = data.data.user;
-      const needsConfig = !user ||
-        !user.monthlyIncome ||
-        user.monthlyIncome === 0 ||
-        user.financialDayStart === undefined ||
-        user.financialDayEnd === undefined;
+        const user = authResponse.data?.user;
+        const needsConfig = !user ||
+          !user.monthlyIncome ||
+          user.monthlyIncome === 0 ||
+          user.financialDayStart === undefined ||
+          user.financialDayEnd === undefined;
 
-      if (needsConfig) {
-        router.push("/initial-config");
-      } else {
-        router.push("/dashboard");
-      }
-    },
-    onError: (error) => {
-      const errorMessage = getErrorMessage(error);
-      toast.error(errorMessage);
+        if (needsConfig) {
+          router.push("/initial-config");
+        } else {
+          router.push("/dashboard");
+        }
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error(errorMessage);
+      },
     },
   });
 
@@ -78,8 +86,9 @@ export const SignInForm = () => {
     },
   });
 
-  const handleForm = (data: SignInFormValues) => {
-    mutate(data);
+  const handleForm = (formData: SignInFormValues) => {
+    // O Orval espera os dados no formato { data: PostAuthSignInBody }
+    mutate({ data: formData });
   };
 
   const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
