@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { budgetSchema } from "./budgetSchema.js";
+import { budgetSchema } from "./budgetSchema";
 
 /**
  * @description Lista de orçamentos

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { User } from "./User.js";
+import type { User } from "./User";
 
 export type AuthResponse = {
   /**
@@ -21,7 +21,11 @@ export type AuthResponse = {
     /**
      * @type string | undefined
      */
-    token?: string;
+    accessToken?: string;
+    /**
+     * @type string | undefined
+     */
+    refreshToken?: string;
   };
   /**
    * @type string | undefined

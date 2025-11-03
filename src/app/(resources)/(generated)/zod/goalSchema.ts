@@ -7,21 +7,28 @@ import { z } from "zod";
 
 export const goalSchema = z.object({
     "id": z.optional(z.string().uuid()),
+"userId": z.optional(z.string().uuid()),
 "title": z.optional(z.string()),
-"description": z.optional(z.string()),
+"description": z.string().nullish(),
 "targetAmount": z.optional(z.string()),
 "currentAmount": z.optional(z.string()),
 "targetDate": z.optional(z.string().datetime()),
-"isActive": z.optional(z.boolean()),
+"startDate": z.optional(z.string().datetime()),
+"isActive": z.boolean().nullish(),
 "createdAt": z.optional(z.string().datetime()),
+"updatedAt": z.optional(z.string().datetime()),
 "progress": z.optional(z.object({
     "percentage": z.optional(z.number()),
-"daysRemaining": z.optional(z.number())
+"daysRemaining": z.optional(z.number()),
+"remaining": z.optional(z.number())
     })),
 "milestones": z.optional(z.array(z.object({
     "id": z.optional(z.string().uuid()),
+"goalId": z.optional(z.string().uuid()),
 "percentage": z.optional(z.number()),
 "amount": z.optional(z.string()),
-"isReached": z.optional(z.boolean())
+"isReached": z.optional(z.boolean()),
+"reachedAt": z.string().datetime().nullish(),
+"createdAt": z.optional(z.string().datetime())
     })))
     })

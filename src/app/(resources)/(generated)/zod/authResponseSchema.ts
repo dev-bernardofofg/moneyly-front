@@ -4,14 +4,15 @@
  */
 
 import { z } from "zod";
-import { userSchema } from "./userSchema.js";
+import { userSchema } from "./userSchema";
 
 export const authResponseSchema = z.object({
   success: z.optional(z.boolean()),
   data: z.optional(
     z.object({
       user: z.optional(z.lazy(() => userSchema)),
-      token: z.optional(z.string()),
+      accessToken: z.optional(z.string()),
+      refreshToken: z.optional(z.string()),
     })
   ),
   message: z.optional(z.string()),

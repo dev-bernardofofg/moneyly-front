@@ -1,10 +1,9 @@
 'use client'
 
-import { AuthResponse, User } from '@/app/(types)/auth.type'
-import { ChildrenProps } from '@/app/(types)/global.type'
 import { deleteCookie, getCookie, setCookie } from '@/app/(utils)/cookies'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { AuthResponse, User } from '../(resources)/(generated)'
 
 interface AuthContextProps {
   user: User | null
@@ -16,7 +15,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
-export const AuthProvider = ({ children }: ChildrenProps) => {
+export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const router = useRouter()
@@ -32,19 +31,27 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
       } catch {
         localStorage.removeItem('auth_user')
         deleteCookie('auth_token')
+        deleteCookie('refresh_token')
+        setUser(null)
+        setToken(null)
+        router.push('/auth')
       }
     }
   }, [])
 
   const setAuth = ({ data }: AuthResponse) => {
-    setUser(data.user)
-    setToken(data.token)
-    localStorage.setItem('auth_user', JSON.stringify(data.user))
-    setCookie('auth_token', data.token)
+    setUser(data?.user ?? null)
+    setToken(data?.accessToken ?? null)
+    localStorage.setItem('auth_user', JSON.stringify(data?.user ?? null))
+    setCookie('auth_token', data?.accessToken ?? '')
+    if (data?.refreshToken) {
+      setCookie('refresh_token', data.refreshToken ?? '')
+    }
   }
 
   const updateUser = (userData: User) => {
     setUser(userData)
+    console.log('userData', userData)
     localStorage.setItem('auth_user', JSON.stringify(userData))
   }
 

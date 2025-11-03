@@ -17,6 +17,10 @@ export type Transaction = {
     */
     id?: string;
     /**
+     * @type string | undefined, uuid
+    */
+    userId?: string;
+    /**
      * @type string | undefined
     */
     type?: TransactionTypeEnumKey;
@@ -29,9 +33,9 @@ export type Transaction = {
     */
     amount?: string;
     /**
-     * @type string | undefined
+     * @type string
     */
-    description?: string;
+    description?: string | null;
     /**
      * @type string | undefined, date-time
     */
@@ -41,13 +45,17 @@ export type Transaction = {
     */
     categoryId?: string;
     /**
-     * @type string | undefined
+     * @type string, uuid
     */
-    periodId?: string;
+    periodId?: string | null;
     /**
      * @type string | undefined, date-time
     */
     createdAt?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    updatedAt?: string;
     /**
      * @type object | undefined
     */

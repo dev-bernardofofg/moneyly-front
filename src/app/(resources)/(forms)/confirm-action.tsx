@@ -1,5 +1,5 @@
+import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseButton } from '@/app/(components)/(bases)/base-button';
 import { TrashIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 

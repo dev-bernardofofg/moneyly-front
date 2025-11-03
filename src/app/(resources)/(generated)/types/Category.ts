@@ -4,37 +4,29 @@
 */
 
 
-export const categoryTypeEnum = {
-    "income": "income",
-    "expense": "expense",
-    "both": "both"
-} as const;
-
-export type CategoryTypeEnumKey = (typeof categoryTypeEnum)[keyof typeof categoryTypeEnum];
-
 export type Category = {
     /**
      * @type string | undefined, uuid
     */
     id?: string;
     /**
+     * @type string, uuid
+    */
+    userId?: string | null;
+    /**
      * @type string | undefined
     */
     name?: string;
     /**
-     * @type string | undefined
-    */
-    icon?: string;
-    /**
-     * @type string | undefined
-    */
-    type?: CategoryTypeEnumKey;
-    /**
      * @type boolean | undefined
     */
-    isDefault?: boolean;
+    isGlobal?: boolean;
     /**
-     * @type string, uuid
+     * @type string | undefined, date-time
     */
-    userId?: string | null;
+    createdAt?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    updatedAt?: string;
 };

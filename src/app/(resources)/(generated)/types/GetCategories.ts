@@ -3,29 +3,28 @@
  * Do not edit manually.
  */
 
-import type { Category } from "./Category.js";
+import type { PaginatedResponse } from "./PaginatedResponse";
+
+export type GetCategoriesQueryParams = {
+  /**
+   * @type number | undefined
+   */
+  page?: number;
+  /**
+   * @type number | undefined
+   */
+  limit?: number;
+};
 
 /**
  * @description Lista de categorias
  */
-export type GetCategories200 = {
-  /**
-   * @type boolean | undefined
-   */
-  success?: boolean;
-  /**
-   * @type array | undefined
-   */
-  data?: Category[];
-  /**
-   * @type string | undefined
-   */
-  message?: string;
-};
+export type GetCategories200 = PaginatedResponse;
 
 export type GetCategoriesQueryResponse = GetCategories200;
 
 export type GetCategoriesQuery = {
   Response: GetCategories200;
+  QueryParams: GetCategoriesQueryParams;
   Errors: any;
 };

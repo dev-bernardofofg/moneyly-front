@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Budget } from "./Budget.js";
+import type { Budget } from "./Budget";
 
 /**
  * @description Lista de orçamentos

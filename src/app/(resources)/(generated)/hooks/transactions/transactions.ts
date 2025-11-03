@@ -5,333 +5,492 @@
  * API para gerenciamento financeiro pessoal
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   MutationFunction,
+  QueryFunction,
+  QueryKey,
   UseMutationOptions,
   UseMutationResult,
-} from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
-  PostTransactions200,
-  PostTransactionsBody,
+  GetTransactionsParams,
+  GetTransactionsSummary200,
+  GetTransactionsSummaryByMonth200,
+  GetTransactionsSummaryCurrentPeriod200,
+  PaginatedResponse,
   PostTransactionsCreate201,
   PostTransactionsCreateBody,
   PutTransactionsId200,
-} from "../moneylyAPI.schemas";
+  PutTransactionsIdBody
+} from '../moneylyAPI.schemas';
 
-import api from "@/app/(utils)/axios-instance";
+import { customInstance } from '@/app/(utils)/axios-instance';
+
+
+
 
 /**
  * @summary Criar transação
  */
 export const postTransactionsCreate = (
-  postTransactionsCreateBody: PostTransactionsCreateBody,
-  signal?: AbortSignal
+    postTransactionsCreateBody: PostTransactionsCreateBody,
+ signal?: AbortSignal
 ) => {
-  return api<PostTransactionsCreate201>({
-    url: `/transactions/create`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: postTransactionsCreateBody,
-    signal,
-  });
-};
+      
+      
+      return customInstance<PostTransactionsCreate201>(
+      {url: `/transactions/create`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postTransactionsCreateBody, signal
+    },
+      );
+    }
+  
 
-export const getPostTransactionsCreateMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postTransactionsCreate>>,
-    TError,
-    { data: PostTransactionsCreateBody },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postTransactionsCreate>>,
-  TError,
-  { data: PostTransactionsCreateBody },
-  TContext
-> => {
-  const mutationKey = ["postTransactionsCreate"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postTransactionsCreate>>,
-    { data: PostTransactionsCreateBody }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getPostTransactionsCreateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postTransactionsCreate>>, TError,{data: PostTransactionsCreateBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postTransactionsCreate>>, TError,{data: PostTransactionsCreateBody}, TContext> => {
 
-    return postTransactionsCreate(data);
-  };
+const mutationKey = ['postTransactionsCreate'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type PostTransactionsCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postTransactionsCreate>>
->;
-export type PostTransactionsCreateMutationBody = PostTransactionsCreateBody;
-export type PostTransactionsCreateMutationError = unknown;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postTransactionsCreate>>, {data: PostTransactionsCreateBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postTransactionsCreate(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostTransactionsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof postTransactionsCreate>>>
+    export type PostTransactionsCreateMutationBody = PostTransactionsCreateBody
+    export type PostTransactionsCreateMutationError = unknown
+
+    /**
  * @summary Criar transação
  */
-export const usePostTransactionsCreate = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postTransactionsCreate>>,
-    TError,
-    { data: PostTransactionsCreateBody },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postTransactionsCreate>>,
-  TError,
-  { data: PostTransactionsCreateBody },
-  TContext
-> => {
-  const mutationOptions = getPostTransactionsCreateMutationOptions(options);
+export const usePostTransactionsCreate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postTransactionsCreate>>, TError,{data: PostTransactionsCreateBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postTransactionsCreate>>,
+        TError,
+        {data: PostTransactionsCreateBody},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getPostTransactionsCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Listar transações
  */
-export const postTransactions = (
-  postTransactionsBody: PostTransactionsBody,
-  signal?: AbortSignal
+export const getTransactions = (
+    params?: GetTransactionsParams,
+ signal?: AbortSignal
 ) => {
-  return api<PostTransactions200>({
-    url: `/transactions/`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: postTransactionsBody,
-    signal,
-  });
-};
+      
+      
+      return customInstance<PaginatedResponse>(
+      {url: `/transactions/`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-export const getPostTransactionsMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postTransactions>>,
-    TError,
-    { data: PostTransactionsBody },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postTransactions>>,
-  TError,
-  { data: PostTransactionsBody },
-  TContext
-> => {
-  const mutationKey = ["postTransactions"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postTransactions>>,
-    { data: PostTransactionsBody }
-  > = (props) => {
-    const { data } = props ?? {};
 
-    return postTransactions(data);
-  };
+export const getGetTransactionsQueryKey = (params?: GetTransactionsParams,) => {
+    return [
+    `/transactions/`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-  return { mutationFn, ...mutationOptions };
-};
+    
+export const getGetTransactionsQueryOptions = <TData = Awaited<ReturnType<typeof getTransactions>>, TError = unknown>(params?: GetTransactionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>, }
+) => {
 
-export type PostTransactionsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postTransactions>>
->;
-export type PostTransactionsMutationBody = PostTransactionsBody;
-export type PostTransactionsMutationError = unknown;
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTransactionsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactions>>> = ({ signal }) => getTransactions(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTransactionsQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactions>>>
+export type GetTransactionsQueryError = unknown
+
 
 /**
  * @summary Listar transações
  */
-export const usePostTransactions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postTransactions>>,
-    TError,
-    { data: PostTransactionsBody },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postTransactions>>,
-  TError,
-  { data: PostTransactionsBody },
-  TContext
-> => {
-  const mutationOptions = getPostTransactionsMutationOptions(options);
 
-  return useMutation(mutationOptions);
-};
-/**
- * @summary Atualizar transação
- */
-export const putTransactionsId = (id: string) => {
-  return api<PutTransactionsId200>({
-    url: `/transactions/${id}`,
-    method: "PUT",
-  });
-};
+export function useGetTransactions<TData = Awaited<ReturnType<typeof getTransactions>>, TError = unknown>(
+ params?: GetTransactionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-export const getPutTransactionsIdMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putTransactionsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof putTransactionsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["putTransactionsId"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
+  const queryOptions = getGetTransactionsQueryOptions(params,options)
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putTransactionsId>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-    return putTransactionsId(id);
-  };
+  query.queryKey = queryOptions.queryKey ;
 
-  return { mutationFn, ...mutationOptions };
-};
+  return query;
+}
 
-export type PutTransactionsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putTransactionsId>>
->;
 
-export type PutTransactionsIdMutationError = unknown;
 
 /**
  * @summary Atualizar transação
  */
-export const usePutTransactionsId = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putTransactionsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof putTransactionsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getPutTransactionsIdMutationOptions(options);
+export const putTransactionsId = (
+    id: string,
+    putTransactionsIdBody: PutTransactionsIdBody,
+ ) => {
+      
+      
+      return customInstance<PutTransactionsId200>(
+      {url: `/transactions/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: putTransactionsIdBody
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getPutTransactionsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putTransactionsId>>, TError,{id: string;data: PutTransactionsIdBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putTransactionsId>>, TError,{id: string;data: PutTransactionsIdBody}, TContext> => {
+
+const mutationKey = ['putTransactionsId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putTransactionsId>>, {id: string;data: PutTransactionsIdBody}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putTransactionsId(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutTransactionsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putTransactionsId>>>
+    export type PutTransactionsIdMutationBody = PutTransactionsIdBody
+    export type PutTransactionsIdMutationError = unknown
+
+    /**
+ * @summary Atualizar transação
+ */
+export const usePutTransactionsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putTransactionsId>>, TError,{id: string;data: PutTransactionsIdBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putTransactionsId>>,
+        TError,
+        {id: string;data: PutTransactionsIdBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPutTransactionsIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Deletar transação
  */
-export const deleteTransactionsId = (id: string) => {
-  return api<void>({ url: `/transactions/${id}`, method: "DELETE" });
-};
+export const deleteTransactionsId = (
+    id: string,
+ ) => {
+      
+      
+      return customInstance<void>(
+      {url: `/transactions/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteTransactionsIdMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteTransactionsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteTransactionsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["deleteTransactionsId"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteTransactionsId>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
+export const getDeleteTransactionsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTransactionsId>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteTransactionsId>>, TError,{id: string}, TContext> => {
 
-    return deleteTransactionsId(id);
-  };
+const mutationKey = ['deleteTransactionsId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteTransactionsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteTransactionsId>>
->;
 
-export type DeleteTransactionsIdMutationError = unknown;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTransactionsId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
 
-/**
+          return  deleteTransactionsId(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteTransactionsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTransactionsId>>>
+    
+    export type DeleteTransactionsIdMutationError = unknown
+
+    /**
  * @summary Deletar transação
  */
-export const useDeleteTransactionsId = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteTransactionsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof deleteTransactionsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getDeleteTransactionsIdMutationOptions(options);
+export const useDeleteTransactionsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTransactionsId>>, TError,{id: string}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteTransactionsId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getDeleteTransactionsIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * @summary Resumo financeiro
+ */
+export const getTransactionsSummary = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetTransactionsSummary200>(
+      {url: `/transactions/summary`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
+
+export const getGetTransactionsSummaryQueryKey = () => {
+    return [
+    `/transactions/summary`
+    ] as const;
+    }
+
+    
+export const getGetTransactionsSummaryQueryOptions = <TData = Awaited<ReturnType<typeof getTransactionsSummary>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTransactionsSummaryQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummary>>> = ({ signal }) => getTransactionsSummary(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTransactionsSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactionsSummary>>>
+export type GetTransactionsSummaryQueryError = unknown
+
+
+/**
+ * @summary Resumo financeiro
+ */
+
+export function useGetTransactionsSummary<TData = Awaited<ReturnType<typeof getTransactionsSummary>>, TError = unknown>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTransactionsSummaryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * @summary Resumo financeiro mensal
+ */
+export const getTransactionsSummaryByMonth = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetTransactionsSummaryByMonth200>(
+      {url: `/transactions/summary-by-month`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
+
+export const getGetTransactionsSummaryByMonthQueryKey = () => {
+    return [
+    `/transactions/summary-by-month`
+    ] as const;
+    }
+
+    
+export const getGetTransactionsSummaryByMonthQueryOptions = <TData = Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTransactionsSummaryByMonthQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>> = ({ signal }) => getTransactionsSummaryByMonth(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTransactionsSummaryByMonthQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>>
+export type GetTransactionsSummaryByMonthQueryError = unknown
+
+
+/**
+ * @summary Resumo financeiro mensal
+ */
+
+export function useGetTransactionsSummaryByMonth<TData = Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError = unknown>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTransactionsSummaryByMonthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * @summary Resumo do período financeiro atual
+ */
+export const getTransactionsSummaryCurrentPeriod = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetTransactionsSummaryCurrentPeriod200>(
+      {url: `/transactions/summary-current-period`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
+
+export const getGetTransactionsSummaryCurrentPeriodQueryKey = () => {
+    return [
+    `/transactions/summary-current-period`
+    ] as const;
+    }
+
+    
+export const getGetTransactionsSummaryCurrentPeriodQueryOptions = <TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTransactionsSummaryCurrentPeriodQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>> = ({ signal }) => getTransactionsSummaryCurrentPeriod(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTransactionsSummaryCurrentPeriodQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>>
+export type GetTransactionsSummaryCurrentPeriodQueryError = unknown
+
+
+/**
+ * @summary Resumo do período financeiro atual
+ */
+
+export function useGetTransactionsSummaryCurrentPeriod<TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError = unknown>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTransactionsSummaryCurrentPeriodQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

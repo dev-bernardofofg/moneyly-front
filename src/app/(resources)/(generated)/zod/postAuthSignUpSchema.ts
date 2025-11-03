@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { authResponseSchema } from "./authResponseSchema.js";
+import { authResponseSchema } from "./authResponseSchema";
 
 /**
  * @description Usuário criado

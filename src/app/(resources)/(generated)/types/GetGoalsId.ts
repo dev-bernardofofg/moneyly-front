@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Goal } from "./Goal.js";
+import type { Goal } from "./Goal";
 
 export type GetGoalsIdPathParams = {
   /**

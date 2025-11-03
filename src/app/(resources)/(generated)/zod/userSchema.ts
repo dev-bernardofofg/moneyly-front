@@ -9,9 +9,12 @@ export const userSchema = z.object({
     "id": z.optional(z.string().uuid()),
 "name": z.optional(z.string()),
 "email": z.optional(z.string().email()),
-"monthlyIncome": z.optional(z.number()),
-"financialDayStart": z.optional(z.number().min(1).max(31)),
-"financialDayEnd": z.optional(z.number().min(1).max(31)),
-"firstAccess": z.optional(z.boolean()),
-"createdAt": z.optional(z.string().datetime())
+"googleId": z.string().nullish(),
+"avatar": z.string().nullish(),
+"monthlyIncome": z.string().nullish(),
+"financialDayStart": z.number().min(1).max(31).nullish(),
+"financialDayEnd": z.number().min(1).max(31).nullish(),
+"firstAccess": z.boolean().nullish(),
+"createdAt": z.optional(z.string().datetime()),
+"updatedAt": z.optional(z.string().datetime())
     })

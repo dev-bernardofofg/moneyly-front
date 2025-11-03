@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.js";
+import type { Transaction } from "./Transaction";
 
 export type PutTransactionsIdPathParams = {
   /**
@@ -30,10 +30,46 @@ export type PutTransactionsId200 = {
   message?: string;
 };
 
+export const putTransactionsIdMutationRequestTypeEnum = {
+  income: "income",
+  expense: "expense",
+} as const;
+
+export type PutTransactionsIdMutationRequestTypeEnumKey =
+  (typeof putTransactionsIdMutationRequestTypeEnum)[keyof typeof putTransactionsIdMutationRequestTypeEnum];
+
+export type PutTransactionsIdMutationRequest = {
+  /**
+   * @type string | undefined
+   */
+  type?: PutTransactionsIdMutationRequestTypeEnumKey;
+  /**
+   * @type string | undefined
+   */
+  title?: string;
+  /**
+   * @type number | undefined
+   */
+  amount?: number;
+  /**
+   * @type string | undefined, uuid
+   */
+  category?: string;
+  /**
+   * @type string | undefined
+   */
+  description?: string;
+  /**
+   * @type string | undefined, date-time
+   */
+  date?: string;
+};
+
 export type PutTransactionsIdMutationResponse = PutTransactionsId200;
 
 export type PutTransactionsIdMutation = {
   Response: PutTransactionsId200;
+  Request: PutTransactionsIdMutationRequest;
   PathParams: PutTransactionsIdPathParams;
   Errors: any;
 };

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { AuthResponse } from "./AuthResponse.js";
+import type { AuthResponse } from "./AuthResponse";
 
 /**
  * @description Login realizado

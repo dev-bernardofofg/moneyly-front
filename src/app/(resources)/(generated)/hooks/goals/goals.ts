@@ -5,6 +5,10 @@
  * API para gerenciamento financeiro pessoal
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -12,457 +16,405 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
   GetGoals200,
   GetGoalsId200,
   PostGoals201,
   PostGoalsBody,
-  PostGoalsIdAddAmountBody,
-} from "../moneylyAPI.schemas";
+  PostGoalsIdAddAmountBody
+} from '../moneylyAPI.schemas';
 
-import api from "@/app/(utils)/axios-instance";
+import { customInstance } from '@/app/(utils)/axios-instance';
+
+
+
 
 /**
  * @summary Listar metas
  */
-export const getGoals = (signal?: AbortSignal) => {
-  return api<GetGoals200>({ url: `/goals/`, method: "GET", signal });
-};
+export const getGoals = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetGoals200>(
+      {url: `/goals/`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
 
 export const getGetGoalsQueryKey = () => {
-  return [`/goals/`] as const;
-};
+    return [
+    `/goals/`
+    ] as const;
+    }
 
-export const getGetGoalsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getGoals>>,
-  TError = unknown
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const getGetGoalsQueryOptions = <TData = Awaited<ReturnType<typeof getGoals>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>, }
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getGetGoalsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoals>>> = ({
-    signal,
-  }) => getGoals(signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetGoalsQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getGoals>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type GetGoalsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getGoals>>
->;
-export type GetGoalsQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoals>>> = ({ signal }) => getGoals(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGoalsQueryResult = NonNullable<Awaited<ReturnType<typeof getGoals>>>
+export type GetGoalsQueryError = unknown
+
 
 /**
  * @summary Listar metas
  */
 
-export function useGetGoals<
-  TData = Awaited<ReturnType<typeof getGoals>>,
-  TError = unknown
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetGoalsQueryOptions(options);
+export function useGetGoals<TData = Awaited<ReturnType<typeof getGoals>>, TError = unknown>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  const queryOptions = getGetGoalsQueryOptions(options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * @summary Criar meta
  */
 export const postGoals = (
-  postGoalsBody: PostGoalsBody,
-  signal?: AbortSignal
+    postGoalsBody: PostGoalsBody,
+ signal?: AbortSignal
 ) => {
-  return api<PostGoals201>({
-    url: `/goals/`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: postGoalsBody,
-    signal,
-  });
-};
+      
+      
+      return customInstance<PostGoals201>(
+      {url: `/goals/`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postGoalsBody, signal
+    },
+      );
+    }
+  
 
-export const getPostGoalsMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postGoals>>,
-    TError,
-    { data: PostGoalsBody },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postGoals>>,
-  TError,
-  { data: PostGoalsBody },
-  TContext
-> => {
-  const mutationKey = ["postGoals"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postGoals>>,
-    { data: PostGoalsBody }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getPostGoalsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postGoals>>, TError,{data: PostGoalsBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postGoals>>, TError,{data: PostGoalsBody}, TContext> => {
 
-    return postGoals(data);
-  };
+const mutationKey = ['postGoals'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type PostGoalsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postGoals>>
->;
-export type PostGoalsMutationBody = PostGoalsBody;
-export type PostGoalsMutationError = unknown;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postGoals>>, {data: PostGoalsBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postGoals(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostGoalsMutationResult = NonNullable<Awaited<ReturnType<typeof postGoals>>>
+    export type PostGoalsMutationBody = PostGoalsBody
+    export type PostGoalsMutationError = unknown
+
+    /**
  * @summary Criar meta
  */
-export const usePostGoals = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postGoals>>,
-    TError,
-    { data: PostGoalsBody },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postGoals>>,
-  TError,
-  { data: PostGoalsBody },
-  TContext
-> => {
-  const mutationOptions = getPostGoalsMutationOptions(options);
+export const usePostGoals = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postGoals>>, TError,{data: PostGoalsBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postGoals>>,
+        TError,
+        {data: PostGoalsBody},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getPostGoalsMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Obter meta
  */
-export const getGoalsId = (id: string, signal?: AbortSignal) => {
-  return api<GetGoalsId200>({ url: `/goals/${id}`, method: "GET", signal });
-};
-
-export const getGetGoalsIdQueryKey = (id?: string) => {
-  return [`/goals/${id}`] as const;
-};
-
-export const getGetGoalsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getGoalsId>>,
-  TError = unknown
->(
-  id: string,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getGoalsId>>,
-      TError,
-      TData
-    >;
-  }
+export const getGoalsId = (
+    id: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customInstance<GetGoalsId200>(
+      {url: `/goals/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetGoalsIdQueryKey(id);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsId>>> = ({
-    signal,
-  }) => getGoalsId(id, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getGoalsId>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+export const getGetGoalsIdQueryKey = (id?: string,) => {
+    return [
+    `/goals/${id}`
+    ] as const;
+    }
 
-export type GetGoalsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getGoalsId>>
->;
-export type GetGoalsIdQueryError = unknown;
+    
+export const getGetGoalsIdQueryOptions = <TData = Awaited<ReturnType<typeof getGoalsId>>, TError = unknown>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGoalsIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsId>>> = ({ signal }) => getGoalsId(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id),  staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGoalsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getGoalsId>>>
+export type GetGoalsIdQueryError = unknown
+
 
 /**
  * @summary Obter meta
  */
 
-export function useGetGoalsId<
-  TData = Awaited<ReturnType<typeof getGoalsId>>,
-  TError = unknown
->(
-  id: string,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getGoalsId>>,
-      TError,
-      TData
-    >;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetGoalsIdQueryOptions(id, options);
+export function useGetGoalsId<TData = Awaited<ReturnType<typeof getGoalsId>>, TError = unknown>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  const queryOptions = getGetGoalsIdQueryOptions(id,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
 
-/**
- * @summary Atualizar meta
- */
-export const putGoalsId = (id: string) => {
-  return api<void>({ url: `/goals/${id}`, method: "PUT" });
-};
 
-export const getPutGoalsIdMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putGoalsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof putGoalsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["putGoalsId"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putGoalsId>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
-
-    return putGoalsId(id);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PutGoalsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putGoalsId>>
->;
-
-export type PutGoalsIdMutationError = unknown;
 
 /**
  * @summary Atualizar meta
  */
-export const usePutGoalsId = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putGoalsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof putGoalsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getPutGoalsIdMutationOptions(options);
+export const putGoalsId = (
+    id: string,
+ ) => {
+      
+      
+      return customInstance<void>(
+      {url: `/goals/${id}`, method: 'PUT'
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions);
-};
-/**
+
+export const getPutGoalsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putGoalsId>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putGoalsId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['putGoalsId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putGoalsId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  putGoalsId(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutGoalsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putGoalsId>>>
+    
+    export type PutGoalsIdMutationError = unknown
+
+    /**
+ * @summary Atualizar meta
+ */
+export const usePutGoalsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putGoalsId>>, TError,{id: string}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putGoalsId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getPutGoalsIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Deletar meta
  */
-export const deleteGoalsId = (id: string) => {
-  return api<void>({ url: `/goals/${id}`, method: "DELETE" });
-};
+export const deleteGoalsId = (
+    id: string,
+ ) => {
+      
+      
+      return customInstance<void>(
+      {url: `/goals/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteGoalsIdMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteGoalsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteGoalsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationKey = ["deleteGoalsId"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteGoalsId>>,
-    { id: string }
-  > = (props) => {
-    const { id } = props ?? {};
+export const getDeleteGoalsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteGoalsId>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteGoalsId>>, TError,{id: string}, TContext> => {
 
-    return deleteGoalsId(id);
-  };
+const mutationKey = ['deleteGoalsId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteGoalsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteGoalsId>>
->;
 
-export type DeleteGoalsIdMutationError = unknown;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteGoalsId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
 
-/**
+          return  deleteGoalsId(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteGoalsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGoalsId>>>
+    
+    export type DeleteGoalsIdMutationError = unknown
+
+    /**
  * @summary Deletar meta
  */
-export const useDeleteGoalsId = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteGoalsId>>,
-    TError,
-    { id: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof deleteGoalsId>>,
-  TError,
-  { id: string },
-  TContext
-> => {
-  const mutationOptions = getDeleteGoalsIdMutationOptions(options);
+export const useDeleteGoalsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteGoalsId>>, TError,{id: string}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteGoalsId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
-/**
+      const mutationOptions = getDeleteGoalsIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * @summary Adicionar valor à meta
  */
 export const postGoalsIdAddAmount = (
-  id: string,
-  postGoalsIdAddAmountBody: PostGoalsIdAddAmountBody,
-  signal?: AbortSignal
+    id: string,
+    postGoalsIdAddAmountBody: PostGoalsIdAddAmountBody,
+ signal?: AbortSignal
 ) => {
-  return api<void>({
-    url: `/goals/${id}/add-amount`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: postGoalsIdAddAmountBody,
-    signal,
-  });
-};
+      
+      
+      return customInstance<void>(
+      {url: `/goals/${id}/add-amount`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postGoalsIdAddAmountBody, signal
+    },
+      );
+    }
+  
 
-export const getPostGoalsIdAddAmountMutationOptions = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
-    TError,
-    { id: string; data: PostGoalsIdAddAmountBody },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
-  TError,
-  { id: string; data: PostGoalsIdAddAmountBody },
-  TContext
-> => {
-  const mutationKey = ["postGoalsIdAddAmount"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
-    { id: string; data: PostGoalsIdAddAmountBody }
-  > = (props) => {
-    const { id, data } = props ?? {};
+export const getPostGoalsIdAddAmountMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postGoalsIdAddAmount>>, TError,{id: string;data: PostGoalsIdAddAmountBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postGoalsIdAddAmount>>, TError,{id: string;data: PostGoalsIdAddAmountBody}, TContext> => {
 
-    return postGoalsIdAddAmount(id, data);
-  };
+const mutationKey = ['postGoalsIdAddAmount'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type PostGoalsIdAddAmountMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postGoalsIdAddAmount>>
->;
-export type PostGoalsIdAddAmountMutationBody = PostGoalsIdAddAmountBody;
-export type PostGoalsIdAddAmountMutationError = unknown;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postGoalsIdAddAmount>>, {id: string;data: PostGoalsIdAddAmountBody}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  postGoalsIdAddAmount(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostGoalsIdAddAmountMutationResult = NonNullable<Awaited<ReturnType<typeof postGoalsIdAddAmount>>>
+    export type PostGoalsIdAddAmountMutationBody = PostGoalsIdAddAmountBody
+    export type PostGoalsIdAddAmountMutationError = unknown
+
+    /**
  * @summary Adicionar valor à meta
  */
-export const usePostGoalsIdAddAmount = <
-  TError = unknown,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
-    TError,
-    { id: string; data: PostGoalsIdAddAmountBody },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
-  TError,
-  { id: string; data: PostGoalsIdAddAmountBody },
-  TContext
-> => {
-  const mutationOptions = getPostGoalsIdAddAmountMutationOptions(options);
+export const usePostGoalsIdAddAmount = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postGoalsIdAddAmount>>, TError,{id: string;data: PostGoalsIdAddAmountBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
+        TError,
+        {id: string;data: PostGoalsIdAddAmountBody},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getPostGoalsIdAddAmountMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    

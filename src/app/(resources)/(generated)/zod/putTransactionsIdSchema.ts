@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { transactionSchema } from "./transactionSchema.js";
+import { transactionSchema } from "./transactionSchema";
 
 export const putTransactionsIdPathParamsSchema = z.object({
   id: z.string(),
@@ -17,6 +17,15 @@ export const putTransactionsId200Schema = z.object({
   success: z.optional(z.boolean()),
   data: z.optional(z.lazy(() => transactionSchema)),
   message: z.optional(z.string()),
+});
+
+export const putTransactionsIdMutationRequestSchema = z.object({
+  type: z.optional(z.enum(["income", "expense"])),
+  title: z.optional(z.string()),
+  amount: z.optional(z.number()),
+  category: z.optional(z.string().uuid()),
+  description: z.optional(z.string()),
+  date: z.optional(z.string().datetime()),
 });
 
 export const putTransactionsIdMutationResponseSchema = z.lazy(

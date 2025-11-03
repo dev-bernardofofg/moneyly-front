@@ -20,11 +20,23 @@ export type Budget = {
     /**
      * @type string | undefined, uuid
     */
+    userId?: string;
+    /**
+     * @type string | undefined, uuid
+    */
     categoryId?: string;
     /**
      * @type string | undefined
     */
     monthlyLimit?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    createdAt?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    updatedAt?: string;
     /**
      * @type number | undefined
     */

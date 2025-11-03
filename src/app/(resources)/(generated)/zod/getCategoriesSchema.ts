@@ -4,16 +4,19 @@
  */
 
 import { z } from "zod";
-import { categorySchema } from "./categorySchema.js";
+import { paginatedResponseSchema } from "./paginatedResponseSchema";
+
+export const getCategoriesQueryParamsSchema = z
+  .object({
+    page: z.optional(z.coerce.number()),
+    limit: z.optional(z.coerce.number()),
+  })
+  .optional();
 
 /**
  * @description Lista de categorias
  */
-export const getCategories200Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.array(z.lazy(() => categorySchema))),
-  message: z.optional(z.string()),
-});
+export const getCategories200Schema = z.lazy(() => paginatedResponseSchema);
 
 export const getCategoriesQueryResponseSchema = z.lazy(
   () => getCategories200Schema

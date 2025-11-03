@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { goalSchema } from "./goalSchema.js";
+import { goalSchema } from "./goalSchema";
 
 /**
  * @description Lista de metas

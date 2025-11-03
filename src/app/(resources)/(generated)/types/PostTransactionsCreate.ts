@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.js";
+import type { Transaction } from "./Transaction";
 
 /**
  * @description Transação criada

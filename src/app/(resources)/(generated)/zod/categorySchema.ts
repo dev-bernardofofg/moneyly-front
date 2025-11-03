@@ -7,9 +7,9 @@ import { z } from "zod";
 
 export const categorySchema = z.object({
     "id": z.optional(z.string().uuid()),
+"userId": z.string().uuid().nullish(),
 "name": z.optional(z.string()),
-"icon": z.optional(z.string()),
-"type": z.optional(z.enum(["income", "expense", "both"])),
-"isDefault": z.optional(z.boolean()),
-"userId": z.string().uuid().nullish()
+"isGlobal": z.optional(z.boolean()),
+"createdAt": z.optional(z.string().datetime()),
+"updatedAt": z.optional(z.string().datetime())
     })

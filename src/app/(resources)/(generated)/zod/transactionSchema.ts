@@ -7,14 +7,16 @@ import { z } from "zod";
 
 export const transactionSchema = z.object({
     "id": z.optional(z.string().uuid()),
+"userId": z.optional(z.string().uuid()),
 "type": z.optional(z.enum(["income", "expense"])),
 "title": z.optional(z.string()),
 "amount": z.optional(z.string()),
-"description": z.optional(z.string()),
+"description": z.string().nullish(),
 "date": z.optional(z.string().datetime()),
 "categoryId": z.optional(z.string().uuid()),
-"periodId": z.optional(z.string()),
+"periodId": z.string().uuid().nullish(),
 "createdAt": z.optional(z.string().datetime()),
+"updatedAt": z.optional(z.string().datetime()),
 "category": z.optional(z.object({
     "id": z.optional(z.string().uuid()),
 "name": z.optional(z.string())

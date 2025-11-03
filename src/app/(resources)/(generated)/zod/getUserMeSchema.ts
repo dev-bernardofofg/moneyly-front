@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { userSchema } from "./userSchema.js";
+import { userSchema } from "./userSchema";
 
 /**
  * @description Dados do usuário

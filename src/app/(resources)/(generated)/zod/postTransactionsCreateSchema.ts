@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { transactionSchema } from "./transactionSchema.js";
+import { transactionSchema } from "./transactionSchema";
 
 /**
  * @description Transação criada

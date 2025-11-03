@@ -10,13 +10,17 @@ export type Goal = {
     */
     id?: string;
     /**
+     * @type string | undefined, uuid
+    */
+    userId?: string;
+    /**
      * @type string | undefined
     */
     title?: string;
     /**
-     * @type string | undefined
+     * @type string
     */
-    description?: string;
+    description?: string | null;
     /**
      * @type string | undefined
     */
@@ -30,13 +34,21 @@ export type Goal = {
     */
     targetDate?: string;
     /**
-     * @type boolean | undefined
+     * @type string | undefined, date-time
     */
-    isActive?: boolean;
+    startDate?: string;
+    /**
+     * @type boolean
+    */
+    isActive?: boolean | null;
     /**
      * @type string | undefined, date-time
     */
     createdAt?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    updatedAt?: string;
     /**
      * @type object | undefined
     */
@@ -49,6 +61,10 @@ export type Goal = {
          * @type number | undefined
         */
         daysRemaining?: number;
+        /**
+         * @type number | undefined
+        */
+        remaining?: number;
     };
     /**
      * @type array | undefined
@@ -58,6 +74,10 @@ export type Goal = {
          * @type string | undefined, uuid
         */
         id?: string;
+        /**
+         * @type string | undefined, uuid
+        */
+        goalId?: string;
         /**
          * @type number | undefined
         */
@@ -70,5 +90,13 @@ export type Goal = {
          * @type boolean | undefined
         */
         isReached?: boolean;
+        /**
+         * @type string, date-time
+        */
+        reachedAt?: string | null;
+        /**
+         * @type string | undefined, date-time
+        */
+        createdAt?: string;
     }[];
 };

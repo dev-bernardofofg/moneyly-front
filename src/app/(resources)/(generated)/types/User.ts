@@ -18,27 +18,39 @@ export type User = {
     */
     email?: string;
     /**
-     * @type number | undefined
+     * @type string
     */
-    monthlyIncome?: number;
+    googleId?: string | null;
+    /**
+     * @type string
+    */
+    avatar?: string | null;
+    /**
+     * @type string
+    */
+    monthlyIncome?: string | null;
     /**
      * @minLength 1
      * @maxLength 31
-     * @type number | undefined
+     * @type number
     */
-    financialDayStart?: number;
+    financialDayStart?: number | null;
     /**
      * @minLength 1
      * @maxLength 31
-     * @type number | undefined
+     * @type number
     */
-    financialDayEnd?: number;
+    financialDayEnd?: number | null;
     /**
-     * @type boolean | undefined
+     * @type boolean
     */
-    firstAccess?: boolean;
+    firstAccess?: boolean | null;
     /**
      * @type string | undefined, date-time
     */
     createdAt?: string;
+    /**
+     * @type string | undefined, date-time
+    */
+    updatedAt?: string;
 };

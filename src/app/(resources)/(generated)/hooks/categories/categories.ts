@@ -5,80 +5,289 @@
  * API para gerenciamento financeiro pessoal
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import type { GetCategories200 } from "../moneylyAPI.schemas";
+import type {
+  GetCategoriesParams,
+  PaginatedResponse,
+  PostCategoriesCreate201,
+  PostCategoriesCreateBody,
+  PutCategoriesUpdateId200,
+  PutCategoriesUpdateIdBody
+} from '../moneylyAPI.schemas';
 
-import api from "@/app/(utils)/axios-instance";
+import { customInstance } from '@/app/(utils)/axios-instance';
 
-/**
- * @summary Listar categorias
- */
-export const getCategories = (signal?: AbortSignal) => {
-  return api<GetCategories200>({ url: `/categories/`, method: "GET", signal });
-};
 
-export const getGetCategoriesQueryKey = () => {
-  return [`/categories/`] as const;
-};
 
-export const getGetCategoriesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getCategories>>,
-  TError = unknown
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getCategories>>,
-    TError,
-    TData
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getGetCategoriesQueryKey();
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({
-    signal,
-  }) => getCategories(signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getCategories>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type GetCategoriesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getCategories>>
->;
-export type GetCategoriesQueryError = unknown;
 
 /**
  * @summary Listar categorias
  */
+export const getCategories = (
+    params?: GetCategoriesParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<PaginatedResponse>(
+      {url: `/categories/`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-export function useGetCategories<
-  TData = Awaited<ReturnType<typeof getCategories>>,
-  TError = unknown
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getCategories>>,
-    TError,
-    TData
-  >;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetCategoriesQueryOptions(options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
 
-  query.queryKey = queryOptions.queryKey;
+export const getGetCategoriesQueryKey = (params?: GetCategoriesParams,) => {
+    return [
+    `/categories/`, ...(params ? [params]: [])
+    ] as const;
+    }
+
+    
+export const getGetCategoriesQueryOptions = <TData = Awaited<ReturnType<typeof getCategories>>, TError = unknown>(params?: GetCategoriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCategoriesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({ signal }) => getCategories(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCategories>>>
+export type GetCategoriesQueryError = unknown
+
+
+/**
+ * @summary Listar categorias
+ */
+
+export function useGetCategories<TData = Awaited<ReturnType<typeof getCategories>>, TError = unknown>(
+ params?: GetCategoriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>, }
+  
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCategoriesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
+
+/**
+ * @summary Criar categoria customizada
+ */
+export const postCategoriesCreate = (
+    postCategoriesCreateBody: PostCategoriesCreateBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<PostCategoriesCreate201>(
+      {url: `/categories/create`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postCategoriesCreateBody, signal
+    },
+      );
+    }
+  
+
+
+export const getPostCategoriesCreateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postCategoriesCreate>>, TError,{data: PostCategoriesCreateBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postCategoriesCreate>>, TError,{data: PostCategoriesCreateBody}, TContext> => {
+
+const mutationKey = ['postCategoriesCreate'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postCategoriesCreate>>, {data: PostCategoriesCreateBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postCategoriesCreate(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostCategoriesCreateMutationResult = NonNullable<Awaited<ReturnType<typeof postCategoriesCreate>>>
+    export type PostCategoriesCreateMutationBody = PostCategoriesCreateBody
+    export type PostCategoriesCreateMutationError = unknown
+
+    /**
+ * @summary Criar categoria customizada
+ */
+export const usePostCategoriesCreate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postCategoriesCreate>>, TError,{data: PostCategoriesCreateBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postCategoriesCreate>>,
+        TError,
+        {data: PostCategoriesCreateBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPostCategoriesCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * @summary Atualizar categoria
+ */
+export const putCategoriesUpdateId = (
+    id: string,
+    putCategoriesUpdateIdBody: PutCategoriesUpdateIdBody,
+ ) => {
+      
+      
+      return customInstance<PutCategoriesUpdateId200>(
+      {url: `/categories/update/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: putCategoriesUpdateIdBody
+    },
+      );
+    }
+  
+
+
+export const getPutCategoriesUpdateIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCategoriesUpdateId>>, TError,{id: string;data: PutCategoriesUpdateIdBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putCategoriesUpdateId>>, TError,{id: string;data: PutCategoriesUpdateIdBody}, TContext> => {
+
+const mutationKey = ['putCategoriesUpdateId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putCategoriesUpdateId>>, {id: string;data: PutCategoriesUpdateIdBody}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putCategoriesUpdateId(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutCategoriesUpdateIdMutationResult = NonNullable<Awaited<ReturnType<typeof putCategoriesUpdateId>>>
+    export type PutCategoriesUpdateIdMutationBody = PutCategoriesUpdateIdBody
+    export type PutCategoriesUpdateIdMutationError = unknown
+
+    /**
+ * @summary Atualizar categoria
+ */
+export const usePutCategoriesUpdateId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCategoriesUpdateId>>, TError,{id: string;data: PutCategoriesUpdateIdBody}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putCategoriesUpdateId>>,
+        TError,
+        {id: string;data: PutCategoriesUpdateIdBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPutCategoriesUpdateIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * @summary Deletar categoria
+ */
+export const deleteCategoriesDeleteId = (
+    id: string,
+ ) => {
+      
+      
+      return customInstance<void>(
+      {url: `/categories/delete/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
+
+
+export const getDeleteCategoriesDeleteIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCategoriesDeleteId>>, TError,{id: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteCategoriesDeleteId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteCategoriesDeleteId'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCategoriesDeleteId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteCategoriesDeleteId(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteCategoriesDeleteIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCategoriesDeleteId>>>
+    
+    export type DeleteCategoriesDeleteIdMutationError = unknown
+
+    /**
+ * @summary Deletar categoria
+ */
+export const useDeleteCategoriesDeleteId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCategoriesDeleteId>>, TError,{id: string}, TContext>, }
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteCategoriesDeleteId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteCategoriesDeleteIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    

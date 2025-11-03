@@ -1,15 +1,12 @@
+import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button";
 import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker";
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
-import { BaseButton } from "@/app/(components)/(bases)/base-button";
 import { getErrorMessage } from "@/app/(helpers)/errors";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
-import { GetCategoriesRequest } from "@/app/(services)/category.service";
-import { overviewQueryData } from "@/app/(services)/overview.service";
-import { CreateTransactionRequest, transactionQueryData, UpdateTransactionRequest } from "@/app/(services)/transaction.service";
-import { Transaction } from "@/app/(types)/transaction.type";
+import { CustomAxiosError } from "@/app/(types)/error.type";
 import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +15,10 @@ import { BrushCleaning } from "lucide-react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Category, Transaction } from "../(generated)";
+import { useGetCategories } from "../(generated)/hooks/categories/categories";
+import { getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview";
+import { getGetTransactionsSummaryQueryKey, usePostTransactionsCreate, usePutTransactionsId } from "../(generated)/hooks/transactions/transactions";
 import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTransactionSchema } from "../(schemas)/transaction.schema";
 
 export const UpsertTransactionForm = ({ transaction }: { transaction?: Transaction }) => {
@@ -27,57 +28,70 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: transaction ? {
       ...transaction,
-      amount: FN_UTILS_STRING.formatDotToComma(transaction.amount.toString()),
-      date: transaction.date,
-      category: transaction.category.id,
+      amount: FN_UTILS_STRING.formatDotToComma(transaction.amount as string),
+      date: transaction.date as string,
+      category: transaction.category?.id,
+      description: transaction.description as string,
+      title: transaction.title as string,
+      type: transaction.type as "income" | "expense",
     } : UpsertTransactionDefaultValues,
   });
 
-  const { data: categories } = GetCategoriesRequest();
+  const { data: categories } = useGetCategories({
+    page: 1,
+    limit: 10,
+  });
 
-  const { mutate: createTransaction, isPending } = CreateTransactionRequest({
-    onSuccess: () => {
-      if (transaction) {
-        toast.success("Transação atualizada com sucesso");
-      } else {
-        toast.success("Transação criada com sucesso");
-      }
-      queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
-      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] });
-      form.reset();
-      closeRef.current?.click();
-    },
-    onError: (error) => {
-      const errorMessage = getErrorMessage(error);
-      toast.error(errorMessage);
+  const { mutate: createTransaction, isPending } = usePostTransactionsCreate({
+    mutation: {
+      onSuccess: () => {
+        if (transaction) {
+          toast.success("Transação atualizada com sucesso");
+        } else {
+          toast.success("Transação criada com sucesso");
+        }
+        queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: [getGetOverviewPlannerQueryKey()] });
+        form.reset();
+        closeRef.current?.click();
+      },
+      onError: (error: CustomAxiosError) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error(errorMessage);
+      },
     },
   });
 
-  const { mutate: updateTransaction, isPending: isUpdating } = UpdateTransactionRequest({
-    onSuccess: () => {
-      toast.success("Transação atualizada com sucesso");
-      queryClient.invalidateQueries({ queryKey: [transactionQueryData.getTransaction] });
-      closeRef.current?.click();
-    },
-    onError: (error) => {
-      const errorMessage = getErrorMessage(error);
-      toast.error(errorMessage);
+  const { mutate: updateTransaction, isPending: isUpdating } = usePutTransactionsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Transação atualizada com sucesso");
+        queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
+        closeRef.current?.click();
+      },
+      onError: (error: CustomAxiosError) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error(errorMessage);
+      },
     },
   });
 
   const handleUpsertTransaction = (data: UpsertTransactionFormValues) => {
     if (transaction) {
       updateTransaction({
-        id: transaction.id,
-        params: {
+        id: transaction.id as string,
+        data: {
           ...data,
-          amount: FN_UTILS_STRING.formatCommaToDot(data.amount),
+          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
         },
       });
     } else {
       createTransaction({
-        ...data,
-        amount: FN_UTILS_STRING.formatCommaToDot(data.amount),
+        data: {
+          ...data,
+          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+          category: data.category || '',
+        },
       });
     }
   };
@@ -98,7 +112,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                 { label: "Saída", value: "expense" }
               ]}
             />
-            <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data.categories.map((category) => ({ label: category.name, value: category.id })) || []} />
+            <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data.data?.map((category: Category) => ({ label: category.name || '', value: category.id || '' })) || []} />
           </div>
           <BaseInput control={form.control} name="amount" label="Valor" type="money" placeholder="0,00" />
           <BaseTextarea control={form.control} name="description" label="Descrição" />

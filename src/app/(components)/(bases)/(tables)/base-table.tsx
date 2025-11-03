@@ -128,7 +128,7 @@ export function BaseTable<T>({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item: any, index: number) => (
+                {data.map((item: T, index: number) => (
                   <motion.tr
                     key={`${JSON.stringify(item)}-${index}`}
                     initial={{ opacity: 0, y: 10 }}
@@ -165,7 +165,7 @@ export function BaseTable<T>({
         </AnimatePresence>
       )}
 
-      {pagination && pagination.totalPages && pagination.totalPages > 1 && (
+      {pagination && pagination.totalPages && pagination.totalPages > 1 ? (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,7 +179,7 @@ export function BaseTable<T>({
             onPageChange={(pagination) => onPaginationChange?.(pagination as PaginationType)}
           />
         </motion.div>
-      )}
+      ) : null}
     </div>
   );
 }

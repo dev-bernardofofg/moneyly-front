@@ -9,28 +9,37 @@ export interface User {
   id?: string;
   name?: string;
   email?: string;
-  monthlyIncome?: number;
+  /** @nullable */
+  googleId?: string | null;
+  /** @nullable */
+  avatar?: string | null;
+  /** @nullable */
+  monthlyIncome?: string | null;
   /**
    * @minimum 1
    * @maximum 31
+   * @nullable
    */
-  financialDayStart?: number;
+  financialDayStart?: number | null;
   /**
    * @minimum 1
    * @maximum 31
+   * @nullable
    */
-  financialDayEnd?: number;
-  firstAccess?: boolean;
+  financialDayEnd?: number | null;
+  /** @nullable */
+  firstAccess?: boolean | null;
   createdAt?: string;
+  updatedAt?: string;
 }
 
-export type TransactionType = typeof TransactionType[keyof typeof TransactionType];
-
+export type TransactionType =
+  (typeof TransactionType)[keyof typeof TransactionType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TransactionType = {
-  income: 'income',
-  expense: 'expense',
+  income: "income",
+  expense: "expense",
 } as const;
 
 export type TransactionCategory = {
@@ -40,25 +49,28 @@ export type TransactionCategory = {
 
 export interface Transaction {
   id?: string;
+  userId?: string;
   type?: TransactionType;
   title?: string;
   amount?: string;
-  description?: string;
+  /** @nullable */
+  description?: string | null;
   date?: string;
   categoryId?: string;
-  periodId?: string;
+  /** @nullable */
+  periodId?: string | null;
   createdAt?: string;
+  updatedAt?: string;
   category?: TransactionCategory;
 }
 
-export type BudgetStatus = typeof BudgetStatus[keyof typeof BudgetStatus];
-
+export type BudgetStatus = (typeof BudgetStatus)[keyof typeof BudgetStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BudgetStatus = {
-  safe: 'safe',
-  warning: 'warning',
-  danger: 'danger',
+  safe: "safe",
+  warning: "warning",
+  danger: "danger",
 } as const;
 
 export type BudgetCategory = {
@@ -68,8 +80,11 @@ export type BudgetCategory = {
 
 export interface Budget {
   id?: string;
+  userId?: string;
   categoryId?: string;
   monthlyLimit?: string;
+  createdAt?: string;
+  updatedAt?: string;
   spent?: number;
   remaining?: number;
   percentage?: number;
@@ -80,46 +95,46 @@ export interface Budget {
 export type GoalProgress = {
   percentage?: number;
   daysRemaining?: number;
+  remaining?: number;
 };
 
 export type GoalMilestonesItem = {
   id?: string;
+  goalId?: string;
   percentage?: number;
   amount?: string;
   isReached?: boolean;
+  /** @nullable */
+  reachedAt?: string | null;
+  createdAt?: string;
 };
 
 export interface Goal {
   id?: string;
+  userId?: string;
   title?: string;
-  description?: string;
+  /** @nullable */
+  description?: string | null;
   targetAmount?: string;
   currentAmount?: string;
   targetDate?: string;
-  isActive?: boolean;
+  startDate?: string;
+  /** @nullable */
+  isActive?: boolean | null;
   createdAt?: string;
+  updatedAt?: string;
   progress?: GoalProgress;
   milestones?: GoalMilestonesItem[];
 }
 
-export type CategoryType = typeof CategoryType[keyof typeof CategoryType];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CategoryType = {
-  income: 'income',
-  expense: 'expense',
-  both: 'both',
-} as const;
-
 export interface Category {
   id?: string;
-  name?: string;
-  icon?: string;
-  type?: CategoryType;
-  isDefault?: boolean;
   /** @nullable */
   userId?: string | null;
+  name?: string;
+  isGlobal?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type SuccessResponseData = { [key: string]: unknown };
@@ -132,7 +147,8 @@ export interface SuccessResponse {
 
 export type AuthResponseData = {
   user?: User;
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 export interface AuthResponse {
@@ -141,16 +157,22 @@ export interface AuthResponse {
   message?: string;
 }
 
-export type PaginatedTransactionsPagination = {
+export interface Pagination {
   page?: number;
   limit?: number;
   total?: number;
   totalPages?: number;
-};
+  hasNext?: boolean;
+  hasPrev?: boolean;
+}
 
-export interface PaginatedTransactions {
-  data?: Transaction[];
-  pagination?: PaginatedTransactionsPagination;
+export type PaginatedResponseDataItem = { [key: string]: unknown };
+
+export interface PaginatedResponse {
+  success?: boolean;
+  data?: PaginatedResponseDataItem[];
+  pagination?: Pagination;
+  message?: string;
 }
 
 export type PostAuthSignUpBody = {
@@ -165,13 +187,46 @@ export type PostAuthSignInBody = {
   password: string;
 };
 
-export type PostTransactionsCreateBodyType = typeof PostTransactionsCreateBodyType[keyof typeof PostTransactionsCreateBodyType];
+export type PostAuthGoogleBody = {
+  idToken: string;
+};
 
+export type PostAuthRefreshBody = {
+  refreshToken: string;
+};
+
+export type PostAuthRefresh200Data = {
+  user?: User;
+  accessToken?: string;
+};
+
+export type PostAuthRefresh200 = {
+  success?: boolean;
+  data?: PostAuthRefresh200Data;
+  message?: string;
+};
+
+export type PostAuthLogoutBody = {
+  refreshToken: string;
+};
+
+export type PostAuthLogout200Data = {
+  success?: boolean;
+};
+
+export type PostAuthLogout200 = {
+  success?: boolean;
+  data?: PostAuthLogout200Data;
+  message?: string;
+};
+
+export type PostTransactionsCreateBodyType =
+  (typeof PostTransactionsCreateBodyType)[keyof typeof PostTransactionsCreateBodyType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostTransactionsCreateBodyType = {
-  income: 'income',
-  expense: 'expense',
+  income: "income",
+  expense: "expense",
 } as const;
 
 export type PostTransactionsCreateBody = {
@@ -189,20 +244,73 @@ export type PostTransactionsCreate201 = {
   message?: string;
 };
 
-export type PostTransactionsBody = {
+export type GetTransactionsParams = {
   page?: number;
   limit?: number;
 };
 
-export type PostTransactions200 = {
-  success?: boolean;
-  data?: PaginatedTransactions;
-  message?: string;
+export type PutTransactionsIdBodyType =
+  (typeof PutTransactionsIdBodyType)[keyof typeof PutTransactionsIdBodyType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PutTransactionsIdBodyType = {
+  income: "income",
+  expense: "expense",
+} as const;
+
+export type PutTransactionsIdBody = {
+  type?: PutTransactionsIdBodyType;
+  title?: string;
+  amount?: number;
+  category?: string;
+  description?: string;
+  date?: string;
 };
 
 export type PutTransactionsId200 = {
   success?: boolean;
   data?: Transaction;
+  message?: string;
+};
+
+export type GetTransactionsSummary200Data = {
+  totalIncome?: number;
+  totalExpense?: number;
+  balance?: number;
+  monthlyIncome?: number;
+};
+
+export type GetTransactionsSummary200 = {
+  success?: boolean;
+  data?: GetTransactionsSummary200Data;
+  message?: string;
+};
+
+export type GetTransactionsSummaryByMonth200Data = {
+  totalIncome?: number;
+  totalExpense?: number;
+  balance?: number;
+  monthlyIncome?: number;
+};
+
+export type GetTransactionsSummaryByMonth200 = {
+  success?: boolean;
+  data?: GetTransactionsSummaryByMonth200Data;
+  message?: string;
+};
+
+export type GetTransactionsSummaryCurrentPeriod200Data = {
+  totalIncome?: number;
+  totalExpense?: number;
+  balance?: number;
+  monthlyIncome?: number;
+  percentUsed?: number;
+  alert?: string;
+};
+
+export type GetTransactionsSummaryCurrentPeriod200 = {
+  success?: boolean;
+  data?: GetTransactionsSummaryCurrentPeriod200Data;
   message?: string;
 };
 
@@ -252,9 +360,28 @@ export type PostGoalsIdAddAmountBody = {
   amount: number;
 };
 
-export type GetCategories200 = {
+export type GetCategoriesParams = {
+  page?: number;
+  limit?: number;
+};
+
+export type PostCategoriesCreateBody = {
+  name: string;
+};
+
+export type PostCategoriesCreate201 = {
   success?: boolean;
-  data?: Category[];
+  data?: Category;
+  message?: string;
+};
+
+export type PutCategoriesUpdateIdBody = {
+  name: string;
+};
+
+export type PutCategoriesUpdateId200 = {
+  success?: boolean;
+  data?: Category;
   message?: string;
 };
 
@@ -264,3 +391,161 @@ export type GetUserMe200 = {
   message?: string;
 };
 
+export type PutUserIncomeBody = {
+  /**
+   * @minimum 0.01
+   * @maximum 999999999.99
+   */
+  monthlyIncome: number;
+};
+
+export type PutUserIncome200Data = {
+  monthlyIncome?: number;
+  firstAccess?: boolean;
+};
+
+export type PutUserIncome200 = {
+  success?: boolean;
+  data?: PutUserIncome200Data;
+  message?: string;
+};
+
+export type PutUserFinancialPeriodBody = {
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayStart: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayEnd: number;
+};
+
+export type PutUserFinancialPeriod200Data = {
+  financialDayStart?: number;
+  financialDayEnd?: number;
+  firstAccess?: boolean;
+};
+
+export type PutUserFinancialPeriod200 = {
+  success?: boolean;
+  data?: PutUserFinancialPeriod200Data;
+  message?: string;
+};
+
+export type PutUserIncomeAndPeriodBody = {
+  /**
+   * @minimum 0.01
+   * @maximum 999999999.99
+   */
+  monthlyIncome: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayStart: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayEnd: number;
+};
+
+export type PutUserIncomeAndPeriod200Data = {
+  monthlyIncome?: number;
+  financialDayStart?: number;
+  financialDayEnd?: number;
+  firstAccess?: boolean;
+};
+
+export type PutUserIncomeAndPeriod200 = {
+  success?: boolean;
+  data?: PutUserIncomeAndPeriod200Data;
+  message?: string;
+};
+
+export type GetUserFinancialPeriods200DataItem = {
+  id?: string;
+  startDate?: string;
+  endDate?: string;
+  isStored?: boolean;
+};
+
+export type GetUserFinancialPeriods200 = {
+  success?: boolean;
+  data?: GetUserFinancialPeriods200DataItem[];
+  message?: string;
+};
+
+export type GetUserFinancialPeriodsPeriodId200Data = {
+  id?: string;
+  startDate?: string;
+  endDate?: string;
+  isActive?: boolean;
+};
+
+export type GetUserFinancialPeriodsPeriodId200 = {
+  success?: boolean;
+  data?: GetUserFinancialPeriodsPeriodId200Data;
+  message?: string;
+};
+
+export type GetOverviewPeriods200DataItem = {
+  id?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type GetOverviewPeriods200 = {
+  success?: boolean;
+  data?: GetOverviewPeriods200DataItem[];
+  message?: string;
+};
+
+export type GetOverviewDashboardParams = {
+  periodId?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type GetOverviewDashboard200DataStats = { [key: string]: unknown };
+
+export type GetOverviewDashboard200DataMonthlyHistoryItem = {
+  [key: string]: unknown;
+};
+
+export type GetOverviewDashboard200DataExpensesByCategoryItem = {
+  [key: string]: unknown;
+};
+
+export type GetOverviewDashboard200DataPeriodTransactionsItem = {
+  [key: string]: unknown;
+};
+
+export type GetOverviewDashboard200Data = {
+  stats?: GetOverviewDashboard200DataStats;
+  monthlyHistory?: GetOverviewDashboard200DataMonthlyHistoryItem[];
+  expensesByCategory?: GetOverviewDashboard200DataExpensesByCategoryItem[];
+  periodTransactions?: GetOverviewDashboard200DataPeriodTransactionsItem[];
+};
+
+export type GetOverviewDashboard200 = {
+  success?: boolean;
+  data?: GetOverviewDashboard200Data;
+  message?: string;
+};
+
+export type GetOverviewPlanner200DataStats = { [key: string]: unknown };
+
+export type GetOverviewPlanner200Data = {
+  stats?: GetOverviewPlanner200DataStats;
+  alerts?: string[];
+};
+
+export type GetOverviewPlanner200 = {
+  success?: boolean;
+  data?: GetOverviewPlanner200Data;
+  message?: string;
+};

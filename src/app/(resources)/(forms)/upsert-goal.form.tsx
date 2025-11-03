@@ -1,15 +1,13 @@
 "use client"
 
+import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
-import { BaseButton } from "@/app/(components)/(bases)/base-button"
 import { getErrorMessage } from "@/app/(helpers)/errors"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
-import { CreateGoal, UpdateGoal, goalQueryData } from "@/app/(services)/goal.service"
-import { overviewQueryData } from "@/app/(services)/overview.service"
-import { Goal } from "@/app/(types)/goal.type"
+import { CustomAxiosError } from "@/app/(types)/error.type"
 import { DialogClose } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,6 +15,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { Goal } from "../(generated)"
+import { getGetGoalsQueryKey, usePostGoals, usePutGoalsId } from "../(generated)/hooks/goals/goals"
+import { getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview"
 import { GoalDefaultValues, GoalFormValues, GoalSchema } from "../(schemas)/goal.schema"
 
 interface UpsertGoalFormProps {
@@ -29,46 +30,50 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
   const form = useForm<GoalFormValues>({
     resolver: zodResolver(GoalSchema),
     defaultValues: goal ? {
-      title: goal.title,
-      description: goal.description,
-      targetAmount: goal.targetAmount.toString(),
+      title: goal.title || "",
+      description: goal.description || "",
+      targetAmount: goal.targetAmount?.toString() || "",
       targetDate: goal.targetDate,
     } : GoalDefaultValues,
   })
 
-  const createMutation = CreateGoal({
-    onSuccess: () => {
-      toast.success("Meta criada com sucesso");
-      closeRef.current?.click();
-      queryClient.invalidateQueries({ queryKey: [goalQueryData.getGoals] });
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverviewPlanner] });
-    },
+  const createMutation = usePostGoals({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Meta criada com sucesso");
+        closeRef.current?.click();
+        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
+      },
+      onError: (error: CustomAxiosError) => {
+        toast.error(getErrorMessage(error));
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
+      },
+    }
   });
 
-  const updateMutation = UpdateGoal({
-    onSuccess: () => {
-      toast.success("Meta atualizada com sucesso");
-      closeRef.current?.click();
-      queryClient.invalidateQueries({ queryKey: [goalQueryData.getGoals] });
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverviewPlanner] });
-    },
+  const updateMutation = usePutGoalsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Meta atualizada com sucesso");
+        closeRef.current?.click();
+        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
+      },
+      onError: (error: CustomAxiosError) => {
+        toast.error(getErrorMessage(error));
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
+      },
+    }
   });
 
   const handleForm = (data: GoalFormValues) => {
     if (goal) {
-      updateMutation.mutate({ id: goal.id, title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
+      updateMutation.mutate({ id: goal.id || "" });
     } else {
-      createMutation.mutate({ title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) });
+      createMutation.mutate({ data: { title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) } });
     }
   }
 

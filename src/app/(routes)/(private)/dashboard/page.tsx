@@ -1,31 +1,30 @@
 "use client";
 
 import { BaseCard } from "@/app/(components)/(bases)/(cards)/base-card";
+import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button";
+import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/(layout)/period-navigator-wrapper";
 import { TransactionItem } from "@/app/(components)/(bases)/(list)/transaction-item";
 import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog";
 import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats";
-import { BaseButton } from "@/app/(components)/(bases)/base-button";
-import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/period-navigator-wrapper";
 import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
-import { useAuth } from "@/app/(contexts)/auth-provider";
 import { usePeriod } from "@/app/(contexts)/period-provider";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
-import { GetOverviewRequest } from "@/app/(services)/overview.service";
+import { Transaction } from "@/app/(resources)/(generated)";
+import { useGetOverviewDashboard } from "@/app/(resources)/(generated)/hooks/overview/overview";
 import { ROUTES } from "@/app/(utils)/routes";
 import { LinearProgress } from "@/components/ui/linear-progress";
-import { DollarSign, List, TrendingDown, TrendingUp } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
 
 const DashboardPage = () => {
-  const { user } = useAuth();
   const { selectedPeriodId } = usePeriod();
-  const { data: overview, isLoading: loadingOverview } = GetOverviewRequest({
-    userId: user?.id ?? "",
-    periodId: selectedPeriodId || undefined
+  const { data: overviewData, isPending: isPostingOverview } = useGetOverviewDashboard({
+    periodId: selectedPeriodId || undefined,
   });
+
   const { push } = useRouter();
 
   return (
@@ -46,44 +45,22 @@ const DashboardPage = () => {
           ]
         }
       />
+
       <StaggeredFade variant="page">
         <PeriodNavigatorWrapper />
         <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
-          <BaseStats
-            name="Saldo"
-            value={(overview?.data.stats.balance ?? 0) + (overview?.data.stats.totalIncome ?? 0)}
-            Icon={DollarSign}
-            description="Saldo Disponível"
-            isMonetary={true}
-            loading={loadingOverview}
-          />
-
-          <BaseStats
-            name="Entradas"
-            value={overview?.data.stats.totalIncome ?? 0}
-            Icon={TrendingUp}
-            description="Entradas totais"
-            isMonetary={true}
-            loading={loadingOverview}
-          />
-
-          <BaseStats
-            name="Saídas"
-            value={overview?.data.stats.totalExpense ?? 0}
-            Icon={TrendingDown}
-            description="Gastos totais"
-            isMonetary={true}
-            variant="destructive"
-            loading={loadingOverview}
-          />
-
-          <BaseStats
-            name="Transações"
-            value={overview?.data.transactionsCount ?? 0}
-            Icon={List}
-            description="Total de transações"
-            loading={loadingOverview}
-          />
+          {DASHBOARD_STATS_INTERATOR.map((stat) => (
+            <BaseStats
+              key={stat.indicator}
+              name={stat.name}
+              value={(overviewData?.data.data?.stats?.[stat.indicator] ?? 0) as number}
+              Icon={stat.icon}
+              description={stat.description}
+              isMonetary={stat.isMonetary}
+              variant={stat.variant as "default" | "destructive" | "secondary"}
+              loading={isPostingOverview}
+            />
+          ))}
 
         </StaggeredFade>
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -101,42 +78,50 @@ const DashboardPage = () => {
               </BaseButton>
             }
           >
-            {overview?.data.monthlyHistory.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-sm text-muted-foreground">Nenhuma transação encontrada</p>
-              </div>
-            ) : (
-              <StaggeredFade className="space-y-2">
-                {overview?.data.monthlyHistory.map((transaction) => (
-                  <TransactionItem
-                    key={transaction.id}
-                    value={transaction.amount}
-                    type={transaction.type}
-                    category={transaction.category}
-                    date={transaction.date}
-                  />
-                ))}
-              </StaggeredFade>
-            )}
+            {(() => {
+              const monthlyHistory = overviewData?.data?.data?.monthlyHistory;
+
+              if (!monthlyHistory || monthlyHistory.length === 0) {
+                return (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-sm text-muted-foreground">Nenhuma transação encontrada</p>
+                  </div>
+                );
+              }
+
+              return (
+                <StaggeredFade className="space-y-2">
+                  {monthlyHistory.map((transaction: Transaction) => (
+                    <TransactionItem
+                      key={transaction.id}
+                      value={transaction.amount ? parseFloat(transaction.amount) : 0}
+                      type={(transaction.type as "income" | "expense") ?? "expense"}
+                      category={transaction.category?.name ?? ""}
+                      date={transaction.date ?? ""}
+                    />
+                  ))}
+                </StaggeredFade>
+              );
+            })()}
           </BaseCard>
           <BaseCard
             title="Melhores categorias"
             description="Suas categorias mais gastas no mês"
           >
             <StaggeredFade className="space-y-2">
-              {overview?.data.expensesByCategory.length === 0 ? (
+              {overviewData?.data.data?.expensesByCategory?.length === 0 || !overviewData?.data.data?.expensesByCategory ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-muted-foreground">Nenhuma categoria encontrada</p>
                 </div>
               ) : (
                 <StaggeredFade className="space-y-2">
-                  {overview?.data.expensesByCategory.map((category) => (
+                  {overviewData?.data.data?.expensesByCategory.map((category: Transaction) => (
                     <div key={category.id} className="flex flex-col gap-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p>{category.name}</p>
-                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount)}</p>
+                        <p>{category.category?.name}</p>
+                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount ? parseFloat(category.amount) : 0)}</p>
                       </div>
-                      <LinearProgress value={category.amount} maxValue={overview?.data.stats.totalExpense ?? 0} />
+                      <LinearProgress value={category.amount ? parseFloat(category.amount) : 0} maxValue={overviewData?.data.data?.stats?.totalExpense ? parseFloat(overviewData?.data.data?.stats?.totalExpense as string) : 0} />
                     </div>
                   ))}
                 </StaggeredFade>

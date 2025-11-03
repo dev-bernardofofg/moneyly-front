@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { goalSchema } from "./goalSchema.js";
+import { goalSchema } from "./goalSchema";
 
 export const getGoalsIdPathParamsSchema = z.object({
   id: z.string(),

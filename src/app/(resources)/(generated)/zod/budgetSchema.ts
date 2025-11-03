@@ -7,8 +7,11 @@ import { z } from "zod";
 
 export const budgetSchema = z.object({
     "id": z.optional(z.string().uuid()),
+"userId": z.optional(z.string().uuid()),
 "categoryId": z.optional(z.string().uuid()),
 "monthlyLimit": z.optional(z.string()),
+"createdAt": z.optional(z.string().datetime()),
+"updatedAt": z.optional(z.string().datetime()),
 "spent": z.optional(z.number()),
 "remaining": z.optional(z.number()),
 "percentage": z.optional(z.number()),
