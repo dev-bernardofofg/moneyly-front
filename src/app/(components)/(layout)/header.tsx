@@ -1,6 +1,6 @@
 "use client";
 
-import { MobileActionsMenu } from "@/app/(components)/(bases)/mobile-actions-menu";
+import { MobileActionsMenu } from "@/app/(components)/(bases)/(layout)/mobile-actions-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 

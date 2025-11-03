@@ -8,7 +8,7 @@ export const useInitialConfig = () => {
 
     return (
       !user.monthlyIncome ||
-      user.monthlyIncome === 0 ||
+      user.monthlyIncome === "0" ||
       user.financialDayStart === undefined ||
       user.financialDayEnd === undefined
     );

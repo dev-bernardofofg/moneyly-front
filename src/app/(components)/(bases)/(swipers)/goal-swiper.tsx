@@ -1,4 +1,4 @@
-import { Goal } from "@/app/(types)/goal.type";
+import { Goal } from "@/app/(resources)/(generated)";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { GoalCard } from "../(cards)/goal-card";
 

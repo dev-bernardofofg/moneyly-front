@@ -16,8 +16,12 @@ export const InitialConfigDialog = ({ open, onOpenChange: _onOpenChange, onSucce
   return (
     <Dialog open={open} onOpenChange={_onOpenChange}>
       <DialogTitle className="sr-only" >Configurações Financeiras</DialogTitle>
-      <DialogDescription className="sr-only" >Defina seu rendimento e período financeiro</DialogDescription>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0" onPointerDownOutside={(e) => e.preventDefault()} onEscapeKeyDown={(e) => e.preventDefault()}>
+      <DialogDescription className="sr-only">Defina seu rendimento e período financeiro</DialogDescription>
+      <DialogContent
+        className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 [&>button.absolute]:hidden"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <Card className="border-0 shadow-none">
           <CardHeader className="text-center space-y-2">
             <div className="flex justify-center mb-4">

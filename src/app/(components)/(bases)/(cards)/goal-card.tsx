@@ -1,34 +1,32 @@
 import { queryClient } from '@/app/(contexts)'
-import { getErrorMessage } from '@/app/(helpers)/errors'
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number'
-import { AddValueToGoalForm } from '@/app/(resources)/(forms)/add-value-to-goal.form'
 import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
-import { DeleteGoal, goalQueryData } from '@/app/(services)/goal.service'
-import { Goal } from '@/app/(types)/goal.type'
+import { Goal } from '@/app/(resources)/(generated)'
+import { useDeleteGoalsId } from '@/app/(resources)/(generated)/hooks/goals/goals'
+import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form'
 import { differenceInDays, format } from 'date-fns'
 import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { BaseButton } from '../(clickable)/base-button'
 import { BaseDialog } from '../(portals)/base-dialog'
-import { BaseButton } from '../base-button'
 
 interface GoalCardProps {
   goal: Goal
 }
 
 export const GoalCard = ({ goal }: GoalCardProps) => {
-  const { mutate: deleteGoal } = DeleteGoal({
-    onSuccess: () => {
-      toast.success("Meta removida com sucesso")
-      queryClient.invalidateQueries({ queryKey: [goalQueryData.getGoals] })
+  const { mutate: deleteGoal } = useDeleteGoalsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Meta removida com sucesso")
+        queryClient.invalidateQueries({ queryKey: ["getGoals"] })
+      },
     },
-    onError: (error) => {
-      toast.error(getErrorMessage(error))
-    }
   })
 
   const handleDeleteGoal = () => {
-    deleteGoal(goal.id)
+    deleteGoal({ id: goal.id || "" })
   }
 
   return (
@@ -42,31 +40,31 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Progresso</span>
-            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentageFormatted(goal.currentAmount / goal.targetAmount * 100)}</span>
+            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentageFormatted(Number(goal.currentAmount || 0) / Number(goal.targetAmount || 0) * 100)}</span>
           </div>
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
               className="h-2 rounded-full bg-primary transition-all"
-              style={{ width: `${(goal.currentAmount / goal.targetAmount) * 100}%` }}
+              style={{ width: `${(Number(goal.currentAmount || 0) / Number(goal.targetAmount || 0)) * 100}%` }}
             />
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-primary font-medium">
-              {FN_UTILS_NUMBERS.formatNumberToCurrency(goal.currentAmount)}
+              {FN_UTILS_NUMBERS.formatNumberToCurrency(goal.currentAmount || 0)}
             </span>
-            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatNumberToCurrency(goal.targetAmount)}</span>
+            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatNumberToCurrency(goal.targetAmount || 0)}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-4 text-sm text-slate-400">
           <div className="flex items-center gap-1">
             <Calendar className="size-4" />
-            <span>{format(goal.targetDate, 'dd/MM/yyyy')}</span>
+            <span>{format(new Date(goal.targetDate || ""), 'dd/MM/yyyy')}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="size-4" />
-            <span className={goal.targetDate < new Date().toISOString() ? "text-yellow-400 font-medium" : ""}>
-              {goal.targetDate > new Date().toISOString() ? `${differenceInDays(new Date(goal.targetDate), new Date())} dias` : "Vencido"}
+            <span className={new Date(goal.targetDate || "").getTime() < new Date().getTime() ? "text-yellow-400 font-medium" : ""}>
+              {new Date(goal.targetDate || "").getTime() > new Date().getTime() ? `${differenceInDays(new Date(goal.targetDate || ""), new Date())} dias` : "Vencido"}
             </span>
           </div>
         </div>
@@ -74,7 +72,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="dark:bg-slate-600 bg-slate-200 p-2 rounded-lg flex items-center justify-between">
           <div className="text-sm dark:text-slate-400 text-slate-600">Faltam</div>
           <div className="font-semibold text-lg dark:text-slate-100 text-slate-600">
-            R$ {(goal.targetAmount - goal.currentAmount).toLocaleString("pt-BR")}
+            R$ {(Number(goal.targetAmount || 0) - Number(goal.currentAmount || 0)).toLocaleString("pt-BR")}
           </div>
         </div>
 
@@ -87,7 +85,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
               Adicionar
             </BaseButton>}
           >
-            <AddValueToGoalForm goalId={goal.id} />
+            <AddValueToGoalForm goalId={goal.id || ""} />
           </BaseDialog>
 
           <BaseDialog
@@ -98,7 +96,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
               Editar
             </BaseButton>}
           >
-            <UpsertGoalForm goal={goal} />
+            <UpsertGoalForm goal={goal as Goal} />
           </BaseDialog>
 
           <ConfirmActionForm

@@ -1,10 +1,8 @@
 "use client"
 
-import { ChildrenProps } from '@/app/(types)/global.type'
-
-export const PublicLayout = ({ children }: ChildrenProps) => {
+export const PublicLayout = ({ children }: React.PropsWithChildren) => {
   return (
-    <div className="flex items-center justify-center h-screen dark:bg-slate-950 bg-slate-50">
+    <div className="flex items-center justify-center h-screen dark:bg-slate-900 bg-slate-50">
       {children}
     </div>
   )

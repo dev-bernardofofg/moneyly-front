@@ -1,6 +1,5 @@
 "use client";
 
-import { AlertsPlannerResponse } from "@/app/(types)/overview.type";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +8,7 @@ import { useState } from "react";
 
 
 interface AlertsPopoverProps {
-  alerts: AlertsPlannerResponse[];
+  alerts: string[];
   trigger: React.ReactNode;
 }
 
@@ -19,7 +18,7 @@ export const AlertsPopover = ({
 }: AlertsPopoverProps) => {
   const [open, setOpen] = useState(false);
 
-  const getAlertIcon = (type: AlertsPlannerResponse["type"]) => {
+  const getAlertIcon = (type: string) => {
     switch (type) {
       case "info":
         return <CheckCircle className="size-4 text-green-600" />;
@@ -32,7 +31,7 @@ export const AlertsPopover = ({
     }
   };
 
-  const getAlertColor = (type: AlertsPlannerResponse["type"]) => {
+  const getAlertColor = (type: string) => {
     switch (type) {
       case "info":
         return "border-l-green-500 bg-green-50 dark:bg-green-950/20";
@@ -45,7 +44,7 @@ export const AlertsPopover = ({
     }
   };
 
-  const getPriorityBadge = (priority: AlertsPlannerResponse["priority"]) => {
+  const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case "high":
         return <Badge variant="destructive" className="text-xs text-red-600">Alta</Badge>;
@@ -84,20 +83,20 @@ export const AlertsPopover = ({
             alerts.map((alert, index) => (
               <div
                 key={index}
-                className={`p-3 rounded-lg border-l-4 transition-colors ${getAlertColor(alert.type)}`}
+                className={`p-3 rounded-lg border-l-4 transition-colors ${getAlertColor(alert)}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-2 flex-1">
-                    {getAlertIcon(alert.type)}
+                    {getAlertIcon(alert)}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm font-medium text-foreground">
-                          {alert.goal}
+                          {alert}
                         </p>
-                        {getPriorityBadge(alert.priority)}
+                        {getPriorityBadge(alert)}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {alert.message}
+                        {alert}
                       </p>
                     </div>
                   </div>
