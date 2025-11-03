@@ -5,7 +5,7 @@ interface UsePaginationProps {
   initialPage?: number;
   initialLimit?: number;
   maxLimit?: number;
-  serverPagination?: PaginationType; // Paginação que vem da API
+  serverPagination?: Partial<PaginationType>; // Paginação que vem da API
   onPaginationChange?: (pagination: PaginationType) => void; // Callback para refazer requisição
 }
 
@@ -20,7 +20,7 @@ export const usePagination = ({
     page: Math.max(1, initialPage),
     limit: Math.min(Math.max(1, initialLimit), maxLimit),
     hasNext: false,
-    hasPrevious: false,
+    hasPrev: false,
     total: 0,
     totalPages: 0,
   });
@@ -29,11 +29,13 @@ export const usePagination = ({
   useEffect(() => {
     if (serverPagination) {
       setPagination({
-        page: Math.max(1, serverPagination.page),
-        limit: Math.min(Math.max(1, serverPagination.limit), maxLimit),
+        page: Math.max(1, serverPagination.page as number),
+        limit: Math.min(
+          Math.max(1, serverPagination.limit as number),
+          maxLimit
+        ),
         hasNext: serverPagination.hasNext,
-        hasPrevious:
-          (serverPagination as any).hasPrev || serverPagination.hasPrevious,
+        hasPrev: serverPagination.hasPrev,
         total: serverPagination.total,
         totalPages: serverPagination.totalPages,
       });
@@ -46,7 +48,7 @@ export const usePagination = ({
         page: Math.max(1, newPagination.page),
         limit: Math.min(Math.max(1, newPagination.limit), maxLimit),
         hasNext: newPagination.hasNext,
-        hasPrevious: newPagination.hasPrevious,
+        hasPrev: newPagination.hasPrev,
         total: newPagination.total,
         totalPages: newPagination.totalPages,
       };
@@ -64,7 +66,7 @@ export const usePagination = ({
       page: Math.max(1, initialPage),
       limit: Math.min(Math.max(1, initialLimit), maxLimit),
       hasNext: false,
-      hasPrevious: false,
+      hasPrev: false,
       total: 0,
       totalPages: 0,
     });

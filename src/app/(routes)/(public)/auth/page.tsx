@@ -1,30 +1,17 @@
 "use client";
 
 import { Logo } from "@/app/(components)/(elements)/logo";
-import { FloatingElements } from "@/app/(components)/(motions)/floating-elements";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
-import { SignInForm } from "@/app/(resources)/(forms)/sign-in.form";
-import { SignUpForm } from "@/app/(resources)/(forms)/sign-up.form";
+import { SignInForm } from "@/app/(routes)/(public)/auth/(sign-in)/sign-in.form";
+import { SignUpForm } from "@/app/(routes)/(public)/auth/(sign-up)/sign-up.form";
+import { AuthFloatingElements } from "@/app/(routes)/(public)/auth/auth-floating-elements";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, Shield, Target, TrendingUp, User, Zap } from "lucide-react";
 
 const AuthPage = () => {
   return (
     <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Elementos flutuantes com variedade de ícones */}
-      <FloatingElements className="top-16 left-16" Icon={DollarSign} size="lg" animation="float" />
-      <FloatingElements className="top-24 right-20" Icon={TrendingUp} size="md" animation="pulse" />
-      <FloatingElements className="bottom-24 left-24" Icon={Shield} size="sm" animation="bounce" />
-      <FloatingElements className="bottom-32 right-16" Icon={Zap} size="md" animation="spin" />
-      <FloatingElements className="top-1/3 left-8" Icon={Target} size="sm" animation="float" />
-      <FloatingElements className="bottom-1/3 right-8" Icon={User} size="lg" animation="pulse" />
-
-      {/* Elementos sem ícone para efeito de fundo */}
-      <FloatingElements className="top-1/4 left-1/4" size="sm" animation="float" />
-      <FloatingElements className="bottom-1/4 right-1/4" size="md" animation="pulse" />
-      <FloatingElements className="top-1/2 left-12" size="sm" animation="bounce" />
-      <FloatingElements className="bottom-1/2 right-12" size="lg" animation="float" />
+      <AuthFloatingElements />
 
       <div className="w-full max-w-md relative z-30 px-4">
         <Card

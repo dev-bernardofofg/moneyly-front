@@ -83,7 +83,6 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
               field.onChange(e);
             }
           };
-
           return (
             <motion.div
               initial={{ opacity: 0, y: -4 }}

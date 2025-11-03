@@ -1,0 +1,1 @@
+{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"object"},"message":{"type":"string"}},"x-readme-ref-name":"SuccessResponse"}

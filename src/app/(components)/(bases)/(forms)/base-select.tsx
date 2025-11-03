@@ -32,6 +32,7 @@ export interface IBaseSelect<T extends FieldValues> {
   description?: string;
   disabled?: string | boolean;
   selectDate?: string | boolean;
+  type?: "default" | "full-date"
   className?: string;
 }
 
@@ -46,7 +47,12 @@ export const BaseSelect = <T extends FieldValues>({
   disabled = false,
   selectDate = false,
   className,
+  type = "default",
 }: IBaseSelect<T>) => {
+  const isFullDate = type === "full-date"
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1)
+
   return (
     <FormField
       control={control}
@@ -101,7 +107,14 @@ export const BaseSelect = <T extends FieldValues>({
                       ))}
                     </SelectGroup>
                   ))
-                  : options.map((option) => (
+                  : isFullDate ? days.map((day) => (
+                    <SelectItem
+                      key={day}
+                      value={String(day)}
+                    >
+                      {day.toString()}
+                    </SelectItem>
+                  )) : options.map((option) => (
                     <SelectItem
                       key={option.value}
                       value={String(option.value)}

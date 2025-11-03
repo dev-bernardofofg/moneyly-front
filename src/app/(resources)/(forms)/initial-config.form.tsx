@@ -4,10 +4,9 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
 import { useAuth } from "@/app/(contexts)/auth-provider"
+import { getErrorMessage } from "@/app/(helpers)/errors"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { InitialConfigDefaultValues, InitialConfigFormValues, InitialConfigSchema } from "@/app/(resources)/(schemas)/initial-config.schema"
-import { overviewQueryData } from "@/app/(services)/overview.service"
-import { GetMeRequest, UpdateInitialConfigRequest, userQueryData } from "@/app/(services)/user.service"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -15,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Calendar, DollarSign, Info } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { getUserMe, usePutUserIncomeAndPeriod } from "../(generated)/hooks/user/user"
 
 interface InitialConfigFormProps {
   onSuccess: () => void
@@ -29,30 +29,47 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
     defaultValues: InitialConfigDefaultValues,
   })
 
-  const { mutate: getMe } = GetMeRequest({
-    onSuccess: (data) => {
-      updateUser(data.data.user)
-      queryClient.invalidateQueries({ queryKey: [overviewQueryData.getOverview] })
-      queryClient.invalidateQueries({ queryKey: [userQueryData.me] })
-    }
+
+  // Mutation para atualizar rendimento e período financeiro
+  const { mutate: updateIncomeAndPeriod, data: userUpdatedData, isPending } = usePutUserIncomeAndPeriod({
+    mutation: {
+      onSuccess: async () => {
+        toast.success("Configurações salvas com sucesso!")
+        // Invalidar queries relevantes
+        queryClient.invalidateQueries({ queryKey: [getUserMe] })
+        // Buscar dados atualizados do usuário diretamente
+        try {
+          const response = await getUserMe()
+          const userData = response.data?.data
+          if (userData) {
+            updateUser({
+              ...userData,
+              financialDayEnd: userUpdatedData?.data?.data?.financialDayEnd,
+              financialDayStart: userUpdatedData?.data?.data?.financialDayStart,
+              monthlyIncome: userUpdatedData?.data?.data?.monthlyIncome?.toString() || null,
+            })
+            queryClient.clear()
+          }
+        } catch (error) {
+          console.error("Erro ao buscar dados atualizados do usuário:", error)
+        }
+        // Chamar callback de sucesso do componente pai
+        onSuccess()
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error as any)
+        toast.error(errorMessage || "Erro ao salvar configurações")
+      },
+    },
   })
 
-  const { mutate: updateInitialConfig } = UpdateInitialConfigRequest({
-    onSuccess: () => {
-      toast.success("Configurações financeiras salvas com sucesso!")
-      getMe()
-      onSuccess()
-    },
-    onError: () => {
-      toast.error("Erro ao salvar configurações")
-    },
-  })
-
-  const handleSubmit = async (data: InitialConfigFormValues) => {
-    updateInitialConfig({
-      monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
-      financialDayStart: data.financialDayStart,
-      financialDayEnd: data.financialDayEnd,
+  const handleSubmit = (data: InitialConfigFormValues) => {
+    updateIncomeAndPeriod({
+      data: {
+        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
+        financialDayStart: data.financialDayStart,
+        financialDayEnd: data.financialDayEnd,
+      },
     })
   }
 
@@ -139,9 +156,9 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
         <Button
           type="submit"
           className="w-full h-10 font-medium bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 dark:from-green-500 dark:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700"
-          disabled={form.formState.isSubmitting}
+          disabled={isPending}
         >
-          {form.formState.isSubmitting ? (
+          {isPending ? (
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               <span className="text-white">Salvando...</span>

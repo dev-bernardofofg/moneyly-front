@@ -1,20 +1,19 @@
 "use client"
 
+import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
+import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/(layout)/period-navigator-wrapper"
 import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog"
-import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
-import { BaseButton } from "@/app/(components)/(bases)/base-button"
-import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/period-navigator-wrapper"
 import { Header } from "@/app/(components)/(layout)/header"
 import { Fade } from "@/app/(components)/(motions)/fade"
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade"
-import { usePeriod } from "@/app/(contexts)/period-provider"
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form"
-import { DollarSign, TrendingDown, TrendingUp } from "lucide-react"
 
-import { TransactionTable } from "@/app/(resources)/(tables)/transaction.table"
-import { GetTransactionsRequest } from "@/app/(services)/transaction.service"
+import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
+import { useGetTransactions } from "@/app/(resources)/(generated)/hooks/transactions/transactions"
+import { TransactionTable } from "@/app/(routes)/(private)/transactions/transaction.table"
 import { usePagination } from "@/hooks/use-pagination"
 import { useState } from "react"
+import { TRANSACTION_STATS_INTERATOR } from "./transaction.utils"
 
 const TransactionsPage = () => {
   const [currentPagination, setCurrentPagination] = useState({
@@ -22,12 +21,12 @@ const TransactionsPage = () => {
     limit: 10,
   });
 
-  const { selectedPeriodId } = usePeriod()
 
-  const { data: transactions, isLoading: loadingTransactions } = GetTransactionsRequest({
-    ...currentPagination,
-    periodId: selectedPeriodId || undefined
+  const { data: transactions, isLoading } = useGetTransactions({
+    page: currentPagination.page,
+    limit: currentPagination.limit,
   });
+
 
   const { pagination, handlePaginationChange } = usePagination({
     serverPagination: transactions?.data.pagination,
@@ -54,37 +53,23 @@ const TransactionsPage = () => {
       <StaggeredFade variant="page">
         <PeriodNavigatorWrapper />
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          <BaseStats
-            name="Saldo"
-            value={(transactions?.data.monthlyIncome ?? 0) + (transactions?.data.totalIncome ?? 0) - (transactions?.data.totalExpense ?? 0)}
-            Icon={DollarSign}
-            description="Saldo Disponível"
-            isMonetary={true}
-            loading={loadingTransactions}
-          />
+          {TRANSACTION_STATS_INTERATOR.map((stat) => (
+            <BaseStats
+              key={stat.indicator}
+              name={stat.name}
+              value={(transactions?.data as any)?.[stat.indicator] ?? 0}
+              Icon={stat.icon}
+              description={stat.description}
+              isMonetary={stat.isMonetary}
+              variant={stat.variant as "default" | "destructive" | "secondary"}
+              loading={isLoading}
+            />
+          ))}
 
-          <BaseStats
-            name="Entradas"
-            value={transactions?.data.totalIncome ?? 0}
-            Icon={TrendingUp}
-            description="Entradas totais"
-            isMonetary={true}
-            loading={loadingTransactions}
-          />
-
-          <BaseStats
-            name="Saídas"
-            value={transactions?.data.totalExpense ?? 0}
-            Icon={TrendingDown}
-            description="Gastos totais"
-            isMonetary={true}
-            variant="destructive"
-            loading={loadingTransactions}
-          />
         </StaggeredFade>
         <StaggeredFade>
           <TransactionTable
-            transactions={transactions?.data.transactions ?? []}
+            transactions={transactions?.data.data ?? []}
             tableOptions={{
               pagination: pagination,
               size: "sm"

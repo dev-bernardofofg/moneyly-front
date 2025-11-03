@@ -1,15 +1,15 @@
 "use client"
 
+import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button'
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog'
-import { BaseButton } from '@/app/(components)/(bases)/base-button'
 import { Header } from '@/app/(components)/(layout)/header'
 import { Fade } from '@/app/(components)/(motions)/fade'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
 import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form'
-import { CategoryTable } from '@/app/(resources)/(tables)/category.table'
-import { GetCategoriesRequest } from '@/app/(services)/category.service'
+import { useGetCategories } from '@/app/(resources)/(generated)/hooks/categories/categories'
 import { usePagination } from '@/hooks/use-pagination'
 import { useState } from 'react'
+import { CategoryTable } from './category.table'
 
 const CategoriesPage = () => {
   const [currentPagination, setCurrentPagination] = useState({
@@ -17,10 +17,14 @@ const CategoriesPage = () => {
     limit: 10,
   });
 
-  const { data } = GetCategoriesRequest(currentPagination)
+  const { data, isLoading } = useGetCategories({
+    page: currentPagination.page,
+    limit: currentPagination.limit,
+  })
+
 
   const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: data?.data.pagination,
+    serverPagination: data?.data?.pagination,
     onPaginationChange: setCurrentPagination
   })
 
@@ -44,11 +48,12 @@ const CategoriesPage = () => {
       />
       <StaggeredFade variant="page">
         <CategoryTable
-          categories={data?.data.categories || []}
+          categories={data?.data?.data || []}
           tableOptions={{
             pagination: pagination,
           }}
           onPaginationChange={handlePaginationChange}
+          isLoading={isLoading}
         />
       </StaggeredFade>
     </Fade>

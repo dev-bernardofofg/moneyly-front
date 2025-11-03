@@ -7,7 +7,7 @@ import { LucideIcon } from 'lucide-react'
 
 interface BaseStatsProps {
   name: string
-  value: number
+  value: number | string
   Icon: LucideIcon
   description?: string
   isMonetary?: boolean

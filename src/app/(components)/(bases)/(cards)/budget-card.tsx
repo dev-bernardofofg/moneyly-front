@@ -1,12 +1,11 @@
 "use client";
 
-import { getErrorMessage } from "@/app/(helpers)/errors";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
-import { budgetQueryData, DeleteBudget } from "@/app/(services)/budget.service";
-import { Budget } from "@/app/(types)/budget.type";
+import { Budget } from "@/app/(resources)/(generated)";
+import { useDeleteBudgetsId } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -17,8 +16,8 @@ import {
   XCircle
 } from "lucide-react";
 import { toast } from "sonner";
+import { BaseButton } from "../(clickable)/base-button";
 import { BaseDialog } from "../(portals)/base-dialog";
-import { BaseButton } from "../base-button";
 
 
 interface BudgetCardProps {
@@ -30,17 +29,21 @@ export const BudgetCard = ({
 }: BudgetCardProps) => {
 
   const queryClient = useQueryClient()
-  const { mutate: deleteBudget, isPending } = DeleteBudget({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [budgetQueryData.getBudgets] })
-      toast.success("Orçamento removido com sucesso")
+  const { mutate: deleteBudget, isPending } = useDeleteBudgetsId({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["getBudgets"] })
+        toast.success("Orçamento removido com sucesso")
+      },
     },
-    onError: (error) => {
-      toast.error(getErrorMessage(error))
-    }
   })
 
-  const getBudgetStatus = (spent: number, limit: number) => {
+  const getBudgetStatus = (spent: number | undefined, limit: number | undefined) => {
+    if (!spent || !limit) return {
+      text: "Sem dados",
+      color: "bg-gray-500"
+    };
+
     const percentage = (spent / limit) * 100;
 
     return {
@@ -103,7 +106,7 @@ export const BudgetCard = ({
   };
 
   const handleDelete = () => {
-    deleteBudget(budget.id)
+    deleteBudget({ id: budget.id || "" })
   }
 
   return (
@@ -116,7 +119,7 @@ export const BudgetCard = ({
           >
             <IconComponent className="size-5" />
           </div>
-          <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{budget.category.name}</h3>
+          <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{budget.category?.name}</h3>
         </div>
         <span className={`px-2 py-1 rounded text-xs font-medium ${status.color}`}>
           {status.text}
@@ -127,26 +130,26 @@ export const BudgetCard = ({
         <div className="flex justify-between text-sm">
           <span className="dark:text-slate-400 text-slate-600">Gasto</span>
           <span className="font-medium dark:text-slate-200 text-slate-600">
-            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.spent)}
+            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.spent || 0)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="dark:text-slate-400 text-slate-600">Limite</span>
           <span className="dark:text-slate-200 text-slate-600">
-            {FN_UTILS_STRING.formatNumberToCurrency(budget.monthlyLimit)}
+            {FN_UTILS_STRING.formatNumberToCurrency(budget.monthlyLimit || "0")}
           </span>
         </div>
 
         <div className="space-y-2">
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
-              className={`h-2 rounded-full transition-all ${getProgressBarColor(budget.percentage)}`}
-              style={{ width: `${Math.min(budget.percentage, 100)}%` }}
+              className={`h-2 rounded-full transition-all ${getProgressBarColor(budget.percentage || 0)}`}
+              style={{ width: `${Math.min(budget.percentage || 0, 100)}%` }}
             />
           </div>
           <div className="flex justify-between text-xs text-slate-400">
-            <span>{budget.percentage.toFixed(0)}% usado</span>
-            <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining)} restante</span>
+            <span>{budget.percentage?.toFixed(0)}% usado</span>
+            <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining || 0)} restante</span>
           </div>
         </div>
       </div>
