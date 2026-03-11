@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Goal } from "./Goal";
+import type { Goal } from "./Goal.ts";
 
 /**
  * @description Criada
  */
 export type PostGoals201 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Goal;
+  data: Goal;
   /**
    * @type string | undefined
    */

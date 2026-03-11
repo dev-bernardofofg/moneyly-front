@@ -3,19 +3,19 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { transactionSchema } from "./transactionSchema";
+import * as z from "zod";
+import { transactionSchema } from "./transactionSchema.ts";
 
 export const putTransactionsIdPathParamsSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
 });
 
 /**
  * @description Atualizada
  */
 export const putTransactionsId200Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => transactionSchema)),
+  success: z.boolean(),
+  data: z.lazy(() => transactionSchema),
   message: z.optional(z.string()),
 });
 
@@ -29,5 +29,5 @@ export const putTransactionsIdMutationRequestSchema = z.object({
 });
 
 export const putTransactionsIdMutationResponseSchema = z.lazy(
-  () => putTransactionsId200Schema
+  () => putTransactionsId200Schema,
 );

@@ -3,11 +3,11 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction";
+import type { Transaction } from "./Transaction.ts";
 
 export type PutTransactionsIdPathParams = {
   /**
-   * @type string
+   * @type string, uuid
    */
   id: string;
 };
@@ -17,13 +17,13 @@ export type PutTransactionsIdPathParams = {
  */
 export type PutTransactionsId200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Transaction;
+  data: Transaction;
   /**
    * @type string | undefined
    */

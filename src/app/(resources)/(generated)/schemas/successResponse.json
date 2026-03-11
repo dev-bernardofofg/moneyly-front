@@ -1,1 +1,10 @@
-{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"object"},"message":{"type":"string"}},"x-readme-ref-name":"SuccessResponse"}
+{
+  "type": "object",
+  "required": ["success"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "data": { "type": "object" },
+    "message": { "type": "string" }
+  },
+  "x-readme-ref-name": "SuccessResponse"
+}

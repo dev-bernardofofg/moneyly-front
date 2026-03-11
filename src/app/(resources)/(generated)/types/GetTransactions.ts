@@ -3,7 +3,8 @@
  * Do not edit manually.
  */
 
-import type { PaginatedResponse } from "./PaginatedResponse";
+import type { Pagination } from "./Pagination.ts";
+import type { Transaction } from "./Transaction.ts";
 
 export type GetTransactionsQueryParams = {
   /**
@@ -19,7 +20,24 @@ export type GetTransactionsQueryParams = {
 /**
  * @description Lista de transações
  */
-export type GetTransactions200 = PaginatedResponse;
+export type GetTransactions200 = {
+  /**
+   * @type boolean
+   */
+  success: boolean;
+  /**
+   * @type array
+   */
+  data: Transaction[];
+  /**
+   * @type object
+   */
+  pagination: Pagination;
+  /**
+   * @type string | undefined
+   */
+  message?: string;
+};
 
 export type GetTransactionsQueryResponse = GetTransactions200;
 

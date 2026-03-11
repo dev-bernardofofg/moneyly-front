@@ -1,1 +1,30 @@
-{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"array","items":{"type":"object"}},"pagination":{"type":"object","properties":{"page":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"totalPages":{"type":"number"},"hasNext":{"type":"boolean"},"hasPrev":{"type":"boolean"}},"x-readme-ref-name":"Pagination"},"message":{"type":"string"}},"x-readme-ref-name":"PaginatedResponse"}
+{
+  "type": "object",
+  "required": ["success", "data", "pagination"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "data": { "type": "array", "items": { "type": "object" } },
+    "pagination": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "totalPages",
+        "hasNext",
+        "hasPrev"
+      ],
+      "properties": {
+        "page": { "type": "number" },
+        "limit": { "type": "number" },
+        "total": { "type": "number" },
+        "totalPages": { "type": "number" },
+        "hasNext": { "type": "boolean" },
+        "hasPrev": { "type": "boolean" }
+      },
+      "x-readme-ref-name": "Pagination"
+    },
+    "message": { "type": "string" }
+  },
+  "x-readme-ref-name": "PaginatedResponse"
+}

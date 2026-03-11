@@ -3,12 +3,12 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { paginationSchema } from "./paginationSchema";
+import * as z from "zod";
+import { paginationSchema } from "./paginationSchema.ts";
 
 export const paginatedResponseSchema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.array(z.object({}))),
-  pagination: z.optional(z.lazy(() => paginationSchema)),
+  success: z.boolean(),
+  data: z.array(z.object({})),
+  pagination: z.lazy(() => paginationSchema),
   message: z.optional(z.string()),
 });

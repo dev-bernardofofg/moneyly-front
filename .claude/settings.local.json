@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm list:*)",
+      "Bash(pnpm generate-hooks:*)",
+      "Bash(find \"d:\\\\Aprendizado\\\\moneyly\\\\moneyly-front\\\\src\\\\app\\\\\\(resources\\)\\\\\\(generated\\)\"\" -type f -name \"* \")",
+      "Bash(find \"/d/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)\" -type f)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm type-check:*)",
+      "Bash(sed -n '340,360p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '416,430p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '508,525p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '650,690p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '448,455p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '640,650p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '433,445p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")",
+      "Bash(sed -n '473,490p' \"d:/Aprendizado/moneyly/moneyly-front/src/app/\\(resources\\)/\\(generated\\)/hooks/moneylyAPI.schemas.ts\")"
+    ]
+  }
+}

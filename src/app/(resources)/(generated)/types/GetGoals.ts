@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Goal } from "./Goal";
+import type { Goal } from "./Goal.ts";
 
 /**
  * @description Lista de metas
  */
 export type GetGoals200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type array | undefined
+   * @type array
    */
-  data?: Goal[];
+  data: Goal[];
   /**
    * @type string | undefined
    */

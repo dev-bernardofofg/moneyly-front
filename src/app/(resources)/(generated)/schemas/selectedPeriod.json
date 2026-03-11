@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "startDate",
+    "endDate",
+    "label",
+    "transactionCount",
+    "description"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "startDate": { "type": "string", "format": "date-time" },
+    "endDate": { "type": "string", "format": "date-time" },
+    "label": { "type": "string" },
+    "transactionCount": { "type": "number" },
+    "description": { "type": "string" }
+  },
+  "x-readme-ref-name": "SelectedPeriod"
+}

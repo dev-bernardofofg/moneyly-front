@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { budgetSchema } from "./budgetSchema";
+import * as z from "zod";
+import { budgetSchema } from "./budgetSchema.ts";
 
 /**
  * @description Lista de orçamentos
  */
 export const getBudgets200Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.array(z.lazy(() => budgetSchema))),
+  success: z.boolean(),
+  data: z.array(z.lazy(() => budgetSchema)),
   message: z.optional(z.string()),
 });
 

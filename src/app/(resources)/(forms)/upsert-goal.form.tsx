@@ -71,7 +71,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
 
   const handleForm = (data: GoalFormValues) => {
     if (goal) {
-      updateMutation.mutate({ id: goal.id || "" });
+      updateMutation.mutate({ id: goal.id || "", data: { title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) } });
     } else {
       createMutation.mutate({ data: { title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) } });
     }

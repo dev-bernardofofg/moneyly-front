@@ -3,28 +3,28 @@
  * Do not edit manually.
  */
 
-import type { User } from "./User";
+import type { User } from "./User.ts";
 
 /**
  * @description Token renovado
  */
 export type PostAuthRefresh200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
    * @type object | undefined
    */
   data?: {
     /**
-     * @type object | undefined
+     * @type object
      */
-    user?: User;
+    user: User;
     /**
-     * @type string | undefined
+     * @type string
      */
-    accessToken?: string;
+    accessToken: string;
   };
   /**
    * @type string | undefined

@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Budget } from "./Budget";
+import type { Budget } from "./Budget.ts";
 
 /**
  * @description Criado
  */
 export type PostBudgets201 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Budget;
+  data: Budget;
   /**
    * @type string | undefined
    */

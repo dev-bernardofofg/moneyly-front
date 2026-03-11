@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { categorySchema } from "./categorySchema";
+import * as z from "zod";
+import { categorySchema } from "./categorySchema.ts";
 
 /**
  * @description Categoria criada
  */
 export const postCategoriesCreate201Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => categorySchema)),
+  success: z.boolean(),
+  data: z.lazy(() => categorySchema),
   message: z.optional(z.string()),
 });
 
@@ -20,5 +20,5 @@ export const postCategoriesCreateMutationRequestSchema = z.object({
 });
 
 export const postCategoriesCreateMutationResponseSchema = z.lazy(
-  () => postCategoriesCreate201Schema
+  () => postCategoriesCreate201Schema,
 );

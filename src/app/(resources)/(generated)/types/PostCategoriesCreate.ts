@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Category } from "./Category";
+import type { Category } from "./Category.ts";
 
 /**
  * @description Categoria criada
  */
 export type PostCategoriesCreate201 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Category;
+  data: Category;
   /**
    * @type string | undefined
    */

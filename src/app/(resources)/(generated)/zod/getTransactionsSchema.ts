@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { paginatedResponseSchema } from "./paginatedResponseSchema";
+import * as z from "zod";
+import { paginationSchema } from "./paginationSchema.ts";
+import { transactionSchema } from "./transactionSchema.ts";
 
 export const getTransactionsQueryParamsSchema = z
   .object({
@@ -16,8 +17,13 @@ export const getTransactionsQueryParamsSchema = z
 /**
  * @description Lista de transações
  */
-export const getTransactions200Schema = z.lazy(() => paginatedResponseSchema);
+export const getTransactions200Schema = z.object({
+  success: z.boolean(),
+  data: z.array(z.lazy(() => transactionSchema)),
+  pagination: z.lazy(() => paginationSchema),
+  message: z.optional(z.string()),
+});
 
 export const getTransactionsQueryResponseSchema = z.lazy(
-  () => getTransactions200Schema
+  () => getTransactions200Schema,
 );

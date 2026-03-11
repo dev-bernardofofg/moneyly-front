@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Budget } from "./Budget";
+import type { Budget } from "./Budget.ts";
 
 /**
  * @description Lista de orçamentos
  */
 export type GetBudgets200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type array | undefined
+   * @type array
    */
-  data?: Budget[];
+  data: Budget[];
   /**
    * @type string | undefined
    */

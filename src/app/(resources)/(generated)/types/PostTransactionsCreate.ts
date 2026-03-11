@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction";
+import type { Transaction } from "./Transaction.ts";
 
 /**
  * @description Transação criada
  */
 export type PostTransactionsCreate201 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Transaction;
+  data: Transaction;
   /**
    * @type string | undefined
    */

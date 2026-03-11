@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": [
+    "totalBudgeted",
+    "totalSavingsGoal",
+    "totalSaved",
+    "savingsProgress",
+    "budgetPercentage",
+    "savingsPercentage",
+    "remainingToSave",
+    "availableForBudget"
+  ],
+  "properties": {
+    "totalBudgeted": { "type": "number" },
+    "totalSavingsGoal": { "type": "number" },
+    "totalSaved": { "type": "number" },
+    "savingsProgress": { "type": "number" },
+    "budgetPercentage": { "type": "number" },
+    "savingsPercentage": { "type": "number" },
+    "remainingToSave": { "type": "number" },
+    "availableForBudget": { "type": "number" }
+  },
+  "x-readme-ref-name": "PlannerStats"
+}

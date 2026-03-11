@@ -3,19 +3,19 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { userSchema } from "./userSchema";
+import * as z from "zod";
+import { userSchema } from "./userSchema.ts";
 
 /**
  * @description Token renovado
  */
 export const postAuthRefresh200Schema = z.object({
-  success: z.optional(z.boolean()),
+  success: z.boolean(),
   data: z.optional(
     z.object({
-      user: z.optional(z.lazy(() => userSchema)),
-      accessToken: z.optional(z.string()),
-    })
+      user: z.lazy(() => userSchema),
+      accessToken: z.string(),
+    }),
   ),
   message: z.optional(z.string()),
 });
@@ -30,5 +30,5 @@ export const postAuthRefreshMutationRequestSchema = z.object({
 });
 
 export const postAuthRefreshMutationResponseSchema = z.lazy(
-  () => postAuthRefresh200Schema
+  () => postAuthRefresh200Schema,
 );

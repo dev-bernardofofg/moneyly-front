@@ -1,13 +1,13 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 import { deleteCookie, getCookie, setCookie } from "./cookies";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://sua.api.com",
-});
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
+  withCredentials: true,
+})
 
-// Instância separada para refresh token (sem interceptors para evitar loop)
 const refreshApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://sua.api.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
 });
 
 // Flag para evitar múltiplos refreshs simultâneos
@@ -222,4 +222,12 @@ api.interceptors.response.use(
   }
 );
 
-export { api as customInstance };
+
+export const customInstance = async <T>(
+  config: AxiosRequestConfig,
+): Promise<T> => {
+  return (await api(config)).data;
+};
+
+export { api };
+

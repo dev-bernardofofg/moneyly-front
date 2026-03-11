@@ -24,7 +24,7 @@ const CategoriesPage = () => {
 
 
   const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: data?.data?.pagination,
+    serverPagination: data?.pagination,
     onPaginationChange: setCurrentPagination
   })
 
@@ -48,7 +48,7 @@ const CategoriesPage = () => {
       />
       <StaggeredFade variant="page">
         <CategoryTable
-          categories={data?.data?.data || []}
+          categories={data?.data || []}
           tableOptions={{
             pagination: pagination,
           }}

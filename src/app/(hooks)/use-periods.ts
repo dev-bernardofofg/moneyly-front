@@ -1,12 +1,19 @@
 import { usePeriod } from "@/app/(contexts)/period-provider";
 import {
-  getBudgets,
-  useGetBudgets,
-} from "@/app/(resources)/(generated)/hooks/budgets/budgets";
-import { Budget } from "@/app/(resources)/(generated)/types/Budget";
+  getUserFinancialPeriods,
+  useGetUserFinancialPeriods,
+} from "@/app/(resources)/(generated)/hooks/user/user";
+import { FinancialPeriod } from "@/app/(resources)/(generated)/types/FinancialPeriod";
 import { useEffect } from "react";
-import { BudgetStatus } from "../(resources)/(generated)/hooks/moneylyAPI.schemas";
 import { Period } from "../(types)/period.type";
+
+const toPeriod = (fp: FinancialPeriod): Period => ({
+  id: fp.id,
+  label: fp.label ?? "",
+  startDate: fp.startDate,
+  endDate: fp.endDate,
+  transactionCount: fp.transactionCount ?? 0,
+});
 
 export const usePeriods = () => {
   const {
@@ -18,28 +25,21 @@ export const usePeriods = () => {
     setLoading,
   } = usePeriod();
 
-  const { data: periodsData, isLoading: periodsLoading } = useGetBudgets({
-    query: {
-      queryKey: [getBudgets],
-    },
-  });
+  const { data: periodsData, isLoading: periodsLoading } =
+    useGetUserFinancialPeriods({
+      query: {
+        queryKey: [getUserFinancialPeriods],
+      },
+    });
 
   // Atualizar períodos quando dados chegarem
   useEffect(() => {
     if (periodsData?.data) {
-      setPeriods(periodsData.data.data as Period[]);
+      setPeriods(periodsData.data.map(toPeriod));
 
-      // Se não há período selecionado, selecionar o período atual ou o primeiro
-      if (
-        !selectedPeriodId &&
-        periodsData.data.data &&
-        periodsData.data.data.length > 0
-      ) {
-        const currentPeriod = periodsData.data.data.find(
-          (period: Budget) => period.status === BudgetStatus.safe
-        );
-        const firstPeriod = periodsData.data.data[0];
-        setSelectedPeriodId(currentPeriod?.id || firstPeriod?.id || "");
+      // Se não há período selecionado, selecionar o primeiro
+      if (!selectedPeriodId && periodsData.data.length > 0) {
+        setSelectedPeriodId(periodsData.data[0].id);
       }
     }
   }, [periodsData, selectedPeriodId, setPeriods, setSelectedPeriodId]);

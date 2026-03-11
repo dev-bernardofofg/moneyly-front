@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { categorySchema } from "./categorySchema";
+import * as z from "zod";
+import { categorySchema } from "./categorySchema.ts";
 
 export const putCategoriesUpdateIdPathParamsSchema = z.object({
   id: z.string().uuid(),
@@ -14,8 +14,8 @@ export const putCategoriesUpdateIdPathParamsSchema = z.object({
  * @description Categoria atualizada
  */
 export const putCategoriesUpdateId200Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => categorySchema)),
+  success: z.boolean(),
+  data: z.lazy(() => categorySchema),
   message: z.optional(z.string()),
 });
 
@@ -24,5 +24,5 @@ export const putCategoriesUpdateIdMutationRequestSchema = z.object({
 });
 
 export const putCategoriesUpdateIdMutationResponseSchema = z.lazy(
-  () => putCategoriesUpdateId200Schema
+  () => putCategoriesUpdateId200Schema,
 );

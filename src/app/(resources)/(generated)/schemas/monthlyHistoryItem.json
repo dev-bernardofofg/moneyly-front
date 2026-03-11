@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "required": ["id", "type", "amount", "date", "category"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "type": { "type": "string", "enum": ["income", "expense"] },
+    "amount": { "type": "number" },
+    "date": { "type": "string" },
+    "category": { "type": "string" },
+    "description": { "type": "string" }
+  },
+  "x-readme-ref-name": "MonthlyHistoryItem"
+}

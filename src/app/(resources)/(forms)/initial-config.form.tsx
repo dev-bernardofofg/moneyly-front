@@ -40,13 +40,13 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
         // Buscar dados atualizados do usuário diretamente
         try {
           const response = await getUserMe()
-          const userData = response.data?.data
+          const userData = response.data
           if (userData) {
             updateUser({
               ...userData,
-              financialDayEnd: userUpdatedData?.data?.data?.financialDayEnd,
-              financialDayStart: userUpdatedData?.data?.data?.financialDayStart,
-              monthlyIncome: userUpdatedData?.data?.data?.monthlyIncome?.toString() || null,
+              financialDayEnd: userUpdatedData?.data?.financialDayEnd,
+              financialDayStart: userUpdatedData?.data?.financialDayStart,
+              monthlyIncome: userUpdatedData?.data?.monthlyIncome?.toString() || null,
             })
             queryClient.clear()
           }

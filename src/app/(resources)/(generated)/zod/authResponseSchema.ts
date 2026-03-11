@@ -3,17 +3,17 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { userSchema } from "./userSchema";
+import * as z from "zod";
+import { userSchema } from "./userSchema.ts";
 
 export const authResponseSchema = z.object({
-  success: z.optional(z.boolean()),
+  success: z.boolean(),
   data: z.optional(
     z.object({
-      user: z.optional(z.lazy(() => userSchema)),
-      accessToken: z.optional(z.string()),
-      refreshToken: z.optional(z.string()),
-    })
+      user: z.lazy(() => userSchema),
+      accessToken: z.string(),
+      refreshToken: z.string(),
+    }),
   ),
   message: z.optional(z.string()),
 });

@@ -3,13 +3,14 @@
 import { AlertsPopover } from '@/app/(components)/(bases)/(notifications)/alerts-popover'
 import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
+import { PlannerAlert } from '@/app/(resources)/(generated)/types/PlannerAlert'
 import { Bell, PieChart, Target, TrendingUp } from 'lucide-react'
 
 interface PlannerStatsProps {
   totalBudgeted?: number
   savingsGoal?: number
   alreadySaved?: number
-  alerts?: string[]
+  alerts?: PlannerAlert[]
 }
 
 export const PlannerStats = ({

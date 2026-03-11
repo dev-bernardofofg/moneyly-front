@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { authResponseSchema } from "./authResponseSchema";
+import * as z from "zod";
+import { authResponseSchema } from "./authResponseSchema.ts";
 
 /**
  * @description Login realizado
@@ -22,5 +22,5 @@ export const postAuthSignInMutationRequestSchema = z.object({
 });
 
 export const postAuthSignInMutationResponseSchema = z.lazy(
-  () => postAuthSignIn200Schema
+  () => postAuthSignIn200Schema,
 );

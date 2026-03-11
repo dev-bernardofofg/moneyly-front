@@ -32,8 +32,8 @@ export const SignInForm = () => {
   const { mutate, isPending } = usePostAuthSignIn({
     mutation: {
       onSuccess: (data) => {
-        setAuth(data.data);
-        toast.success(data.data.message);
+        setAuth(data);
+        toast.success(data.message ?? "Login realizado com sucesso");
         router.push("/dashboard");
       },
     },

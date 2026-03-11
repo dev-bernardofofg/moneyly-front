@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { authResponseSchema } from "./authResponseSchema";
+import * as z from "zod";
+import { authResponseSchema } from "./authResponseSchema.ts";
 
 /**
  * @description Login com Google realizado
@@ -21,5 +21,5 @@ export const postAuthGoogleMutationRequestSchema = z.object({
 });
 
 export const postAuthGoogleMutationResponseSchema = z.lazy(
-  () => postAuthGoogle200Schema
+  () => postAuthGoogle200Schema,
 );

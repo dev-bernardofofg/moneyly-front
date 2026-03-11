@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { authResponseSchema } from "./authResponseSchema";
+import * as z from "zod";
+import { authResponseSchema } from "./authResponseSchema.ts";
 
 /**
  * @description Usuário criado
@@ -23,5 +23,5 @@ export const postAuthSignUpMutationRequestSchema = z.object({
 });
 
 export const postAuthSignUpMutationResponseSchema = z.lazy(
-  () => postAuthSignUp201Schema
+  () => postAuthSignUp201Schema,
 );

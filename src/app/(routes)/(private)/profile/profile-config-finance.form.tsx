@@ -50,12 +50,14 @@ export const ProfileConfigFinanceForm = ({ defaultValues }: { defaultValues: Pro
         }
       })
 
-      updateUser({
-        ...user,
-        financialDayEnd: Number(data.financialDayEnd),
-        financialDayStart: Number(data.financialDayStart),
-        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome).toString(),
-      })
+      if (user) {
+        updateUser({
+          ...user,
+          financialDayEnd: Number(data.financialDayEnd),
+          financialDayStart: Number(data.financialDayStart),
+          monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome).toString(),
+        })
+      }
     } else {
       toast.info("Nenhuma alteração foi feita")
     }

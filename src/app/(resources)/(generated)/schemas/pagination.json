@@ -1,1 +1,13 @@
-{"type":"object","properties":{"page":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"totalPages":{"type":"number"},"hasNext":{"type":"boolean"},"hasPrev":{"type":"boolean"}},"x-readme-ref-name":"Pagination"}
+{
+  "type": "object",
+  "required": ["page", "limit", "total", "totalPages", "hasNext", "hasPrev"],
+  "properties": {
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "total": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "hasNext": { "type": "boolean" },
+    "hasPrev": { "type": "boolean" }
+  },
+  "x-readme-ref-name": "Pagination"
+}

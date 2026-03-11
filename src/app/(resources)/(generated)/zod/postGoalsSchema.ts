@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { goalSchema } from "./goalSchema";
+import * as z from "zod";
+import { goalSchema } from "./goalSchema.ts";
 
 /**
  * @description Criada
  */
 export const postGoals201Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => goalSchema)),
+  success: z.boolean(),
+  data: z.lazy(() => goalSchema),
   message: z.optional(z.string()),
 });
 

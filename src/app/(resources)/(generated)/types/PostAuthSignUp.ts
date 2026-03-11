@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { AuthResponse } from "./AuthResponse";
+import type { AuthResponse } from "./AuthResponse.ts";
 
 /**
  * @description Usuário criado

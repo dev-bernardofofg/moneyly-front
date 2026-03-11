@@ -29,7 +29,7 @@ const TransactionsPage = () => {
 
 
   const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: transactions?.data.pagination,
+    serverPagination: transactions?.pagination,
     onPaginationChange: setCurrentPagination
   })
 
@@ -69,7 +69,7 @@ const TransactionsPage = () => {
         </StaggeredFade>
         <StaggeredFade>
           <TransactionTable
-            transactions={transactions?.data.data ?? []}
+            transactions={transactions?.data ?? []}
             tableOptions={{
               pagination: pagination,
               size: "sm"

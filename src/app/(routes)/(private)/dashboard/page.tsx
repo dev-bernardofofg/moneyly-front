@@ -12,8 +12,10 @@ import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { usePeriod } from "@/app/(contexts)/period-provider";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
-import { Transaction } from "@/app/(resources)/(generated)";
 import { useGetOverviewDashboard } from "@/app/(resources)/(generated)/hooks/overview/overview";
+import { DashboardStats } from "@/app/(resources)/(generated)/types/DashboardStats";
+import { ExpensesByCategoryItem } from "@/app/(resources)/(generated)/types/ExpensesByCategoryItem";
+import { MonthlyHistoryItem } from "@/app/(resources)/(generated)/types/MonthlyHistoryItem";
 import { ROUTES } from "@/app/(utils)/routes";
 import { LinearProgress } from "@/components/ui/linear-progress";
 import { useRouter } from "next/navigation";
@@ -53,7 +55,7 @@ const DashboardPage = () => {
             <BaseStats
               key={stat.indicator}
               name={stat.name}
-              value={(overviewData?.data.data?.stats?.[stat.indicator] ?? 0) as number}
+              value={((overviewData?.data?.stats as DashboardStats | undefined)?.[stat.indicator as keyof DashboardStats] ?? 0) as number}
               Icon={stat.icon}
               description={stat.description}
               isMonetary={stat.isMonetary}
@@ -79,7 +81,7 @@ const DashboardPage = () => {
             }
           >
             {(() => {
-              const monthlyHistory = overviewData?.data?.data?.monthlyHistory;
+              const monthlyHistory = overviewData?.data?.monthlyHistory;
 
               if (!monthlyHistory || monthlyHistory.length === 0) {
                 return (
@@ -91,13 +93,13 @@ const DashboardPage = () => {
 
               return (
                 <StaggeredFade className="space-y-2">
-                  {monthlyHistory.map((transaction: Transaction) => (
+                  {monthlyHistory.map((transaction: MonthlyHistoryItem) => (
                     <TransactionItem
                       key={transaction.id}
-                      value={transaction.amount ? parseFloat(transaction.amount) : 0}
-                      type={(transaction.type as "income" | "expense") ?? "expense"}
-                      category={transaction.category?.name ?? ""}
-                      date={transaction.date ?? ""}
+                      value={transaction.amount}
+                      type={transaction.type}
+                      category={transaction.category}
+                      date={transaction.date}
                     />
                   ))}
                 </StaggeredFade>
@@ -109,19 +111,19 @@ const DashboardPage = () => {
             description="Suas categorias mais gastas no mês"
           >
             <StaggeredFade className="space-y-2">
-              {overviewData?.data.data?.expensesByCategory?.length === 0 || !overviewData?.data.data?.expensesByCategory ? (
+              {overviewData?.data?.expensesByCategory?.length === 0 || !overviewData?.data?.expensesByCategory ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-muted-foreground">Nenhuma categoria encontrada</p>
                 </div>
               ) : (
                 <StaggeredFade className="space-y-2">
-                  {overviewData?.data.data?.expensesByCategory.map((category: Transaction) => (
+                  {overviewData?.data?.expensesByCategory.map((category: ExpensesByCategoryItem) => (
                     <div key={category.id} className="flex flex-col gap-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p>{category.category?.name}</p>
-                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount ? parseFloat(category.amount) : 0)}</p>
+                        <p>{category.name}</p>
+                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount)}</p>
                       </div>
-                      <LinearProgress value={category.amount ? parseFloat(category.amount) : 0} maxValue={overviewData?.data.data?.stats?.totalExpense ? parseFloat(overviewData?.data.data?.stats?.totalExpense as string) : 0} />
+                      <LinearProgress value={category.amount} maxValue={overviewData?.data?.stats?.totalExpense ?? 0} />
                     </div>
                   ))}
                 </StaggeredFade>

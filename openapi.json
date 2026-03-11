@@ -1,0 +1,1796 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Moneyly API",
+    "version": "1.0.0",
+    "description": "API para gerenciamento financeiro pessoal"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["id", "name", "email", "createdAt", "updatedAt"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "googleId": { "type": "string", "nullable": true },
+          "avatar": { "type": "string", "nullable": true },
+          "monthlyIncome": { "type": "string", "nullable": true },
+          "financialDayStart": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 31,
+            "nullable": true
+          },
+          "financialDayEnd": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 31,
+            "nullable": true
+          },
+          "firstAccess": { "type": "boolean", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "type",
+          "title",
+          "amount",
+          "date",
+          "categoryId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "userId": { "type": "string", "format": "uuid" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "title": { "type": "string" },
+          "amount": { "type": "string" },
+          "description": { "type": "string", "nullable": true },
+          "date": { "type": "string", "format": "date-time" },
+          "categoryId": { "type": "string", "format": "uuid" },
+          "periodId": { "type": "string", "format": "uuid", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "category": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "name": { "type": "string" }
+            }
+          }
+        }
+      },
+      "Budget": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "categoryId",
+          "monthlyLimit",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "userId": { "type": "string", "format": "uuid" },
+          "categoryId": { "type": "string", "format": "uuid" },
+          "monthlyLimit": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "spent": { "type": "number" },
+          "remaining": { "type": "number" },
+          "percentage": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["safe", "warning", "danger", "exceeded", "attention"]
+          },
+          "category": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "name": { "type": "string" }
+            }
+          }
+        }
+      },
+      "Goal": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "targetAmount",
+          "currentAmount",
+          "targetDate",
+          "startDate",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "userId": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "description": { "type": "string", "nullable": true },
+          "targetAmount": { "type": "string" },
+          "currentAmount": { "type": "string" },
+          "targetDate": { "type": "string", "format": "date-time" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "isActive": { "type": "boolean", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "progress": {
+            "type": "object",
+            "required": ["percentage", "daysRemaining", "remaining"],
+            "properties": {
+              "percentage": { "type": "number" },
+              "daysRemaining": { "type": "number" },
+              "remaining": { "type": "number" }
+            }
+          },
+          "milestones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "goalId",
+                "percentage",
+                "amount",
+                "isReached",
+                "createdAt"
+              ],
+              "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "goalId": { "type": "string", "format": "uuid" },
+                "percentage": { "type": "number" },
+                "amount": { "type": "string" },
+                "isReached": { "type": "boolean" },
+                "reachedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "nullable": true
+                },
+                "createdAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": ["id", "name", "isGlobal", "createdAt", "updatedAt"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "userId": { "type": "string", "format": "uuid", "nullable": true },
+          "name": { "type": "string" },
+          "isGlobal": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "required": ["success"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "object" },
+          "message": { "type": "string" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "required": ["success"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "required": ["user", "accessToken", "refreshToken"],
+            "properties": {
+              "user": { "$ref": "#/components/schemas/User" },
+              "accessToken": { "type": "string" },
+              "refreshToken": { "type": "string" }
+            }
+          },
+          "message": { "type": "string" }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "totalPages",
+          "hasNext",
+          "hasPrev"
+        ],
+        "properties": {
+          "page": { "type": "number" },
+          "limit": { "type": "number" },
+          "total": { "type": "number" },
+          "totalPages": { "type": "number" },
+          "hasNext": { "type": "boolean" },
+          "hasPrev": { "type": "boolean" }
+        }
+      },
+      "PaginatedResponse": {
+        "type": "object",
+        "required": ["success", "data", "pagination"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "pagination": { "$ref": "#/components/schemas/Pagination" },
+          "message": { "type": "string" }
+        }
+      },
+      "FinancialPeriod": {
+        "type": "object",
+        "required": ["id", "startDate", "endDate"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "label": { "type": "string" },
+          "transactionCount": { "type": "number" }
+        }
+      },
+      "SelectedPeriod": {
+        "type": "object",
+        "required": [
+          "id",
+          "startDate",
+          "endDate",
+          "label",
+          "transactionCount",
+          "description"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "label": { "type": "string" },
+          "transactionCount": { "type": "number" },
+          "description": { "type": "string" }
+        }
+      },
+      "DashboardStats": {
+        "type": "object",
+        "required": [
+          "totalIncome",
+          "totalExpense",
+          "balance",
+          "remainingBudget"
+        ],
+        "properties": {
+          "totalIncome": { "type": "number" },
+          "totalExpense": { "type": "number" },
+          "balance": { "type": "number" },
+          "percentUsed": { "type": "number", "nullable": true },
+          "remainingBudget": { "type": "number" }
+        }
+      },
+      "MonthlyHistoryItem": {
+        "type": "object",
+        "required": ["id", "type", "amount", "date", "category"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "amount": { "type": "number" },
+          "date": { "type": "string" },
+          "category": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "ExpensesByCategoryItem": {
+        "type": "object",
+        "required": ["id", "name", "amount", "percentage"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "amount": { "type": "number" },
+          "percentage": { "type": "number" }
+        }
+      },
+      "PlannerStats": {
+        "type": "object",
+        "required": [
+          "totalBudgeted",
+          "totalSavingsGoal",
+          "totalSaved",
+          "savingsProgress",
+          "budgetPercentage",
+          "savingsPercentage",
+          "remainingToSave",
+          "availableForBudget"
+        ],
+        "properties": {
+          "totalBudgeted": { "type": "number" },
+          "totalSavingsGoal": { "type": "number" },
+          "totalSaved": { "type": "number" },
+          "savingsProgress": { "type": "number" },
+          "budgetPercentage": { "type": "number" },
+          "savingsPercentage": { "type": "number" },
+          "remainingToSave": { "type": "number" },
+          "availableForBudget": { "type": "number" }
+        }
+      },
+      "PlannerAlert": {
+        "type": "object",
+        "required": ["type", "message", "priority"],
+        "properties": {
+          "type": { "type": "string", "enum": ["danger", "warning", "info"] },
+          "message": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "category": { "type": "string" },
+          "goal": { "type": "string" },
+          "daysRemaining": { "type": "number" },
+          "percentage": { "type": "number" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/sign-up": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Cadastrar usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 6 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "409": { "description": "Email já cadastrado" }
+        }
+      }
+    },
+    "/auth/sign-in": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Fazer login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "401": { "description": "Credenciais inválidas" }
+        }
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login com Google",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["idToken"],
+                "properties": {
+                  "idToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login com Google realizado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "401": { "description": "Falha na autenticação com Google" }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Renovar access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token renovado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["user", "accessToken"],
+                      "properties": {
+                        "user": { "$ref": "#/components/schemas/User" },
+                        "accessToken": { "type": "string" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Refresh token inválido ou expirado" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Fazer logout",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logout realizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": { "type": "boolean" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/create": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Criar transação",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["type", "title", "amount", "category"],
+                "properties": {
+                  "type": { "type": "string", "enum": ["income", "expense"] },
+                  "title": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "category": { "type": "string", "format": "uuid" },
+                  "description": { "type": "string" },
+                  "date": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transação criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Transaction" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Listar transações",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de transações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data", "pagination"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Transaction" }
+                    },
+                    "pagination": { "$ref": "#/components/schemas/Pagination" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{id}": {
+      "put": {
+        "tags": ["Transactions"],
+        "summary": "Atualizar transação",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["income", "expense"] },
+                  "title": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "category": { "type": "string", "format": "uuid" },
+                  "description": { "type": "string" },
+                  "date": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Transaction" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Deletar transação",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/summary": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Resumo financeiro",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Resumo financeiro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["totalIncome", "totalExpense", "balance"],
+                      "properties": {
+                        "totalIncome": { "type": "number" },
+                        "totalExpense": { "type": "number" },
+                        "balance": { "type": "number" },
+                        "monthlyIncome": { "type": "number" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/summary-by-month": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Resumo financeiro mensal",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Resumo mensal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["totalIncome", "totalExpense", "balance"],
+                      "properties": {
+                        "totalIncome": { "type": "number" },
+                        "totalExpense": { "type": "number" },
+                        "balance": { "type": "number" },
+                        "monthlyIncome": { "type": "number" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/summary-current-period": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Resumo do período financeiro atual",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Resumo do período atual",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["totalIncome", "totalExpense", "balance"],
+                      "properties": {
+                        "totalIncome": { "type": "number" },
+                        "totalExpense": { "type": "number" },
+                        "balance": { "type": "number" },
+                        "monthlyIncome": { "type": "number" },
+                        "percentUsed": { "type": "number" },
+                        "alert": { "type": "string" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/budgets/": {
+      "get": {
+        "tags": ["Budgets"],
+        "summary": "Listar orçamentos",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de orçamentos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Budget" }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Budgets"],
+        "summary": "Criar orçamento",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["categoryId", "monthlyLimit"],
+                "properties": {
+                  "categoryId": { "type": "string", "format": "uuid" },
+                  "monthlyLimit": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Budget" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/budgets/{id}": {
+      "put": {
+        "tags": ["Budgets"],
+        "summary": "Atualizar orçamento",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["monthlyLimit"],
+                "properties": {
+                  "monthlyLimit": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Budget" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Budgets"],
+        "summary": "Deletar orçamento",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Listar metas",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de metas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Goal" }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Criar meta",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "targetAmount", "targetDate"],
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "targetAmount": { "type": "number" },
+                  "targetDate": { "type": "string", "format": "date" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Goal" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/{id}": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Obter meta",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da meta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Goal" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Goals"],
+        "summary": "Atualizar meta",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "targetAmount": { "type": "number" },
+                  "targetDate": { "type": "string", "format": "date" },
+                  "currentAmount": { "type": "number" },
+                  "isActive": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Goal" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Deletar meta",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goals/{id}/add-amount": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Adicionar valor à meta",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["amount"],
+                "properties": {
+                  "amount": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Valor adicionado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Goal" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Listar categorias",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de categorias",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data", "pagination"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Category" }
+                    },
+                    "pagination": { "$ref": "#/components/schemas/Pagination" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/create": {
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Criar categoria customizada",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Category" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/update/{id}": {
+      "put": {
+        "tags": ["Categories"],
+        "summary": "Atualizar categoria",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/Category" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/delete/{id}": {
+      "delete": {
+        "tags": ["Categories"],
+        "summary": "Deletar categoria",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria deletada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Perfil do usuário",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Dados do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/User" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/income": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Atualizar rendimento mensal",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["monthlyIncome"],
+                "properties": {
+                  "monthlyIncome": {
+                    "type": "number",
+                    "minimum": 0.01,
+                    "maximum": 999999999.99
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rendimento atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["monthlyIncome", "firstAccess"],
+                      "properties": {
+                        "monthlyIncome": { "type": "number" },
+                        "firstAccess": { "type": "boolean" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/financial-period": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Atualizar período financeiro",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["financialDayStart", "financialDayEnd"],
+                "properties": {
+                  "financialDayStart": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 31
+                  },
+                  "financialDayEnd": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 31
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Período financeiro atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "financialDayStart",
+                        "financialDayEnd",
+                        "firstAccess"
+                      ],
+                      "properties": {
+                        "financialDayStart": { "type": "number" },
+                        "financialDayEnd": { "type": "number" },
+                        "firstAccess": { "type": "boolean" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/income-and-period": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Atualizar rendimento e período financeiro",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "monthlyIncome",
+                  "financialDayStart",
+                  "financialDayEnd"
+                ],
+                "properties": {
+                  "monthlyIncome": {
+                    "type": "number",
+                    "minimum": 0.01,
+                    "maximum": 999999999.99
+                  },
+                  "financialDayStart": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 31
+                  },
+                  "financialDayEnd": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 31
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rendimento e período financeiro atualizados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "monthlyIncome",
+                        "financialDayStart",
+                        "financialDayEnd",
+                        "firstAccess"
+                      ],
+                      "properties": {
+                        "monthlyIncome": { "type": "number" },
+                        "financialDayStart": { "type": "number" },
+                        "financialDayEnd": { "type": "number" },
+                        "firstAccess": { "type": "boolean" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/financial-periods": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Listar períodos financeiros",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de períodos financeiros",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FinancialPeriod"
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/financial-periods/{periodId}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Buscar período financeiro por ID",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "periodId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Período financeiro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["id", "startDate", "endDate"],
+                      "properties": {
+                        "id": { "type": "string", "format": "uuid" },
+                        "startDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "endDate": { "type": "string", "format": "date-time" },
+                        "isActive": { "type": "boolean" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Período não encontrado" }
+        }
+      }
+    },
+    "/overview/periods": {
+      "get": {
+        "tags": ["Overview"],
+        "summary": "Listar períodos financeiros disponíveis",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de períodos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FinancialPeriod"
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/overview/dashboard": {
+      "get": {
+        "tags": ["Overview"],
+        "summary": "Dados do dashboard",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "periodId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "stats",
+                        "availablePeriods",
+                        "monthlyHistory",
+                        "expensesByCategory",
+                        "transactionsCount"
+                      ],
+                      "properties": {
+                        "stats": {
+                          "$ref": "#/components/schemas/DashboardStats"
+                        },
+                        "selectedPeriod": {
+                          "$ref": "#/components/schemas/SelectedPeriod",
+                          "nullable": true
+                        },
+                        "availablePeriods": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FinancialPeriod"
+                          }
+                        },
+                        "monthlyHistory": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/MonthlyHistoryItem"
+                          }
+                        },
+                        "expensesByCategory": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ExpensesByCategoryItem"
+                          }
+                        },
+                        "transactionsCount": { "type": "number" }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/overview/planner": {
+      "get": {
+        "tags": ["Overview"],
+        "summary": "Planejamento financeiro",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Planejamento financeiro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "required": ["stats", "currentPeriod", "alerts"],
+                      "properties": {
+                        "stats": {
+                          "$ref": "#/components/schemas/PlannerStats"
+                        },
+                        "currentPeriod": {
+                          "type": "object",
+                          "required": ["startDate", "endDate", "description"],
+                          "properties": {
+                            "startDate": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "endDate": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "description": { "type": "string" }
+                          }
+                        },
+                        "alerts": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PlannerAlert"
+                          }
+                        }
+                      }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

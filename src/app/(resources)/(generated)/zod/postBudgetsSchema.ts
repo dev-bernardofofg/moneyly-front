@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { budgetSchema } from "./budgetSchema";
+import * as z from "zod";
+import { budgetSchema } from "./budgetSchema.ts";
 
 /**
  * @description Criado
  */
 export const postBudgets201Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => budgetSchema)),
+  success: z.boolean(),
+  data: z.lazy(() => budgetSchema),
   message: z.optional(z.string()),
 });
 
@@ -21,5 +21,5 @@ export const postBudgetsMutationRequestSchema = z.object({
 });
 
 export const postBudgetsMutationResponseSchema = z.lazy(
-  () => postBudgets201Schema
+  () => postBudgets201Schema,
 );

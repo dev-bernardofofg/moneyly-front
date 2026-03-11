@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { userSchema } from "./userSchema";
+import * as z from "zod";
+import { userSchema } from "./userSchema.ts";
 
 /**
  * @description Dados do usuário
  */
 export const getUserMe200Schema = z.object({
-  success: z.optional(z.boolean()),
-  data: z.optional(z.lazy(() => userSchema)),
+  success: z.boolean(),
+  data: z.lazy(() => userSchema),
   message: z.optional(z.string()),
 });
 

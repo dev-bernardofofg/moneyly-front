@@ -3,20 +3,20 @@
  * Do not edit manually.
  */
 
-import type { User } from "./User";
+import type { User } from "./User.ts";
 
 /**
  * @description Dados do usuário
  */
 export type GetUserMe200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: User;
+  data: User;
   /**
    * @type string | undefined
    */

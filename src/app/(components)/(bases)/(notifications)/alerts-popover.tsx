@@ -1,5 +1,6 @@
 "use client";
 
+import { PlannerAlert } from "@/app/(resources)/(generated)/types/PlannerAlert";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
@@ -8,7 +9,7 @@ import { useState } from "react";
 
 
 interface AlertsPopoverProps {
-  alerts: string[];
+  alerts: PlannerAlert[];
   trigger: React.ReactNode;
 }
 
@@ -83,21 +84,23 @@ export const AlertsPopover = ({
             alerts.map((alert, index) => (
               <div
                 key={index}
-                className={`p-3 rounded-lg border-l-4 transition-colors ${getAlertColor(alert)}`}
+                className={`p-3 rounded-lg border-l-4 transition-colors ${getAlertColor(alert.type)}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-2 flex-1">
-                    {getAlertIcon(alert)}
+                    {getAlertIcon(alert.type)}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm font-medium text-foreground">
-                          {alert}
+                          {alert.message}
                         </p>
-                        {getPriorityBadge(alert)}
+                        {getPriorityBadge(alert.priority)}
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {alert}
-                      </p>
+                      {alert.category && (
+                        <p className="text-xs text-muted-foreground">
+                          {alert.category}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

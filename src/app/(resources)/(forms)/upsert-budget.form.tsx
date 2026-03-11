@@ -68,7 +68,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
 
   const handleForm = (data: CreateBudgetFormValues) => {
     if (budget) {
-      updateMutation.mutate({ id: budget.id || "" })
+      updateMutation.mutate({ id: budget.id || "", data: { monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) } })
     } else {
       createMutation.mutate({ data: { categoryId: data.categoryId || "", monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) } })
     }
@@ -83,7 +83,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
             name="categoryId"
             label="Categoria"
             control={form.control}
-            options={categories?.data.data?.map((category: TransactionCategory) => ({
+            options={categories?.data?.map((category: TransactionCategory) => ({
               label: category.name || "Nome da categoria",
               value: category.id || "ID da categoria",
             }))}

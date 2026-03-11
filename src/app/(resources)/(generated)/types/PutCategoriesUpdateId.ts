@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Category } from "./Category";
+import type { Category } from "./Category.ts";
 
 export type PutCategoriesUpdateIdPathParams = {
   /**
@@ -17,13 +17,13 @@ export type PutCategoriesUpdateIdPathParams = {
  */
 export type PutCategoriesUpdateId200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Category;
+  data: Category;
   /**
    * @type string | undefined
    */

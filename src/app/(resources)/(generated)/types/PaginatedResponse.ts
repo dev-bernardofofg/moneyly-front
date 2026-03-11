@@ -3,21 +3,21 @@
  * Do not edit manually.
  */
 
-import type { Pagination } from "./Pagination";
+import type { Pagination } from "./Pagination.ts";
 
 export type PaginatedResponse = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type array | undefined
+   * @type array
    */
-  data?: object[];
+  data: object[];
   /**
-   * @type object | undefined
+   * @type object
    */
-  pagination?: Pagination;
+  pagination: Pagination;
   /**
    * @type string | undefined
    */

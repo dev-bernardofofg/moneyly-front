@@ -3,7 +3,8 @@
  * Do not edit manually.
  */
 
-import type { PaginatedResponse } from "./PaginatedResponse";
+import type { Category } from "./Category.ts";
+import type { Pagination } from "./Pagination.ts";
 
 export type GetCategoriesQueryParams = {
   /**
@@ -19,7 +20,24 @@ export type GetCategoriesQueryParams = {
 /**
  * @description Lista de categorias
  */
-export type GetCategories200 = PaginatedResponse;
+export type GetCategories200 = {
+  /**
+   * @type boolean
+   */
+  success: boolean;
+  /**
+   * @type array
+   */
+  data: Category[];
+  /**
+   * @type object
+   */
+  pagination: Pagination;
+  /**
+   * @type string | undefined
+   */
+  message?: string;
+};
 
 export type GetCategoriesQueryResponse = GetCategories200;
 

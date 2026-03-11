@@ -3,29 +3,29 @@
  * Do not edit manually.
  */
 
-import type { User } from "./User";
+import type { User } from "./User.ts";
 
 export type AuthResponse = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
    * @type object | undefined
    */
   data?: {
     /**
-     * @type object | undefined
+     * @type object
      */
-    user?: User;
+    user: User;
     /**
-     * @type string | undefined
+     * @type string
      */
-    accessToken?: string;
+    accessToken: string;
     /**
-     * @type string | undefined
+     * @type string
      */
-    refreshToken?: string;
+    refreshToken: string;
   };
   /**
    * @type string | undefined

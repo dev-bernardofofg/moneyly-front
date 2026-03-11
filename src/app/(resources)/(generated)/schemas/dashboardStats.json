@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "required": ["totalIncome", "totalExpense", "balance", "remainingBudget"],
+  "properties": {
+    "totalIncome": { "type": "number" },
+    "totalExpense": { "type": "number" },
+    "balance": { "type": "number" },
+    "percentUsed": { "type": "number", "nullable": true },
+    "remainingBudget": { "type": "number" }
+  },
+  "x-readme-ref-name": "DashboardStats"
+}

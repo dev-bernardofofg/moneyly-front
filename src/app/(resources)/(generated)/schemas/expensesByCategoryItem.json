@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["id", "name", "amount", "percentage"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "amount": { "type": "number" },
+    "percentage": { "type": "number" }
+  },
+  "x-readme-ref-name": "ExpensesByCategoryItem"
+}

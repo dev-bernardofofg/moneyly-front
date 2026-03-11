@@ -12,13 +12,14 @@ import { Fade } from '@/app/(components)/(motions)/fade'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
 import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
+import { useGetBudgets } from '@/app/(resources)/(generated)/hooks/budgets/budgets'
 import { useGetGoals } from '@/app/(resources)/(generated)/hooks/goals/goals'
-import { useGetOverviewPeriods, useGetOverviewPlanner } from '@/app/(resources)/(generated)/hooks/overview/overview'
+import { useGetOverviewPlanner } from '@/app/(resources)/(generated)/hooks/overview/overview'
 
 import { Target } from 'lucide-react'
 
 const PlannerPage = () => {
-  const { data: budgets } = useGetOverviewPeriods()
+  const { data: budgets } = useGetBudgets()
   const { data: goals } = useGetGoals()
   const { data: overviewPlanner } = useGetOverviewPlanner()
 
@@ -52,24 +53,24 @@ const PlannerPage = () => {
 
 
         <PlannerStats
-          totalBudgeted={overviewPlanner?.data.data?.stats?.totalBudgeted as number}
-          savingsGoal={overviewPlanner?.data.data?.stats?.totalSavingsGoal as number}
-          alreadySaved={overviewPlanner?.data.data?.stats?.totalSaved as number}
-          alerts={overviewPlanner?.data.data?.alerts || []}
+          totalBudgeted={overviewPlanner?.data?.stats?.totalBudgeted as number}
+          savingsGoal={overviewPlanner?.data?.stats?.totalSavingsGoal as number}
+          alreadySaved={overviewPlanner?.data?.stats?.totalSaved as number}
+          alerts={overviewPlanner?.data?.alerts || []}
         />
 
         <Section
           Icon={Target}
           title="Orçamentos por Categoria"
         >
-          <BudgetSwiper budgets={budgets?.data.data?.map((budget) => budget) || []} />
+          <BudgetSwiper budgets={budgets?.data?.map((budget) => budget) || []} />
         </Section>
 
         <Section
           Icon={Target}
           title="Objetivos de Poupança"
         >
-          <GoalSwiper goals={goals?.data.data?.map((goal) => goal) || []} />
+          <GoalSwiper goals={goals?.data?.map((goal) => goal) || []} />
         </Section>
       </StaggeredFade>
     </Fade>

@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
-import { paginatedResponseSchema } from "./paginatedResponseSchema";
+import * as z from "zod";
+import { categorySchema } from "./categorySchema.ts";
+import { paginationSchema } from "./paginationSchema.ts";
 
 export const getCategoriesQueryParamsSchema = z
   .object({
@@ -16,8 +17,13 @@ export const getCategoriesQueryParamsSchema = z
 /**
  * @description Lista de categorias
  */
-export const getCategories200Schema = z.lazy(() => paginatedResponseSchema);
+export const getCategories200Schema = z.object({
+  success: z.boolean(),
+  data: z.array(z.lazy(() => categorySchema)),
+  pagination: z.lazy(() => paginationSchema),
+  message: z.optional(z.string()),
+});
 
 export const getCategoriesQueryResponseSchema = z.lazy(
-  () => getCategories200Schema
+  () => getCategories200Schema,
 );

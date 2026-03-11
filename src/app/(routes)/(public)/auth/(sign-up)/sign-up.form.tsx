@@ -33,7 +33,7 @@ export const SignUpForm = () => {
     mutation: {
       onSuccess: (axiosResponse) => {
         // Com o interceptor, axiosResponse.data já é { user, accessToken, refreshToken }
-        setAuth({ data: axiosResponse.data as any });
+        setAuth(axiosResponse);
         toast.success("Conta criada com sucesso. Você será redirecionado..");
         router.push("/dashboard");
       },

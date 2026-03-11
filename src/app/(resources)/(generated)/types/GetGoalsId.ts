@@ -3,11 +3,11 @@
  * Do not edit manually.
  */
 
-import type { Goal } from "./Goal";
+import type { Goal } from "./Goal.ts";
 
 export type GetGoalsIdPathParams = {
   /**
-   * @type string
+   * @type string, uuid
    */
   id: string;
 };
@@ -17,13 +17,13 @@ export type GetGoalsIdPathParams = {
  */
 export type GetGoalsId200 = {
   /**
-   * @type boolean | undefined
+   * @type boolean
    */
-  success?: boolean;
+  success: boolean;
   /**
-   * @type object | undefined
+   * @type object
    */
-  data?: Goal;
+  data: Goal;
   /**
    * @type string | undefined
    */
