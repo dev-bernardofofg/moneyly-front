@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const updateUser = (userData: User) => {
     setUser(userData)
-    console.log('userData', userData)
     localStorage.setItem('auth_user', JSON.stringify(userData))
   }
 

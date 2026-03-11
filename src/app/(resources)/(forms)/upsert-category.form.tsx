@@ -4,7 +4,7 @@ import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button'
 import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form'
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input'
 import { queryClient } from '@/app/(contexts)'
-import { getErrorMessage } from '@/app/(helpers)/errors'
+import { getErrorMessage, setFormFieldErrors } from '@/app/(helpers)/errors'
 import { CustomAxiosError } from '@/app/(types)/error.type'
 import { DialogClose } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
@@ -39,8 +39,8 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
         queryClient.invalidateQueries({ queryKey: [getGetCategoriesQueryKey()] });
       },
       onError: (error: CustomAxiosError) => {
-        const errorMessage = getErrorMessage(error);
-        toast.error(errorMessage);
+        toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['name']);
       },
     },
   });
@@ -55,6 +55,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['name']);
       },
     },
   });

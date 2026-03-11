@@ -4,7 +4,7 @@ import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button";
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { useAuth } from "@/app/(contexts)/auth-provider";
-import { getErrorMessage } from "@/app/(helpers)/errors";
+import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
 import { usePostAuthSignUp } from "@/app/(resources)/(generated)/hooks/auth/auth";
 import {
   SignUpDefaultValues,
@@ -38,15 +38,15 @@ export const SignUpForm = () => {
         router.push("/dashboard");
       },
       onError: (error: CustomAxiosError) => {
-        const errorMessage = getErrorMessage(error);
-        toast.error(errorMessage);
+        toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['name', 'email', 'password']);
       },
     },
   });
 
   const googleSignIn = useGoogleLogin({
-    onSuccess: (codeResponse: CodeResponse) => {
-      console.log(codeResponse);
+    onSuccess: (_codeResponse: CodeResponse) => {
+      // TODO: implementar exchange de token com o backend
     },
   });
 

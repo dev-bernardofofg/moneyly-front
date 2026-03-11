@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import { extractApiErrorMessage } from "../(helpers)/errors";
 import { deleteCookie, getCookie, setCookie } from "./cookies";
 
 const api = axios.create({
@@ -55,17 +56,7 @@ api.interceptors.response.use(
     // Se o erro não for 401 ou se já tentamos fazer refresh, retorna erro formatado
     if (error.response?.status !== 401 || originalRequest._retry) {
       const status = error.response?.status;
-      const errorData = error.response?.data as any;
-
-      // Extrai mensagem de erro considerando diferentes formatos da API
-      let message = "Erro inesperado";
-      if (errorData?.error) {
-        message = errorData.error;
-      } else if (errorData?.message) {
-        message = errorData.message;
-      } else if (errorData?.details?.message) {
-        message = errorData.details.message;
-      }
+      const message = extractApiErrorMessage(error.response?.data);
 
       return Promise.reject({
         status,
@@ -191,21 +182,9 @@ api.interceptors.response.use(
       deleteCookie("refresh_token");
       localStorage.removeItem("auth_user");
 
-      // Extrai mensagem de erro considerando diferentes formatos
-      let errorMessage = "Sessão expirada. Faça login novamente.";
-
-      if (refreshError?.response?.data) {
-        const errorData = refreshError.response.data;
-        if (errorData.error) {
-          errorMessage = errorData.error;
-        } else if (errorData.message) {
-          errorMessage = errorData.message;
-        } else if (errorData.details?.message) {
-          errorMessage = errorData.details.message;
-        }
-      } else if (refreshError?.message) {
-        errorMessage = refreshError.message;
-      }
+      const errorMessage = refreshError?.response?.data
+        ? extractApiErrorMessage(refreshError.response.data)
+        : refreshError?.message ?? "Sessão expirada. Faça login novamente.";
 
       if (typeof window !== "undefined") {
         window.location.href = "/auth";

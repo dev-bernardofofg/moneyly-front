@@ -1,3 +1,4 @@
+import "@/app/(utils)/env";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";

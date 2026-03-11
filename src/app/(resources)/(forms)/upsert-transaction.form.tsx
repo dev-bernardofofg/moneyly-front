@@ -4,7 +4,7 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
-import { getErrorMessage } from "@/app/(helpers)/errors";
+import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { CustomAxiosError } from "@/app/(types)/error.type";
 import { DialogClose } from "@/components/ui/dialog";
@@ -56,8 +56,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         closeRef.current?.click();
       },
       onError: (error: CustomAxiosError) => {
-        const errorMessage = getErrorMessage(error);
-        toast.error(errorMessage);
+        toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['title', 'amount', 'type', 'category', 'date', 'description']);
       },
     },
   });
@@ -70,8 +70,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         closeRef.current?.click();
       },
       onError: (error: CustomAxiosError) => {
-        const errorMessage = getErrorMessage(error);
-        toast.error(errorMessage);
+        toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['title', 'amount', 'type', 'category', 'date', 'description']);
       },
     },
   });

@@ -8,11 +8,11 @@ export function ServiceWorkerRegister() {
       window.addEventListener("load", () => {
         navigator.serviceWorker
           .register("/sw.js")
-          .then((registration) => {
-            console.log("SW registered: ", registration);
+          .then(() => {
+            // Service Worker registrado com sucesso
           })
-          .catch((registrationError) => {
-            console.log("SW registration failed: ", registrationError);
+          .catch(() => {
+            // Falha silenciosa — SW não é crítico para o funcionamento
           });
       });
     }

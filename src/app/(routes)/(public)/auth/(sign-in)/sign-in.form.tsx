@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { getErrorMessage } from "@/app/(helpers)/errors";
+import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
 import { usePostAuthSignIn } from "@/app/(resources)/(generated)/hooks/auth/auth";
 import { CustomAxiosError } from "@/app/(types)/error.type";
 import { Separator } from "@/components/ui/separator";
@@ -40,6 +40,7 @@ export const SignInForm = () => {
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['email', 'password']);
       },
     },
   });
