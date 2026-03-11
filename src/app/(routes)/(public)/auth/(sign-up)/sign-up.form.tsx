@@ -5,7 +5,7 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { useAuth } from "@/app/(contexts)/auth-provider";
 import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
-import { usePostAuthSignUp } from "@/app/(resources)/(generated)/hooks/auth/auth";
+import { usePostAuthGoogle, usePostAuthSignUp } from "@/app/(resources)/(generated)/hooks/auth/auth";
 import {
   SignUpDefaultValues,
   SignUpFormValues,
@@ -14,7 +14,7 @@ import {
 import { CustomAxiosError } from "@/app/(types)/error.type";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CodeResponse, GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { Key, Mail, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -32,7 +32,6 @@ export const SignUpForm = () => {
   const { mutate, isPending } = usePostAuthSignUp({
     mutation: {
       onSuccess: (axiosResponse) => {
-        // Com o interceptor, axiosResponse.data já é { user, accessToken, refreshToken }
         setAuth(axiosResponse);
         toast.success("Conta criada com sucesso. Você será redirecionado..");
         router.push("/dashboard");
@@ -44,11 +43,26 @@ export const SignUpForm = () => {
     },
   });
 
-  const googleSignIn = useGoogleLogin({
-    onSuccess: (_codeResponse: CodeResponse) => {
-      // TODO: implementar exchange de token com o backend
+  const { mutate: googleMutate } = usePostAuthGoogle({
+    mutation: {
+      onSuccess: (axiosResponse) => {
+        setAuth(axiosResponse);
+        toast.success("Conta criada com sucesso via Google.");
+        router.push("/dashboard");
+      },
+      onError: (error: CustomAxiosError) => {
+        toast.error(getErrorMessage(error));
+      },
     },
   });
+
+  const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) {
+      toast.error("Não foi possível obter as credenciais do Google.");
+      return;
+    }
+    googleMutate({ data: { idToken: credentialResponse.credential } });
+  };
 
   return (
     <Form {...form}>
@@ -81,7 +95,8 @@ export const SignUpForm = () => {
         </BaseButton>
 
         <GoogleLogin
-          onSuccess={googleSignIn}
+          onSuccess={handleGoogleSuccess}
+          onError={() => toast.error("Erro ao autenticar com o Google.")}
           theme="filled_blue"
           size="large"
         />
