@@ -37,7 +37,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     } : UpsertTransactionDefaultValues,
   });
 
-  const { data: categories } = useGetCategories({
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories({
     page: 1,
     limit: 10,
   });
@@ -112,7 +112,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                 { label: "Saída", value: "expense" }
               ]}
             />
-            <BaseSelect control={form.control} name="category" label="Categoria" options={categories?.data?.map((category: Category) => ({ label: category.name || '', value: category.id || '' })) || []} />
+            <BaseSelect control={form.control} name="category" label="Categoria" isLoading={isLoadingCategories} options={categories?.data?.map((category: Category) => ({ label: category.name || '', value: category.id || '' })) || []} />
           </div>
           <BaseInput control={form.control} name="amount" label="Valor" type="money" placeholder="0,00" />
           <BaseTextarea control={form.control} name="description" label="Descrição" />

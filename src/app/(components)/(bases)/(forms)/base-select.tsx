@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Control, FieldValues, Path } from "react-hook-form";
 
@@ -31,6 +32,7 @@ export interface IBaseSelect<T extends FieldValues> {
   optionGroups?: OptionGroup[];
   description?: string;
   disabled?: string | boolean;
+  isLoading?: boolean;
   selectDate?: string | boolean;
   type?: "default" | "full-date"
   className?: string;
@@ -45,6 +47,7 @@ export const BaseSelect = <T extends FieldValues>({
   optionGroups = [],
   description,
   disabled = false,
+  isLoading = false,
   selectDate = false,
   className,
   type = "default",
@@ -73,7 +76,11 @@ export const BaseSelect = <T extends FieldValues>({
           )}
 
           <FormControl>
-            <Select
+            {isLoading ? (
+              <div className="w-full h-10 flex items-center justify-center bg-background rounded-md border border-slate-200 dark:border-slate-700">
+                <LoaderCircle className="animate-spin size-5 opacity-40" />
+              </div>
+            ) : <Select
               value={field.value ? String(field.value) : ""}
               onValueChange={field.onChange}
               disabled={Boolean(disabled || selectDate)}
@@ -125,7 +132,7 @@ export const BaseSelect = <T extends FieldValues>({
                     </SelectItem>
                   ))}
               </SelectContent>
-            </Select>
+            </Select>}
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}
