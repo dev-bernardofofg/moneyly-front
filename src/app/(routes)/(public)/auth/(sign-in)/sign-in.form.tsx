@@ -16,7 +16,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { getErrorMessage } from "@/app/(helpers)/errors";
 import { usePostAuthSignIn } from "@/app/(resources)/(generated)/hooks/auth/auth";
+import { CustomAxiosError } from "@/app/(types)/error.type";
 import { Separator } from "@/components/ui/separator";
 import { CodeResponse, GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
@@ -35,6 +37,9 @@ export const SignInForm = () => {
         setAuth(data);
         toast.success(data.message ?? "Login realizado com sucesso");
         router.push("/dashboard");
+      },
+      onError: (error: CustomAxiosError) => {
+        toast.error(getErrorMessage(error));
       },
     },
   });
