@@ -1,7 +1,7 @@
 "use client";
 
 import { Period } from "@/app/(types)/period.type";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 interface PeriodContextType {
   selectedPeriodId: string | null;
@@ -32,12 +32,12 @@ export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Persistir período selecionado no localStorage
-  const setSelectedPeriodId = (periodId: string) => {
+  const setSelectedPeriodId = useCallback((periodId: string) => {
     setSelectedPeriodIdState(periodId);
     if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, periodId);
     }
-  };
+  }, []);
 
   // Sincronizar entre abas
   useEffect(() => {
