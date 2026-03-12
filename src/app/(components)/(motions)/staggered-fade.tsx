@@ -24,7 +24,7 @@ const variants = {
     transition: { duration: 0.4, ease: "easeOut" as const }
   },
   page: {
-    containerClass: "overflow-y-auto max-h-[calc(100vh-5rem)] p-2 space-y-2",
+    containerClass: "overflow-y-auto min-h-0 p-2 space-y-2",
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5, ease: "easeOut" as const }

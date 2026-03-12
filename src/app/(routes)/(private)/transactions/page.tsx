@@ -61,7 +61,7 @@ const TransactionsPage = () => {
               Icon={stat.icon}
               description={stat.description}
               isMonetary={stat.isMonetary}
-              variant={stat.variant as "default" | "destructive" | "secondary"}
+              variant={stat.variant}
               loading={isLoading}
             />
           ))}

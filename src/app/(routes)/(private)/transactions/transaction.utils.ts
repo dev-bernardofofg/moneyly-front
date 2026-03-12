@@ -28,4 +28,4 @@ export const TRANSACTION_STATS_INTERATOR = [
     variant: "destructive",
     loading: false,
   },
-];
+] as const;
