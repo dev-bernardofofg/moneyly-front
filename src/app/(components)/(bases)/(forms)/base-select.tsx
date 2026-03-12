@@ -1,4 +1,3 @@
-import { LoaderCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Control, FieldValues, Path } from "react-hook-form";
 
@@ -19,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 type Option = { label: string; value: string | number; available?: boolean };
 type OptionGroup = { label: string; options: Option[] };
@@ -77,8 +77,13 @@ export const BaseSelect = <T extends FieldValues>({
 
           <FormControl>
             {isLoading ? (
-              <div className="w-full h-10 flex items-center justify-center bg-background rounded-md border border-slate-200 dark:border-slate-700">
-                <LoaderCircle className="animate-spin size-5 opacity-40" />
+              <div className="relative w-full rounded-md border border-slate-200 dark:border-slate-700 dark:bg-slate-800/95 bg-white/95 overflow-hidden">
+                <div className="h-10 px-3 flex items-center justify-between">
+                  {/* shimmer de texto */}
+                  <div className="h-3.5 w-2/5 rounded-sm bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                  {/* chevron fantasma */}
+                  <ChevronDown className="size-4 opacity-50" />
+                </div>
               </div>
             ) : <Select
               value={field.value ? String(field.value) : ""}
@@ -87,14 +92,13 @@ export const BaseSelect = <T extends FieldValues>({
             >
               <motion.div
                 className="relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600"
-
                 transition={{
                   type: "spring",
                   stiffness: 300,
                   damping: 20,
                 }}
               >
-                <SelectTrigger className="h-10 w-full bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-sm laceholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50">
+                <SelectTrigger className="h-10 w-full bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50">
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
               </motion.div>
