@@ -90,7 +90,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
             placeholder={budget ? undefined : "Selecione uma categoria disponível"}
           />
           <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} type="money" placeholder="0,00" />
-          <BaseButton type="submit" isLoading={budget ? updateMutation.isPending : createMutation.isPending}>
+          <BaseButton type="submit" className="w-full" isLoading={budget ? updateMutation.isPending : createMutation.isPending}>
             {budget ? "Atualizar" : "Criar"}
           </BaseButton>
         </BaseForm>

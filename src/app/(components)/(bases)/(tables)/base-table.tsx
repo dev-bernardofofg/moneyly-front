@@ -102,7 +102,7 @@ export function BaseTable<T>({
       ) : (
         <AnimatePresence mode="wait">
           <motion.div
-            key={JSON.stringify(data)}
+            key={data.length}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -130,7 +130,7 @@ export function BaseTable<T>({
               <TableBody>
                 {data.map((item: T, index: number) => (
                   <motion.tr
-                    key={`${JSON.stringify(item)}-${index}`}
+                    key={index}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{

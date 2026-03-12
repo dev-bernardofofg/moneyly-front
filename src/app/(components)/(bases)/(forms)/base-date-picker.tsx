@@ -43,9 +43,9 @@ type BaseDatePickerProps<T extends FieldValues> = {
   maxDate?: Date;
   fromYear?: number;
   toYear?: number;
-  isDateAvaliable?: (date: Date) => boolean;
+  isDateAvailable?: (date: Date) => boolean;
   isDateDisabled?: string;
-  isDisable?: boolean;
+  isDisabled?: boolean;
 };
 
 export function BaseDatePicker<T extends FieldValues>({
@@ -60,9 +60,9 @@ export function BaseDatePicker<T extends FieldValues>({
   maxDate,
   fromYear = 1900,
   toYear = new Date().getFullYear(),
-  isDateAvaliable,
+  isDateAvailable,
   isDateDisabled,
-  isDisable = false,
+  isDisabled = false,
 }: BaseDatePickerProps<T>) {
   const methods = useFormContext<T>();
   const finalControl = control || methods.control;
@@ -117,7 +117,7 @@ export function BaseDatePicker<T extends FieldValues>({
                     "w-full justify-start text-left font-normal dark:bg-slate-800 bg-slate-100",
                     !field.value && "text-muted-foreground",
                   )}
-                  disabled={isDisable && !isDateDisabled}
+                  disabled={isDisabled && !isDateDisabled}
                 >
                   <CalendarIcon className="mr-2 size-4" />
                   {field.value ? (
@@ -188,7 +188,7 @@ export function BaseDatePicker<T extends FieldValues>({
                     if (date) {
                       const offset = date.getTimezoneOffset();
                       const adjustedDate = new Date(
-                        date.getTime() + offset * 60 * 1000,
+                        date.getTime() - offset * 60 * 1000,
                       );
                       field.onChange(format(adjustedDate, "yyyy-MM-dd"));
                       setCalendarDate(date);
@@ -203,7 +203,7 @@ export function BaseDatePicker<T extends FieldValues>({
                       return true;
                     if (minDate && date < minDate) return true;
                     if (maxDate && date > maxDate) return true;
-                    if (isDateAvaliable && !isDateAvaliable(date)) return true;
+                    if (isDateAvailable && !isDateAvailable(date)) return true;
                     return false;
                   }}
                   initialFocus

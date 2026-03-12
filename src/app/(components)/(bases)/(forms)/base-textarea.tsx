@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
 import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
 
 import {
@@ -19,7 +18,6 @@ type BaseTextareaProps<T extends FieldValues> = {
   label?: string;
   placeholder?: string;
   description?: string;
-  Icon?: LucideIcon;
   minHeight?: string;
 };
 

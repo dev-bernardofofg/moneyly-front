@@ -11,13 +11,15 @@ interface PlannerStatsProps {
   savingsGoal?: number
   alreadySaved?: number
   alerts?: PlannerAlert[]
+  loading?: boolean
 }
 
 export const PlannerStats = ({
   totalBudgeted = 0,
   savingsGoal = 0,
   alreadySaved = 0,
-  alerts = []
+  alerts = [],
+  loading = false,
 }: PlannerStatsProps) => {
   return (
     <StaggeredFade className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
@@ -27,7 +29,7 @@ export const PlannerStats = ({
         value={totalBudgeted}
         isMonetary
         variant="secondary"
-        loading={false}
+        loading={loading}
       />
       <BaseStats
         name="Meta de Poupança"
@@ -35,14 +37,14 @@ export const PlannerStats = ({
         value={savingsGoal}
         isMonetary
         variant="secondary"
-        loading={false}
+        loading={loading}
       />
       <BaseStats
         name="Já Poupado"
         Icon={TrendingUp}
         value={alreadySaved}
         isMonetary
-        loading={false}
+        loading={loading}
       />
       <AlertsPopover
         alerts={alerts}
@@ -52,11 +54,11 @@ export const PlannerStats = ({
             Icon={Bell}
             value={alerts.length}
             variant="secondary"
-            loading={false}
+            loading={loading}
             clickable={true}
           />
         }
       />
     </StaggeredFade>
   )
-} 
+}

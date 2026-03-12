@@ -29,6 +29,14 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
     deleteGoal({ id: goal.id || "" })
   }
 
+  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null
+  const now = new Date()
+  const isExpired = targetDate ? targetDate.getTime() < now.getTime() : false
+  const currentAmount = Number(goal.currentAmount || 0)
+  const targetAmount = Number(goal.targetAmount || 0)
+  const progressPercentage = targetAmount > 0 ? (currentAmount / targetAmount) * 100 : 0
+  const remaining = targetAmount - currentAmount
+
   return (
     <div className="dark:bg-slate-700 bg-slate-100 border dark:border-slate-600 border-slate-300 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
@@ -40,31 +48,31 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Progresso</span>
-            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentageFormatted(Number(goal.currentAmount || 0) / Number(goal.targetAmount || 0) * 100)}</span>
+            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentageFormatted(progressPercentage)}</span>
           </div>
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
               className="h-2 rounded-full bg-primary transition-all"
-              style={{ width: `${(Number(goal.currentAmount || 0) / Number(goal.targetAmount || 0)) * 100}%` }}
+              style={{ width: `${progressPercentage}%` }}
             />
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-primary font-medium">
-              {FN_UTILS_NUMBERS.formatNumberToCurrency(goal.currentAmount || 0)}
+              {FN_UTILS_NUMBERS.formatNumberToCurrency(currentAmount)}
             </span>
-            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatNumberToCurrency(goal.targetAmount || 0)}</span>
+            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatNumberToCurrency(targetAmount)}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-4 text-sm text-slate-400">
           <div className="flex items-center gap-1">
             <Calendar className="size-4" />
-            <span>{format(new Date(goal.targetDate || ""), 'dd/MM/yyyy')}</span>
+            <span>{targetDate ? format(targetDate, 'dd/MM/yyyy') : "—"}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="size-4" />
-            <span className={new Date(goal.targetDate || "").getTime() < new Date().getTime() ? "text-yellow-400 font-medium" : ""}>
-              {new Date(goal.targetDate || "").getTime() > new Date().getTime() ? `${differenceInDays(new Date(goal.targetDate || ""), new Date())} dias` : "Vencido"}
+            <span className={isExpired ? "text-yellow-400 font-medium" : ""}>
+              {!targetDate ? "—" : isExpired ? "Vencido" : `${differenceInDays(targetDate, now)} dias`}
             </span>
           </div>
         </div>
@@ -72,7 +80,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="dark:bg-slate-600 bg-slate-200 p-2 rounded-lg flex items-center justify-between">
           <div className="text-sm dark:text-slate-400 text-slate-600">Faltam</div>
           <div className="font-semibold text-lg dark:text-slate-100 text-slate-600">
-            R$ {(Number(goal.targetAmount || 0) - Number(goal.currentAmount || 0)).toLocaleString("pt-BR")}
+            {FN_UTILS_NUMBERS.formatNumberToCurrency(remaining)}
           </div>
         </div>
 

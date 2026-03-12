@@ -22,7 +22,7 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-4 py-4">
+    <nav aria-label="Paginação" className="flex items-center justify-center gap-4 py-4">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span>
           {startItem}-{endItem} de {total}
@@ -36,6 +36,7 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
           onClick={() => handlePageChange(page - 1)}
           className="size-8 p-0 text-xs"
           disabled={page <= 1}
+          aria-label="Página anterior"
         >
           <ChevronLeft className="size-4" />
         </Button>
@@ -60,6 +61,8 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
                 size="sm"
                 onClick={() => handlePageChange(pageNumber)}
                 className="size-8 p-0 text-xs"
+                aria-label={`Página ${pageNumber}`}
+                aria-current={page === pageNumber ? "page" : undefined}
               >
                 {pageNumber}
               </Button>
@@ -73,11 +76,11 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= totalPages}
           className="size-8 p-0 text-xs"
-
+          aria-label="Próxima página"
         >
           <ChevronRight className="size-4" />
         </Button>
       </div>
-    </div>
+    </nav>
   );
-} 
+}

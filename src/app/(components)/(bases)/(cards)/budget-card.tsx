@@ -1,7 +1,6 @@
 "use client";
 
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
 import { Budget } from "@/app/(resources)/(generated)";
@@ -19,15 +18,21 @@ import { toast } from "sonner";
 import { BaseButton } from "../(clickable)/base-button";
 import { BaseDialog } from "../(portals)/base-dialog";
 
-
 interface BudgetCardProps {
   budget: Budget;
 }
 
-export const BudgetCard = ({
-  budget,
-}: BudgetCardProps) => {
+const BUDGET_LEVELS = [
+  { threshold: 100, label: "Limite excedido", badgeColor: "bg-red-500",           barColor: "bg-red-500",   icon: XCircle,       iconColor: "text-red-500"   },
+  { threshold: 90,  label: "Limite crítico",  badgeColor: "bg-red-400",            barColor: "bg-red-400",   icon: TriangleAlert, iconColor: "text-red-400"   },
+  { threshold: 75,  label: "Atenção",         badgeColor: "bg-yellow-400 text-black", barColor: "bg-yellow-400", icon: AlertTriangle, iconColor: "text-yellow-400" },
+  { threshold: 0,   label: "No controle",     badgeColor: "bg-green-500 text-black",  barColor: "bg-green-500", icon: CheckCircle,   iconColor: "text-green-500" },
+] as const;
 
+const getBudgetLevel = (percentage: number) =>
+  BUDGET_LEVELS.find((l) => percentage >= l.threshold) ?? BUDGET_LEVELS[3];
+
+export const BudgetCard = ({ budget }: BudgetCardProps) => {
   const queryClient = useQueryClient()
   const { mutate: deleteBudget, isPending } = useDeleteBudgetsId({
     mutation: {
@@ -38,72 +43,12 @@ export const BudgetCard = ({
     },
   })
 
-  const getBudgetStatus = (spent: number | undefined, limit: number | undefined) => {
-    if (!spent || !limit) return {
-      text: "Sem dados",
-      color: "bg-gray-500"
-    };
+  const percentage = budget.percentage || 0;
+  const level = !budget.spent || !budget.monthlyLimit
+    ? { label: "Sem dados", badgeColor: "bg-gray-500", barColor: "bg-gray-500", icon: CheckCircle, iconColor: "text-gray-500" }
+    : getBudgetLevel(percentage);
 
-    const percentage = (spent / limit) * 100;
-
-    return {
-      text: percentage >= 100
-        ? "Limite excedido"
-        : percentage >= 90
-          ? "Limite crítico"
-          : percentage >= 75
-            ? "Atenção"
-            : "No controle",
-      color: percentage >= 100
-        ? "bg-red-500"
-        : percentage >= 90
-          ? "bg-red-400"
-          : percentage >= 75
-            ? "bg-yellow-400 text-black"
-            : "bg-green-500 text-black"
-    };
-  };
-
-  const getBudgetIcon = (spent: number, limit: number) => {
-    const percentage = (spent / limit) * 100;
-
-    if (percentage >= 100) {
-      return {
-        icon: XCircle,
-        color: "text-red-500",
-        title: "Limite excedido"
-      };
-    } else if (percentage >= 90) {
-      return {
-        icon: TriangleAlert,
-        color: "text-red-400",
-        title: "Limite crítico"
-      };
-    } else if (percentage >= 75) {
-      return {
-        icon: AlertTriangle,
-        color: "text-yellow-400",
-        title: "Atenção"
-      };
-    } else {
-      return {
-        icon: CheckCircle,
-        color: "text-green-500",
-        title: "No controle"
-      };
-    }
-  };
-
-  const status = getBudgetStatus(Number(budget.spent), Number(budget.monthlyLimit));
-  const iconConfig = getBudgetIcon(Number(budget.spent), Number(budget.monthlyLimit));
-  const IconComponent = iconConfig.icon;
-
-  const getProgressBarColor = (percentage: number) => {
-    if (percentage >= 100) return "bg-red-500";
-    if (percentage >= 90) return "bg-red-400";
-    if (percentage >= 75) return "bg-yellow-400";
-    return "bg-green-500";
-  };
+  const IconComponent = level.icon;
 
   const handleDelete = () => {
     deleteBudget({ id: budget.id || "" })
@@ -114,15 +59,15 @@ export const BudgetCard = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div
-            className={`flex items-center justify-center transition-colors ${iconConfig.color}`}
-            title={iconConfig.title}
+            className={`flex items-center justify-center transition-colors ${level.iconColor}`}
+            title={level.label}
           >
             <IconComponent className="size-5" />
           </div>
           <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{budget.category?.name}</h3>
         </div>
-        <span className={`px-2 py-1 rounded text-xs font-medium ${status.color}`}>
-          {status.text}
+        <span className={`px-2 py-1 rounded text-xs font-medium ${level.badgeColor}`}>
+          {level.label}
         </span>
       </div>
 
@@ -136,19 +81,19 @@ export const BudgetCard = ({
         <div className="flex justify-between text-sm">
           <span className="dark:text-slate-400 text-slate-600">Limite</span>
           <span className="dark:text-slate-200 text-slate-600">
-            {FN_UTILS_STRING.formatNumberToCurrency(budget.monthlyLimit || "0")}
+            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.monthlyLimit || 0)}
           </span>
         </div>
 
         <div className="space-y-2">
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
-              className={`h-2 rounded-full transition-all ${getProgressBarColor(budget.percentage || 0)}`}
-              style={{ width: `${Math.min(budget.percentage || 0, 100)}%` }}
+              className={`h-2 rounded-full transition-all ${level.barColor}`}
+              style={{ width: `${Math.min(percentage, 100)}%` }}
             />
           </div>
           <div className="flex justify-between text-xs text-slate-400">
-            <span>{budget.percentage?.toFixed(0)}% usado</span>
+            <span>{percentage.toFixed(0)}% usado</span>
             <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining || 0)} restante</span>
           </div>
         </div>
@@ -173,4 +118,4 @@ export const BudgetCard = ({
       </div>
     </div>
   );
-}; 
+};

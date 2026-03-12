@@ -18,6 +18,37 @@ interface BaseStatsProps {
   clickable?: boolean
 }
 
+const variantsStats = cva(
+  "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200", {
+  variants: {
+    variant: {
+      default: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
+      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+      destructive: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
+    },
+  }
+})
+
+const variantsText = cva("text-2xl font-bold", {
+  variants: {
+    variant: {
+      default: "text-green-600",
+      secondary: "text-blue-600",
+      destructive: "text-red-600",
+    },
+  }
+})
+
+const variantsIcon = cva("size-4", {
+  variants: {
+    variant: {
+      default: "text-green-600",
+      secondary: "text-blue-600",
+      destructive: "text-red-600",
+    },
+  }
+})
+
 export const BaseStats = ({
   name,
   value,
@@ -30,37 +61,6 @@ export const BaseStats = ({
   onClick,
   clickable = false
 }: BaseStatsProps) => {
-  const variantsStats = cva(
-    "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200", {
-    variants: {
-      variant: {
-        default: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
-      },
-    }
-  })
-
-  const variantsText = cva("text-2xl font-bold", {
-    variants: {
-      variant: {
-        default: "text-green-600",
-        secondary: "text-blue-600",
-        destructive: "text-red-600",
-      },
-    }
-  })
-
-  const variantsIcon = cva("size-4", {
-    variants: {
-      variant: {
-        default: "text-green-600",
-        secondary: "text-blue-600",
-        destructive: "text-red-600",
-      },
-    }
-  })
-
   const baseClasses = variantsStats({ variant });
   const clickableClasses = clickable
     ? "cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"

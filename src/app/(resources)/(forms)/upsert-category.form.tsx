@@ -76,6 +76,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
           <BaseInput name="name" label="Nome" control={form.control} />
           <BaseButton
             type="submit"
+            className="w-full"
             isLoading={isUpdate ? updateMutation.isPending : createMutation.isPending}
           >
             {isUpdate ? "Atualizar categoria" : "Criar categoria"}

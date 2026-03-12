@@ -22,13 +22,13 @@ export const AlertsPopover = ({
   const getAlertIcon = (type: string) => {
     switch (type) {
       case "info":
-        return <CheckCircle className="size-4 text-green-600" />;
+        return <Info className="size-4 text-blue-600" />;
       case "warning":
         return <AlertTriangle className="size-4 text-yellow-600" />;
       case "error":
         return <XCircle className="size-4 text-red-600" />;
       default:
-        return <Info className="size-4 text-blue-600" />;
+        return <CheckCircle className="size-4 text-green-600" />;
     }
   };
 

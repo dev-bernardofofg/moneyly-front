@@ -122,7 +122,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
             <BaseButton type="button" className="w-fit" variant="destructive" onClick={() => form.reset()}>
               <BrushCleaning />
             </BaseButton>
-            <BaseButton type="submit" isLoading={isPending || isUpdating}>{transaction ? "Atualizar" : "Criar"}</BaseButton>
+            <BaseButton type="submit" className="w-full" isLoading={isPending || isUpdating}>{transaction ? "Atualizar" : "Criar"}</BaseButton>
           </div>
         </BaseForm>
       </Form>

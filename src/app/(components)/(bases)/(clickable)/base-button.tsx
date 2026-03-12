@@ -23,7 +23,7 @@ export const BaseButton = ({
 }: BaseButtonProps) => {
   return (
     <Button
-      className={cn("w-full space-x-3 hover:cursor-pointer", className)}
+      className={cn("hover:cursor-pointer", className)}
       disabled={disabled || isLoading}
       {...props}
     >

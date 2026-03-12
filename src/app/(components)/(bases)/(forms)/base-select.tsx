@@ -31,7 +31,7 @@ export interface IBaseSelect<T extends FieldValues> {
   options?: Option[];
   optionGroups?: OptionGroup[];
   description?: string;
-  disabled?: string | boolean;
+  disabled?: boolean;
   isLoading?: boolean;
   selectDate?: string | boolean;
   type?: "default" | "full-date"
@@ -88,7 +88,7 @@ export const BaseSelect = <T extends FieldValues>({
             ) : <Select
               value={field.value ? String(field.value) : ""}
               onValueChange={field.onChange}
-              disabled={Boolean(disabled || selectDate)}
+              disabled={disabled || Boolean(selectDate)}
             >
               <motion.div
                 className="relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600"

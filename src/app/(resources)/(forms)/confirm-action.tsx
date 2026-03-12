@@ -31,11 +31,11 @@ export const ConfirmActionForm = ({ onConfirm, title, description, trigger }: Co
       onOpenChange={setOpen}
     >
       <div className="flex items-center gap-2">
-        <BaseButton variant="outline" onClick={handleClose}>
+        <BaseButton variant="outline" className="w-full" onClick={handleClose}>
           <XIcon className="size-4" />
           Cancelar
         </BaseButton>
-        <BaseButton variant="destructive" onClick={handleConfirm} >
+        <BaseButton variant="destructive" className="w-full" onClick={handleConfirm} >
           <TrashIcon className="size-4" />
           Confirmar
         </BaseButton>
