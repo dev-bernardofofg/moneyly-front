@@ -10,16 +10,14 @@ import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { usePeriod } from "@/app/(contexts)/period-provider";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import { useGetOverviewDashboard } from "@/app/(resources)/(generated)/hooks/overview/overview";
 import { DashboardStats } from "@/app/(resources)/(generated)/types/DashboardStats";
-import { ExpensesByCategoryItem } from "@/app/(resources)/(generated)/types/ExpensesByCategoryItem";
-import { MonthlyHistoryItem } from "@/app/(resources)/(generated)/types/MonthlyHistoryItem";
+import { MonthlyHistoryChart } from "@/app/(components)/(bases)/(charts)/monthly-history-chart";
 import { ROUTES } from "@/app/(utils)/routes";
-import { LinearProgress } from "@/components/ui/linear-progress";
 import { useRouter } from "next/navigation";
 import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
+import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 
 const DashboardPage = () => {
   const { selectedPeriodId } = usePeriod();
@@ -65,7 +63,10 @@ const DashboardPage = () => {
           ))}
 
         </StaggeredFade>
-        <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <StaggeredFade
+          className="grid grid-cols-1 md:grid-cols-3 gap-2"
+          itemClassNames={[undefined, "md:col-span-2"]}
+        >
           <BaseCard
             title="Transações Recentes"
             description="Suas últimas movimentações financeiras"
@@ -80,57 +81,20 @@ const DashboardPage = () => {
               </BaseButton>
             }
           >
-            {(() => {
-              const monthlyHistory = overviewData?.data?.monthlyHistory;
-
-              if (!monthlyHistory || monthlyHistory.length === 0) {
-                return (
-                  <div className="flex items-center justify-center h-full">
-                    <p className="text-sm text-muted-foreground">Nenhuma transação encontrada</p>
-                  </div>
-                );
-              }
-
-              return (
-                <StaggeredFade className="space-y-2">
-                  {monthlyHistory.map((transaction: MonthlyHistoryItem) => (
-                    <TransactionItem
-                      key={transaction.id}
-                      value={transaction.amount}
-                      type={transaction.type}
-                      category={transaction.category}
-                      date={transaction.date}
-                    />
-                  ))}
-                </StaggeredFade>
-              );
-            })()}
-          </BaseCard>
-          <BaseCard
-            title="Melhores categorias"
-            description="Suas categorias mais gastas no mês"
-          >
             <StaggeredFade className="space-y-2">
-              {overviewData?.data?.expensesByCategory?.length === 0 || !overviewData?.data?.expensesByCategory ? (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-sm text-muted-foreground">Nenhuma categoria encontrada</p>
-                </div>
-              ) : (
-                <StaggeredFade className="space-y-2">
-                  {overviewData?.data?.expensesByCategory.map((category: ExpensesByCategoryItem) => (
-                    <div key={category.id} className="flex flex-col gap-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <p>{category.name}</p>
-                        <p>{FN_UTILS_NUMBERS.formatCurrencyToNumber(category.amount)}</p>
-                      </div>
-                      <LinearProgress value={category.amount} maxValue={overviewData?.data?.stats?.totalExpense ?? 0} />
-                    </div>
-                  ))}
-                </StaggeredFade>
-              )}
+              {overviewData?.data?.recentTransactions?.map((transaction: RecentTransactionItem) => (
+                <TransactionItem key={transaction.id} {...transaction} />
+              ))}
             </StaggeredFade>
           </BaseCard>
+        <BaseCard title="Histórico Mensal" description="Receitas e despesas ao longo dos meses">
+          <MonthlyHistoryChart
+            data={overviewData?.data?.chart?.data ?? []}
+            isLoading={isPostingOverview}
+          />
+        </BaseCard>
         </StaggeredFade>
+
       </StaggeredFade>
 
     </Fade>
