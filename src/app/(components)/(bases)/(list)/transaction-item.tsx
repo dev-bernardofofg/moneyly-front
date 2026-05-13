@@ -1,19 +1,19 @@
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { cn } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
+import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 
-interface TransactionItemProps {
-  value: number;
-  type: "income" | "expense";
-  category: string;
-  date: string;
-}
-
-export const TransactionItem = ({ value, type, category, date }: TransactionItemProps) => {
+export const TransactionItem = ({ amount, type, category, date }: RecentTransactionItem) => {
+  const gradientByTypeTransaction = (type: string) => {
+    if (type === "income") {
+      return "bg-gradient-to-r from-green-500/70 to-green-800";
+    }
+    return "bg-gradient-to-r from-red-500/70 to-red-800";
+  }
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
-        <div className={cn("size-10 flex items-center justify-center rounded-full", type === "income" ? "bg-green-500" : "bg-red-500")}>
+        <div className={cn("size-10 flex items-center justify-center rounded-full", gradientByTypeTransaction(type))}>
           {type === "income" ? <TrendingUp className="size-5 text-white" /> : <TrendingDown className="size-5 text-white" />}
         </div>
         <div className="flex flex-col">
@@ -22,7 +22,7 @@ export const TransactionItem = ({ value, type, category, date }: TransactionItem
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <p className={cn("text-sm font-medium", type === "income" ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400")}>{FN_UTILS_NUMBERS.formatCurrencyToNumber(value)}</p>
+        <p className={cn("text-sm font-medium", type === "income" ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400")}>{FN_UTILS_NUMBERS.formatCurrencyToNumber(amount)}</p>
       </div>
     </div>
   )
