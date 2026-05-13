@@ -12,7 +12,6 @@ import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 import React, { forwardRef, ReactNode, useRef, useState } from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
 
-// Função para aplicar máscara de dinheiro
 const maskMoney = (value: string) => {
   return value
     .replace(/\D/g, '')
@@ -20,9 +19,8 @@ const maskMoney = (value: string) => {
     .replace(/(?=(\d{3})+(\D))\B/g, '.');
 };
 
-// Ícone para dinheiro
 const MoneyIcon = ({ className }: { className?: string }) => (
-  <span className={cn("font-semibold text-muted-foreground", className)}>R$</span>
+  <span className={cn("font-medium text-muted-foreground", className)}>R$</span>
 );
 
 export interface IBaseInput<T extends FieldValues> {
@@ -67,7 +65,6 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
     const isMoney = type === "money";
     const inputType = isPassword && showPassword ? "text" : (isMoney ? "text" : type);
 
-    // Determina qual ícone usar: o fornecido pelo usuário, o de dinheiro, ou nenhum
     const displayIcon = Icon || (isMoney ? MoneyIcon : undefined);
 
     return (
@@ -106,7 +103,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                     <motion.div
                       className={cn(
                         "relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600",
-                        displayIcon && "pl-6",
+                        displayIcon && "pl-8",
                         (isPassword || readOnly) && "pr-10",
                         rightElement && "pr-24",
                         className
@@ -131,7 +128,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                         {...rest}
                       />
                       {displayIcon && React.createElement(displayIcon, {
-                        className: "absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-input-hover"
+                        className: "absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-input-hover leading-tight"
                       })}
                       {isPassword && (
                         <button

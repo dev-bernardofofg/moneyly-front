@@ -24,7 +24,7 @@ export const BaseCard = ({ children, title, description, className, footer }: Ba
         )}
       </CardHeader>
 
-      <CardContent >
+      <CardContent>
         {children}
       </CardContent>
       {footer && (

@@ -54,7 +54,6 @@ export const PeriodNavigator = ({
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 hover:scale-105 active:scale-95",
                 "min-w-[140px] max-w-[200px]",
-                // Estados visuais
                 isSelected
                   ? "bg-primary text-primary-foreground border-primary shadow-md"
                   : isCurrent

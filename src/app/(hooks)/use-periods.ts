@@ -32,19 +32,16 @@ export const usePeriods = () => {
       },
     });
 
-  // Atualizar períodos quando dados chegarem
   useEffect(() => {
     if (periodsData?.data) {
       setPeriods(periodsData.data.map(toPeriod));
 
-      // Se não há período selecionado, selecionar o primeiro
       if (!selectedPeriodId && periodsData.data.length > 0) {
         setSelectedPeriodId(periodsData.data[0].id);
       }
     }
   }, [periodsData, selectedPeriodId, setPeriods, setSelectedPeriodId]);
 
-  // Atualizar loading state
   useEffect(() => {
     setLoading(periodsLoading);
   }, [periodsLoading, setLoading]);

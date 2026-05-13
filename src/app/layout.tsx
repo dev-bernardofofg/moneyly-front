@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
-import { Lexend } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { OfflineIndicator } from "./(components)/(elements)/(pwa)/offline-indicator";
 import { PWAInstallPrompt } from "./(components)/(elements)/(pwa)/pwa-install-prompt";
 import { ServiceWorkerRegister } from "./(components)/(elements)/(pwa)/service-worker-register";
@@ -11,7 +11,7 @@ import { Contexts } from "./(contexts)";
 
 import "./globals.css";
 
-const LexendFont = Lexend({
+const OutfitFont = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -73,12 +73,12 @@ export default function RootLayout({
         <link rel="mask-icon" href="/icon-192x192.png" color="#000000" />
         <link rel="shortcut icon" href="/icon-192x192.png" />
       </head>
-      <body className={cn("antialiased bg-background text-foreground", LexendFont.className)} suppressHydrationWarning>
+      <body className={cn("antialiased bg-background text-foreground", OutfitFont.className)} suppressHydrationWarning>
         <Contexts>
           <ServiceWorkerRegister />
           <OfflineIndicator />
           {children}
-          <Toaster richColors position="bottom-center" />
+          <Toaster richColors position="bottom-center" closeButton />
           <Analytics />
           <PWAInstallPrompt />
         </Contexts>

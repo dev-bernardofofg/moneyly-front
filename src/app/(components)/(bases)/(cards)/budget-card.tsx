@@ -94,7 +94,7 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
           </div>
           <div className="flex justify-between text-xs text-slate-400">
             <span>{percentage.toFixed(0)}% usado</span>
-            <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining || 0)} restante</span>
+            {/* <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining || 0)} restante</span> */}
           </div>
         </div>
       </div>
