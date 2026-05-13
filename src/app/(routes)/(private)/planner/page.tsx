@@ -15,7 +15,6 @@ import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
 import { useGetBudgets } from '@/app/(resources)/(generated)/hooks/budgets/budgets'
 import { useGetGoals } from '@/app/(resources)/(generated)/hooks/goals/goals'
 import { useGetOverviewPlanner } from '@/app/(resources)/(generated)/hooks/overview/overview'
-
 import { Target } from 'lucide-react'
 
 const PlannerPage = () => {
@@ -50,12 +49,10 @@ const PlannerPage = () => {
       } />
       <StaggeredFade variant='page'>
         <PeriodNavigatorWrapper />
-
-
         <PlannerStats
-          totalBudgeted={overviewPlanner?.data?.stats?.totalBudgeted as number}
-          savingsGoal={overviewPlanner?.data?.stats?.totalSavingsGoal as number}
-          alreadySaved={overviewPlanner?.data?.stats?.totalSaved as number}
+          totalBudgeted={overviewPlanner?.data?.stats?.totalBudgeted}
+          savingsGoal={overviewPlanner?.data?.stats?.totalSavingsGoal}
+          alreadySaved={overviewPlanner?.data?.stats?.totalSaved}
           alerts={overviewPlanner?.data?.alerts || []}
         />
 

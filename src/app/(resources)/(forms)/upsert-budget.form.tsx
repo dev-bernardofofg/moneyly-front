@@ -17,8 +17,8 @@ import { toast } from "sonner"
 import { Budget } from "../(generated)"
 import { usePostBudgets, usePutBudgetsId } from "../(generated)/hooks/budgets/budgets"
 import { useGetCategories } from "../(generated)/hooks/categories/categories"
-import { TransactionCategory } from "../(generated)/hooks/moneylyAPI.schemas"
 import { CreateBudgetDefaultValues, CreateBudgetFormValues, CreateBudgetSchema } from "../(schemas)/budget.schema"
+import { TransactionCategory } from "../(generated)/hooks/moneylyAPI.schemas"
 
 interface UpsertBudgetFormProps {
   budget?: Budget
@@ -27,8 +27,9 @@ interface UpsertBudgetFormProps {
 export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
+  
   const form = useForm<CreateBudgetFormValues>({
-    resolver: zodResolver(CreateBudgetSchema as any),
+    resolver: zodResolver(CreateBudgetSchema),
     defaultValues: budget ? {
       categoryId: budget.category?.id || "",
       monthlyLimit: budget.monthlyLimit?.toString() || "",
@@ -61,10 +62,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     },
   });
 
-  const { data: categories } = useGetCategories({
-    page: 1,
-    limit: 1000,
-  })
+  const { data: categories } = useGetCategories()
 
   const handleForm = (data: CreateBudgetFormValues) => {
     if (budget) {
