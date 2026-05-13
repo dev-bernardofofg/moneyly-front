@@ -16,29 +16,56 @@ export type GetTransactionsSummaryCurrentPeriod200 = {
    */
   data: {
     /**
+     * @type object | undefined
+     */
+    currentPeriod?: {
+      /**
+       * @type string, date-time
+       */
+      startDate: string;
+      /**
+       * @type string, date-time
+       */
+      endDate: string;
+      /**
+       * @type string
+       */
+      description: string;
+    };
+    /**
      * @type number
      */
     totalIncome: number;
     /**
      * @type number
      */
-    totalExpense: number;
+    totalExpenses: number;
     /**
      * @type number
      */
     balance: number;
     /**
-     * @type number | undefined
+     * @type number
      */
-    monthlyIncome?: number;
+    monthlyIncome: number;
     /**
-     * @type number | undefined
+     * @type number
      */
-    percentUsed?: number;
+    percentUsed: number;
     /**
-     * @type string | undefined
+     * @type string
      */
-    alert?: string;
+    alert?: string | null;
+    /**
+     * @type object | undefined
+     */
+    byCategory?: {
+      [key: string]: number;
+    };
+    /**
+     * @type number
+     */
+    transactionsCount: number;
   };
   /**
    * @type string | undefined

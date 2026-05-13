@@ -11,4 +11,6 @@ export const financialPeriodSchema = z.object({
   endDate: z.string().datetime(),
   label: z.optional(z.string()),
   transactionCount: z.optional(z.number()),
+  isStored: z.optional(z.boolean()),
+  isCurrent: z.optional(z.boolean()),
 });

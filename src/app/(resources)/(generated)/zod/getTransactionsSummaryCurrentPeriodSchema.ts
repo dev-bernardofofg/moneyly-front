@@ -11,12 +11,21 @@ import * as z from "zod";
 export const getTransactionsSummaryCurrentPeriod200Schema = z.object({
   success: z.boolean(),
   data: z.object({
+    currentPeriod: z.optional(
+      z.object({
+        startDate: z.string().datetime(),
+        endDate: z.string().datetime(),
+        description: z.string(),
+      }),
+    ),
     totalIncome: z.number(),
-    totalExpense: z.number(),
+    totalExpenses: z.number(),
     balance: z.number(),
-    monthlyIncome: z.optional(z.number()),
-    percentUsed: z.optional(z.number()),
-    alert: z.optional(z.string()),
+    monthlyIncome: z.number(),
+    percentUsed: z.number(),
+    alert: z.string().nullish(),
+    byCategory: z.optional(z.object({}).catchall(z.number())),
+    transactionsCount: z.number(),
   }),
   message: z.optional(z.string()),
 });

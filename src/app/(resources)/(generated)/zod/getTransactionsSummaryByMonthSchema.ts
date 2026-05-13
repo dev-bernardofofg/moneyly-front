@@ -10,12 +10,15 @@ import * as z from "zod";
  */
 export const getTransactionsSummaryByMonth200Schema = z.object({
   success: z.boolean(),
-  data: z.object({
-    totalIncome: z.number(),
-    totalExpense: z.number(),
-    balance: z.number(),
-    monthlyIncome: z.optional(z.number()),
-  }),
+  data: z.array(
+    z.object({
+      month: z.string().describe("Formato yyyy-MM"),
+      income: z.number(),
+      expense: z.number(),
+      percentUsed: z.number().nullish(),
+      alert: z.string().nullish(),
+    }),
+  ),
   message: z.optional(z.string()),
 });
 

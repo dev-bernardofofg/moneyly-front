@@ -1,6 +1,8 @@
 export type { AuthResponse } from "./types/AuthResponse.ts";
 export type { Budget, BudgetStatusEnumKey } from "./types/Budget.ts";
 export type { Category } from "./types/Category.ts";
+export type { CategoryChartItem } from "./types/CategoryChartItem.ts";
+export type { ChartCategory } from "./types/ChartCategory.ts";
 export type { DashboardStats } from "./types/DashboardStats.ts";
 export type {
   DeleteBudgetsId200,
@@ -26,7 +28,6 @@ export type {
   DeleteTransactionsIdMutationResponse,
   DeleteTransactionsIdPathParams,
 } from "./types/DeleteTransactionsId.ts";
-export type { ExpensesByCategoryItem } from "./types/ExpensesByCategoryItem.ts";
 export type { FinancialPeriod } from "./types/FinancialPeriod.ts";
 export type {
   GetBudgets200,
@@ -105,10 +106,6 @@ export type {
   GetUserMeQueryResponse,
 } from "./types/GetUserMe.ts";
 export type { Goal } from "./types/Goal.ts";
-export type {
-  MonthlyHistoryItem,
-  MonthlyHistoryItemTypeEnumKey,
-} from "./types/MonthlyHistoryItem.ts";
 export type { PaginatedResponse } from "./types/PaginatedResponse.ts";
 export type { Pagination } from "./types/Pagination.ts";
 export type {
@@ -230,6 +227,10 @@ export type {
   PutUserIncomeAndPeriodMutationRequest,
   PutUserIncomeAndPeriodMutationResponse,
 } from "./types/PutUserIncomeAndPeriod.ts";
+export type {
+  RecentTransactionItem,
+  RecentTransactionItemTypeEnumKey,
+} from "./types/RecentTransactionItem.ts";
 export type { SelectedPeriod } from "./types/SelectedPeriod.ts";
 export type { SuccessResponse } from "./types/SuccessResponse.ts";
 export type {
@@ -238,15 +239,17 @@ export type {
 } from "./types/Transaction.ts";
 export type { User } from "./types/User.ts";
 export { budgetStatusEnum } from "./types/Budget.ts";
-export { monthlyHistoryItemTypeEnum } from "./types/MonthlyHistoryItem.ts";
 export { plannerAlertPriorityEnum } from "./types/PlannerAlert.ts";
 export { plannerAlertTypeEnum } from "./types/PlannerAlert.ts";
 export { postTransactionsCreateMutationRequestTypeEnum } from "./types/PostTransactionsCreate.ts";
 export { putTransactionsIdMutationRequestTypeEnum } from "./types/PutTransactionsId.ts";
+export { recentTransactionItemTypeEnum } from "./types/RecentTransactionItem.ts";
 export { transactionTypeEnum } from "./types/Transaction.ts";
 export { authResponseSchema } from "./zod/authResponseSchema.ts";
 export { budgetSchema } from "./zod/budgetSchema.ts";
+export { categoryChartItemSchema } from "./zod/categoryChartItemSchema.ts";
 export { categorySchema } from "./zod/categorySchema.ts";
+export { chartCategorySchema } from "./zod/chartCategorySchema.ts";
 export { dashboardStatsSchema } from "./zod/dashboardStatsSchema.ts";
 export {
   deleteBudgetsId200Schema,
@@ -268,7 +271,6 @@ export {
   deleteTransactionsIdMutationResponseSchema,
   deleteTransactionsIdPathParamsSchema,
 } from "./zod/deleteTransactionsIdSchema.ts";
-export { expensesByCategoryItemSchema } from "./zod/expensesByCategoryItemSchema.ts";
 export { financialPeriodSchema } from "./zod/financialPeriodSchema.ts";
 export {
   getBudgets200Schema,
@@ -333,7 +335,6 @@ export {
   getUserMeQueryResponseSchema,
 } from "./zod/getUserMeSchema.ts";
 export { goalSchema } from "./zod/goalSchema.ts";
-export { monthlyHistoryItemSchema } from "./zod/monthlyHistoryItemSchema.ts";
 export { paginatedResponseSchema } from "./zod/paginatedResponseSchema.ts";
 export { paginationSchema } from "./zod/paginationSchema.ts";
 export { plannerAlertSchema } from "./zod/plannerAlertSchema.ts";
@@ -432,6 +433,7 @@ export {
   putUserIncomeMutationRequestSchema,
   putUserIncomeMutationResponseSchema,
 } from "./zod/putUserIncomeSchema.ts";
+export { recentTransactionItemSchema } from "./zod/recentTransactionItemSchema.ts";
 export { selectedPeriodSchema } from "./zod/selectedPeriodSchema.ts";
 export { successResponseSchema } from "./zod/successResponseSchema.ts";
 export { transactionSchema } from "./zod/transactionSchema.ts";

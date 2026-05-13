@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "required": ["id", "type", "amount", "date", "category", "description"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "type": { "type": "string", "enum": ["income", "expense"] },
+    "amount": { "type": "number" },
+    "date": { "type": "string", "description": "Formatted date dd/MM/yyyy" },
+    "category": { "type": "string", "description": "Category name" },
+    "description": { "type": "string" }
+  },
+  "x-readme-ref-name": "RecentTransactionItem"
+}

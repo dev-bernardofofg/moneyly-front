@@ -1,6 +1,8 @@
 export { authResponseSchema } from "./authResponseSchema.ts";
 export { budgetSchema } from "./budgetSchema.ts";
+export { categoryChartItemSchema } from "./categoryChartItemSchema.ts";
 export { categorySchema } from "./categorySchema.ts";
+export { chartCategorySchema } from "./chartCategorySchema.ts";
 export { dashboardStatsSchema } from "./dashboardStatsSchema.ts";
 export {
   deleteBudgetsId200Schema,
@@ -22,7 +24,6 @@ export {
   deleteTransactionsIdMutationResponseSchema,
   deleteTransactionsIdPathParamsSchema,
 } from "./deleteTransactionsIdSchema.ts";
-export { expensesByCategoryItemSchema } from "./expensesByCategoryItemSchema.ts";
 export { financialPeriodSchema } from "./financialPeriodSchema.ts";
 export {
   getBudgets200Schema,
@@ -87,7 +88,6 @@ export {
   getUserMeQueryResponseSchema,
 } from "./getUserMeSchema.ts";
 export { goalSchema } from "./goalSchema.ts";
-export { monthlyHistoryItemSchema } from "./monthlyHistoryItemSchema.ts";
 export { paginatedResponseSchema } from "./paginatedResponseSchema.ts";
 export { paginationSchema } from "./paginationSchema.ts";
 export { plannerAlertSchema } from "./plannerAlertSchema.ts";
@@ -186,6 +186,7 @@ export {
   putUserIncomeMutationRequestSchema,
   putUserIncomeMutationResponseSchema,
 } from "./putUserIncomeSchema.ts";
+export { recentTransactionItemSchema } from "./recentTransactionItemSchema.ts";
 export { selectedPeriodSchema } from "./selectedPeriodSchema.ts";
 export { successResponseSchema } from "./successResponseSchema.ts";
 export { transactionSchema } from "./transactionSchema.ts";

@@ -12,9 +12,12 @@ export const getTransactionsSummary200Schema = z.object({
   success: z.boolean(),
   data: z.object({
     totalIncome: z.number(),
-    totalExpense: z.number(),
+    totalExpenses: z.number(),
     balance: z.number(),
-    monthlyIncome: z.optional(z.number()),
+    monthlyIncome: z.number(),
+    percentUsed: z.number(),
+    alert: z.string().nullish(),
+    byCategory: z.optional(z.object({}).catchall(z.number())),
   }),
   message: z.optional(z.string()),
 });

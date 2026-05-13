@@ -24,4 +24,12 @@ export type FinancialPeriod = {
    * @type number | undefined
    */
   transactionCount?: number;
+  /**
+   * @type boolean | undefined
+   */
+  isStored?: boolean;
+  /**
+   * @type boolean | undefined
+   */
+  isCurrent?: boolean;
 };

@@ -22,15 +22,29 @@ export type GetTransactionsSummary200 = {
     /**
      * @type number
      */
-    totalExpense: number;
+    totalExpenses: number;
     /**
      * @type number
      */
     balance: number;
     /**
-     * @type number | undefined
+     * @type number
      */
-    monthlyIncome?: number;
+    monthlyIncome: number;
+    /**
+     * @type number
+     */
+    percentUsed: number;
+    /**
+     * @type string
+     */
+    alert?: string | null;
+    /**
+     * @type object | undefined
+     */
+    byCategory?: {
+      [key: string]: number;
+    };
   };
   /**
    * @type string | undefined

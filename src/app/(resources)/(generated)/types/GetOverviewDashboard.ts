@@ -3,10 +3,11 @@
  * Do not edit manually.
  */
 
+import type { CategoryChartItem } from "./CategoryChartItem.ts";
+import type { ChartCategory } from "./ChartCategory.ts";
 import type { DashboardStats } from "./DashboardStats.ts";
-import type { ExpensesByCategoryItem } from "./ExpensesByCategoryItem.ts";
 import type { FinancialPeriod } from "./FinancialPeriod.ts";
-import type { MonthlyHistoryItem } from "./MonthlyHistoryItem.ts";
+import type { RecentTransactionItem } from "./RecentTransactionItem.ts";
 import type { SelectedPeriod } from "./SelectedPeriod.ts";
 
 export type GetOverviewDashboardQueryParams = {
@@ -49,13 +50,22 @@ export type GetOverviewDashboard200 = {
      */
     availablePeriods: FinancialPeriod[];
     /**
-     * @type array
+     * @type object
      */
-    monthlyHistory: MonthlyHistoryItem[];
+    chart: {
+      /**
+       * @type array
+       */
+      data: CategoryChartItem[];
+      /**
+       * @type array
+       */
+      categories: ChartCategory[];
+    };
     /**
-     * @type array
+     * @type array | undefined
      */
-    expensesByCategory: ExpensesByCategoryItem[];
+    recentTransactions?: RecentTransactionItem[];
     /**
      * @type number
      */

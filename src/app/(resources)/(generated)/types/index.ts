@@ -1,6 +1,8 @@
 export type { AuthResponse } from "./AuthResponse.ts";
 export type { Budget, BudgetStatusEnumKey } from "./Budget.ts";
 export type { Category } from "./Category.ts";
+export type { CategoryChartItem } from "./CategoryChartItem.ts";
+export type { ChartCategory } from "./ChartCategory.ts";
 export type { DashboardStats } from "./DashboardStats.ts";
 export type {
   DeleteBudgetsId200,
@@ -26,7 +28,6 @@ export type {
   DeleteTransactionsIdMutationResponse,
   DeleteTransactionsIdPathParams,
 } from "./DeleteTransactionsId.ts";
-export type { ExpensesByCategoryItem } from "./ExpensesByCategoryItem.ts";
 export type { FinancialPeriod } from "./FinancialPeriod.ts";
 export type {
   GetBudgets200,
@@ -105,10 +106,6 @@ export type {
   GetUserMeQueryResponse,
 } from "./GetUserMe.ts";
 export type { Goal } from "./Goal.ts";
-export type {
-  MonthlyHistoryItem,
-  MonthlyHistoryItemTypeEnumKey,
-} from "./MonthlyHistoryItem.ts";
 export type { PaginatedResponse } from "./PaginatedResponse.ts";
 export type { Pagination } from "./Pagination.ts";
 export type {
@@ -230,14 +227,18 @@ export type {
   PutUserIncomeAndPeriodMutationRequest,
   PutUserIncomeAndPeriodMutationResponse,
 } from "./PutUserIncomeAndPeriod.ts";
+export type {
+  RecentTransactionItem,
+  RecentTransactionItemTypeEnumKey,
+} from "./RecentTransactionItem.ts";
 export type { SelectedPeriod } from "./SelectedPeriod.ts";
 export type { SuccessResponse } from "./SuccessResponse.ts";
 export type { Transaction, TransactionTypeEnumKey } from "./Transaction.ts";
 export type { User } from "./User.ts";
 export { budgetStatusEnum } from "./Budget.ts";
-export { monthlyHistoryItemTypeEnum } from "./MonthlyHistoryItem.ts";
 export { plannerAlertPriorityEnum } from "./PlannerAlert.ts";
 export { plannerAlertTypeEnum } from "./PlannerAlert.ts";
 export { postTransactionsCreateMutationRequestTypeEnum } from "./PostTransactionsCreate.ts";
 export { putTransactionsIdMutationRequestTypeEnum } from "./PutTransactionsId.ts";
+export { recentTransactionItemTypeEnum } from "./RecentTransactionItem.ts";
 export { transactionTypeEnum } from "./Transaction.ts";

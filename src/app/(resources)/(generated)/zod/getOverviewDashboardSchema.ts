@@ -4,10 +4,11 @@
  */
 
 import * as z from "zod";
+import { categoryChartItemSchema } from "./categoryChartItemSchema.ts";
+import { chartCategorySchema } from "./chartCategorySchema.ts";
 import { dashboardStatsSchema } from "./dashboardStatsSchema.ts";
-import { expensesByCategoryItemSchema } from "./expensesByCategoryItemSchema.ts";
 import { financialPeriodSchema } from "./financialPeriodSchema.ts";
-import { monthlyHistoryItemSchema } from "./monthlyHistoryItemSchema.ts";
+import { recentTransactionItemSchema } from "./recentTransactionItemSchema.ts";
 import { selectedPeriodSchema } from "./selectedPeriodSchema.ts";
 
 export const getOverviewDashboardQueryParamsSchema = z
@@ -27,8 +28,13 @@ export const getOverviewDashboard200Schema = z.object({
     stats: z.lazy(() => dashboardStatsSchema),
     selectedPeriod: z.lazy(() => selectedPeriodSchema).nullish(),
     availablePeriods: z.array(z.lazy(() => financialPeriodSchema)),
-    monthlyHistory: z.array(z.lazy(() => monthlyHistoryItemSchema)),
-    expensesByCategory: z.array(z.lazy(() => expensesByCategoryItemSchema)),
+    chart: z.object({
+      data: z.array(z.lazy(() => categoryChartItemSchema)),
+      categories: z.array(z.lazy(() => chartCategorySchema)),
+    }),
+    recentTransactions: z.optional(
+      z.array(z.lazy(() => recentTransactionItemSchema)),
+    ),
     transactionsCount: z.number(),
   }),
   message: z.optional(z.string()),

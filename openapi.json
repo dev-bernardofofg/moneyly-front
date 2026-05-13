@@ -81,6 +81,18 @@
           }
         }
       },
+      "RecentTransactionItem": {
+        "type": "object",
+        "required": ["id", "type", "amount", "date", "category", "description"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "amount": { "type": "number" },
+          "date": { "type": "string", "description": "Formatted date dd/MM/yyyy" },
+          "category": { "type": "string", "description": "Category name" },
+          "description": { "type": "string" }
+        }
+      },
       "Budget": {
         "type": "object",
         "required": [
@@ -256,7 +268,9 @@
           "startDate": { "type": "string", "format": "date-time" },
           "endDate": { "type": "string", "format": "date-time" },
           "label": { "type": "string" },
-          "transactionCount": { "type": "number" }
+          "transactionCount": { "type": "number" },
+          "isStored": { "type": "boolean" },
+          "isCurrent": { "type": "boolean" }
         }
       },
       "SelectedPeriod": {
@@ -294,26 +308,21 @@
           "remainingBudget": { "type": "number" }
         }
       },
-      "MonthlyHistoryItem": {
+      "CategoryChartItem": {
         "type": "object",
-        "required": ["id", "type", "amount", "date", "category"],
+        "required": ["name", "income", "expense"],
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "type": { "type": "string", "enum": ["income", "expense"] },
-          "amount": { "type": "number" },
-          "date": { "type": "string" },
-          "category": { "type": "string" },
-          "description": { "type": "string" }
+          "name": { "type": "string", "description": "Category name" },
+          "income": { "type": "number" },
+          "expense": { "type": "number" }
         }
       },
-      "ExpensesByCategoryItem": {
+      "ChartCategory": {
         "type": "object",
-        "required": ["id", "name", "amount", "percentage"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "format": "uuid" },
-          "name": { "type": "string" },
-          "amount": { "type": "number" },
-          "percentage": { "type": "number" }
+          "name": { "type": "string" }
         }
       },
       "PlannerStats": {
@@ -726,12 +735,18 @@
                     "success": { "type": "boolean" },
                     "data": {
                       "type": "object",
-                      "required": ["totalIncome", "totalExpense", "balance"],
+                      "required": ["totalIncome", "totalExpenses", "balance", "monthlyIncome", "percentUsed"],
                       "properties": {
                         "totalIncome": { "type": "number" },
-                        "totalExpense": { "type": "number" },
+                        "totalExpenses": { "type": "number" },
                         "balance": { "type": "number" },
-                        "monthlyIncome": { "type": "number" }
+                        "monthlyIncome": { "type": "number" },
+                        "percentUsed": { "type": "number" },
+                        "alert": { "type": "string", "nullable": true },
+                        "byCategory": {
+                          "type": "object",
+                          "additionalProperties": { "type": "number" }
+                        }
                       }
                     },
                     "message": { "type": "string" }
@@ -759,13 +774,17 @@
                   "properties": {
                     "success": { "type": "boolean" },
                     "data": {
-                      "type": "object",
-                      "required": ["totalIncome", "totalExpense", "balance"],
-                      "properties": {
-                        "totalIncome": { "type": "number" },
-                        "totalExpense": { "type": "number" },
-                        "balance": { "type": "number" },
-                        "monthlyIncome": { "type": "number" }
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["month", "income", "expense"],
+                        "properties": {
+                          "month": { "type": "string", "description": "Formato yyyy-MM" },
+                          "income": { "type": "number" },
+                          "expense": { "type": "number" },
+                          "percentUsed": { "type": "number", "nullable": true },
+                          "alert": { "type": "string", "nullable": true }
+                        }
                       }
                     },
                     "message": { "type": "string" }
@@ -794,14 +813,28 @@
                     "success": { "type": "boolean" },
                     "data": {
                       "type": "object",
-                      "required": ["totalIncome", "totalExpense", "balance"],
+                      "required": ["totalIncome", "totalExpenses", "balance", "monthlyIncome", "percentUsed", "transactionsCount"],
                       "properties": {
+                        "currentPeriod": {
+                          "type": "object",
+                          "required": ["startDate", "endDate", "description"],
+                          "properties": {
+                            "startDate": { "type": "string", "format": "date-time" },
+                            "endDate": { "type": "string", "format": "date-time" },
+                            "description": { "type": "string" }
+                          }
+                        },
                         "totalIncome": { "type": "number" },
-                        "totalExpense": { "type": "number" },
+                        "totalExpenses": { "type": "number" },
                         "balance": { "type": "number" },
                         "monthlyIncome": { "type": "number" },
                         "percentUsed": { "type": "number" },
-                        "alert": { "type": "string" }
+                        "alert": { "type": "string", "nullable": true },
+                        "byCategory": {
+                          "type": "object",
+                          "additionalProperties": { "type": "number" }
+                        },
+                        "transactionsCount": { "type": "number" }
                       }
                     },
                     "message": { "type": "string" }
@@ -1696,8 +1729,7 @@
                       "required": [
                         "stats",
                         "availablePeriods",
-                        "monthlyHistory",
-                        "expensesByCategory",
+                        "chart",
                         "transactionsCount"
                       ],
                       "properties": {
@@ -1714,17 +1746,23 @@
                             "$ref": "#/components/schemas/FinancialPeriod"
                           }
                         },
-                        "monthlyHistory": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/MonthlyHistoryItem"
+                        "chart": {
+                          "type": "object",
+                          "required": ["data", "categories"],
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": { "$ref": "#/components/schemas/CategoryChartItem" }
+                            },
+                            "categories": {
+                              "type": "array",
+                              "items": { "$ref": "#/components/schemas/ChartCategory" }
+                            }
                           }
                         },
-                        "expensesByCategory": {
+                        "recentTransactions": {
                           "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/ExpensesByCategoryItem"
-                          }
+                          "items": { "$ref": "#/components/schemas/RecentTransactionItem" }
                         },
                         "transactionsCount": { "type": "number" }
                       }

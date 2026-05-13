@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["month", "label", "income"],
+  "properties": {
+    "month": { "type": "string", "description": "Formato yyyy-MM" },
+    "label": { "type": "string", "description": "Ex: maio 2026" },
+    "income": { "type": "number" }
+  },
+  "additionalProperties": { "type": "number" },
+  "x-readme-ref-name": "PeriodChartItem"
+}

@@ -12,26 +12,31 @@ export type GetTransactionsSummaryByMonth200 = {
    */
   success: boolean;
   /**
-   * @type object
+   * @type array
    */
   data: {
     /**
-     * @type number
+     * @description Formato yyyy-MM
+     * @type string
      */
-    totalIncome: number;
+    month: string;
     /**
      * @type number
      */
-    totalExpense: number;
+    income: number;
     /**
      * @type number
      */
-    balance: number;
+    expense: number;
     /**
-     * @type number | undefined
+     * @type number
      */
-    monthlyIncome?: number;
-  };
+    percentUsed?: number | null;
+    /**
+     * @type string
+     */
+    alert?: string | null;
+  }[];
   /**
    * @type string | undefined
    */
