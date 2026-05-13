@@ -19,9 +19,10 @@ import { getGetTransactionsSummaryQueryKey, useDeleteTransactionsId } from "../.
 
 interface TransactionTableProps extends BaseTableOptions {
   transactions: Transaction[];
+  isLoading: boolean;
 }
 
-export const TransactionTable = ({ transactions, tableOptions, onPaginationChange }: TransactionTableProps) => {
+export const TransactionTable = ({ transactions, tableOptions, onPaginationChange, isLoading }: TransactionTableProps) => {
   const { mutate } = useDeleteTransactionsId({
     mutation: {
       onSuccess: () => {
@@ -41,7 +42,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       emptyMessage="Nenhuma transação encontrada"
       pagination={tableOptions.pagination}
       onPaginationChange={onPaginationChange}
-      size={tableOptions.size}
+      loading={isLoading}
       actions={(item) => (
         <div className="flex items-center gap-2">
           <BaseDialog title="Editar transação" description="Editar transação" trigger={
@@ -129,7 +130,6 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
           }
         },
       ]}
-
     />
   );
 };  

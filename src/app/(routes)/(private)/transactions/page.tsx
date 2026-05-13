@@ -12,25 +12,24 @@ import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
 import { useGetTransactions } from "@/app/(resources)/(generated)/hooks/transactions/transactions"
 import { TransactionTable } from "@/app/(routes)/(private)/transactions/transaction.table"
 import { usePagination } from "@/hooks/use-pagination"
-import { useState } from "react"
 import { TRANSACTION_STATS_INTERATOR } from "./transaction.utils"
+import { parseAsInteger, useQueryStates } from "nuqs";
 
 const TransactionsPage = () => {
-  const [currentPagination, setCurrentPagination] = useState({
-    page: 1,
-    limit: 10,
-  });
-
+  const [paginationParams, setPaginationParams] = useQueryStates({
+    page: parseAsInteger.withDefault(1),
+    limit: parseAsInteger.withDefault(10),
+  })
 
   const { data: transactions, isLoading } = useGetTransactions({
-    page: currentPagination.page,
-    limit: currentPagination.limit,
+    page: paginationParams.page,
+    limit: paginationParams.limit,
   });
 
 
   const { pagination, handlePaginationChange } = usePagination({
     serverPagination: transactions?.pagination,
-    onPaginationChange: setCurrentPagination
+    onPaginationChange: setPaginationParams
   })
 
 
@@ -50,7 +49,7 @@ const TransactionsPage = () => {
         </BaseDialog>]
         }
       />
-      <StaggeredFade variant="page">
+      <StaggeredFade variant="page" className="grid grid-rows-[auto_auto_1fr]" itemClassNames={[undefined, undefined, "overflow-y-hidden size-full"]}>
         <PeriodNavigatorWrapper />
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {TRANSACTION_STATS_INTERATOR.map((stat) => (
@@ -67,14 +66,12 @@ const TransactionsPage = () => {
           ))}
 
         </StaggeredFade>
-        <StaggeredFade>
           <TransactionTable
+            isLoading={isLoading}
             transactions={transactions?.data ?? []}
             tableOptions={{
               pagination: pagination,
-              size: "sm"
             }} onPaginationChange={handlePaginationChange} />
-        </StaggeredFade>
       </StaggeredFade>
     </Fade>
   )
