@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         router.push('/auth')
       }
     }
-  }, [])
+  }, [router])
 
   const setAuth = ({ data }: AuthResponse) => {
     setUser(data?.user ?? null)
