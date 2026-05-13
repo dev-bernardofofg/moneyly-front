@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 
 interface StaggeredFadeProps {
   children: ReactNode;
@@ -8,6 +10,7 @@ interface StaggeredFadeProps {
   duration?: number;
   initialDelay?: number;
   variant?: "default" | "wrapper" | "page" | "slide-up" | "slide-down" | "scale";
+  itemClassNames?: (string | undefined)[];
 }
 
 const variants = {
@@ -24,7 +27,7 @@ const variants = {
     transition: { duration: 0.4, ease: "easeOut" as const }
   },
   page: {
-    containerClass: "overflow-y-auto min-h-0 p-2 space-y-2",
+    containerClass: "overflow-y-auto min-h-0 p-2 space-y-2 grid grid-rows-[1fr]",
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5, ease: "easeOut" as const }
@@ -55,43 +58,35 @@ export const StaggeredFade = ({
   staggerDelay = 0.2,
   duration,
   initialDelay = 0.1,
-  variant = "default"
+  variant = "default",
+  itemClassNames
 }: StaggeredFadeProps) => {
   const selectedVariant = variants[variant];
   const finalDuration = duration || selectedVariant.transition.duration;
   const containerClassName = `${className} ${selectedVariant.containerClass}`.trim();
+  const childArray = Children.toArray(children);
+
+  if (childArray.length === 0) {
+    return null;
+  }
 
   return (
     <div className={containerClassName}>
-      {Array.isArray(children) ? (
-        children.map((child, index) => (
-          <motion.div
-            key={index}
-            initial={selectedVariant.initial}
-            animate={selectedVariant.animate}
-            transition={{
-              ...selectedVariant.transition,
-              duration: finalDuration,
-              delay: initialDelay + (index * staggerDelay)
-            }}
-            className="w-full"
-          >
-            {child}
-          </motion.div>
-        ))
-      ) : (
+      {childArray.map((child, index) => (
         <motion.div
+          key={isValidElement(child) && child.key != null ? child.key : index}
           initial={selectedVariant.initial}
           animate={selectedVariant.animate}
           transition={{
             ...selectedVariant.transition,
             duration: finalDuration,
-            delay: initialDelay
+            delay: initialDelay + index * staggerDelay
           }}
+          className={cn("size-full", itemClassNames?.[index])}
         >
-          {children}
+          {child}
         </motion.div>
-      )}
+      ))}
     </div>
   );
 }; 
