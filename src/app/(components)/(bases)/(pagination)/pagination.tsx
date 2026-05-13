@@ -22,14 +22,12 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
   if (totalPages <= 1) return null;
 
   return (
-    <nav aria-label="Paginação" className="flex items-center justify-center gap-4 py-4">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>
-          {startItem}-{endItem} de {total}
-        </span>
+    <nav aria-label="Paginação" className="grid grid-cols-3 gap-4 p-2 items-center">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground">Total de {total} ocorrencias</span>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex  gap-1 justify-center">
         <Button
           variant="outline"
           size="sm"
@@ -80,6 +78,10 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
         >
           <ChevronRight className="size-4" />
         </Button>
+      </div>
+
+      <div className="flex justify-end gap-2"> 
+        <span className="text-sm text-muted-foreground"> {startItem}-{endItem} de {total} </span>
       </div>
     </nav>
   );

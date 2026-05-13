@@ -34,13 +34,11 @@ interface BaseTableProps<T> {
   loading?: boolean;
   onPaginationChange?: (value: PaginationType) => void;
   pagination?: PaginationType;
-  size?: "sm" | "md" | "lg";
 }
 
 export interface BaseTableOptions {
   tableOptions: {
     pagination: PaginationType
-    size?: "sm" | "md" | "lg"
   }
   onPaginationChange?: (value: PaginationType) => void
 }
@@ -56,22 +54,10 @@ export function BaseTable<T>({
   loading = false,
   onPaginationChange,
   pagination,
-  size = "md",
 }: BaseTableProps<T>) {
 
-  const tableSize = (size: "sm" | "md" | "lg") => {
-    switch (size) {
-      case "sm":
-        return "min-h-[calc(100dvh-17.8rem)]"
-      case "md":
-        return "min-h-[calc(100dvh-6rem)]"
-      case "lg":
-        return "min-h-[calc(100dvh-4rem)]"
-    }
-  }
-
   return (
-    <div className={cn("border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white relative", tableSize(size))}>
+    <div className={cn("grid grid-rows-[auto_1fr] border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white relative size-full")}>
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -111,7 +97,7 @@ export function BaseTable<T>({
               ease: [0.4, 0, 0.2, 1],
               staggerChildren: 0.05
             }}
-            className="w-full"
+            className="size-full overflow-y-auto pb-4"
           >
             <Table>
               <TableHeader>
@@ -170,7 +156,13 @@ export function BaseTable<T>({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          className="absolute bottom-0 right-1/2 translate-x-1/2"
+          className={cn(
+            "sticky bottom-4 right-1/2 rounded-xl",
+            "border border-border/50 shadow-lg shadow-black/5 dark:shadow-black/40",
+            "bg-background/50 dark:bg-background/40",
+            "backdrop-blur-xl backdrop-saturate-150",
+            "ring-1 ring-border/20 dark:ring-white/10",
+          )}
         >
           <Pagination
             page={pagination.page}
