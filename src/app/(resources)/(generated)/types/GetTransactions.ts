@@ -5,6 +5,7 @@
 
 import type { Pagination } from "./Pagination.ts";
 import type { Transaction } from "./Transaction.ts";
+import type { TransactionListSummary } from "./TransactionListSummary.ts";
 
 export type GetTransactionsQueryParams = {
   /**
@@ -18,7 +19,7 @@ export type GetTransactionsQueryParams = {
 };
 
 /**
- * @description Lista de transações
+ * @description Lista de transações com resumo do período
  */
 export type GetTransactions200 = {
   /**
@@ -33,6 +34,10 @@ export type GetTransactions200 = {
    * @type object
    */
   pagination: Pagination;
+  /**
+   * @type object
+   */
+  summary: TransactionListSummary;
   /**
    * @type string | undefined
    */

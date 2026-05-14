@@ -15,6 +15,7 @@ export const transactionSchema = z.object({
   date: z.string().datetime(),
   categoryId: z.string().uuid(),
   periodId: z.string().uuid().nullish(),
+  recurringTransactionId: z.string().uuid().nullish(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   category: z.optional(

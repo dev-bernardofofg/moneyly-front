@@ -24,6 +24,7 @@ import type {
 import type {
   DeleteBudgetsId200,
   GetBudgets200,
+  GetBudgetsParams,
   PostBudgets201,
   PostBudgetsBody,
   PutBudgetsId200,
@@ -35,33 +36,37 @@ import { customInstance } from "../../../../(utils)/axios-instance";
 /**
  * @summary Listar orçamentos
  */
-export const getBudgets = (signal?: AbortSignal) => {
+export const getBudgets = (params?: GetBudgetsParams, signal?: AbortSignal) => {
   return customInstance<GetBudgets200>({
     url: `/budgets/`,
     method: "GET",
+    params,
     signal,
   });
 };
 
-export const getGetBudgetsQueryKey = () => {
-  return [`/budgets/`] as const;
+export const getGetBudgetsQueryKey = (params?: GetBudgetsParams) => {
+  return [`/budgets/`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetBudgetsQueryOptions = <
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = unknown,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-  >;
-}) => {
+>(
+  params?: GetBudgetsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
+    >;
+  },
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetBudgetsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetBudgetsQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getBudgets>>> = ({
     signal,
-  }) => getBudgets(signal);
+  }) => getBudgets(params, signal);
 
   return {
     queryKey,
@@ -84,6 +89,7 @@ export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = unknown,
 >(
+  params: undefined | GetBudgetsParams,
   options: {
     query: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
@@ -105,6 +111,7 @@ export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = unknown,
 >(
+  params?: GetBudgetsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
@@ -126,6 +133,7 @@ export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = unknown,
 >(
+  params?: GetBudgetsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
@@ -143,6 +151,7 @@ export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = unknown,
 >(
+  params?: GetBudgetsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
@@ -152,7 +161,7 @@ export function useGetBudgets<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetBudgetsQueryOptions(options);
+  const queryOptions = getGetBudgetsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

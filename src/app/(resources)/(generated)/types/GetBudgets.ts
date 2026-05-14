@@ -5,6 +5,14 @@
 
 import type { Budget } from "./Budget.ts";
 
+export type GetBudgetsQueryParams = {
+  /**
+   * @description ID do período financeiro. Se omitido, retorna o período atual.
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+};
+
 /**
  * @description Lista de orçamentos
  */
@@ -27,5 +35,6 @@ export type GetBudgetsQueryResponse = GetBudgets200;
 
 export type GetBudgetsQuery = {
   Response: GetBudgets200;
+  QueryParams: GetBudgetsQueryParams;
   Errors: any;
 };

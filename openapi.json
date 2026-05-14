@@ -69,6 +69,7 @@
           "date": { "type": "string", "format": "date-time" },
           "categoryId": { "type": "string", "format": "uuid" },
           "periodId": { "type": "string", "format": "uuid", "nullable": true },
+          "recurringTransactionId": { "type": "string", "format": "uuid", "nullable": true },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" },
           "category": {
@@ -348,6 +349,55 @@
           "availableForBudget": { "type": "number" }
         }
       },
+      "RecurringTransaction": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "type",
+          "title",
+          "amount",
+          "categoryId",
+          "frequency",
+          "isActive",
+          "nextExecution",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "userId": { "type": "string", "format": "uuid" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "title": { "type": "string" },
+          "amount": { "type": "string" },
+          "description": { "type": "string", "nullable": true },
+          "categoryId": { "type": "string", "format": "uuid" },
+          "frequency": {
+            "type": "string",
+            "enum": ["daily", "weekly", "monthly", "yearly"]
+          },
+          "dayOfMonth": { "type": "number", "minimum": 1, "maximum": 31, "nullable": true },
+          "dayOfWeek": { "type": "number", "minimum": 0, "maximum": 6, "nullable": true },
+          "startDate": { "type": "string", "format": "date-time", "nullable": true, "description": "Data de início. null = criado imediatamente" },
+          "totalInstallments": { "type": "number", "nullable": true, "description": "Total de parcelas. null = sem limite" },
+          "executedInstallments": { "type": "number", "description": "Quantas parcelas já foram executadas" },
+          "isActive": { "type": "boolean" },
+          "nextExecution": { "type": "string", "format": "date-time" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "TransactionListSummary": {
+        "type": "object",
+        "required": ["totalExpense", "totalIncome", "monthlyIncome"],
+        "properties": {
+          "totalExpense": { "type": "number", "description": "Total de despesas no período filtrado" },
+          "totalIncome": { "type": "number", "description": "Total de receitas no período filtrado" },
+          "monthlyIncome": { "type": "number", "description": "Rendimento mensal cadastrado pelo usuário" },
+          "percentUsed": { "type": "number", "nullable": true, "description": "% do rendimento gasto" },
+          "alert": { "type": "string", "nullable": true, "description": "Alerta se percentUsed >= 80%" }
+        }
+      },
       "PlannerAlert": {
         "type": "object",
         "required": ["type", "message", "priority"],
@@ -615,12 +665,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de transações",
+            "description": "Lista de transações com resumo do período",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["success", "data", "pagination"],
+                  "required": ["success", "data", "pagination", "summary"],
                   "properties": {
                     "success": { "type": "boolean" },
                     "data": {
@@ -628,6 +678,7 @@
                       "items": { "$ref": "#/components/schemas/Transaction" }
                     },
                     "pagination": { "$ref": "#/components/schemas/Pagination" },
+                    "summary": { "$ref": "#/components/schemas/TransactionListSummary" },
                     "message": { "type": "string" }
                   }
                 }
@@ -851,6 +902,15 @@
         "tags": ["Budgets"],
         "summary": "Listar orçamentos",
         "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "periodId",
+            "in": "query",
+            "required": false,
+            "description": "ID do período financeiro. Se omitido, retorna o período atual.",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de orçamentos",
@@ -1773,6 +1833,322 @@
               }
             }
           }
+        }
+      }
+    },
+    "/recurring-transactions/": {
+      "post": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Criar transação recorrente",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["type", "title", "amount", "categoryId", "frequency"],
+                "properties": {
+                  "type": { "type": "string", "enum": ["income", "expense"] },
+                  "title": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "categoryId": { "type": "string", "format": "uuid" },
+                  "frequency": {
+                    "type": "string",
+                    "enum": ["daily", "weekly", "monthly", "yearly"]
+                  },
+                  "dayOfMonth": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 31,
+                    "description": "Dia do mês (para frequency=monthly)"
+                  },
+                  "dayOfWeek": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 6,
+                    "description": "Dia da semana (0=domingo, 6=sábado, para frequency=weekly)"
+                  },
+                  "description": { "type": "string" },
+                  "totalInstallments": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Quantidade de parcelas. Omitir para recorrência sem fim"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data de início. Se <= hoje cria imediatamente. Se futura, agenda. Omitir = agora"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/RecurringTransaction" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Listar transações recorrentes",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "includeInactive",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Incluir transações desativadas (default: false)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" },
+            "description": "Página (default: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number" },
+            "description": "Itens por página (default: 10, max: 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de transações recorrentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data", "pagination"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/RecurringTransaction" }
+                    },
+                    "pagination": { "$ref": "#/components/schemas/Pagination" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recurring-transactions/{id}/transactions": {
+      "get": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Histórico de transações geradas por uma recorrente",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de transações geradas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Transaction" }
+                    },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recurring-transactions/{id}": {
+      "put": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Atualizar transação recorrente",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "categoryId": { "type": "string", "format": "uuid" },
+                  "frequency": {
+                    "type": "string",
+                    "enum": ["daily", "weekly", "monthly", "yearly"]
+                  },
+                  "dayOfMonth": { "type": "number", "minimum": 1, "maximum": 31 },
+                  "dayOfWeek": { "type": "number", "minimum": 0, "maximum": 6 },
+                  "description": { "type": "string" },
+                  "isActive": { "type": "boolean" },
+                  "totalInstallments": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Quantidade total de parcelas"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/RecurringTransaction" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Não encontrada" }
+        }
+      },
+      "delete": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Deletar transação recorrente",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Não encontrada" }
+        }
+      }
+    },
+    "/recurring-transactions/{id}/reactivate": {
+      "patch": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Reativar transação recorrente",
+        "description": "Reativa e recalcula nextExecution para o próximo ciclo futuro. Execuções perdidas durante inatividade não são recuperadas.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reativada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "data"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": { "$ref": "#/components/schemas/RecurringTransaction" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Não encontrada" }
+        }
+      }
+    },
+    "/recurring-transactions/{id}/deactivate": {
+      "patch": {
+        "tags": ["Recurring Transactions"],
+        "summary": "Desativar transação recorrente",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Desativada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success"],
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Não encontrada" }
         }
       }
     },

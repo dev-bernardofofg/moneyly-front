@@ -6,6 +6,19 @@
 import * as z from "zod";
 import { budgetSchema } from "./budgetSchema.ts";
 
+export const getBudgetsQueryParamsSchema = z
+  .object({
+    periodId: z.optional(
+      z
+        .string()
+        .uuid()
+        .describe(
+          "ID do período financeiro. Se omitido, retorna o período atual.",
+        ),
+    ),
+  })
+  .optional();
+
 /**
  * @description Lista de orçamentos
  */

@@ -5,6 +5,7 @@
 
 import * as z from "zod";
 import { paginationSchema } from "./paginationSchema.ts";
+import { transactionListSummarySchema } from "./transactionListSummarySchema.ts";
 import { transactionSchema } from "./transactionSchema.ts";
 
 export const getTransactionsQueryParamsSchema = z
@@ -15,12 +16,13 @@ export const getTransactionsQueryParamsSchema = z
   .optional();
 
 /**
- * @description Lista de transações
+ * @description Lista de transações com resumo do período
  */
 export const getTransactions200Schema = z.object({
   success: z.boolean(),
   data: z.array(z.lazy(() => transactionSchema)),
   pagination: z.lazy(() => paginationSchema),
+  summary: z.lazy(() => transactionListSummarySchema),
   message: z.optional(z.string()),
 });
 
