@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Calendar, DollarSign, Info } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { getUserMe, usePutUserIncomeAndPeriod } from "../(generated)/hooks/user/user"
+import { getGetUserMeQueryKey, getUserMe, usePutUserIncomeAndPeriod } from "../(generated)/hooks/user/user"
 
 interface InitialConfigFormProps {
   onSuccess: () => void
@@ -29,16 +29,12 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
     defaultValues: InitialConfigDefaultValues,
   })
 
-
-  // Mutation para atualizar rendimento e período financeiro
   const { mutate: updateIncomeAndPeriod, data: userUpdatedData, isPending } = usePutUserIncomeAndPeriod({
     mutation: {
       onSuccess: async () => {
         toast.success("Configurações salvas com sucesso!")
-        // Invalidar queries relevantes
-        queryClient.invalidateQueries({ queryKey: [getUserMe] })
-        // Buscar dados atualizados do usuário diretamente
-        try {
+        queryClient.invalidateQueries({ queryKey: getGetUserMeQueryKey() })
+
           const response = await getUserMe()
           const userData = response.data
           if (userData) {
@@ -50,10 +46,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
             })
             queryClient.clear()
           }
-        } catch (error) {
-          console.error("Erro ao buscar dados atualizados do usuário:", error)
-        }
-        // Chamar callback de sucesso do componente pai
+      
         onSuccess()
       },
       onError: (error) => {
@@ -75,12 +68,10 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)
 
-
   return (
     <Form {...form}>
       <BaseForm onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
 
-        {/* Seção 1: Rendimento Mensal */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <DollarSign className="size-4 text-green-600" />
@@ -95,8 +86,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
             type="money"
           />
         </div>
-
-        {/* Seção 2: Período Financeiro */}
+    
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Calendar className="size-4 text-blue-600" />

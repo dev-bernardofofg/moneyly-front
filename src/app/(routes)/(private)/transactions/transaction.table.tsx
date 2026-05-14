@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { ConfirmActionForm } from "../../../(resources)/(forms)/confirm-action";
 import { UpsertTransactionForm } from "../../../(resources)/(forms)/upsert-transaction.form";
 import { Transaction } from "../../../(resources)/(generated)";
-import { getGetTransactionsSummaryQueryKey, useDeleteTransactionsId } from "../../../(resources)/(generated)/hooks/transactions/transactions";
+import { getGetTransactionsQueryKey, getGetTransactionsSummaryQueryKey, useDeleteTransactionsId } from "../../../(resources)/(generated)/hooks/transactions/transactions";
 
 interface TransactionTableProps extends BaseTableOptions {
   transactions: Transaction[];
@@ -27,7 +27,8 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
     mutation: {
       onSuccess: () => {
         toast.success('Transação deletada com sucesso');
-        queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         const errorMessage = getErrorMessage(error);
@@ -43,6 +44,7 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
       pagination={tableOptions.pagination}
       onPaginationChange={onPaginationChange}
       loading={isLoading}
+      keyExtractor={(item) => item.id || ''}
       actions={(item) => (
         <div className="flex items-center gap-2">
           <BaseDialog title="Editar transação" description="Editar transação" trigger={

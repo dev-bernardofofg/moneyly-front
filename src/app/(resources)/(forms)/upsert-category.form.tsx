@@ -36,7 +36,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
         toast.success("Categoria criada com sucesso");
         form.reset();
         closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: [getGetCategoriesQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetCategoriesQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
@@ -51,7 +51,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
         toast.success("Categoria atualizada com sucesso");
         form.reset();
         closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: [getGetCategoriesQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetCategoriesQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));

@@ -34,6 +34,7 @@ interface BaseTableProps<T> {
   loading?: boolean;
   onPaginationChange?: (value: PaginationType) => void;
   pagination?: PaginationType;
+  keyExtractor?: (item: T, index: number) => string | number;
 }
 
 export interface BaseTableOptions {
@@ -54,6 +55,7 @@ export function BaseTable<T>({
   loading = false,
   onPaginationChange,
   pagination,
+  keyExtractor,
 }: BaseTableProps<T>) {
 
   return (
@@ -88,14 +90,12 @@ export function BaseTable<T>({
       ) : (
         <AnimatePresence mode="wait">
           <motion.div
-            key={data.length}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1],
-              staggerChildren: 0.05
             }}
             className="size-full overflow-y-auto pb-4"
           >
@@ -114,37 +114,41 @@ export function BaseTable<T>({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item: T, index: number) => (
-                  <motion.tr
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.05,
-                      ease: [0.4, 0, 0.2, 1]
-                    }}
-                    onClick={() => onRowClick?.(item)}
-                    className={cn(
-                      onRowClick && "cursor-pointer",
-                      "hover:bg-muted/50 transition-colors"
-                    )}
-                  >
-                    {columns.map((column) => (
-                      <TableCell
-                        key={String(column.accessorKey)}
-                        className={column.className}
-                      >
-                        {column.cell
-                          ? column.cell(item[column.accessorKey], item)
-                          : (item[column.accessorKey] as React.ReactNode)}
-                      </TableCell>
-                    ))}
-                    {actions && (
-                      <TableCell className="w-14">{actions(item)}</TableCell>
-                    )}
-                  </motion.tr>
-                ))}
+                <AnimatePresence initial={false}>
+                  {data.map((item: T, index: number) => (
+                    <motion.tr
+                      key={keyExtractor ? keyExtractor(item, index) : index}
+                      layout
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: -16, scaleY: 0.8 }}
+                      transition={{
+                        duration: 0.25,
+                        delay: index * 0.03,
+                        ease: [0.4, 0, 0.2, 1]
+                      }}
+                      onClick={() => onRowClick?.(item)}
+                      className={cn(
+                        onRowClick && "cursor-pointer",
+                        "hover:bg-muted/50 transition-colors"
+                      )}
+                    >
+                      {columns.map((column) => (
+                        <TableCell
+                          key={String(column.accessorKey)}
+                          className={column.className}
+                        >
+                          {column.cell
+                            ? column.cell(item[column.accessorKey], item)
+                            : (item[column.accessorKey] as React.ReactNode)}
+                        </TableCell>
+                      ))}
+                      {actions && (
+                        <TableCell className="w-14">{actions(item)}</TableCell>
+                      )}
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </TableBody>
             </Table>
           </motion.div>

@@ -7,7 +7,7 @@ import { queryClient } from '@/app/(contexts)'
 import { getErrorMessage } from '@/app/(helpers)/errors'
 import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action'
 import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form'
-import { deleteCategoriesDeleteId, useDeleteCategoriesDeleteId } from '@/app/(resources)/(generated)/hooks/categories/categories'
+import { getGetCategoriesQueryKey, useDeleteCategoriesDeleteId } from '@/app/(resources)/(generated)/hooks/categories/categories'
 import { Category } from '@/app/(resources)/(generated)/hooks/moneylyAPI.schemas'
 import { CustomAxiosError } from '@/app/(types)/error.type'
 import { format } from 'date-fns'
@@ -24,7 +24,7 @@ export const CategoryTable = ({ categories, tableOptions, onPaginationChange, is
     mutation: {
       onSuccess: () => {
         toast.success('Categoria deletada com sucesso');
-        queryClient.invalidateQueries({ queryKey: [deleteCategoriesDeleteId] });
+        queryClient.invalidateQueries({ queryKey: getGetCategoriesQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         const errorMessage = getErrorMessage(error);

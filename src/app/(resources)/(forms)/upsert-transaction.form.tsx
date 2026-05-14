@@ -47,8 +47,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         toast.success("Transação criada com sucesso");
         queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
-        queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
-        queryClient.invalidateQueries({ queryKey: [getGetOverviewPlannerQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
         form.reset();
         closeRef.current?.click();
       },
@@ -65,8 +65,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         toast.success("Transação atualizada com sucesso");
         queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
-        queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
-        queryClient.invalidateQueries({ queryKey: [getGetOverviewPlannerQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
         closeRef.current?.click();
       },
       onError: (error: CustomAxiosError) => {
