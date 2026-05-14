@@ -10,17 +10,22 @@ import { GoalSwiper } from '@/app/(components)/(bases)/(swipers)/goal-swiper'
 import { Header } from '@/app/(components)/(layout)/header'
 import { Fade } from '@/app/(components)/(motions)/fade'
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
+import { usePeriod } from '@/app/(contexts)/period-provider'
+import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs'
 import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
-import { useGetBudgets } from '@/app/(resources)/(generated)/hooks/budgets/budgets'
+import { getBudgets, useGetBudgets } from '@/app/(resources)/(generated)/hooks/budgets/budgets'
 import { useGetGoals } from '@/app/(resources)/(generated)/hooks/goals/goals'
 import { useGetOverviewPlanner } from '@/app/(resources)/(generated)/hooks/overview/overview'
 import { Target } from 'lucide-react'
 
 const PlannerPage = () => {
-  const { data: budgets } = useGetBudgets()
-  const { data: goals } = useGetGoals()
-  const { data: overviewPlanner } = useGetOverviewPlanner()
+  const { selectedPeriodId } = usePeriod();
+  const { data: budgets, isFetching: isFetchingBudgets } = useGetBudgets({
+   periodId: selectedPeriodId || undefined,
+  })
+  const { data: goals, isFetching: isFetchingGoals } = useGetGoals()
+  const { data: overviewPlanner, isFetching: isFetchingOverview } = useGetOverviewPlanner()
 
   return (
     <Fade>
@@ -47,27 +52,28 @@ const PlannerPage = () => {
 
 
       } />
-      <StaggeredFade variant='page'>
+      <StaggeredFade variant='page' className="grid grid-rows-[auto_auto_1fr_1fr] size-full" itemClassNames={["min-w-0", undefined, undefined, undefined]}>
         <PeriodNavigatorWrapper />
         <PlannerStats
           totalBudgeted={overviewPlanner?.data?.stats?.totalBudgeted}
           savingsGoal={overviewPlanner?.data?.stats?.totalSavingsGoal}
           alreadySaved={overviewPlanner?.data?.stats?.totalSaved}
           alerts={overviewPlanner?.data?.alerts || []}
+          loading={isFetchingOverview}
         />
 
         <Section
           Icon={Target}
           title="Orçamentos por Categoria"
         >
-          <BudgetSwiper budgets={budgets?.data?.map((budget) => budget) || []} />
+          <BudgetSwiper budgets={budgets?.data?.map((budget) => budget) || []} loading={isFetchingBudgets} />
         </Section>
 
         <Section
           Icon={Target}
           title="Objetivos de Poupança"
         >
-          <GoalSwiper goals={goals?.data?.map((goal) => goal) || []} />
+          <GoalSwiper goals={goals?.data?.map((goal) => goal) || []} loading={isFetchingGoals} />
         </Section>
       </StaggeredFade>
     </Fade>

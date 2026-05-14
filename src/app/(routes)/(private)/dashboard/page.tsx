@@ -16,8 +16,10 @@ import { DashboardStats } from "@/app/(resources)/(generated)/types/DashboardSta
 import { MonthlyHistoryChart } from "@/app/(components)/(bases)/(charts)/monthly-history-chart";
 import { ROUTES } from "@/app/(utils)/routes";
 import { useRouter } from "next/navigation";
+import { Loader2, Receipt } from "lucide-react";
 import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
 import { RecentTransactionItem } from "@/app/(resources)/(generated)";
+import { TransactionTabs } from "@/app/(resources)/(forms)/transaction.tabs";
 
 const DashboardPage = () => {
   const { selectedPeriodId } = usePeriod();
@@ -26,6 +28,9 @@ const DashboardPage = () => {
   });
 
   const { push } = useRouter();
+
+  const recentTransactions = overviewData?.data?.recentTransactions ?? [];
+  const chartSeries = overviewData?.data?.chart?.data ?? [];
 
   return (
     <Fade>
@@ -40,13 +45,13 @@ const DashboardPage = () => {
               Nova transação
             </BaseButton>}
           >
-            <UpsertTransactionForm />
+            <TransactionTabs/>
           </BaseDialog>
           ]
         }
       />
 
-      <StaggeredFade variant="page">
+      <StaggeredFade variant="default" className="grid grid-rows-[auto_auto_1fr] size-full min-h-0 overflow-hidden p-2 gap-2" itemClassNames={["min-w-0", undefined, "min-h-0"]}>
         <PeriodNavigatorWrapper />
         <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
           {DASHBOARD_STATS_INTERATOR.map((stat) => (
@@ -64,12 +69,13 @@ const DashboardPage = () => {
 
         </StaggeredFade>
         <StaggeredFade
-          className="grid grid-cols-1 md:grid-cols-3 gap-2"
-          itemClassNames={[undefined, "md:col-span-2"]}
+          className="grid grid-cols-1 md:grid-cols-3 grid-rows-[1fr] gap-2 size-full min-h-0"
+          itemClassNames={["min-h-0", "md:col-span-2 min-h-0"]}
         >
           <BaseCard
             title="Transações Recentes"
             description="Suas últimas movimentações financeiras"
+            className="size-full"
             footer={
               <BaseButton
                 variant="outline"
@@ -82,21 +88,28 @@ const DashboardPage = () => {
             }
           >
             <StaggeredFade className="space-y-2">
-              {overviewData?.data?.recentTransactions?.map((transaction: RecentTransactionItem) => (
-                <TransactionItem key={transaction.id} {...transaction} />
-              ))}
+              {isPostingOverview ? (
+                <div className="flex min-h-[140px] flex-col items-center justify-center py-6 text-center">
+                  <Loader2 className="mb-2 size-10 animate-spin text-muted-foreground/50" aria-hidden />
+                  <p className="text-sm text-muted-foreground">Carregando transações…</p>
+                </div>
+              ) : recentTransactions.length === 0 ? (
+                <div className="flex min-h-[140px] flex-col items-center justify-center py-6 text-center">
+                  <Receipt className="mb-2 size-12 text-muted-foreground/50" aria-hidden />
+                  <p className="text-sm text-muted-foreground">Nenhuma transação neste período.</p>
+                </div>
+              ) : (
+                recentTransactions.map((transaction: RecentTransactionItem) => (
+                  <TransactionItem key={transaction.id} {...transaction} />
+                ))
+              )}
             </StaggeredFade>
           </BaseCard>
-        <BaseCard title="Histórico Mensal" description="Receitas e despesas ao longo dos meses">
-          <MonthlyHistoryChart
-            data={overviewData?.data?.chart?.data ?? []}
-            isLoading={isPostingOverview}
-          />
+        <BaseCard title="Histórico Mensal" description="Receitas e despesas ao longo dos meses" className="size-full" contentClassName="size-full">
+          <MonthlyHistoryChart data={chartSeries} isLoading={isPostingOverview} />
         </BaseCard>
         </StaggeredFade>
-
       </StaggeredFade>
-
     </Fade>
   )
 };

@@ -50,12 +50,12 @@ export default function ProfilePage() {
           Icon={Settings}
           title="Configurações Financeiras"
         >
-          {user?.financialDayStart && user?.financialDayEnd && user?.monthlyIncome && (
+          {user && (
             <ProfileConfigFinanceForm
               defaultValues={{
-                financialDayStart: user?.financialDayStart.toString(),
-                financialDayEnd: user?.financialDayEnd.toString(),
-                monthlyIncome: user?.monthlyIncome?.toString(),
+                financialDayStart: user.financialDayStart?.toString() ?? '',
+                financialDayEnd: user.financialDayEnd?.toString() ?? '',
+                monthlyIncome: user.monthlyIncome?.toString() ?? '',
               }}
             />
           )}

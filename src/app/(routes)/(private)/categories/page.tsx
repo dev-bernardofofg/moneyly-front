@@ -46,7 +46,7 @@ const CategoriesPage = () => {
           ]
         }
       />
-      <StaggeredFade variant="page">
+      <StaggeredFade variant="page" className="grid grid-rows-[auto_1fr]">
         <CategoryTable
           categories={data?.data || []}
           tableOptions={{

@@ -1,6 +1,6 @@
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { TrashIcon, XIcon } from 'lucide-react';
+import { PowerIcon, TrashIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 
 interface ConfirmActionFormProps {
@@ -8,9 +8,11 @@ interface ConfirmActionFormProps {
   title: string;
   description: string;
   trigger: React.ReactNode;
+
+  variant?: "default" | "active";
 }
 
-export const ConfirmActionForm = ({ onConfirm, title, description, trigger }: ConfirmActionFormProps) => {
+export const ConfirmActionForm = ({ onConfirm, title, description, trigger, variant = "default" }: ConfirmActionFormProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -35,8 +37,8 @@ export const ConfirmActionForm = ({ onConfirm, title, description, trigger }: Co
           <XIcon className="size-4" />
           Cancelar
         </BaseButton>
-        <BaseButton variant="destructive" className="w-full" onClick={handleConfirm} >
-          <TrashIcon className="size-4" />
+        <BaseButton variant={variant === "active" ? "default" : "destructive"} className="w-full" onClick={handleConfirm} >
+          {variant === "active" ? <PowerIcon className="size-4" /> : <TrashIcon className="size-4" />}
           Confirmar
         </BaseButton>
       </div>

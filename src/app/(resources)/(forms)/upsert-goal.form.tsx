@@ -32,7 +32,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
     defaultValues: goal ? {
       title: goal.title || "",
       description: goal.description || "",
-      targetAmount: goal.targetAmount?.toString() || "",
+      targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
       targetDate: goal.targetDate,
     } : GoalDefaultValues,
   })

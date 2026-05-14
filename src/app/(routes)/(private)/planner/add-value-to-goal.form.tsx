@@ -12,9 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { usePostGoalsIdAddAmount } from "../../../(resources)/(generated)/hooks/goals/goals"
+import { getGetGoalsQueryKey, usePostGoalsIdAddAmount } from "../../../(resources)/(generated)/hooks/goals/goals"
 import { AddValueToGoalFormValues, AddValueToGoalSchema } from "../../../(resources)/(schemas)/goal.schema"
 import { CustomAxiosError } from "../../../(types)/error.type"
+import { getGetOverviewPlannerQueryKey } from "@/app/(resources)/(generated)/hooks/overview/overview"
 interface AddValueToGoalFormProps {
   goalId: string
 }
@@ -31,7 +32,8 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
       onSuccess: () => {
         toast.success("Valor adicionado com sucesso")
         closeRef.current?.click()
-        queryClient.invalidateQueries({ queryKey: ["getGoals"] })
+        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() })
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() })
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error))

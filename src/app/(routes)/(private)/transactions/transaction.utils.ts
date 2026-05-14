@@ -2,10 +2,10 @@ import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
 
 export const TRANSACTION_STATS_INTERATOR = [
   {
-    name: "Saldo",
-    indicator: "balance",
+    name: "Rendimento Mensal",
+    indicator: "monthlyIncome",
     icon: DollarSign,
-    description: "Saldo Disponível",
+    description: "Rendimento mensal cadastrado",
     isMonetary: true,
     variant: "default",
     loading: false,

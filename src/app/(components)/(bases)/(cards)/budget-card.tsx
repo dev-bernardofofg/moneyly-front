@@ -4,7 +4,7 @@ import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
 import { Budget } from "@/app/(resources)/(generated)";
-import { useDeleteBudgetsId } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
+import { getGetBudgetsQueryKey, useDeleteBudgetsId } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -37,7 +37,7 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
   const { mutate: deleteBudget, isPending } = useDeleteBudgetsId({
     mutation: {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["getBudgets"] })
+        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() })
         toast.success("Orçamento removido com sucesso")
       },
     },

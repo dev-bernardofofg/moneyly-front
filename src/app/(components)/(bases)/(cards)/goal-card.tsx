@@ -3,7 +3,7 @@ import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number'
 import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action'
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
 import { Goal } from '@/app/(resources)/(generated)'
-import { useDeleteGoalsId } from '@/app/(resources)/(generated)/hooks/goals/goals'
+import { getGetGoalsQueryKey, useDeleteGoalsId } from '@/app/(resources)/(generated)/hooks/goals/goals'
 import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form'
 import { differenceInDays, format } from 'date-fns'
 import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react'
@@ -20,7 +20,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
     mutation: {
       onSuccess: () => {
         toast.success("Meta removida com sucesso")
-        queryClient.invalidateQueries({ queryKey: ["getGoals"] })
+        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() })
       },
     },
   })

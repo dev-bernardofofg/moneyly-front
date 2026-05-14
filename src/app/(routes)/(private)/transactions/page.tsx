@@ -32,7 +32,6 @@ const TransactionsPage = () => {
     onPaginationChange: setPaginationParams
   })
 
-
   return (
     <Fade>
       <Header
@@ -49,14 +48,13 @@ const TransactionsPage = () => {
         </BaseDialog>]
         }
       />
-      <StaggeredFade variant="page" className="grid grid-rows-[auto_auto_1fr]" itemClassNames={[undefined, undefined, "overflow-y-hidden size-full"]}>
-        <PeriodNavigatorWrapper />
+      <StaggeredFade variant="page" className="grid grid-rows-[auto_1fr]" itemClassNames={[undefined, "overflow-y-hidden size-full"]}>
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {TRANSACTION_STATS_INTERATOR.map((stat) => (
             <BaseStats
               key={stat.indicator}
               name={stat.name}
-              value={(transactions?.data as any)?.[stat.indicator] ?? 0}
+              value={transactions?.summary?.[stat.indicator] ?? 0}
               Icon={stat.icon}
               description={stat.description}
               isMonetary={stat.isMonetary}

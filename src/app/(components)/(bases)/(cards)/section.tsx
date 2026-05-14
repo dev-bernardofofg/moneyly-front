@@ -25,7 +25,7 @@ export const Section = ({
           </CardTitle>
         </CardHeader>
 
-        <CardContent className='p-6'>
+        <CardContent className="pt-4">
           {children}
         </CardContent>
       </Card>

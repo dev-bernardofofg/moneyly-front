@@ -15,7 +15,7 @@ import {
   type TooltipVariant,
 } from "@/components/evilcharts/ui/tooltip";
 import { ChartLegend, ChartLegendContent, type ChartLegendVariant } from "@/components/evilcharts/ui/legend";
-import { Bar, BarChart, CartesianGrid, Rectangle, ReferenceLine, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Customized, Rectangle, ReferenceLine, XAxis, YAxis } from "recharts";
 import { useCallback, useId, useMemo, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { ChartBackground, type BackgroundVariant } from "@/components/evilcharts/ui/background";
 import { RectRadius } from "recharts/types/shape/Rectangle";
@@ -88,6 +88,10 @@ type EvilBarChartProps<
   backgroundVariant?: BackgroundVariant;
   // Buffer Bar - renders last data point bars as hatched/lines style
   enableBufferBar?: boolean;
+  // Average line on Y axis
+  showAverageLine?: boolean;
+  // Hover bounds: dashed ref lines + bracket + Y labels per hovered category
+  showHoverBounds?: boolean;
 };
 
 type EvilBarChartClickable = {
@@ -145,15 +149,29 @@ export function EvilBarChart<
   onSelectionChange,
   backgroundVariant,
   enableBufferBar = false,
+  showAverageLine = false,
+  showHoverBounds = false,
 }: EvilBarChartPropsWithCallback<TData, TConfig>) {
   const [selectedDataKey, setSelectedDataKey] = useState<string | null>(defaultSelectedDataKey);
   const [isMouseInChart, setIsMouseInChart] = useState(false);
+  const [hoveredDataIndex, setHoveredDataIndex] = useState<number | null>(null);
   const { loadingData, onShimmerExit } = useLoadingData(isLoading, loadingBars);
   const chartId = useId().replace(/:/g, ""); // Remove colons for valid CSS selectors
 
   // ── Zoom state ──────────────────────────────────────────────────────────
   const { visibleData, brushProps } = useEvilBrush({ data });
   const displayData = showBrush && !isLoading ? visibleData : data;
+
+  const averageByKey = useMemo(() => {
+    if (!showAverageLine || isLoading) return {} as Record<string, number>;
+    return Object.keys(chartConfig).reduce((acc, key) => {
+      const values = displayData.map(d => Number(d[key] ?? 0)).filter(v => v > 0);
+      acc[key] = values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0;
+      return acc;
+    }, {} as Record<string, number>);
+  }, [displayData, chartConfig, showAverageLine, isLoading]);
+
+  const hoveredEntry = !isLoading && hoveredDataIndex != null ? displayData[hoveredDataIndex] : null;
 
   // Wrapper function to update state and call parent callback
   const handleSelectionChange = useCallback(
@@ -205,8 +223,17 @@ export function EvilBarChart<
         barGap={barGap}
         barCategoryGap={barCategoryGap}
         stackOffset={stackType === "percent" ? "expand" : undefined}
-        onMouseEnter={() => setIsMouseInChart(true)}
-        onMouseLeave={() => setIsMouseInChart(false)}
+        onMouseMove={(state) => {
+          setIsMouseInChart(true);
+          if (showHoverBounds && state.activeTooltipIndex != null) {
+            const idx = Number(state.activeTooltipIndex);
+            if (!isNaN(idx)) setHoveredDataIndex(idx);
+          }
+        }}
+        onMouseLeave={() => {
+          setIsMouseInChart(false);
+          setHoveredDataIndex(null);
+        }}
         {...chartProps}
       >
         {backgroundVariant && <ChartBackground variant={backgroundVariant} />}
@@ -251,6 +278,30 @@ export function EvilBarChart<
             width="auto"
             stroke="hsl(var(--muted-foreground))"
             {...yAxisProps}
+            tick={
+              showHoverBounds && hoveredEntry && !isHorizontal
+                ? ((tickProps: { x?: number | string; y?: number | string; payload?: { value: number | string } }) => {
+                  const fmt = yAxisProps?.tickFormatter as ((v: number | string) => string) | undefined;
+                  const tx = Number(tickProps.x);
+                  const ty = Number(tickProps.y);
+                  const tv = tickProps.payload?.value ?? "";
+                  return (
+                    <text
+                      x={tx}
+                      y={ty}
+                      dy={4}
+                      textAnchor="end"
+                      fontSize={11}
+                      fill="hsl(var(--muted-foreground))"
+                      opacity={0.25}
+                    >
+                      {fmt ? fmt(tv) : String(tv)}
+                    </text>
+                  );
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                }) as any
+                : yAxisProps?.tick
+            }
           />
         )}
         {!hideTooltip && !isLoading && (
@@ -276,6 +327,8 @@ export function EvilBarChart<
             const customBarProps = {
               chartId,
               dataKey,
+              allDataKeys: Object.keys(chartConfig),
+              groupBarGap: barGap ?? 4,
               barVariant,
               barRadius,
               filter,
@@ -308,6 +361,142 @@ export function EvilBarChart<
               />
             );
           })}
+        {/* ======== AVERAGE LINES (no inline labels — rendered via Customized) ======== */}
+        {showAverageLine && Object.entries(averageByKey).map(([key, avg]) =>
+          avg > 0 && (
+            <ReferenceLine
+              key={`avg-${key}`}
+              y={avg}
+              stroke={`var(--color-${key}-0)`}
+              strokeDasharray="5 3"
+              strokeOpacity={hoveredEntry ? 0.25 : 0.55}
+              strokeWidth={1}
+            />
+          )
+        )}
+        {/* ======== HOVER VALUE REFERENCE LINES ======== */}
+        {showHoverBounds && hoveredEntry && Object.keys(chartConfig).map(key => {
+          const value = Number(hoveredEntry[key] ?? 0);
+          if (!value) return null;
+          return (
+            <ReferenceLine
+              key={`hover-ref-${key}`}
+              y={value}
+              stroke={`var(--color-${key}-0)`}
+              strokeDasharray="3 2"
+              strokeOpacity={0.5}
+              strokeWidth={1}
+            />
+          );
+        })}
+        {/* ======== AVERAGE PILL LABELS ON Y AXIS (always shown) ======== */}
+        {showAverageLine && (
+          <Customized
+            component={(props: Record<string, unknown>) => {
+              const yAxisMap = props.yAxisMap as Record<string, { scale: (v: number) => number }> | undefined;
+              const offset = props.offset as { left: number } | undefined;
+              if (!yAxisMap || !offset) return null;
+              const yAxis = Object.values(yAxisMap)[0];
+              if (!yAxis?.scale) return null;
+
+              const items = Object.entries(averageByKey)
+                .filter(([, avg]) => avg > 0)
+                .map(([key, avg]) => ({ key, value: avg, y: yAxis.scale(avg) }));
+
+              if (!items.length) return null;
+
+              return (
+                <g opacity={hoveredEntry ? 0.35 : 1}>
+                  {items.map(({ key, value, y }) => (
+                    <YAxisPill
+                      key={key}
+                      x={offset.left}
+                      y={y}
+                      value={value}
+                      color={`var(--color-${key}-0)`}
+                      formatter={tooltipValueFormatter}
+                      variant="ghost"
+                    />
+                  ))}
+                </g>
+              );
+            }}
+          />
+        )}
+        {/* ======== HOVER PILLS + BRACKET + DELTA ======== */}
+        {showHoverBounds && hoveredEntry && (
+          <Customized
+            component={(props: Record<string, unknown>) => {
+              const yAxisMap = props.yAxisMap as Record<string, { scale: (v: number) => number }> | undefined;
+              const offset = props.offset as { left: number } | undefined;
+              if (!yAxisMap || !offset) return null;
+              const yAxis = Object.values(yAxisMap)[0];
+              if (!yAxis?.scale) return null;
+
+              const entries = Object.keys(chartConfig)
+                .map(key => ({ key, value: Number(hoveredEntry[key] ?? 0) }))
+                .filter(e => e.value > 0)
+                .map(e => ({ ...e, y: yAxis.scale(e.value) }))
+                .sort((a, b) => a.y - b.y); // top to bottom
+
+              if (!entries.length) return null;
+
+              // Collision avoidance: push apart labels within 16px vertically (top-down)
+              const MIN_GAP = 16;
+              const adjusted: Array<{ key: string; value: number; y: number; labelY: number }> = [];
+              entries.forEach((e, i) => {
+                const prevLabelY = i === 0 ? -Infinity : adjusted[i - 1].labelY;
+                const labelY = Math.max(e.y, prevLabelY + MIN_GAP);
+                adjusted.push({ ...e, labelY });
+              });
+
+              const ys = entries.map(e => e.y);
+              const yTop = Math.min(...ys);
+              const yBottom = Math.max(...ys);
+              const bx = offset.left - 6;
+              const showBracket = entries.length > 1 && yBottom - yTop > 8;
+              const delta = entries.length > 1
+                ? Math.abs(entries[entries.length - 1].value - entries[0].value)
+                : 0;
+
+              return (
+                <motion.g
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                >
+                  {showBracket && (
+                    <g>
+                      <line x1={bx} y1={yTop} x2={bx} y2={yBottom}
+                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
+                      <line x1={bx - 3} y1={yTop} x2={bx + 3} y2={yTop}
+                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
+                      <line x1={bx - 3} y1={yBottom} x2={bx + 3} y2={yBottom}
+                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
+                      <DeltaBadge
+                        x={bx}
+                        y={(yTop + yBottom) / 2}
+                        value={delta}
+                        formatter={tooltipValueFormatter}
+                      />
+                    </g>
+                  )}
+                  {adjusted.map(({ key, value, labelY }) => (
+                    <YAxisPill
+                      key={key}
+                      x={offset.left}
+                      y={labelY}
+                      value={value}
+                      color={`var(--color-${key}-0)`}
+                      formatter={tooltipValueFormatter}
+                      variant="solid"
+                    />
+                  ))}
+                </motion.g>
+              );
+            }}
+          />
+        )}
         {/* ======== LOADING BAR ======== */}
         {isLoading && (
           <Bar
@@ -371,6 +560,8 @@ type BarShapeProps = {
 type CustomBarProps = {
   chartId: string;
   dataKey: string;
+  allDataKeys: string[];
+  groupBarGap: number;
   barVariant: BarVariant;
   barRadius: number;
   filter?: string;
@@ -393,6 +584,8 @@ const CustomBar = (props: CustomBarProps) => {
     height = 0,
     chartId,
     dataKey,
+    allDataKeys,
+    groupBarGap,
     barVariant,
     barRadius,
     filter,
@@ -408,6 +601,16 @@ const CustomBar = (props: CustomBarProps) => {
 
   const index = typeof props.index === "number" ? props.index : -1;
   const isLastBar = enableBufferBar && dataLength > 0 && index === dataLength - 1;
+
+  const payload = props.payload as Record<string, number> | undefined;
+  const siblingsAreZero = allDataKeys
+    .filter((k) => k !== dataKey)
+    .every((k) => !payload?.[k]);
+  const barIndex = allDataKeys.indexOf(dataKey);
+  const N = allDataKeys.length;
+  const barX = siblingsAreZero && N > 1
+    ? x + (N / 2 - barIndex - 0.5) * (width + groupBarGap)
+    : x;
   const isStripped = barVariant === "stripped";
 
   const getFill = () => {
@@ -449,10 +652,18 @@ const CustomBar = (props: CustomBarProps) => {
   return (
     <g style={cursorStyle} onClick={onClick}>
       {/* Transparent rectangle for full column hit area */}
-      <Rectangle {...props} fill="transparent" />
-      {/* Visible bar with animated opacity */}
       <Rectangle
         x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill="transparent"
+        stroke="none"
+        strokeWidth={0}
+      />
+      {/* Visible bar with animated opacity */}
+      <Rectangle
+        x={barX}
         y={y}
         width={width}
         opacity={fillOpacity}
@@ -466,7 +677,7 @@ const CustomBar = (props: CustomBarProps) => {
       {/* Top border strip for stripped variant */}
       {isStripped && (
         <Rectangle
-          x={x}
+          x={barX}
           y={y - 4}
           width={width}
           height={2}
@@ -806,7 +1017,8 @@ const DuotoneReversePatternStyle = ({
   );
 };
 
-// Gradient pattern style for bars (top to bottom fade) - uses mask to preserve gradient colors
+// Gradient style for bars (top to bottom fade per bar) - objectBoundingBox ensures each bar
+// gets its own gradient regardless of its height or position in the chart
 const GradientPatternStyle = ({
   chartConfig,
   chartId,
@@ -816,34 +1028,18 @@ const GradientPatternStyle = ({
 }) => {
   return (
     <>
-      {/* Shared vertical fade gradient for mask */}
-      <linearGradient id={`${chartId}-gradient-mask-gradient`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="20%" stopColor="white" stopOpacity={1} />
-        <stop offset="90%" stopColor="white" stopOpacity={0} />
-      </linearGradient>
-
-      {Object.keys(chartConfig).map((dataKey) => (
-        <g key={`${chartId}-gradient-group-${dataKey}`}>
-          {/* Mask for vertical fade */}
-          <mask id={`${chartId}-gradient-mask-${dataKey}`}>
-            <rect width="100%" height="100%" fill={`url(#${chartId}-gradient-mask-gradient)`} />
-          </mask>
-
-          {/* Pattern: gradient fill with vertical fade mask */}
-          <pattern
-            id={`${chartId}-gradient-${dataKey}`}
-            patternUnits="userSpaceOnUse"
-            width="100%"
-            height="100%"
-          >
-            <rect
-              width="100%"
-              height="100%"
-              fill={`url(#${chartId}-colors-${dataKey})`}
-              mask={`url(#${chartId}-gradient-mask-${dataKey})`}
-            />
-          </pattern>
-        </g>
+      {Object.entries(chartConfig).map(([dataKey]) => (
+        <linearGradient
+          key={`${chartId}-gradient-${dataKey}`}
+          id={`${chartId}-gradient-${dataKey}`}
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
+          <stop offset="0%" stopColor={`var(--color-${dataKey}-0)`} stopOpacity={1} />
+          <stop offset="100%" stopColor={`var(--color-${dataKey}-1, var(--color-${dataKey}-0))`} stopOpacity={0.3} />
+        </linearGradient>
       ))}
     </>
   );
@@ -1055,4 +1251,118 @@ const getBarOpacity = ({
   }
 
   return clickOpacity;
+};
+
+/**
+ * Pill-style label rendered on the Y axis at a specific value height.
+ * Variant "solid" = full background (hover values), "ghost" = subtle outline (averages).
+ */
+const YAxisPill = ({
+  x,
+  y,
+  value,
+  color,
+  formatter,
+  prefix,
+  variant = "solid",
+}: {
+  x: number;
+  y: number;
+  value: number;
+  color: string;
+  formatter?: (v: number | string) => ReactNode;
+  prefix?: string;
+  variant?: "solid" | "ghost";
+}) => {
+  const text = formatter ? String(formatter(value)) : String(value);
+  const full = prefix ? `${prefix} ${text}` : text;
+  // Approximate text width: 5.6px per char at 10px font
+  const textWidth = full.length * 5.6;
+  const padX = 5;
+  const height = 14;
+  const w = textWidth + padX * 2;
+  const px = x - w - 2; // pill ends 2px left of chart area
+  const py = y - height / 2;
+  const isSolid = variant === "solid";
+
+  return (
+    <g>
+      <rect
+        x={px}
+        y={py}
+        width={w}
+        height={height}
+        rx={3}
+        fill={isSolid ? color : "transparent"}
+        fillOpacity={isSolid ? 0.18 : 0}
+        stroke={color}
+        strokeOpacity={isSolid ? 0.7 : 0.4}
+        strokeWidth={1}
+      />
+      <text
+        x={px + w / 2}
+        y={y}
+        dy={3.5}
+        textAnchor="middle"
+        fontSize={10}
+        fontWeight={isSolid ? 600 : 500}
+        fill={color}
+        opacity={isSolid ? 1 : 0.85}
+      >
+        {full}
+      </text>
+    </g>
+  );
+};
+
+/**
+ * Delta badge rendered to the right of the bracket, inside the chart area.
+ * Solid background pill so it remains readable when overlapping bars.
+ */
+const DeltaBadge = ({
+  x,
+  y,
+  value,
+  formatter,
+}: {
+  x: number;
+  y: number;
+  value: number;
+  formatter?: (v: number | string) => ReactNode;
+}) => {
+  const text = `Δ ${formatter ? String(formatter(value)) : String(value)}`;
+  const textWidth = text.length * 5.6;
+  const padX = 6;
+  const height = 16;
+  const w = textWidth + padX * 2;
+  const bx = x + 5; // 5px to the right of bracket
+  const by = y - height / 2;
+
+  return (
+    <g>
+      <rect
+        x={bx}
+        y={by}
+        width={w}
+        height={height}
+        rx={4}
+        fill="hsl(var(--background))"
+        fillOpacity={0.92}
+        stroke="hsl(var(--muted-foreground))"
+        strokeOpacity={0.55}
+        strokeWidth={1}
+      />
+      <text
+        x={bx + w / 2}
+        y={y}
+        dy={4}
+        textAnchor="middle"
+        fontSize={10}
+        fontWeight={600}
+        fill="hsl(var(--foreground))"
+      >
+        {text}
+      </text>
+    </g>
+  );
 };

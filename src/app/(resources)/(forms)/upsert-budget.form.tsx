@@ -15,10 +15,11 @@ import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Budget } from "../(generated)"
-import { usePostBudgets, usePutBudgetsId } from "../(generated)/hooks/budgets/budgets"
+import { getGetBudgetsQueryKey, usePostBudgets, usePutBudgetsId } from "../(generated)/hooks/budgets/budgets"
 import { useGetCategories } from "../(generated)/hooks/categories/categories"
 import { CreateBudgetDefaultValues, CreateBudgetFormValues, CreateBudgetSchema } from "../(schemas)/budget.schema"
 import { TransactionCategory } from "../(generated)/hooks/moneylyAPI.schemas"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface UpsertBudgetFormProps {
   budget?: Budget
@@ -32,7 +33,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     resolver: zodResolver(CreateBudgetSchema),
     defaultValues: budget ? {
       categoryId: budget.category?.id || "",
-      monthlyLimit: budget.monthlyLimit?.toString() || "",
+      monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInputDigits(budget.monthlyLimit),
     } : CreateBudgetDefaultValues,
   })
 
@@ -41,7 +42,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
       onSuccess: () => {
         toast.success("Orçamento criado com sucesso");
         closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: ["getBudgets"] });
+        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
@@ -54,7 +55,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
       onSuccess: () => {
         toast.success("Orçamento atualizado com sucesso");
         closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: ["getBudgets"] });
+        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
@@ -66,7 +67,8 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
 
   const handleForm = (data: CreateBudgetFormValues) => {
     if (budget) {
-      updateMutation.mutate({ id: budget.id || "", data: { monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) } })
+      updateMutation.mutate({ 
+        id: budget.id || "", data: { monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) } })
     } else {
       createMutation.mutate({ data: { categoryId: data.categoryId || "", monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) } })
     }
@@ -86,6 +88,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
               value: category.id || "ID da categoria",
             }))}
             placeholder={budget ? undefined : "Selecione uma categoria disponível"}
+            disabled={!!budget}
           />
           <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} type="money" placeholder="0,00" />
           <BaseButton type="submit" className="w-full" isLoading={budget ? updateMutation.isPending : createMutation.isPending}>

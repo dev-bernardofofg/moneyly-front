@@ -13,6 +13,7 @@ const toPeriod = (fp: FinancialPeriod): Period => ({
   startDate: fp.startDate,
   endDate: fp.endDate,
   transactionCount: fp.transactionCount ?? 0,
+  isCurrent: fp.isCurrent,
 });
 
 export const usePeriods = () => {
@@ -34,10 +35,14 @@ export const usePeriods = () => {
 
   useEffect(() => {
     if (periodsData?.data) {
-      setPeriods(periodsData.data.map(toPeriod));
+      const sorted = [...periodsData.data].sort(
+        (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
+      setPeriods(sorted.map(toPeriod));
 
-      if (!selectedPeriodId && periodsData.data.length > 0) {
-        setSelectedPeriodId(periodsData.data[0].id);
+      if (!selectedPeriodId && sorted.length > 0) {
+        const current = sorted.find((p) => p.isCurrent);
+        setSelectedPeriodId((current ?? sorted[0]).id);
       }
     }
   }, [periodsData, selectedPeriodId, setPeriods, setSelectedPeriodId]);

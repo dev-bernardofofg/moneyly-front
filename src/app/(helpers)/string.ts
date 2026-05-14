@@ -40,6 +40,19 @@ export const FN_UTILS_STRING = {
     return Number(value.replace(/\./g, "").replace(",", "."));
   },
 
+  /**
+   * Valor em reais (ex.: da API `"500"` ou `500.5`) → sequência só de dígitos que o
+   * BaseInput `type="money"` interpreta (últimos 2 = centavos). Ex.: 500 → `"50000"` → exibe `500,00`.
+   */
+  formatReaisToMoneyInputDigits: (value: string | number | undefined): string => {
+    if (value === undefined || value === null) return "";
+    const raw = String(value).trim();
+    if (raw === "") return "";
+    const n = Number(raw.replace(/\./g, "").replace(",", "."));
+    if (!Number.isFinite(n)) return "";
+    return String(Math.round(n * 100));
+  },
+
   formatEndDayDate: (value: string) => {
     const date = new Date(value);
 

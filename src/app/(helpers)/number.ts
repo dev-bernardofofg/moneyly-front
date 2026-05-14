@@ -18,4 +18,12 @@ export const FN_UTILS_NUMBERS = {
   formatPercentageFormatted: (value: number) => {
     return `${value.toFixed(2)}%`;
   },
+
+  formatInstallments: (
+    executedInstallments?: number,
+    totalInstallments?: number | null
+  ): string => {
+    if (totalInstallments == null) return "Recorrente";
+    return `${executedInstallments ?? 0} de ${totalInstallments} parcelas`;
+  },
 };

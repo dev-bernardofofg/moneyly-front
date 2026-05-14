@@ -7,12 +7,13 @@ interface BaseCardProps {
   title: string;
   description?: string;
   className?: string;
+  contentClassName?: string;
   footer?: React.ReactNode;
 }
 
-export const BaseCard = ({ children, title, description, className, footer }: BaseCardProps) => {
+export const BaseCard = ({ children, title, description, className, contentClassName, footer }: BaseCardProps) => {
   return (
-    <Card className={cn(className)}>
+    <Card className={cn('grid grid-rows-[auto_1fr_auto] overflow-hidden',className)}>
       <CardHeader>
         <CardTitle>
           {title}
@@ -24,7 +25,7 @@ export const BaseCard = ({ children, title, description, className, footer }: Ba
         )}
       </CardHeader>
 
-      <CardContent>
+      <CardContent className={cn('overflow-y-auto',contentClassName)}>
         {children}
       </CardContent>
       {footer && (

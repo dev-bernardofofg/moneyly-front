@@ -76,10 +76,15 @@ export const TransactionTable = ({ transactions, tableOptions, onPaginationChang
           header: "Título",
           accessorKey: "title",
           cell: (_, item) => {
-            return <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+            return <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
               <span>
                 {item.title}
               </span>
+              {item.recurringTransactionId && (
+                <Badge variant="outline" className="text-xs px-1.5 py-0 h-5 font-normal border-primary/40 text-primary">
+                  Recorrente
+                </Badge>
+              )}
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="size-4" />

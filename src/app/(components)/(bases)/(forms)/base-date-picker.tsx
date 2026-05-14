@@ -186,11 +186,7 @@ export function BaseDatePicker<T extends FieldValues>({
                   selected={field.value ? parseISO(field.value) : undefined}
                   onSelect={(date) => {
                     if (date) {
-                      const offset = date.getTimezoneOffset();
-                      const adjustedDate = new Date(
-                        date.getTime() - offset * 60 * 1000,
-                      );
-                      field.onChange(format(adjustedDate, "yyyy-MM-dd"));
+                      field.onChange(format(date, "yyyy-MM-dd"));
                       setCalendarDate(date);
                     } else {
                       field.onChange("");

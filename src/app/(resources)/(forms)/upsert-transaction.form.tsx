@@ -64,6 +64,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       onSuccess: () => {
         toast.success("Transação atualizada com sucesso");
         queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
         queryClient.invalidateQueries({ queryKey: [getGetTransactionsSummaryQueryKey()] });
         queryClient.invalidateQueries({ queryKey: [getGetOverviewPlannerQueryKey()] });
         closeRef.current?.click();

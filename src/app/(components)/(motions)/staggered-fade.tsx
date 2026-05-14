@@ -27,7 +27,7 @@ const variants = {
     transition: { duration: 0.4, ease: "easeOut" as const }
   },
   page: {
-    containerClass: "overflow-y-auto min-h-0 p-2 space-y-2 grid grid-rows-[1fr]",
+    containerClass: "overflow-y-auto min-h-0 p-2 gap-2 grid grid-rows-[1fr]",
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5, ease: "easeOut" as const }

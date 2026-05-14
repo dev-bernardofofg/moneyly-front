@@ -15,8 +15,8 @@ export const PeriodNavigator = ({
 }: PeriodNavigatorProps) => {
   if (loading) {
     return (
-      <div className="w-full overflow-x-auto p-2">
-        <div className="flex gap-2 min-w-max p-1">
+      <div className="min-w-0 w-full overflow-x-auto p-2">
+        <div className="flex gap-2 min-w-max">
           {Array.from({ length: 5 }).map((_, index) => (
             <Skeleton
               key={index}
@@ -40,8 +40,8 @@ export const PeriodNavigator = ({
   }
 
   return (
-    <div className="w-full overflow-x-auto scrollbar-hide">
-      <div className="flex gap-2 min-w-max p-1">
+    <div className="min-w-0 w-full overflow-x-auto scrollbar-hide">
+      <div className="flex gap-2 min-w-max">
         {periods.map((period) => {
           const isSelected = period.id === selectedPeriodId;
           const isCurrent = period.isCurrent;
@@ -52,13 +52,13 @@ export const PeriodNavigator = ({
               clickAction="default"
               onClick={() => onPeriodSelect(period.id)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 hover:scale-105 active:scale-95",
+                "flex items-center gap-2 px-3 py-2 rounded-lg border active:scale-95",
                 "min-w-[140px] max-w-[200px]",
                 isSelected
                   ? "bg-primary text-primary-foreground border-primary shadow-md"
                   : isCurrent
-                    ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
-                    : "bg-muted/50 text-muted-foreground border-border hover:bg-muted hover:border-muted-foreground/30"
+                    ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800 dark:hover:bg-green-900 dark:hover:border-green-700"
+                    : "bg-muted/50 text-muted-foreground border-border hover:bg-muted hover:border-muted-foreground/30 dark:bg-muted/90 dark:text-muted-foreground/50 dark:border-muted-foreground/30 dark:hover:bg-muted/90 dark:hover:border-muted-foreground/30"
               )}
             >
               <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -74,12 +74,12 @@ export const PeriodNavigator = ({
               <Badge
                 variant="secondary"
                 className={cn(
-                  "text-xs px-1.5 py-0.5 h-5 min-w-[20px]",
+                  "text-xs px-1.5 py-0.5 h-5 min-w-5",
                   isSelected
                     ? "bg-primary-foreground/20 text-primary-foreground"
                     : isCurrent
-                      ? "bg-green-100 text-green-700"
-                      : "bg-muted-foreground/20 text-muted-foreground"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800 dark:hover:bg-green-900 dark:hover:border-green-700"
+                      : "bg-muted-foreground/20 text-muted-foreground dark:bg-muted-foreground/90 dark:text-muted-foreground/50 dark:border-muted-foreground/30 dark:hover:bg-muted-foreground/90 dark:hover:border-muted-foreground/30"
                 )}
               >
                 {period.transactionCount}
