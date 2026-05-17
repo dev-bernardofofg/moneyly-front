@@ -1,6 +1,7 @@
 "use client";
 
 import { MobileActionsMenu } from "@/app/(components)/(bases)/(layout)/mobile-actions-menu";
+import { NotificationBell } from "@/app/(components)/(bases)/(notifications)/notification-bell";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -22,21 +23,20 @@ export const Header = ({ actions, title }: HeaderProps) => {
         <div className="flex items-center gap-3 w-full">
           <h1 className="base:text-base md:text-lg font-bold text-slate-950 dark:text-white">{title}</h1>
         </div>
-        {actions && (
-          <>
-            {isMobile ? (
+        <div className="flex items-center gap-3 w-fit">
+          <NotificationBell />
+          {actions && (
+            isMobile ? (
               <MobileActionsMenu actions={actions} />
             ) : (
-              <div className="flex items-center gap-3 w-fit">
-                {actions.map((action, index) => (
-                  <div key={index}>
-                    {action}
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+              actions.map((action, index) => (
+                <div key={index}>
+                  {action}
+                </div>
+              ))
+            )
+          )}
+        </div>
       </div>
     </header>
   );
