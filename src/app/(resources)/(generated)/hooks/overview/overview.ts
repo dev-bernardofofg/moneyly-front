@@ -23,6 +23,10 @@ import type {
   GetOverviewDashboard400,
   GetOverviewDashboard401,
   GetOverviewDashboardParams,
+  GetOverviewForecast200,
+  GetOverviewForecast400,
+  GetOverviewForecast401,
+  GetOverviewForecastParams,
   GetOverviewInsights200,
   GetOverviewInsights400,
   GetOverviewInsights401,
@@ -649,6 +653,172 @@ export function useGetOverviewInsights<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewInsightsQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Saldo projetado (cash-flow forecast)
+ */
+export const getOverviewForecast = (
+  params?: GetOverviewForecastParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<GetOverviewForecast200>({
+    url: `/overview/forecast`,
+    method: "GET",
+    params,
+    signal,
+  });
+};
+
+export const getGetOverviewForecastQueryKey = (
+  params?: GetOverviewForecastParams,
+) => {
+  return [`/overview/forecast`, ...(params ? [params] : [])] as const;
+};
+
+export const getGetOverviewForecastQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOverviewForecast>>,
+  TError = GetOverviewForecast400 | GetOverviewForecast401,
+>(
+  params?: GetOverviewForecastParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewForecast>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetOverviewForecastQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getOverviewForecast>>
+  > = ({ signal }) => getOverviewForecast(params, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOverviewForecast>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetOverviewForecastQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOverviewForecast>>
+>;
+export type GetOverviewForecastQueryError =
+  | GetOverviewForecast400
+  | GetOverviewForecast401;
+
+export function useGetOverviewForecast<
+  TData = Awaited<ReturnType<typeof getOverviewForecast>>,
+  TError = GetOverviewForecast400 | GetOverviewForecast401,
+>(
+  params: undefined | GetOverviewForecastParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewForecast>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewForecast>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewForecast>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOverviewForecast<
+  TData = Awaited<ReturnType<typeof getOverviewForecast>>,
+  TError = GetOverviewForecast400 | GetOverviewForecast401,
+>(
+  params?: GetOverviewForecastParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewForecast>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewForecast>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewForecast>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOverviewForecast<
+  TData = Awaited<ReturnType<typeof getOverviewForecast>>,
+  TError = GetOverviewForecast400 | GetOverviewForecast401,
+>(
+  params?: GetOverviewForecastParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewForecast>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Saldo projetado (cash-flow forecast)
+ */
+
+export function useGetOverviewForecast<
+  TData = Awaited<ReturnType<typeof getOverviewForecast>>,
+  TError = GetOverviewForecast400 | GetOverviewForecast401,
+>(
+  params?: GetOverviewForecastParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewForecast>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetOverviewForecastQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

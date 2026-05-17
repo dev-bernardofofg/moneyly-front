@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "period": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "startDate": {
+          "type": "string",
+          "example": "2026-05-17T00:00:00.000Z"
+        },
+        "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "label": { "type": "string" }
+      },
+      "required": ["id", "startDate", "endDate", "label"]
+    },
+    "realized": {
+      "type": "object",
+      "properties": {
+        "income": { "type": "number" },
+        "expense": { "type": "number" },
+        "balance": { "type": "number" }
+      },
+      "required": ["income", "expense", "balance"]
+    },
+    "projected": {
+      "type": "object",
+      "properties": {
+        "recurringIncome": { "type": "number" },
+        "recurringExpense": { "type": "number" },
+        "occurrences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "recurringTransactionId": { "type": "string", "format": "uuid" },
+              "title": { "type": "string" },
+              "type": { "type": "string", "enum": ["income", "expense"] },
+              "amount": { "type": "number" },
+              "date": {
+                "type": "string",
+                "example": "2026-05-17T00:00:00.000Z"
+              }
+            },
+            "required": [
+              "recurringTransactionId",
+              "title",
+              "type",
+              "amount",
+              "date"
+            ]
+          }
+        }
+      },
+      "required": ["recurringIncome", "recurringExpense", "occurrences"]
+    },
+    "projectedEndBalance": { "type": "number" },
+    "asOf": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": [
+    "period",
+    "realized",
+    "projected",
+    "projectedEndBalance",
+    "asOf"
+  ],
+  "x-readme-ref-name": "ForecastResponse"
+}

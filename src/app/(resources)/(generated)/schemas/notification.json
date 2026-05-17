@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "type": { "type": "string", "enum": ["budget_alert"] },
+    "severity": { "type": "string", "enum": ["info", "warning", "danger"] },
+    "title": { "type": "string" },
+    "message": { "type": "string" },
+    "relatedId": { "type": "string", "nullable": true, "format": "uuid" },
+    "periodId": { "type": "string", "nullable": true, "format": "uuid" },
+    "dedupeKey": { "type": "string" },
+    "isRead": { "type": "boolean" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": [
+    "id",
+    "userId",
+    "type",
+    "severity",
+    "title",
+    "message",
+    "relatedId",
+    "periodId",
+    "dedupeKey",
+    "isRead",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "Notification"
+}

@@ -368,6 +368,81 @@ export interface PlannerOverview {
   alerts: PlannerOverviewAlertsItem[];
 }
 
+export type NotificationType =
+  (typeof NotificationType)[keyof typeof NotificationType];
+
+export const NotificationType = {
+  budget_alert: "budget_alert",
+} as const;
+
+export type NotificationSeverity =
+  (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
+
+export const NotificationSeverity = {
+  info: "info",
+  warning: "warning",
+  danger: "danger",
+} as const;
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  severity: NotificationSeverity;
+  title: string;
+  message: string;
+  /** @nullable */
+  relatedId: string | null;
+  /** @nullable */
+  periodId: string | null;
+  dedupeKey: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export type ForecastResponsePeriod = {
+  id: string;
+  startDate: string;
+  endDate: string;
+  label: string;
+};
+
+export type ForecastResponseRealized = {
+  income: number;
+  expense: number;
+  balance: number;
+};
+
+export type ForecastResponseProjectedOccurrencesItemType =
+  (typeof ForecastResponseProjectedOccurrencesItemType)[keyof typeof ForecastResponseProjectedOccurrencesItemType];
+
+export const ForecastResponseProjectedOccurrencesItemType = {
+  income: "income",
+  expense: "expense",
+} as const;
+
+export type ForecastResponseProjectedOccurrencesItem = {
+  recurringTransactionId: string;
+  title: string;
+  type: ForecastResponseProjectedOccurrencesItemType;
+  amount: number;
+  date: string;
+};
+
+export type ForecastResponseProjected = {
+  recurringIncome: number;
+  recurringExpense: number;
+  occurrences: ForecastResponseProjectedOccurrencesItem[];
+};
+
+export interface ForecastResponse {
+  period: ForecastResponsePeriod;
+  realized: ForecastResponseRealized;
+  projected: ForecastResponseProjected;
+  projectedEndBalance: number;
+  asOf: string;
+}
+
 export interface TransactionListSummary {
   totalExpense: number;
   totalIncome: number;
@@ -1281,6 +1356,27 @@ export type GetOverviewInsights401 = {
   details?: unknown | null;
 };
 
+export type GetOverviewForecastParams = {
+  periodId?: string;
+};
+
+export type GetOverviewForecast200 = {
+  data: ForecastResponse;
+  message?: string;
+};
+
+export type GetOverviewForecast400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewForecast401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
 export type PostRecurringTransactionsBodyType =
   (typeof PostRecurringTransactionsBodyType)[keyof typeof PostRecurringTransactionsBodyType];
 
@@ -1533,6 +1629,93 @@ export type PatchRecurringTransactionsIdDeactivate401 = {
 };
 
 export type PatchRecurringTransactionsIdDeactivate404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetNotificationsParams = {
+  /**
+   * @nullable
+   */
+  unreadOnly?: boolean | null;
+  /**
+   * @exclusiveMinimum 0
+   */
+  page?: number;
+  /**
+   * @exclusiveMinimum 0
+   */
+  limit?: number;
+};
+
+export type GetNotifications200Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+};
+
+export type GetNotifications200 = {
+  success: boolean;
+  data: Notification[];
+  pagination: GetNotifications200Pagination;
+  message?: string;
+};
+
+export type GetNotifications400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetNotifications401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsReadAll200Data = {
+  updatedCount: number;
+};
+
+export type PatchNotificationsReadAll200 = {
+  data: PatchNotificationsReadAll200Data;
+  message?: string;
+};
+
+export type PatchNotificationsReadAll400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsReadAll401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead200 = {
+  data: Notification;
+  message?: string;
+};
+
+export type PatchNotificationsIdRead400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
