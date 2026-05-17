@@ -51,5 +51,9 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 - Ajustes de consumo durante I1 (type correto, sem tipo à mão): `GET /budgets/`→`BudgetProgress` (`budget-card`/`budget-swiper`/`upsert-budget.form`); `GET /user/financial-periods`→`FinancialPeriodSummary` (`use-periods`); `GET /categories/` não paginado (`categories/page` client-side).
 - `@kubb/plugin-zod` removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`). Forms usam `(resources)/(schemas)` à mão.
 
+## F1 / F2 — Done
+- **F1 Saldo projetado**: Section em `/insights` via `useGetOverviewForecast` (`ForecastResponse`). Detalhe: `.specs/features/01-cash-flow-forecast.md`.
+- **F2 Alertas**: `notification-bell.tsx` no Header global (`useGetNotifications` + patch read/read-all). ⚠️ migration back `0004` não aplicada → runtime erra até `db:push`. Detalhe: `.specs/features/02-budget-alerts.md`.
+
 ## Não implementado / parcial
-- **F1 saldo projetado / F2 alertas de orçamento**: não iniciados (próximo foco; aguardam contrato do back — só specar quando endpoint existir no `openapi.json`).
+- **F3 detector de assinaturas / F4 insights comparativos**: não iniciados (aguardam contrato back).

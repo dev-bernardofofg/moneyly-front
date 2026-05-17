@@ -10,7 +10,8 @@ Como o domínio do back vira tela. Fonte de tipos: `(resources)/(generated)`. In
 |---|---|---|---|
 | `/auth` | `(routes)/(public)/auth/page.tsx` | sign-in / sign-up / Google | `POST /auth/sign-in`,`/sign-up`,`/google`,`/refresh` |
 | `/dashboard` | `(routes)/(private)/dashboard/page.tsx` | stats, recentes, gráfico mensal | `GET /overview/dashboard`, `/transactions/summary-by-month` |
-| `/insights` | `.../insights/page.tsx` | currentPeriod/trend/allTime/topCategories | `GET /overview/insights` (`FinancialInsights`) |
+| `/insights` | `.../insights/page.tsx` | saldo projetado (F1) + currentPeriod/trend/allTime/topCategories | `GET /overview/insights` (`FinancialInsights`), `GET /overview/forecast` (`ForecastResponse`) |
+| _(global)_ | `(components)/(layout)/header.tsx` → `notification-bell.tsx` | sininho alertas (F2) em todas telas privadas | `GET /notifications`, `PATCH /notifications/:id/read`, `/read-all` |
 | `/transactions` | `.../transactions/page.tsx` + `transaction.table.tsx` + `export-csv-button.tsx` | lista paginada + CRUD + export CSV | `GET /transactions/`, `POST /transactions/create`, `PUT/DELETE /transactions/{id}`, `GET /transactions/export` |
 | `/recurring-transactions` | `.../recurring-transactions/page.tsx` + table + history dialog | CRUD recorrentes + histórico + (de)reativar | `*/recurring-transactions/*` |
 | `/categories` | `.../categories/page.tsx` + `category.table.tsx` | globais + custom | `GET /categories/`, `POST /categories/create`, `PUT/DELETE` |
