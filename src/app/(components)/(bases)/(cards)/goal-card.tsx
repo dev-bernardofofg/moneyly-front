@@ -71,7 +71,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
           </div>
           <div className="flex items-center gap-1">
             <Clock className="size-4" />
-            <span className={isExpired ? "text-yellow-400 font-medium" : ""}>
+            <span className={isExpired ? "text-warn font-medium" : ""}>
               {!targetDate ? "—" : isExpired ? "Vencido" : `${differenceInDays(targetDate, now)} dias`}
             </span>
           </div>
