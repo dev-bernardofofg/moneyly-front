@@ -18,6 +18,8 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import { ComparisonSection } from "./comparison-section";
+import { SubscriptionsSection } from "./subscriptions-section";
 
 const pct = (v: number | null | undefined) =>
   v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(1)}%`;
@@ -231,6 +233,9 @@ const InsightsPage = () => {
             </ul>
           )}
         </Section>
+
+        <ComparisonSection />
+        <SubscriptionsSection />
       </StaggeredFade>
     </Fade>
   );
