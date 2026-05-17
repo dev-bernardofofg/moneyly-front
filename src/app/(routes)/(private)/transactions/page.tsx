@@ -7,6 +7,7 @@ import { Header } from "@/app/(components)/(layout)/header"
 import { Fade } from "@/app/(components)/(motions)/fade"
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade"
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form"
+import { ExportCsvButton } from "./export-csv-button"
 
 import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
 import { useGetTransactions } from "@/app/(resources)/(generated)/hooks/transactions/transactions"
@@ -36,17 +37,19 @@ const TransactionsPage = () => {
     <Fade>
       <Header
         title="Transações"
-        actions={[<BaseDialog
-          key="new-transaction-dialog"
-          title="Nova transação"
-          description="Adicione uma nova transação"
-          trigger={<BaseButton clickAction="create">
-            Nova transação
-          </BaseButton>}
-        >
-          <UpsertTransactionForm />
-        </BaseDialog>]
-        }
+        actions={[
+          <ExportCsvButton key="export-csv" />,
+          <BaseDialog
+            key="new-transaction-dialog"
+            title="Nova transação"
+            description="Adicione uma nova transação"
+            trigger={<BaseButton clickAction="create">
+              Nova transação
+            </BaseButton>}
+          >
+            <UpsertTransactionForm />
+          </BaseDialog>,
+        ]}
       />
       <StaggeredFade variant="page" className="grid grid-rows-[auto_1fr]" itemClassNames={[undefined, "overflow-y-hidden size-full"]}>
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
