@@ -11,12 +11,15 @@ import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { usePeriod } from "@/app/(contexts)/period-provider";
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
-import { useGetOverviewDashboard } from "@/app/(resources)/(generated)/hooks/overview/overview";
+import {
+  useGetOverviewDashboard,
+  useGetOverviewForecast,
+} from "@/app/(resources)/(generated)/hooks/overview/overview";
 import { DashboardStats } from "@/app/(resources)/(generated)/types/DashboardStats";
 import { MonthlyHistoryChart } from "@/app/(components)/(bases)/(charts)/monthly-history-chart";
 import { ROUTES } from "@/app/(utils)/routes";
 import { useRouter } from "next/navigation";
-import { Loader2, Receipt } from "lucide-react";
+import { Loader2, PiggyBank, Receipt } from "lucide-react";
 import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
 import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 import { TransactionTabs } from "@/app/(resources)/(forms)/transaction.tabs";
@@ -26,6 +29,19 @@ const DashboardPage = () => {
   const { data: overviewData, isPending: isPostingOverview } = useGetOverviewDashboard({
     periodId: selectedPeriodId || undefined,
   });
+
+  // Prévia leve (escopo período). F3/F4 ficam só em /insights (scan de histórico
+  // pesado p/ a homepage — ver .specs/features/05-dashboard-previews.md).
+  const { data: forecastData, isLoading: forecastLoading } =
+    useGetOverviewForecast(
+      { periodId: selectedPeriodId || undefined },
+      {
+        query: {
+          queryKey: ["/overview/forecast", selectedPeriodId || undefined],
+        },
+      }
+    );
+  const forecast = forecastData?.data;
 
   const { push } = useRouter();
 
@@ -67,6 +83,21 @@ const DashboardPage = () => {
             />
           ))}
 
+          <BaseStats
+            name="Saldo projetado"
+            value={forecast?.projectedEndBalance ?? 0}
+            Icon={PiggyBank}
+            description="Prévia · ver em Insights"
+            isMonetary
+            variant={
+              (forecast?.projectedEndBalance ?? 0) >= 0
+                ? "default"
+                : "destructive"
+            }
+            loading={forecastLoading}
+            clickable
+            onClick={() => push(ROUTES.INSIGHTS)}
+          />
         </StaggeredFade>
         <StaggeredFade
           className="grid grid-cols-1 md:grid-cols-3 grid-rows-[1fr] gap-2 size-full min-h-0"
