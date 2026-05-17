@@ -11,7 +11,7 @@ export type Category = {
   /**
    * @type string, uuid
    */
-  userId?: string | null;
+  userId: string | null;
   /**
    * @type string
    */
@@ -21,11 +21,11 @@ export type Category = {
    */
   isGlobal: boolean;
   /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   updatedAt: string;
 };

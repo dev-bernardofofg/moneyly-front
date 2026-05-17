@@ -11,17 +11,80 @@ export type DeleteBudgetsIdPathParams = {
 };
 
 /**
- * @description Deletado
+ * @description Sucesso
  */
 export type DeleteBudgetsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
+  data: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const deleteBudgetsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteBudgetsId400SuccessEnumKey =
+  (typeof deleteBudgetsId400SuccessEnum)[keyof typeof deleteBudgetsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type DeleteBudgetsId400 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteBudgetsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteBudgetsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteBudgetsId401SuccessEnumKey =
+  (typeof deleteBudgetsId401SuccessEnum)[keyof typeof deleteBudgetsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type DeleteBudgetsId401 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteBudgetsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteBudgetsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteBudgetsId404SuccessEnumKey =
+  (typeof deleteBudgetsId404SuccessEnum)[keyof typeof deleteBudgetsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type DeleteBudgetsId404 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteBudgetsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type DeleteBudgetsIdMutationResponse = DeleteBudgetsId200;
@@ -29,5 +92,5 @@ export type DeleteBudgetsIdMutationResponse = DeleteBudgetsId200;
 export type DeleteBudgetsIdMutation = {
   Response: DeleteBudgetsId200;
   PathParams: DeleteBudgetsIdPathParams;
-  Errors: any;
+  Errors: DeleteBudgetsId400 | DeleteBudgetsId401 | DeleteBudgetsId404;
 };

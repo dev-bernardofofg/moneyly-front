@@ -3,29 +3,59 @@
  * Do not edit manually.
  */
 
-import type { AuthResponse } from "./AuthResponse.ts";
+import type { AuthSession } from "./AuthSession.ts";
 
 /**
- * @description Usuário criado
+ * @description Sucesso
  */
-export type PostAuthSignUp201 = AuthResponse;
+export type PostAuthSignUp201 = {
+  /**
+   * @type object
+   */
+  data: AuthSession;
+  /**
+   * @type string | undefined
+   */
+  message?: string;
+};
+
+export const postAuthSignUp400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthSignUp400SuccessEnumKey =
+  (typeof postAuthSignUp400SuccessEnum)[keyof typeof postAuthSignUp400SuccessEnum];
 
 /**
- * @description Email já cadastrado
+ * @description Requisição inválida
  */
-export type PostAuthSignUp409 = any;
+export type PostAuthSignUp400 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthSignUp400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type PostAuthSignUpMutationRequest = {
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string
    */
   name: string;
   /**
+   * @maxLength 100
    * @type string, email
    */
   email: string;
   /**
    * @minLength 6
+   * @maxLength 128
    * @type string
    */
   password: string;
@@ -36,5 +66,5 @@ export type PostAuthSignUpMutationResponse = PostAuthSignUp201;
 export type PostAuthSignUpMutation = {
   Response: PostAuthSignUp201;
   Request: PostAuthSignUpMutationRequest;
-  Errors: PostAuthSignUp409;
+  Errors: PostAuthSignUp400;
 };

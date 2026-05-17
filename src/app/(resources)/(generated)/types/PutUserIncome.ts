@@ -3,40 +3,68 @@
  * Do not edit manually.
  */
 
+import type { IncomeUpdate } from "./IncomeUpdate.ts";
+
 /**
- * @description Rendimento atualizado
+ * @description Sucesso
  */
 export type PutUserIncome200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type number
-     */
-    monthlyIncome: number;
-    /**
-     * @type boolean
-     */
-    firstAccess: boolean;
-  };
+  data: IncomeUpdate;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
-export type PutUserIncomeMutationRequest = {
+export const putUserIncome400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserIncome400SuccessEnumKey =
+  (typeof putUserIncome400SuccessEnum)[keyof typeof putUserIncome400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutUserIncome400 = {
   /**
-   * @minLength 0.01
-   * @maxLength 999999999.99
-   * @type number
+   * @type boolean
    */
-  monthlyIncome: number;
+  success: PutUserIncome400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putUserIncome401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserIncome401SuccessEnumKey =
+  (typeof putUserIncome401SuccessEnum)[keyof typeof putUserIncome401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutUserIncome401 = {
+  /**
+   * @type boolean
+   */
+  success: PutUserIncome401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export type PutUserIncomeMutationRequest = {
+  monthlyIncome: string | number;
 };
 
 export type PutUserIncomeMutationResponse = PutUserIncome200;
@@ -44,5 +72,5 @@ export type PutUserIncomeMutationResponse = PutUserIncome200;
 export type PutUserIncomeMutation = {
   Response: PutUserIncome200;
   Request: PutUserIncomeMutationRequest;
-  Errors: any;
+  Errors: PutUserIncome400 | PutUserIncome401;
 };

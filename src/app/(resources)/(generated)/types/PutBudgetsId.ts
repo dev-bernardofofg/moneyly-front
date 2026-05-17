@@ -13,13 +13,9 @@ export type PutBudgetsIdPathParams = {
 };
 
 /**
- * @description Atualizado
+ * @description Sucesso
  */
 export type PutBudgetsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,11 +26,74 @@ export type PutBudgetsId200 = {
   message?: string;
 };
 
-export type PutBudgetsIdMutationRequest = {
+export const putBudgetsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutBudgetsId400SuccessEnumKey =
+  (typeof putBudgetsId400SuccessEnum)[keyof typeof putBudgetsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutBudgetsId400 = {
   /**
-   * @type number
+   * @type boolean
    */
-  monthlyLimit: number;
+  success: PutBudgetsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putBudgetsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutBudgetsId401SuccessEnumKey =
+  (typeof putBudgetsId401SuccessEnum)[keyof typeof putBudgetsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutBudgetsId401 = {
+  /**
+   * @type boolean
+   */
+  success: PutBudgetsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putBudgetsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutBudgetsId404SuccessEnumKey =
+  (typeof putBudgetsId404SuccessEnum)[keyof typeof putBudgetsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PutBudgetsId404 = {
+  /**
+   * @type boolean
+   */
+  success: PutBudgetsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export type PutBudgetsIdMutationRequest = {
+  monthlyLimit: string | number;
 };
 
 export type PutBudgetsIdMutationResponse = PutBudgetsId200;
@@ -43,5 +102,5 @@ export type PutBudgetsIdMutation = {
   Response: PutBudgetsId200;
   Request: PutBudgetsIdMutationRequest;
   PathParams: PutBudgetsIdPathParams;
-  Errors: any;
+  Errors: PutBudgetsId400 | PutBudgetsId401 | PutBudgetsId404;
 };

@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "financialDayStart": { "type": "integer" },
+    "financialDayEnd": { "type": "integer" },
+    "firstAccess": { "type": "boolean" }
+  },
+  "required": ["financialDayStart", "financialDayEnd", "firstAccess"],
+  "x-readme-ref-name": "FinancialPeriodUpdate"
+}

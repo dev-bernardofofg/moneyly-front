@@ -9,27 +9,27 @@ export type FinancialPeriod = {
    */
   id: string;
   /**
-   * @type string, date-time
+   * @type string, uuid
+   */
+  userId: string;
+  /**
+   * @type string
    */
   startDate: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   endDate: string;
   /**
-   * @type string | undefined
+   * @type boolean
    */
-  label?: string;
+  isActive: boolean | null;
   /**
-   * @type number | undefined
+   * @type string
    */
-  transactionCount?: number;
+  createdAt: string;
   /**
-   * @type boolean | undefined
+   * @type string
    */
-  isStored?: boolean;
-  /**
-   * @type boolean | undefined
-   */
-  isCurrent?: boolean;
+  updatedAt: string;
 };

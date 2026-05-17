@@ -5,28 +5,20 @@
 
 export type TransactionListSummary = {
   /**
-   * @description Total de despesas no período filtrado
    * @type number
    */
   totalExpense: number;
   /**
-   * @description Total de receitas no período filtrado
    * @type number
    */
   totalIncome: number;
+  monthlyIncome: string | number;
   /**
-   * @description Rendimento mensal cadastrado pelo usuário
    * @type number
    */
-  monthlyIncome: number;
+  percentUsed: number | null;
   /**
-   * @description % do rendimento gasto
-   * @type number
-   */
-  percentUsed?: number | null;
-  /**
-   * @description Alerta se percentUsed >= 80%
    * @type string
    */
-  alert?: string | null;
+  alert: string | null;
 };

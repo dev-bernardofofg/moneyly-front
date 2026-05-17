@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { Budget } from "../(generated)"
+import { BudgetProgress } from "../(generated)"
 import { getGetBudgetsQueryKey, usePostBudgets, usePutBudgetsId } from "../(generated)/hooks/budgets/budgets"
 import { useGetCategories } from "../(generated)/hooks/categories/categories"
 import { CreateBudgetDefaultValues, CreateBudgetFormValues, CreateBudgetSchema } from "../(schemas)/budget.schema"
@@ -22,7 +22,7 @@ import { TransactionCategory } from "../(generated)/hooks/moneylyAPI.schemas"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface UpsertBudgetFormProps {
-  budget?: Budget
+  budget?: BudgetProgress
 }
 
 export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
@@ -33,7 +33,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     resolver: zodResolver(CreateBudgetSchema),
     defaultValues: budget ? {
       categoryId: budget.category?.id || "",
-      monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInputDigits(budget.monthlyLimit),
+      monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInputDigits(budget.monthlyLimit ?? undefined),
     } : CreateBudgetDefaultValues,
   })
 

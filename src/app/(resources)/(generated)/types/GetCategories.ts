@@ -4,39 +4,74 @@
  */
 
 import type { Category } from "./Category.ts";
-import type { Pagination } from "./Pagination.ts";
 
 export type GetCategoriesQueryParams = {
   /**
-   * @type number | undefined
+   * @type integer | undefined
    */
   page?: number;
   /**
-   * @type number | undefined
+   * @type integer | undefined
    */
   limit?: number;
 };
 
 /**
- * @description Lista de categorias
+ * @description Sucesso
  */
 export type GetCategories200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type array
    */
   data: Category[];
   /**
-   * @type object
-   */
-  pagination: Pagination;
-  /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getCategories400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetCategories400SuccessEnumKey =
+  (typeof getCategories400SuccessEnum)[keyof typeof getCategories400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetCategories400 = {
+  /**
+   * @type boolean
+   */
+  success: GetCategories400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getCategories401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetCategories401SuccessEnumKey =
+  (typeof getCategories401SuccessEnum)[keyof typeof getCategories401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetCategories401 = {
+  /**
+   * @type boolean
+   */
+  success: GetCategories401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetCategoriesQueryResponse = GetCategories200;
@@ -44,5 +79,5 @@ export type GetCategoriesQueryResponse = GetCategories200;
 export type GetCategoriesQuery = {
   Response: GetCategories200;
   QueryParams: GetCategoriesQueryParams;
-  Errors: any;
+  Errors: GetCategories400 | GetCategories401;
 };

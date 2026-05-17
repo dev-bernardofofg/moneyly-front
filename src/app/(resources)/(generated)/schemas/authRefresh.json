@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "googleId": { "type": "string", "nullable": true },
+        "avatar": { "type": "string", "nullable": true },
+        "monthlyIncome": {
+          "anyOf": [{ "type": "string" }, { "type": "number" }]
+        },
+        "financialDayStart": { "type": "integer" },
+        "financialDayEnd": { "type": "integer" },
+        "firstAccess": { "type": "boolean", "nullable": true },
+        "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "monthlyIncome",
+        "financialDayStart",
+        "financialDayEnd",
+        "firstAccess",
+        "createdAt"
+      ],
+      "x-readme-ref-name": "User"
+    },
+    "accessToken": { "type": "string" }
+  },
+  "required": ["user", "accessToken"],
+  "x-readme-ref-name": "AuthRefresh"
+}

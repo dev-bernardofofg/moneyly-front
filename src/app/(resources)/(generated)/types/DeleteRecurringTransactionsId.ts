@@ -11,23 +11,81 @@ export type DeleteRecurringTransactionsIdPathParams = {
 };
 
 /**
- * @description Deletada
+ * @description Sucesso
  */
 export type DeleteRecurringTransactionsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
+  data: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const deleteRecurringTransactionsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteRecurringTransactionsId400SuccessEnumKey =
+  (typeof deleteRecurringTransactionsId400SuccessEnum)[keyof typeof deleteRecurringTransactionsId400SuccessEnum];
+
 /**
- * @description Não encontrada
+ * @description Requisição inválida
  */
-export type DeleteRecurringTransactionsId404 = any;
+export type DeleteRecurringTransactionsId400 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteRecurringTransactionsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteRecurringTransactionsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteRecurringTransactionsId401SuccessEnumKey =
+  (typeof deleteRecurringTransactionsId401SuccessEnum)[keyof typeof deleteRecurringTransactionsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type DeleteRecurringTransactionsId401 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteRecurringTransactionsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteRecurringTransactionsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteRecurringTransactionsId404SuccessEnumKey =
+  (typeof deleteRecurringTransactionsId404SuccessEnum)[keyof typeof deleteRecurringTransactionsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type DeleteRecurringTransactionsId404 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteRecurringTransactionsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type DeleteRecurringTransactionsIdMutationResponse =
   DeleteRecurringTransactionsId200;
@@ -35,5 +93,8 @@ export type DeleteRecurringTransactionsIdMutationResponse =
 export type DeleteRecurringTransactionsIdMutation = {
   Response: DeleteRecurringTransactionsId200;
   PathParams: DeleteRecurringTransactionsIdPathParams;
-  Errors: DeleteRecurringTransactionsId404;
+  Errors:
+    | DeleteRecurringTransactionsId400
+    | DeleteRecurringTransactionsId401
+    | DeleteRecurringTransactionsId404;
 };

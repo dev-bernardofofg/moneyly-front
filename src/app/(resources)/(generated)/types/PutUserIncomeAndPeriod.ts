@@ -3,48 +3,68 @@
  * Do not edit manually.
  */
 
+import type { IncomeAndPeriodUpdate } from "./IncomeAndPeriodUpdate.ts";
+
 /**
- * @description Rendimento e período financeiro atualizados
+ * @description Sucesso
  */
 export type PutUserIncomeAndPeriod200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type number
-     */
-    monthlyIncome: number;
-    /**
-     * @type number
-     */
-    financialDayStart: number;
-    /**
-     * @type number
-     */
-    financialDayEnd: number;
-    /**
-     * @type boolean
-     */
-    firstAccess: boolean;
-  };
+  data: IncomeAndPeriodUpdate;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
-export type PutUserIncomeAndPeriodMutationRequest = {
+export const putUserIncomeAndPeriod400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserIncomeAndPeriod400SuccessEnumKey =
+  (typeof putUserIncomeAndPeriod400SuccessEnum)[keyof typeof putUserIncomeAndPeriod400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutUserIncomeAndPeriod400 = {
   /**
-   * @minLength 0.01
-   * @maxLength 999999999.99
-   * @type number
+   * @type boolean
    */
-  monthlyIncome: number;
+  success: PutUserIncomeAndPeriod400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putUserIncomeAndPeriod401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserIncomeAndPeriod401SuccessEnumKey =
+  (typeof putUserIncomeAndPeriod401SuccessEnum)[keyof typeof putUserIncomeAndPeriod401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutUserIncomeAndPeriod401 = {
+  /**
+   * @type boolean
+   */
+  success: PutUserIncomeAndPeriod401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export type PutUserIncomeAndPeriodMutationRequest = {
+  monthlyIncome: string | number;
   /**
    * @minLength 1
    * @maxLength 31
@@ -64,5 +84,5 @@ export type PutUserIncomeAndPeriodMutationResponse = PutUserIncomeAndPeriod200;
 export type PutUserIncomeAndPeriodMutation = {
   Response: PutUserIncomeAndPeriod200;
   Request: PutUserIncomeAndPeriodMutationRequest;
-  Errors: any;
+  Errors: PutUserIncomeAndPeriod400 | PutUserIncomeAndPeriod401;
 };

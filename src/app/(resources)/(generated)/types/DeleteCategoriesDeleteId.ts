@@ -11,17 +11,80 @@ export type DeleteCategoriesDeleteIdPathParams = {
 };
 
 /**
- * @description Categoria deletada
+ * @description Sucesso
  */
 export type DeleteCategoriesDeleteId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
+  data: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const deleteCategoriesDeleteId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteCategoriesDeleteId400SuccessEnumKey =
+  (typeof deleteCategoriesDeleteId400SuccessEnum)[keyof typeof deleteCategoriesDeleteId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type DeleteCategoriesDeleteId400 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteCategoriesDeleteId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteCategoriesDeleteId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteCategoriesDeleteId401SuccessEnumKey =
+  (typeof deleteCategoriesDeleteId401SuccessEnum)[keyof typeof deleteCategoriesDeleteId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type DeleteCategoriesDeleteId401 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteCategoriesDeleteId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteCategoriesDeleteId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteCategoriesDeleteId404SuccessEnumKey =
+  (typeof deleteCategoriesDeleteId404SuccessEnum)[keyof typeof deleteCategoriesDeleteId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type DeleteCategoriesDeleteId404 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteCategoriesDeleteId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type DeleteCategoriesDeleteIdMutationResponse =
@@ -30,5 +93,8 @@ export type DeleteCategoriesDeleteIdMutationResponse =
 export type DeleteCategoriesDeleteIdMutation = {
   Response: DeleteCategoriesDeleteId200;
   PathParams: DeleteCategoriesDeleteIdPathParams;
-  Errors: any;
+  Errors:
+    | DeleteCategoriesDeleteId400
+    | DeleteCategoriesDeleteId401
+    | DeleteCategoriesDeleteId404;
 };

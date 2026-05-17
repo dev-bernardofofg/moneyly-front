@@ -23,8 +23,9 @@ const CategoriesPage = () => {
   })
 
 
+  // GET /categories/ não é paginado no contrato (envelope { data, message }).
+  // Paginação fica client-side só para a tabela.
   const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: data?.pagination,
     onPaginationChange: setCurrentPagination
   })
 

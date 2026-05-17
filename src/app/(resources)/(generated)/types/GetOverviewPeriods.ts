@@ -3,29 +3,69 @@
  * Do not edit manually.
  */
 
-import type { FinancialPeriod } from "./FinancialPeriod.ts";
+import type { FinancialPeriodSummary } from "./FinancialPeriodSummary.ts";
 
 /**
- * @description Lista de períodos
+ * @description Sucesso
  */
 export type GetOverviewPeriods200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type array
    */
-  data: FinancialPeriod[];
+  data: FinancialPeriodSummary[];
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const getOverviewPeriods400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewPeriods400SuccessEnumKey =
+  (typeof getOverviewPeriods400SuccessEnum)[keyof typeof getOverviewPeriods400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetOverviewPeriods400 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewPeriods400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getOverviewPeriods401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewPeriods401SuccessEnumKey =
+  (typeof getOverviewPeriods401SuccessEnum)[keyof typeof getOverviewPeriods401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetOverviewPeriods401 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewPeriods401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetOverviewPeriodsQueryResponse = GetOverviewPeriods200;
 
 export type GetOverviewPeriodsQuery = {
   Response: GetOverviewPeriods200;
-  Errors: any;
+  Errors: GetOverviewPeriods400 | GetOverviewPeriods401;
 };

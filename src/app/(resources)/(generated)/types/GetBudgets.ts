@@ -3,32 +3,71 @@
  * Do not edit manually.
  */
 
-import type { Budget } from "./Budget.ts";
+import type { BudgetProgress } from "./BudgetProgress.ts";
 
 export type GetBudgetsQueryParams = {
   /**
-   * @description ID do período financeiro. Se omitido, retorna o período atual.
    * @type string | undefined, uuid
    */
   periodId?: string;
 };
 
 /**
- * @description Lista de orçamentos
+ * @description Sucesso
  */
 export type GetBudgets200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type array
    */
-  data: Budget[];
+  data: BudgetProgress[];
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getBudgets400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetBudgets400SuccessEnumKey =
+  (typeof getBudgets400SuccessEnum)[keyof typeof getBudgets400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetBudgets400 = {
+  /**
+   * @type boolean
+   */
+  success: GetBudgets400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getBudgets401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetBudgets401SuccessEnumKey =
+  (typeof getBudgets401SuccessEnum)[keyof typeof getBudgets401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetBudgets401 = {
+  /**
+   * @type boolean
+   */
+  success: GetBudgets401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetBudgetsQueryResponse = GetBudgets200;
@@ -36,5 +75,5 @@ export type GetBudgetsQueryResponse = GetBudgets200;
 export type GetBudgetsQuery = {
   Response: GetBudgets200;
   QueryParams: GetBudgetsQueryParams;
-  Errors: any;
+  Errors: GetBudgets400 | GetBudgets401;
 };

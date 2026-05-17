@@ -6,13 +6,9 @@
 import type { Goal } from "./Goal.ts";
 
 /**
- * @description Criada
+ * @description Sucesso
  */
 export type PostGoals201 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -23,21 +19,65 @@ export type PostGoals201 = {
   message?: string;
 };
 
+export const postGoals400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostGoals400SuccessEnumKey =
+  (typeof postGoals400SuccessEnum)[keyof typeof postGoals400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostGoals400 = {
+  /**
+   * @type boolean
+   */
+  success: PostGoals400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postGoals401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostGoals401SuccessEnumKey =
+  (typeof postGoals401SuccessEnum)[keyof typeof postGoals401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostGoals401 = {
+  /**
+   * @type boolean
+   */
+  success: PostGoals401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PostGoalsMutationRequest = {
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string
    */
   title: string;
   /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
+  targetAmount: string | number;
   /**
-   * @type number
-   */
-  targetAmount: number;
-  /**
-   * @type string, date
+   * @type string
    */
   targetDate: string;
 };
@@ -47,5 +87,5 @@ export type PostGoalsMutationResponse = PostGoals201;
 export type PostGoalsMutation = {
   Response: PostGoals201;
   Request: PostGoalsMutationRequest;
-  Errors: any;
+  Errors: PostGoals400 | PostGoals401;
 };

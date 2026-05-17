@@ -1,5 +1,17 @@
 {
   "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "categoryId": { "type": "string", "format": "uuid" },
+    "monthlyLimit": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
   "required": [
     "id",
     "userId",
@@ -8,28 +20,5 @@
     "createdAt",
     "updatedAt"
   ],
-  "properties": {
-    "id": { "type": "string", "format": "uuid" },
-    "userId": { "type": "string", "format": "uuid" },
-    "categoryId": { "type": "string", "format": "uuid" },
-    "monthlyLimit": { "type": "string" },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" },
-    "spent": { "type": "number" },
-    "remaining": { "type": "number" },
-    "percentage": { "type": "number" },
-    "status": {
-      "type": "string",
-      "enum": ["safe", "warning", "danger", "exceeded", "attention"]
-    },
-    "category": {
-      "type": "object",
-      "required": ["id", "name"],
-      "properties": {
-        "id": { "type": "string", "format": "uuid" },
-        "name": { "type": "string" }
-      }
-    }
-  },
   "x-readme-ref-name": "Budget"
 }

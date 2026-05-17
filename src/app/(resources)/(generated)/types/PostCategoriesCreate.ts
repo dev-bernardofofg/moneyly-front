@@ -6,13 +6,9 @@
 import type { Category } from "./Category.ts";
 
 /**
- * @description Categoria criada
+ * @description Sucesso
  */
 export type PostCategoriesCreate201 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -23,8 +19,53 @@ export type PostCategoriesCreate201 = {
   message?: string;
 };
 
+export const postCategoriesCreate400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostCategoriesCreate400SuccessEnumKey =
+  (typeof postCategoriesCreate400SuccessEnum)[keyof typeof postCategoriesCreate400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostCategoriesCreate400 = {
+  /**
+   * @type boolean
+   */
+  success: PostCategoriesCreate400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postCategoriesCreate401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostCategoriesCreate401SuccessEnumKey =
+  (typeof postCategoriesCreate401SuccessEnum)[keyof typeof postCategoriesCreate401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostCategoriesCreate401 = {
+  /**
+   * @type boolean
+   */
+  success: PostCategoriesCreate401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PostCategoriesCreateMutationRequest = {
   /**
+   * @minLength 1
    * @type string
    */
   name: string;
@@ -35,5 +76,5 @@ export type PostCategoriesCreateMutationResponse = PostCategoriesCreate201;
 export type PostCategoriesCreateMutation = {
   Response: PostCategoriesCreate201;
   Request: PostCategoriesCreateMutationRequest;
-  Errors: any;
+  Errors: PostCategoriesCreate400 | PostCategoriesCreate401;
 };

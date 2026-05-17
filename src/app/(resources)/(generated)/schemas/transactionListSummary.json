@@ -1,29 +1,18 @@
 {
   "type": "object",
-  "required": ["totalExpense", "totalIncome", "monthlyIncome"],
   "properties": {
-    "totalExpense": {
-      "type": "number",
-      "description": "Total de despesas no período filtrado"
-    },
-    "totalIncome": {
-      "type": "number",
-      "description": "Total de receitas no período filtrado"
-    },
-    "monthlyIncome": {
-      "type": "number",
-      "description": "Rendimento mensal cadastrado pelo usuário"
-    },
-    "percentUsed": {
-      "type": "number",
-      "nullable": true,
-      "description": "% do rendimento gasto"
-    },
-    "alert": {
-      "type": "string",
-      "nullable": true,
-      "description": "Alerta se percentUsed >= 80%"
-    }
+    "totalExpense": { "type": "number" },
+    "totalIncome": { "type": "number" },
+    "monthlyIncome": { "anyOf": [{ "type": "string" }, { "type": "number" }] },
+    "percentUsed": { "type": "number", "nullable": true },
+    "alert": { "type": "string", "nullable": true }
   },
+  "required": [
+    "totalExpense",
+    "totalIncome",
+    "monthlyIncome",
+    "percentUsed",
+    "alert"
+  ],
   "x-readme-ref-name": "TransactionListSummary"
 }

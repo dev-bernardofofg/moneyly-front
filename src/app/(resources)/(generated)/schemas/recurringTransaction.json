@@ -1,5 +1,38 @@
 {
   "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "type": { "type": "string", "enum": ["income", "expense"] },
+    "title": { "type": "string" },
+    "amount": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "categoryId": { "type": "string", "format": "uuid" },
+    "frequency": {
+      "type": "string",
+      "enum": ["daily", "weekly", "monthly", "yearly"]
+    },
+    "dayOfMonth": { "type": "integer", "nullable": true },
+    "dayOfWeek": { "type": "integer", "nullable": true },
+    "startDate": {
+      "type": "string",
+      "nullable": true,
+      "example": "2026-05-17T00:00:00.000Z"
+    },
+    "totalInstallments": { "type": "integer", "nullable": true },
+    "executedInstallments": { "type": "integer" },
+    "nextExecution": {
+      "type": "string",
+      "example": "2026-05-17T00:00:00.000Z"
+    },
+    "isActive": { "type": "boolean" },
+    "description": { "type": "string", "nullable": true },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
   "required": [
     "id",
     "userId",
@@ -8,54 +41,16 @@
     "amount",
     "categoryId",
     "frequency",
-    "isActive",
+    "dayOfMonth",
+    "dayOfWeek",
+    "startDate",
+    "totalInstallments",
+    "executedInstallments",
     "nextExecution",
+    "isActive",
+    "description",
     "createdAt",
     "updatedAt"
   ],
-  "properties": {
-    "id": { "type": "string", "format": "uuid" },
-    "userId": { "type": "string", "format": "uuid" },
-    "type": { "type": "string", "enum": ["income", "expense"] },
-    "title": { "type": "string" },
-    "amount": { "type": "string" },
-    "description": { "type": "string", "nullable": true },
-    "categoryId": { "type": "string", "format": "uuid" },
-    "frequency": {
-      "type": "string",
-      "enum": ["daily", "weekly", "monthly", "yearly"]
-    },
-    "dayOfMonth": {
-      "type": "number",
-      "minimum": 1,
-      "maximum": 31,
-      "nullable": true
-    },
-    "dayOfWeek": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 6,
-      "nullable": true
-    },
-    "startDate": {
-      "type": "string",
-      "format": "date-time",
-      "nullable": true,
-      "description": "Data de início. null = criado imediatamente"
-    },
-    "totalInstallments": {
-      "type": "number",
-      "nullable": true,
-      "description": "Total de parcelas. null = sem limite"
-    },
-    "executedInstallments": {
-      "type": "number",
-      "description": "Quantas parcelas já foram executadas"
-    },
-    "isActive": { "type": "boolean" },
-    "nextExecution": { "type": "string", "format": "date-time" },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" }
-  },
   "x-readme-ref-name": "RecurringTransaction"
 }

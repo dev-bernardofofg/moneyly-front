@@ -13,13 +13,9 @@ export type GetGoalsIdPathParams = {
 };
 
 /**
- * @description Detalhes da meta
+ * @description Sucesso
  */
 export type GetGoalsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,10 +26,76 @@ export type GetGoalsId200 = {
   message?: string;
 };
 
+export const getGoalsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetGoalsId400SuccessEnumKey =
+  (typeof getGoalsId400SuccessEnum)[keyof typeof getGoalsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetGoalsId400 = {
+  /**
+   * @type boolean
+   */
+  success: GetGoalsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getGoalsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetGoalsId401SuccessEnumKey =
+  (typeof getGoalsId401SuccessEnum)[keyof typeof getGoalsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetGoalsId401 = {
+  /**
+   * @type boolean
+   */
+  success: GetGoalsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getGoalsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetGoalsId404SuccessEnumKey =
+  (typeof getGoalsId404SuccessEnum)[keyof typeof getGoalsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type GetGoalsId404 = {
+  /**
+   * @type boolean
+   */
+  success: GetGoalsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetGoalsIdQueryResponse = GetGoalsId200;
 
 export type GetGoalsIdQuery = {
   Response: GetGoalsId200;
   PathParams: GetGoalsIdPathParams;
-  Errors: any;
+  Errors: GetGoalsId400 | GetGoalsId401 | GetGoalsId404;
 };

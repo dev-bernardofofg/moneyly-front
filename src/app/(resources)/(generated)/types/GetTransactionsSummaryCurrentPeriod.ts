@@ -4,73 +4,58 @@
  */
 
 /**
- * @description Resumo do período atual
+ * @description Sucesso
  */
 export type GetTransactionsSummaryCurrentPeriod200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
-   * @type object
-   */
-  data: {
-    /**
-     * @type object | undefined
-     */
-    currentPeriod?: {
-      /**
-       * @type string, date-time
-       */
-      startDate: string;
-      /**
-       * @type string, date-time
-       */
-      endDate: string;
-      /**
-       * @type string
-       */
-      description: string;
-    };
-    /**
-     * @type number
-     */
-    totalIncome: number;
-    /**
-     * @type number
-     */
-    totalExpenses: number;
-    /**
-     * @type number
-     */
-    balance: number;
-    /**
-     * @type number
-     */
-    monthlyIncome: number;
-    /**
-     * @type number
-     */
-    percentUsed: number;
-    /**
-     * @type string
-     */
-    alert?: string | null;
-    /**
-     * @type object | undefined
-     */
-    byCategory?: {
-      [key: string]: number;
-    };
-    /**
-     * @type number
-     */
-    transactionsCount: number;
-  };
+  data?: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getTransactionsSummaryCurrentPeriod400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummaryCurrentPeriod400SuccessEnumKey =
+  (typeof getTransactionsSummaryCurrentPeriod400SuccessEnum)[keyof typeof getTransactionsSummaryCurrentPeriod400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetTransactionsSummaryCurrentPeriod400 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummaryCurrentPeriod400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getTransactionsSummaryCurrentPeriod401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummaryCurrentPeriod401SuccessEnumKey =
+  (typeof getTransactionsSummaryCurrentPeriod401SuccessEnum)[keyof typeof getTransactionsSummaryCurrentPeriod401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetTransactionsSummaryCurrentPeriod401 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummaryCurrentPeriod401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetTransactionsSummaryCurrentPeriodQueryResponse =
@@ -78,5 +63,7 @@ export type GetTransactionsSummaryCurrentPeriodQueryResponse =
 
 export type GetTransactionsSummaryCurrentPeriodQuery = {
   Response: GetTransactionsSummaryCurrentPeriod200;
-  Errors: any;
+  Errors:
+    | GetTransactionsSummaryCurrentPeriod400
+    | GetTransactionsSummaryCurrentPeriod401;
 };

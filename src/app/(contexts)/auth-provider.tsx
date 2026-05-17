@@ -3,12 +3,16 @@
 import { deleteCookie, getCookie, setCookie } from '@/app/(utils)/cookies'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { AuthResponse, User } from '../(resources)/(generated)'
+import { PostAuthSignIn200, User } from '../(resources)/(generated)'
+
+// Envelope de sucesso de sign-in/up/google: { data: AuthSession, message? }.
+// PostAuthSignIn200 é estruturalmente idêntico aos demais (AuthSession compartilhado).
+type AuthSuccessResponse = PostAuthSignIn200
 
 interface AuthContextProps {
   user: User | null
   token: string | null
-  setAuth: (data: AuthResponse) => void
+  setAuth: (response: AuthSuccessResponse) => void
   updateUser: (userData: User) => void
   signOut: () => void
 }
@@ -39,13 +43,13 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     }
   }, [router])
 
-  const setAuth = ({ data }: AuthResponse) => {
-    setUser(data?.user ?? null)
-    setToken(data?.accessToken ?? null)
-    localStorage.setItem('auth_user', JSON.stringify(data?.user ?? null))
-    setCookie('auth_token', data?.accessToken ?? '')
-    if (data?.refreshToken) {
-      setCookie('refresh_token', data.refreshToken ?? '')
+  const setAuth = ({ data }: AuthSuccessResponse) => {
+    setUser(data.user)
+    setToken(data.accessToken)
+    localStorage.setItem('auth_user', JSON.stringify(data.user))
+    setCookie('auth_token', data.accessToken)
+    if (data.refreshToken) {
+      setCookie('refresh_token', data.refreshToken)
     }
   }
 

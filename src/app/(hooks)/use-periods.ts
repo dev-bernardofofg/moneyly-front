@@ -3,17 +3,17 @@ import {
   getUserFinancialPeriods,
   useGetUserFinancialPeriods,
 } from "@/app/(resources)/(generated)/hooks/user/user";
-import { FinancialPeriod } from "@/app/(resources)/(generated)/types/FinancialPeriod";
+import { FinancialPeriodSummary } from "@/app/(resources)/(generated)/types/FinancialPeriodSummary";
 import { useEffect } from "react";
 import { Period } from "../(types)/period.type";
 
-const toPeriod = (fp: FinancialPeriod): Period => ({
+const toPeriod = (fp: FinancialPeriodSummary): Period => ({
   id: fp.id,
   label: fp.label ?? "",
   startDate: fp.startDate,
   endDate: fp.endDate,
   transactionCount: fp.transactionCount ?? 0,
-  isCurrent: fp.isCurrent,
+  isCurrent: fp.isCurrent ?? false,
 });
 
 export const usePeriods = () => {

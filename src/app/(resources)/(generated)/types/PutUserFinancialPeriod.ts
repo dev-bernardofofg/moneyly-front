@@ -3,35 +3,64 @@
  * Do not edit manually.
  */
 
+import type { FinancialPeriodUpdate } from "./FinancialPeriodUpdate.ts";
+
 /**
- * @description Período financeiro atualizado
+ * @description Sucesso
  */
 export type PutUserFinancialPeriod200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type number
-     */
-    financialDayStart: number;
-    /**
-     * @type number
-     */
-    financialDayEnd: number;
-    /**
-     * @type boolean
-     */
-    firstAccess: boolean;
-  };
+  data: FinancialPeriodUpdate;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const putUserFinancialPeriod400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserFinancialPeriod400SuccessEnumKey =
+  (typeof putUserFinancialPeriod400SuccessEnum)[keyof typeof putUserFinancialPeriod400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutUserFinancialPeriod400 = {
+  /**
+   * @type boolean
+   */
+  success: PutUserFinancialPeriod400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putUserFinancialPeriod401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutUserFinancialPeriod401SuccessEnumKey =
+  (typeof putUserFinancialPeriod401SuccessEnum)[keyof typeof putUserFinancialPeriod401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutUserFinancialPeriod401 = {
+  /**
+   * @type boolean
+   */
+  success: PutUserFinancialPeriod401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type PutUserFinancialPeriodMutationRequest = {
@@ -54,5 +83,5 @@ export type PutUserFinancialPeriodMutationResponse = PutUserFinancialPeriod200;
 export type PutUserFinancialPeriodMutation = {
   Response: PutUserFinancialPeriod200;
   Request: PutUserFinancialPeriodMutationRequest;
-  Errors: any;
+  Errors: PutUserFinancialPeriod400 | PutUserFinancialPeriod401;
 };

@@ -19,7 +19,7 @@ export type DashboardStats = {
   /**
    * @type number
    */
-  percentUsed?: number | null;
+  percentUsed: number | null;
   /**
    * @type number
    */

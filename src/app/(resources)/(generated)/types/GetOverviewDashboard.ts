@@ -3,12 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CategoryChartItem } from "./CategoryChartItem.ts";
-import type { ChartCategory } from "./ChartCategory.ts";
-import type { DashboardStats } from "./DashboardStats.ts";
-import type { FinancialPeriod } from "./FinancialPeriod.ts";
-import type { RecentTransactionItem } from "./RecentTransactionItem.ts";
-import type { SelectedPeriod } from "./SelectedPeriod.ts";
+import type { DashboardOverview } from "./DashboardOverview.ts";
 
 export type GetOverviewDashboardQueryParams = {
   /**
@@ -16,65 +11,71 @@ export type GetOverviewDashboardQueryParams = {
    */
   periodId?: string;
   /**
-   * @type string | undefined, date-time
+   * @type string | undefined
    */
   startDate?: string;
   /**
-   * @type string | undefined, date-time
+   * @type string | undefined
    */
   endDate?: string;
 };
 
 /**
- * @description Dados do dashboard
+ * @description Sucesso
  */
 export type GetOverviewDashboard200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type object
-     */
-    stats: DashboardStats;
-    /**
-     * @type object
-     */
-    selectedPeriod?: SelectedPeriod | null;
-    /**
-     * @type array
-     */
-    availablePeriods: FinancialPeriod[];
-    /**
-     * @type object
-     */
-    chart: {
-      /**
-       * @type array
-       */
-      data: CategoryChartItem[];
-      /**
-       * @type array
-       */
-      categories: ChartCategory[];
-    };
-    /**
-     * @type array | undefined
-     */
-    recentTransactions?: RecentTransactionItem[];
-    /**
-     * @type number
-     */
-    transactionsCount: number;
-  };
+  data: DashboardOverview;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getOverviewDashboard400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewDashboard400SuccessEnumKey =
+  (typeof getOverviewDashboard400SuccessEnum)[keyof typeof getOverviewDashboard400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetOverviewDashboard400 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewDashboard400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getOverviewDashboard401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewDashboard401SuccessEnumKey =
+  (typeof getOverviewDashboard401SuccessEnum)[keyof typeof getOverviewDashboard401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetOverviewDashboard401 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewDashboard401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetOverviewDashboardQueryResponse = GetOverviewDashboard200;
@@ -82,5 +83,5 @@ export type GetOverviewDashboardQueryResponse = GetOverviewDashboard200;
 export type GetOverviewDashboardQuery = {
   Response: GetOverviewDashboard200;
   QueryParams: GetOverviewDashboardQueryParams;
-  Errors: any;
+  Errors: GetOverviewDashboard400 | GetOverviewDashboard401;
 };

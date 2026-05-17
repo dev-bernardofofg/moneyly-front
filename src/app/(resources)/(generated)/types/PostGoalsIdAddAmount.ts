@@ -13,13 +13,9 @@ export type PostGoalsIdAddAmountPathParams = {
 };
 
 /**
- * @description Valor adicionado
+ * @description Sucesso
  */
 export type PostGoalsIdAddAmount200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,11 +26,74 @@ export type PostGoalsIdAddAmount200 = {
   message?: string;
 };
 
-export type PostGoalsIdAddAmountMutationRequest = {
+export const postGoalsIdAddAmount400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostGoalsIdAddAmount400SuccessEnumKey =
+  (typeof postGoalsIdAddAmount400SuccessEnum)[keyof typeof postGoalsIdAddAmount400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostGoalsIdAddAmount400 = {
   /**
-   * @type number
+   * @type boolean
    */
-  amount: number;
+  success: PostGoalsIdAddAmount400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postGoalsIdAddAmount401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostGoalsIdAddAmount401SuccessEnumKey =
+  (typeof postGoalsIdAddAmount401SuccessEnum)[keyof typeof postGoalsIdAddAmount401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostGoalsIdAddAmount401 = {
+  /**
+   * @type boolean
+   */
+  success: PostGoalsIdAddAmount401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postGoalsIdAddAmount404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostGoalsIdAddAmount404SuccessEnumKey =
+  (typeof postGoalsIdAddAmount404SuccessEnum)[keyof typeof postGoalsIdAddAmount404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PostGoalsIdAddAmount404 = {
+  /**
+   * @type boolean
+   */
+  success: PostGoalsIdAddAmount404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export type PostGoalsIdAddAmountMutationRequest = {
+  amount: string | number;
 };
 
 export type PostGoalsIdAddAmountMutationResponse = PostGoalsIdAddAmount200;
@@ -43,5 +102,8 @@ export type PostGoalsIdAddAmountMutation = {
   Response: PostGoalsIdAddAmount200;
   Request: PostGoalsIdAddAmountMutationRequest;
   PathParams: PostGoalsIdAddAmountPathParams;
-  Errors: any;
+  Errors:
+    | PostGoalsIdAddAmount400
+    | PostGoalsIdAddAmount401
+    | PostGoalsIdAddAmount404;
 };

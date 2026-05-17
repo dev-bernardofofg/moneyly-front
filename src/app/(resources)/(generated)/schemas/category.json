@@ -1,13 +1,13 @@
 {
   "type": "object",
-  "required": ["id", "name", "isGlobal", "createdAt", "updatedAt"],
   "properties": {
     "id": { "type": "string", "format": "uuid" },
-    "userId": { "type": "string", "format": "uuid", "nullable": true },
+    "userId": { "type": "string", "nullable": true, "format": "uuid" },
     "name": { "type": "string" },
     "isGlobal": { "type": "boolean" },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" }
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
+  "required": ["id", "userId", "name", "isGlobal", "createdAt", "updatedAt"],
   "x-readme-ref-name": "Category"
 }

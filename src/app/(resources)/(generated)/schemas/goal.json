@@ -1,64 +1,39 @@
 {
   "type": "object",
-  "required": [
-    "id",
-    "userId",
-    "title",
-    "targetAmount",
-    "currentAmount",
-    "targetDate",
-    "startDate",
-    "createdAt",
-    "updatedAt"
-  ],
   "properties": {
     "id": { "type": "string", "format": "uuid" },
     "userId": { "type": "string", "format": "uuid" },
     "title": { "type": "string" },
     "description": { "type": "string", "nullable": true },
-    "targetAmount": { "type": "string" },
-    "currentAmount": { "type": "string" },
-    "targetDate": { "type": "string", "format": "date-time" },
-    "startDate": { "type": "string", "format": "date-time" },
-    "isActive": { "type": "boolean", "nullable": true },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" },
-    "progress": {
-      "type": "object",
-      "required": ["percentage", "daysRemaining", "remaining"],
-      "properties": {
-        "percentage": { "type": "number" },
-        "daysRemaining": { "type": "number" },
-        "remaining": { "type": "number" }
-      }
+    "targetAmount": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
     },
-    "milestones": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "goalId",
-          "percentage",
-          "amount",
-          "isReached",
-          "createdAt"
-        ],
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "goalId": { "type": "string", "format": "uuid" },
-          "percentage": { "type": "number" },
-          "amount": { "type": "string" },
-          "isReached": { "type": "boolean" },
-          "reachedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "createdAt": { "type": "string", "format": "date-time" }
-        }
-      }
-    }
+    "currentAmount": {
+      "type": "string",
+      "nullable": true,
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "targetDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "isActive": { "type": "boolean", "nullable": true },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
+  "required": [
+    "id",
+    "userId",
+    "title",
+    "description",
+    "targetAmount",
+    "currentAmount",
+    "targetDate",
+    "startDate",
+    "isActive",
+    "createdAt",
+    "updatedAt"
+  ],
   "x-readme-ref-name": "Goal"
 }

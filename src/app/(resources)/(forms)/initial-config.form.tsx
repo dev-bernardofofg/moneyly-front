@@ -29,7 +29,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
     defaultValues: InitialConfigDefaultValues,
   })
 
-  const { mutate: updateIncomeAndPeriod, data: userUpdatedData, isPending } = usePutUserIncomeAndPeriod({
+  const { mutate: updateIncomeAndPeriod, isPending } = usePutUserIncomeAndPeriod({
     mutation: {
       onSuccess: async () => {
         toast.success("Configurações salvas com sucesso!")
@@ -38,12 +38,8 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
           const response = await getUserMe()
           const userData = response.data
           if (userData) {
-            updateUser({
-              ...userData,
-              financialDayEnd: userUpdatedData?.data?.financialDayEnd,
-              financialDayStart: userUpdatedData?.data?.financialDayStart,
-              monthlyIncome: userUpdatedData?.data?.monthlyIncome?.toString() || null,
-            })
+            // getUserMe já retorna o User atualizado (fonte de verdade pós-update).
+            updateUser(userData)
             queryClient.clear()
           }
       

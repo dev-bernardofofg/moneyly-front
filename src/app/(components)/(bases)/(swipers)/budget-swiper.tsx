@@ -1,13 +1,13 @@
 "use client"
 
 import { BudgetCard } from '@/app/(components)/(bases)/(cards)/budget-card'
-import { Budget } from '@/app/(resources)/(generated)'
+import { BudgetProgress } from '@/app/(resources)/(generated)'
 import { Skeleton } from '@/components/ui/skeleton'
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 interface BudgetSwiperProps {
-  budgets?: Budget[]
+  budgets?: BudgetProgress[]
   loading?: boolean
 }
 

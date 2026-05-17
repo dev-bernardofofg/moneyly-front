@@ -13,13 +13,9 @@ export type PatchRecurringTransactionsIdReactivatePathParams = {
 };
 
 /**
- * @description Reativada
+ * @description Sucesso
  */
 export type PatchRecurringTransactionsIdReactivate200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,10 +26,71 @@ export type PatchRecurringTransactionsIdReactivate200 = {
   message?: string;
 };
 
+export const patchRecurringTransactionsIdReactivate400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PatchRecurringTransactionsIdReactivate400SuccessEnumKey =
+  (typeof patchRecurringTransactionsIdReactivate400SuccessEnum)[keyof typeof patchRecurringTransactionsIdReactivate400SuccessEnum];
+
 /**
- * @description Não encontrada
+ * @description Requisição inválida
  */
-export type PatchRecurringTransactionsIdReactivate404 = any;
+export type PatchRecurringTransactionsIdReactivate400 = {
+  /**
+   * @type boolean
+   */
+  success: PatchRecurringTransactionsIdReactivate400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const patchRecurringTransactionsIdReactivate401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PatchRecurringTransactionsIdReactivate401SuccessEnumKey =
+  (typeof patchRecurringTransactionsIdReactivate401SuccessEnum)[keyof typeof patchRecurringTransactionsIdReactivate401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PatchRecurringTransactionsIdReactivate401 = {
+  /**
+   * @type boolean
+   */
+  success: PatchRecurringTransactionsIdReactivate401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const patchRecurringTransactionsIdReactivate404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PatchRecurringTransactionsIdReactivate404SuccessEnumKey =
+  (typeof patchRecurringTransactionsIdReactivate404SuccessEnum)[keyof typeof patchRecurringTransactionsIdReactivate404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PatchRecurringTransactionsIdReactivate404 = {
+  /**
+   * @type boolean
+   */
+  success: PatchRecurringTransactionsIdReactivate404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type PatchRecurringTransactionsIdReactivateMutationResponse =
   PatchRecurringTransactionsIdReactivate200;
@@ -41,5 +98,8 @@ export type PatchRecurringTransactionsIdReactivateMutationResponse =
 export type PatchRecurringTransactionsIdReactivateMutation = {
   Response: PatchRecurringTransactionsIdReactivate200;
   PathParams: PatchRecurringTransactionsIdReactivatePathParams;
-  Errors: PatchRecurringTransactionsIdReactivate404;
+  Errors:
+    | PatchRecurringTransactionsIdReactivate400
+    | PatchRecurringTransactionsIdReactivate401
+    | PatchRecurringTransactionsIdReactivate404;
 };

@@ -39,13 +39,10 @@ export type RecurringTransaction = {
    */
   title: string;
   /**
+   * @description Valor decimal como string
    * @type string
    */
   amount: string;
-  /**
-   * @type string
-   */
-  description?: string | null;
   /**
    * @type string, uuid
    */
@@ -55,46 +52,43 @@ export type RecurringTransaction = {
    */
   frequency: RecurringTransactionFrequencyEnumKey;
   /**
-   * @minLength 1
-   * @maxLength 31
-   * @type number
+   * @type integer
    */
-  dayOfMonth?: number | null;
+  dayOfMonth: number | null;
   /**
-   * @minLength 0
-   * @maxLength 6
-   * @type number
+   * @type integer
    */
-  dayOfWeek?: number | null;
+  dayOfWeek: number | null;
   /**
-   * @description Data de início. null = criado imediatamente
-   * @type string, date-time
+   * @type string
    */
-  startDate?: string | null;
+  startDate: string | null;
   /**
-   * @description Total de parcelas. null = sem limite
-   * @type number
+   * @type integer
    */
-  totalInstallments?: number | null;
+  totalInstallments: number | null;
   /**
-   * @description Quantas parcelas já foram executadas
-   * @type number | undefined
+   * @type integer
    */
-  executedInstallments?: number;
+  executedInstallments: number;
+  /**
+   * @type string
+   */
+  nextExecution: string;
   /**
    * @type boolean
    */
   isActive: boolean;
   /**
-   * @type string, date-time
+   * @type string
    */
-  nextExecution: string;
+  description: string | null;
   /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   updatedAt: string;
 };

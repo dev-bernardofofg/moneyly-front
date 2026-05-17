@@ -3,42 +3,47 @@
  * Do not edit manually.
  */
 
-import type { User } from "./User.ts";
+import type { AuthRefresh } from "./AuthRefresh.ts";
 
 /**
- * @description Token renovado
+ * @description Sucesso
  */
 export type PostAuthRefresh200 = {
   /**
-   * @type boolean
+   * @type object
    */
-  success: boolean;
-  /**
-   * @type object | undefined
-   */
-  data?: {
-    /**
-     * @type object
-     */
-    user: User;
-    /**
-     * @type string
-     */
-    accessToken: string;
-  };
+  data: AuthRefresh;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const postAuthRefresh400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthRefresh400SuccessEnumKey =
+  (typeof postAuthRefresh400SuccessEnum)[keyof typeof postAuthRefresh400SuccessEnum];
+
 /**
- * @description Refresh token inválido ou expirado
+ * @description Requisição inválida
  */
-export type PostAuthRefresh401 = any;
+export type PostAuthRefresh400 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthRefresh400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type PostAuthRefreshMutationRequest = {
   /**
+   * @minLength 1
    * @type string
    */
   refreshToken: string;
@@ -49,5 +54,5 @@ export type PostAuthRefreshMutationResponse = PostAuthRefresh200;
 export type PostAuthRefreshMutation = {
   Response: PostAuthRefresh200;
   Request: PostAuthRefreshMutationRequest;
-  Errors: PostAuthRefresh401;
+  Errors: PostAuthRefresh400;
 };

@@ -6,13 +6,9 @@
 import type { User } from "./User.ts";
 
 /**
- * @description Dados do usuário
+ * @description Sucesso
  */
 export type GetUserMe200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -23,9 +19,53 @@ export type GetUserMe200 = {
   message?: string;
 };
 
+export const getUserMe400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserMe400SuccessEnumKey =
+  (typeof getUserMe400SuccessEnum)[keyof typeof getUserMe400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetUserMe400 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserMe400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getUserMe401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserMe401SuccessEnumKey =
+  (typeof getUserMe401SuccessEnum)[keyof typeof getUserMe401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetUserMe401 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserMe401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetUserMeQueryResponse = GetUserMe200;
 
 export type GetUserMeQuery = {
   Response: GetUserMe200;
-  Errors: any;
+  Errors: GetUserMe400 | GetUserMe401;
 };

@@ -6,13 +6,9 @@
 import type { RecurringTransaction } from "./RecurringTransaction.ts";
 
 /**
- * @description Criada
+ * @description Sucesso
  */
 export type PostRecurringTransactions201 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -21,6 +17,50 @@ export type PostRecurringTransactions201 = {
    * @type string | undefined
    */
   message?: string;
+};
+
+export const postRecurringTransactions400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostRecurringTransactions400SuccessEnumKey =
+  (typeof postRecurringTransactions400SuccessEnum)[keyof typeof postRecurringTransactions400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostRecurringTransactions400 = {
+  /**
+   * @type boolean
+   */
+  success: PostRecurringTransactions400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postRecurringTransactions401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostRecurringTransactions401SuccessEnumKey =
+  (typeof postRecurringTransactions401SuccessEnum)[keyof typeof postRecurringTransactions401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostRecurringTransactions401 = {
+  /**
+   * @type boolean
+   */
+  success: PostRecurringTransactions401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export const postRecurringTransactionsMutationRequestTypeEnum = {
@@ -47,13 +87,12 @@ export type PostRecurringTransactionsMutationRequest = {
    */
   type: PostRecurringTransactionsMutationRequestTypeEnumKey;
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string
    */
   title: string;
-  /**
-   * @type number
-   */
-  amount: number;
+  amount: string | number;
   /**
    * @type string, uuid
    */
@@ -63,31 +102,28 @@ export type PostRecurringTransactionsMutationRequest = {
    */
   frequency: PostRecurringTransactionsMutationRequestFrequencyEnumKey;
   /**
-   * @description Dia do mês (para frequency=monthly)
    * @minLength 1
    * @maxLength 31
-   * @type number | undefined
+   * @type integer | undefined
    */
   dayOfMonth?: number;
   /**
-   * @description Dia da semana (0=domingo, 6=sábado, para frequency=weekly)
    * @minLength 0
    * @maxLength 6
-   * @type number | undefined
+   * @type integer | undefined
    */
   dayOfWeek?: number;
   /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
   /**
-   * @description Quantidade de parcelas. Omitir para recorrência sem fim
    * @minLength 1
-   * @type number | undefined
+   * @type integer | undefined
    */
   totalInstallments?: number;
   /**
-   * @description Data de início. Se <= hoje cria imediatamente. Se futura, agenda. Omitir = agora
    * @type string | undefined, date-time
    */
   startDate?: string;
@@ -99,5 +135,5 @@ export type PostRecurringTransactionsMutationResponse =
 export type PostRecurringTransactionsMutation = {
   Response: PostRecurringTransactions201;
   Request: PostRecurringTransactionsMutationRequest;
-  Errors: any;
+  Errors: PostRecurringTransactions400 | PostRecurringTransactions401;
 };

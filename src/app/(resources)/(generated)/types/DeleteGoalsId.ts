@@ -11,17 +11,80 @@ export type DeleteGoalsIdPathParams = {
 };
 
 /**
- * @description Deletada
+ * @description Sucesso
  */
 export type DeleteGoalsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
+  data: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const deleteGoalsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteGoalsId400SuccessEnumKey =
+  (typeof deleteGoalsId400SuccessEnum)[keyof typeof deleteGoalsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type DeleteGoalsId400 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteGoalsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteGoalsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteGoalsId401SuccessEnumKey =
+  (typeof deleteGoalsId401SuccessEnum)[keyof typeof deleteGoalsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type DeleteGoalsId401 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteGoalsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteGoalsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteGoalsId404SuccessEnumKey =
+  (typeof deleteGoalsId404SuccessEnum)[keyof typeof deleteGoalsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type DeleteGoalsId404 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteGoalsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type DeleteGoalsIdMutationResponse = DeleteGoalsId200;
@@ -29,5 +92,5 @@ export type DeleteGoalsIdMutationResponse = DeleteGoalsId200;
 export type DeleteGoalsIdMutation = {
   Response: DeleteGoalsId200;
   PathParams: DeleteGoalsIdPathParams;
-  Errors: any;
+  Errors: DeleteGoalsId400 | DeleteGoalsId401 | DeleteGoalsId404;
 };

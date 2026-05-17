@@ -13,13 +13,9 @@ export type GetRecurringTransactionsIdTransactionsPathParams = {
 };
 
 /**
- * @description Lista de transações geradas
+ * @description Sucesso
  */
 export type GetRecurringTransactionsIdTransactions200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type array
    */
@@ -30,11 +26,80 @@ export type GetRecurringTransactionsIdTransactions200 = {
   message?: string;
 };
 
+export const getRecurringTransactionsIdTransactions400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetRecurringTransactionsIdTransactions400SuccessEnumKey =
+  (typeof getRecurringTransactionsIdTransactions400SuccessEnum)[keyof typeof getRecurringTransactionsIdTransactions400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetRecurringTransactionsIdTransactions400 = {
+  /**
+   * @type boolean
+   */
+  success: GetRecurringTransactionsIdTransactions400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getRecurringTransactionsIdTransactions401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetRecurringTransactionsIdTransactions401SuccessEnumKey =
+  (typeof getRecurringTransactionsIdTransactions401SuccessEnum)[keyof typeof getRecurringTransactionsIdTransactions401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetRecurringTransactionsIdTransactions401 = {
+  /**
+   * @type boolean
+   */
+  success: GetRecurringTransactionsIdTransactions401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getRecurringTransactionsIdTransactions404SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetRecurringTransactionsIdTransactions404SuccessEnumKey =
+  (typeof getRecurringTransactionsIdTransactions404SuccessEnum)[keyof typeof getRecurringTransactionsIdTransactions404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type GetRecurringTransactionsIdTransactions404 = {
+  /**
+   * @type boolean
+   */
+  success: GetRecurringTransactionsIdTransactions404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetRecurringTransactionsIdTransactionsQueryResponse =
   GetRecurringTransactionsIdTransactions200;
 
 export type GetRecurringTransactionsIdTransactionsQuery = {
   Response: GetRecurringTransactionsIdTransactions200;
   PathParams: GetRecurringTransactionsIdTransactionsPathParams;
-  Errors: any;
+  Errors:
+    | GetRecurringTransactionsIdTransactions400
+    | GetRecurringTransactionsIdTransactions401
+    | GetRecurringTransactionsIdTransactions404;
 };

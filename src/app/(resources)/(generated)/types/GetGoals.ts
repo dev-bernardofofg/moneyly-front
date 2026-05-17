@@ -6,13 +6,9 @@
 import type { Goal } from "./Goal.ts";
 
 /**
- * @description Lista de metas
+ * @description Sucesso
  */
 export type GetGoals200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type array
    */
@@ -23,9 +19,53 @@ export type GetGoals200 = {
   message?: string;
 };
 
+export const getGoals400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetGoals400SuccessEnumKey =
+  (typeof getGoals400SuccessEnum)[keyof typeof getGoals400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetGoals400 = {
+  /**
+   * @type boolean
+   */
+  success: GetGoals400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getGoals401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetGoals401SuccessEnumKey =
+  (typeof getGoals401SuccessEnum)[keyof typeof getGoals401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetGoals401 = {
+  /**
+   * @type boolean
+   */
+  success: GetGoals401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetGoalsQueryResponse = GetGoals200;
 
 export type GetGoalsQuery = {
   Response: GetGoals200;
-  Errors: any;
+  Errors: GetGoals400 | GetGoals401;
 };

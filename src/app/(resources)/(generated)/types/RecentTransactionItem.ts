@@ -25,12 +25,11 @@ export type RecentTransactionItem = {
    */
   amount: number;
   /**
-   * @description Formatted date dd/MM/yyyy
+   * @description dd/MM/yyyy
    * @type string
    */
   date: string;
   /**
-   * @description Category name
    * @type string
    */
   category: string;

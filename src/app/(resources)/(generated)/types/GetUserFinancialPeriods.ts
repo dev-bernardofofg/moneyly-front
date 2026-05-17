@@ -3,29 +3,69 @@
  * Do not edit manually.
  */
 
-import type { FinancialPeriod } from "./FinancialPeriod.ts";
+import type { FinancialPeriodSummary } from "./FinancialPeriodSummary.ts";
 
 /**
- * @description Lista de períodos financeiros
+ * @description Sucesso
  */
 export type GetUserFinancialPeriods200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type array
    */
-  data: FinancialPeriod[];
+  data: FinancialPeriodSummary[];
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const getUserFinancialPeriods400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserFinancialPeriods400SuccessEnumKey =
+  (typeof getUserFinancialPeriods400SuccessEnum)[keyof typeof getUserFinancialPeriods400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetUserFinancialPeriods400 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserFinancialPeriods400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getUserFinancialPeriods401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserFinancialPeriods401SuccessEnumKey =
+  (typeof getUserFinancialPeriods401SuccessEnum)[keyof typeof getUserFinancialPeriods401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetUserFinancialPeriods401 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserFinancialPeriods401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetUserFinancialPeriodsQueryResponse = GetUserFinancialPeriods200;
 
 export type GetUserFinancialPeriodsQuery = {
   Response: GetUserFinancialPeriods200;
-  Errors: any;
+  Errors: GetUserFinancialPeriods400 | GetUserFinancialPeriods401;
 };

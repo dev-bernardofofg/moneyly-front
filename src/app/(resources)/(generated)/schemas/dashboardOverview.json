@@ -1,0 +1,128 @@
+{
+  "type": "object",
+  "properties": {
+    "stats": {
+      "type": "object",
+      "properties": {
+        "totalIncome": { "type": "number" },
+        "totalExpense": { "type": "number" },
+        "balance": { "type": "number" },
+        "percentUsed": { "type": "number", "nullable": true },
+        "remainingBudget": { "type": "number" }
+      },
+      "required": [
+        "totalIncome",
+        "totalExpense",
+        "balance",
+        "percentUsed",
+        "remainingBudget"
+      ],
+      "x-readme-ref-name": "DashboardStats"
+    },
+    "selectedPeriod": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "startDate": {
+          "type": "string",
+          "example": "2026-05-17T00:00:00.000Z"
+        },
+        "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "label": { "type": "string" },
+        "transactionCount": { "type": "integer" },
+        "description": { "type": "string" }
+      },
+      "required": [
+        "id",
+        "startDate",
+        "endDate",
+        "label",
+        "transactionCount",
+        "description"
+      ]
+    },
+    "availablePeriods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "startDate": {
+            "type": "string",
+            "example": "2026-05-17T00:00:00.000Z"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2026-05-17T00:00:00.000Z"
+          },
+          "label": { "type": "string" },
+          "transactionCount": { "type": "integer" },
+          "isStored": { "type": "boolean" },
+          "isCurrent": { "type": "boolean", "nullable": true }
+        },
+        "required": ["id", "startDate", "endDate", "label", "transactionCount"],
+        "x-readme-ref-name": "FinancialPeriodSummary"
+      }
+    },
+    "chart": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "income": { "type": "number" },
+              "expense": { "type": "number" }
+            },
+            "required": ["name", "income", "expense"]
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" }
+            },
+            "required": ["id", "name"]
+          }
+        }
+      },
+      "required": ["data", "categories"]
+    },
+    "recentTransactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "amount": { "type": "number" },
+          "date": {
+            "type": "string",
+            "description": "dd/MM/yyyy",
+            "example": "17/05/2026"
+          },
+          "category": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["id", "type", "amount", "date", "category", "description"],
+        "x-readme-ref-name": "RecentTransactionItem"
+      }
+    },
+    "transactionsCount": { "type": "integer" }
+  },
+  "required": [
+    "stats",
+    "selectedPeriod",
+    "availablePeriods",
+    "chart",
+    "recentTransactions",
+    "transactionsCount"
+  ],
+  "x-readme-ref-name": "DashboardOverview"
+}

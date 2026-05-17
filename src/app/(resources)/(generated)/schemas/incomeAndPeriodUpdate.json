@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "monthlyIncome": { "anyOf": [{ "type": "string" }, { "type": "number" }] },
+    "financialDayStart": { "type": "integer" },
+    "financialDayEnd": { "type": "integer" },
+    "firstAccess": { "type": "boolean" }
+  },
+  "required": [
+    "monthlyIncome",
+    "financialDayStart",
+    "financialDayEnd",
+    "firstAccess"
+  ],
+  "x-readme-ref-name": "IncomeAndPeriodUpdate"
+}

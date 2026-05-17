@@ -6,13 +6,9 @@
 import type { Budget } from "./Budget.ts";
 
 /**
- * @description Criado
+ * @description Sucesso
  */
 export type PostBudgets201 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -23,15 +19,56 @@ export type PostBudgets201 = {
   message?: string;
 };
 
+export const postBudgets400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostBudgets400SuccessEnumKey =
+  (typeof postBudgets400SuccessEnum)[keyof typeof postBudgets400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostBudgets400 = {
+  /**
+   * @type boolean
+   */
+  success: PostBudgets400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postBudgets401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostBudgets401SuccessEnumKey =
+  (typeof postBudgets401SuccessEnum)[keyof typeof postBudgets401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostBudgets401 = {
+  /**
+   * @type boolean
+   */
+  success: PostBudgets401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PostBudgetsMutationRequest = {
   /**
    * @type string, uuid
    */
   categoryId: string;
-  /**
-   * @type number
-   */
-  monthlyLimit: number;
+  monthlyLimit: string | number;
 };
 
 export type PostBudgetsMutationResponse = PostBudgets201;
@@ -39,5 +76,5 @@ export type PostBudgetsMutationResponse = PostBudgets201;
 export type PostBudgetsMutation = {
   Response: PostBudgets201;
   Request: PostBudgetsMutationRequest;
-  Errors: any;
+  Errors: PostBudgets400 | PostBudgets401;
 };

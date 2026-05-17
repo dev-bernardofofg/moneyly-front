@@ -13,13 +13,9 @@ export type PutRecurringTransactionsIdPathParams = {
 };
 
 /**
- * @description Atualizada
+ * @description Sucesso
  */
 export type PutRecurringTransactionsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,10 +26,71 @@ export type PutRecurringTransactionsId200 = {
   message?: string;
 };
 
+export const putRecurringTransactionsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutRecurringTransactionsId400SuccessEnumKey =
+  (typeof putRecurringTransactionsId400SuccessEnum)[keyof typeof putRecurringTransactionsId400SuccessEnum];
+
 /**
- * @description Não encontrada
+ * @description Requisição inválida
  */
-export type PutRecurringTransactionsId404 = any;
+export type PutRecurringTransactionsId400 = {
+  /**
+   * @type boolean
+   */
+  success: PutRecurringTransactionsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putRecurringTransactionsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutRecurringTransactionsId401SuccessEnumKey =
+  (typeof putRecurringTransactionsId401SuccessEnum)[keyof typeof putRecurringTransactionsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutRecurringTransactionsId401 = {
+  /**
+   * @type boolean
+   */
+  success: PutRecurringTransactionsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putRecurringTransactionsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutRecurringTransactionsId404SuccessEnumKey =
+  (typeof putRecurringTransactionsId404SuccessEnum)[keyof typeof putRecurringTransactionsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PutRecurringTransactionsId404 = {
+  /**
+   * @type boolean
+   */
+  success: PutRecurringTransactionsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export const putRecurringTransactionsIdMutationRequestFrequencyEnum = {
   daily: "daily",
@@ -47,13 +104,12 @@ export type PutRecurringTransactionsIdMutationRequestFrequencyEnumKey =
 
 export type PutRecurringTransactionsIdMutationRequest = {
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string | undefined
    */
   title?: string;
-  /**
-   * @type number | undefined
-   */
-  amount?: number;
+  amount?: string | number;
   /**
    * @type string | undefined, uuid
    */
@@ -65,29 +121,33 @@ export type PutRecurringTransactionsIdMutationRequest = {
   /**
    * @minLength 1
    * @maxLength 31
-   * @type number | undefined
+   * @type integer | undefined
    */
   dayOfMonth?: number;
   /**
    * @minLength 0
    * @maxLength 6
-   * @type number | undefined
+   * @type integer | undefined
    */
   dayOfWeek?: number;
   /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
   /**
+   * @minLength 1
+   * @type integer | undefined
+   */
+  totalInstallments?: number;
+  /**
+   * @type string | undefined, date-time
+   */
+  startDate?: string;
+  /**
    * @type boolean | undefined
    */
   isActive?: boolean;
-  /**
-   * @description Quantidade total de parcelas
-   * @minLength 1
-   * @type number | undefined
-   */
-  totalInstallments?: number;
 };
 
 export type PutRecurringTransactionsIdMutationResponse =
@@ -97,5 +157,8 @@ export type PutRecurringTransactionsIdMutation = {
   Response: PutRecurringTransactionsId200;
   Request: PutRecurringTransactionsIdMutationRequest;
   PathParams: PutRecurringTransactionsIdPathParams;
-  Errors: PutRecurringTransactionsId404;
+  Errors:
+    | PutRecurringTransactionsId400
+    | PutRecurringTransactionsId401
+    | PutRecurringTransactionsId404;
 };

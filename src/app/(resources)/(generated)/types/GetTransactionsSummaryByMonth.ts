@@ -3,44 +3,64 @@
  * Do not edit manually.
  */
 
+import type { MonthlySummaryItem } from "./MonthlySummaryItem.ts";
+
 /**
- * @description Resumo mensal
+ * @description Sucesso
  */
 export type GetTransactionsSummaryByMonth200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type array
    */
-  data: {
-    /**
-     * @description Formato yyyy-MM
-     * @type string
-     */
-    month: string;
-    /**
-     * @type number
-     */
-    income: number;
-    /**
-     * @type number
-     */
-    expense: number;
-    /**
-     * @type number
-     */
-    percentUsed?: number | null;
-    /**
-     * @type string
-     */
-    alert?: string | null;
-  }[];
+  data: MonthlySummaryItem[];
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getTransactionsSummaryByMonth400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummaryByMonth400SuccessEnumKey =
+  (typeof getTransactionsSummaryByMonth400SuccessEnum)[keyof typeof getTransactionsSummaryByMonth400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetTransactionsSummaryByMonth400 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummaryByMonth400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getTransactionsSummaryByMonth401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummaryByMonth401SuccessEnumKey =
+  (typeof getTransactionsSummaryByMonth401SuccessEnum)[keyof typeof getTransactionsSummaryByMonth401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetTransactionsSummaryByMonth401 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummaryByMonth401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetTransactionsSummaryByMonthQueryResponse =
@@ -48,5 +68,5 @@ export type GetTransactionsSummaryByMonthQueryResponse =
 
 export type GetTransactionsSummaryByMonthQuery = {
   Response: GetTransactionsSummaryByMonth200;
-  Errors: any;
+  Errors: GetTransactionsSummaryByMonth400 | GetTransactionsSummaryByMonth401;
 };

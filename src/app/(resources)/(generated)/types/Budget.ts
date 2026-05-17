@@ -3,17 +3,6 @@
  * Do not edit manually.
  */
 
-export const budgetStatusEnum = {
-  safe: "safe",
-  warning: "warning",
-  danger: "danger",
-  exceeded: "exceeded",
-  attention: "attention",
-} as const;
-
-export type BudgetStatusEnumKey =
-  (typeof budgetStatusEnum)[keyof typeof budgetStatusEnum];
-
 export type Budget = {
   /**
    * @type string, uuid
@@ -28,44 +17,16 @@ export type Budget = {
    */
   categoryId: string;
   /**
+   * @description Valor decimal como string
    * @type string
    */
   monthlyLimit: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   updatedAt: string;
-  /**
-   * @type number | undefined
-   */
-  spent?: number;
-  /**
-   * @type number | undefined
-   */
-  remaining?: number;
-  /**
-   * @type number | undefined
-   */
-  percentage?: number;
-  /**
-   * @type string | undefined
-   */
-  status?: BudgetStatusEnumKey;
-  /**
-   * @type object | undefined
-   */
-  category?: {
-    /**
-     * @type string, uuid
-     */
-    id: string;
-    /**
-     * @type string
-     */
-    name: string;
-  };
 };

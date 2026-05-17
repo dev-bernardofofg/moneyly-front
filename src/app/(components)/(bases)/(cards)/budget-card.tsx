@@ -4,7 +4,7 @@ import { getBudgetLevel } from "@/app/(helpers)/budget-level";
 import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
 import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
 import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
-import { Budget } from "@/app/(resources)/(generated)";
+import { BudgetProgress } from "@/app/(resources)/(generated)";
 import { getGetBudgetsQueryKey, useDeleteBudgetsId } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
 import { useQueryClient } from "@tanstack/react-query";
 import { Edit3, Trash2 } from "lucide-react";
@@ -13,7 +13,7 @@ import { BaseButton } from "../(clickable)/base-button";
 import { BaseDialog } from "../(portals)/base-dialog";
 
 interface BudgetCardProps {
-  budget: Budget;
+  budget: BudgetProgress;
 }
 
 export const BudgetCard = ({ budget }: BudgetCardProps) => {

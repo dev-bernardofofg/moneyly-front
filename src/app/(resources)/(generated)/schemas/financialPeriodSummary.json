@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "label": { "type": "string" },
+    "transactionCount": { "type": "integer" },
+    "isStored": { "type": "boolean" },
+    "isCurrent": { "type": "boolean", "nullable": true }
+  },
+  "required": ["id", "startDate", "endDate", "label", "transactionCount"],
+  "x-readme-ref-name": "FinancialPeriodSummary"
+}

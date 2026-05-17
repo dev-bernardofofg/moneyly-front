@@ -13,13 +13,9 @@ export type PutCategoriesUpdateIdPathParams = {
 };
 
 /**
- * @description Categoria atualizada
+ * @description Sucesso
  */
 export type PutCategoriesUpdateId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,8 +26,75 @@ export type PutCategoriesUpdateId200 = {
   message?: string;
 };
 
+export const putCategoriesUpdateId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutCategoriesUpdateId400SuccessEnumKey =
+  (typeof putCategoriesUpdateId400SuccessEnum)[keyof typeof putCategoriesUpdateId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutCategoriesUpdateId400 = {
+  /**
+   * @type boolean
+   */
+  success: PutCategoriesUpdateId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putCategoriesUpdateId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutCategoriesUpdateId401SuccessEnumKey =
+  (typeof putCategoriesUpdateId401SuccessEnum)[keyof typeof putCategoriesUpdateId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutCategoriesUpdateId401 = {
+  /**
+   * @type boolean
+   */
+  success: PutCategoriesUpdateId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putCategoriesUpdateId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutCategoriesUpdateId404SuccessEnumKey =
+  (typeof putCategoriesUpdateId404SuccessEnum)[keyof typeof putCategoriesUpdateId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PutCategoriesUpdateId404 = {
+  /**
+   * @type boolean
+   */
+  success: PutCategoriesUpdateId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PutCategoriesUpdateIdMutationRequest = {
   /**
+   * @minLength 1
    * @type string
    */
   name: string;
@@ -43,5 +106,8 @@ export type PutCategoriesUpdateIdMutation = {
   Response: PutCategoriesUpdateId200;
   Request: PutCategoriesUpdateIdMutationRequest;
   PathParams: PutCategoriesUpdateIdPathParams;
-  Errors: any;
+  Errors:
+    | PutCategoriesUpdateId400
+    | PutCategoriesUpdateId401
+    | PutCategoriesUpdateId404;
 };

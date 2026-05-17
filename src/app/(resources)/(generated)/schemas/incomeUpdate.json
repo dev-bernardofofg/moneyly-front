@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "monthlyIncome": { "anyOf": [{ "type": "string" }, { "type": "number" }] },
+    "firstAccess": { "type": "boolean" }
+  },
+  "required": ["monthlyIncome", "firstAccess"],
+  "x-readme-ref-name": "IncomeUpdate"
+}

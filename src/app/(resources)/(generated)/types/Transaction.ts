@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { TransactionCategory } from "./TransactionCategory.ts";
+
 export const transactionTypeEnum = {
   income: "income",
   expense: "expense",
@@ -17,10 +19,6 @@ export type Transaction = {
    */
   id: string;
   /**
-   * @type string, uuid
-   */
-  userId: string;
-  /**
    * @type string
    */
   type: TransactionTypeEnumKey;
@@ -29,48 +27,36 @@ export type Transaction = {
    */
   title: string;
   /**
+   * @description Valor decimal como string
    * @type string
    */
   amount: string;
   /**
    * @type string
    */
-  description?: string | null;
+  description: string | null;
   /**
-   * @type string, date-time
+   * @type string
    */
   date: string;
   /**
    * @type string, uuid
    */
-  categoryId: string;
+  periodId: string | null;
   /**
    * @type string, uuid
    */
-  periodId?: string | null;
+  recurringTransactionId: string | null;
   /**
-   * @type string, uuid
-   */
-  recurringTransactionId?: string | null;
-  /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   updatedAt: string;
   /**
-   * @type object | undefined
+   * @type object
    */
-  category?: {
-    /**
-     * @type string, uuid
-     */
-    id: string;
-    /**
-     * @type string
-     */
-    name: string;
-  };
+  category: TransactionCategory;
 };

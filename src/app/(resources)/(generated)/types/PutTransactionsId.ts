@@ -13,13 +13,9 @@ export type PutTransactionsIdPathParams = {
 };
 
 /**
- * @description Atualizada
+ * @description Sucesso
  */
 export type PutTransactionsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -28,6 +24,72 @@ export type PutTransactionsId200 = {
    * @type string | undefined
    */
   message?: string;
+};
+
+export const putTransactionsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutTransactionsId400SuccessEnumKey =
+  (typeof putTransactionsId400SuccessEnum)[keyof typeof putTransactionsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutTransactionsId400 = {
+  /**
+   * @type boolean
+   */
+  success: PutTransactionsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putTransactionsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutTransactionsId401SuccessEnumKey =
+  (typeof putTransactionsId401SuccessEnum)[keyof typeof putTransactionsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutTransactionsId401 = {
+  /**
+   * @type boolean
+   */
+  success: PutTransactionsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putTransactionsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutTransactionsId404SuccessEnumKey =
+  (typeof putTransactionsId404SuccessEnum)[keyof typeof putTransactionsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PutTransactionsId404 = {
+  /**
+   * @type boolean
+   */
+  success: PutTransactionsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export const putTransactionsIdMutationRequestTypeEnum = {
@@ -44,23 +106,28 @@ export type PutTransactionsIdMutationRequest = {
    */
   type?: PutTransactionsIdMutationRequestTypeEnumKey;
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string | undefined
    */
   title?: string;
+  amount?: string | number;
   /**
-   * @type number | undefined
-   */
-  amount?: number;
-  /**
+   * @minLength 1
    * @type string | undefined, uuid
    */
   category?: string;
   /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+  /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
   /**
-   * @type string | undefined, date-time
+   * @type string | undefined
    */
   date?: string;
 };
@@ -71,5 +138,5 @@ export type PutTransactionsIdMutation = {
   Response: PutTransactionsId200;
   Request: PutTransactionsIdMutationRequest;
   PathParams: PutTransactionsIdPathParams;
-  Errors: any;
+  Errors: PutTransactionsId400 | PutTransactionsId401 | PutTransactionsId404;
 };

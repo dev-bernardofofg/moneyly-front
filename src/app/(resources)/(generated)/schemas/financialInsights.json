@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "properties": {
+    "currentPeriod": {
+      "type": "object",
+      "properties": {
+        "daysElapsed": { "type": "integer" },
+        "totalDays": { "type": "integer" },
+        "completionPercentage": { "type": "number" },
+        "currentExpense": { "type": "number" },
+        "projectedExpense": { "type": "number" },
+        "isOnTrack": { "type": "boolean" }
+      },
+      "required": [
+        "daysElapsed",
+        "totalDays",
+        "completionPercentage",
+        "currentExpense",
+        "projectedExpense",
+        "isOnTrack"
+      ]
+    },
+    "trend": {
+      "type": "object",
+      "properties": {
+        "previousMonth": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "month": { "type": "string", "example": "2026-04" },
+                "label": { "type": "string", "example": "Abril 2026" },
+                "income": { "type": "number" },
+                "expense": { "type": "number" },
+                "balance": { "type": "number" }
+              },
+              "required": ["month", "label", "income", "expense", "balance"],
+              "x-readme-ref-name": "MonthlySummaryItem"
+            },
+            { "nullable": true }
+          ]
+        },
+        "currentMonth": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "month": { "type": "string", "example": "2026-04" },
+                "label": { "type": "string", "example": "Abril 2026" },
+                "income": { "type": "number" },
+                "expense": { "type": "number" },
+                "balance": { "type": "number" }
+              },
+              "required": ["month", "label", "income", "expense", "balance"],
+              "x-readme-ref-name": "MonthlySummaryItem"
+            },
+            { "nullable": true }
+          ]
+        },
+        "expenseChange": { "type": "number", "nullable": true },
+        "incomeChange": { "type": "number", "nullable": true }
+      },
+      "required": [
+        "previousMonth",
+        "currentMonth",
+        "expenseChange",
+        "incomeChange"
+      ]
+    },
+    "allTime": {
+      "type": "object",
+      "properties": {
+        "averageMonthlyExpense": { "type": "number" },
+        "averageMonthlyIncome": { "type": "number" },
+        "bestMonth": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "month": { "type": "string", "example": "2026-04" },
+                "label": { "type": "string", "example": "Abril 2026" },
+                "income": { "type": "number" },
+                "expense": { "type": "number" },
+                "balance": { "type": "number" }
+              },
+              "required": ["month", "label", "income", "expense", "balance"],
+              "x-readme-ref-name": "MonthlySummaryItem"
+            },
+            { "nullable": true }
+          ]
+        },
+        "worstMonth": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "month": { "type": "string", "example": "2026-04" },
+                "label": { "type": "string", "example": "Abril 2026" },
+                "income": { "type": "number" },
+                "expense": { "type": "number" },
+                "balance": { "type": "number" }
+              },
+              "required": ["month", "label", "income", "expense", "balance"],
+              "x-readme-ref-name": "MonthlySummaryItem"
+            },
+            { "nullable": true }
+          ]
+        },
+        "totalMonths": { "type": "integer" },
+        "totalTransactions": { "type": "integer" }
+      },
+      "required": [
+        "averageMonthlyExpense",
+        "averageMonthlyIncome",
+        "bestMonth",
+        "worstMonth",
+        "totalMonths",
+        "totalTransactions"
+      ]
+    },
+    "topCategories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "amount": { "type": "number" },
+          "percentage": { "type": "number" }
+        },
+        "required": ["name", "amount", "percentage"]
+      }
+    },
+    "monthlyHistory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "month": { "type": "string", "example": "2026-04" },
+          "label": { "type": "string", "example": "Abril 2026" },
+          "income": { "type": "number" },
+          "expense": { "type": "number" },
+          "balance": { "type": "number" }
+        },
+        "required": ["month", "label", "income", "expense", "balance"],
+        "x-readme-ref-name": "MonthlySummaryItem"
+      }
+    }
+  },
+  "required": [
+    "currentPeriod",
+    "trend",
+    "allTime",
+    "topCategories",
+    "monthlyHistory"
+  ],
+  "x-readme-ref-name": "FinancialInsights"
+}

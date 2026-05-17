@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { FinancialPeriod } from "./FinancialPeriod.ts";
+
 export type GetUserFinancialPeriodsPeriodidPathParams = {
   /**
    * @type string, uuid
@@ -11,44 +13,84 @@ export type GetUserFinancialPeriodsPeriodidPathParams = {
 };
 
 /**
- * @description Período financeiro
+ * @description Sucesso
  */
 export type GetUserFinancialPeriodsPeriodid200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type string, uuid
-     */
-    id: string;
-    /**
-     * @type string, date-time
-     */
-    startDate: string;
-    /**
-     * @type string, date-time
-     */
-    endDate: string;
-    /**
-     * @type boolean | undefined
-     */
-    isActive?: boolean;
-  };
+  data: FinancialPeriod;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const getUserFinancialPeriodsPeriodid400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserFinancialPeriodsPeriodid400SuccessEnumKey =
+  (typeof getUserFinancialPeriodsPeriodid400SuccessEnum)[keyof typeof getUserFinancialPeriodsPeriodid400SuccessEnum];
+
 /**
- * @description Período não encontrado
+ * @description Requisição inválida
  */
-export type GetUserFinancialPeriodsPeriodid404 = any;
+export type GetUserFinancialPeriodsPeriodid400 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserFinancialPeriodsPeriodid400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getUserFinancialPeriodsPeriodid401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserFinancialPeriodsPeriodid401SuccessEnumKey =
+  (typeof getUserFinancialPeriodsPeriodid401SuccessEnum)[keyof typeof getUserFinancialPeriodsPeriodid401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetUserFinancialPeriodsPeriodid401 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserFinancialPeriodsPeriodid401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getUserFinancialPeriodsPeriodid404SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetUserFinancialPeriodsPeriodid404SuccessEnumKey =
+  (typeof getUserFinancialPeriodsPeriodid404SuccessEnum)[keyof typeof getUserFinancialPeriodsPeriodid404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type GetUserFinancialPeriodsPeriodid404 = {
+  /**
+   * @type boolean
+   */
+  success: GetUserFinancialPeriodsPeriodid404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type GetUserFinancialPeriodsPeriodidQueryResponse =
   GetUserFinancialPeriodsPeriodid200;
@@ -56,5 +98,8 @@ export type GetUserFinancialPeriodsPeriodidQueryResponse =
 export type GetUserFinancialPeriodsPeriodidQuery = {
   Response: GetUserFinancialPeriodsPeriodid200;
   PathParams: GetUserFinancialPeriodsPeriodidPathParams;
-  Errors: GetUserFinancialPeriodsPeriodid404;
+  Errors:
+    | GetUserFinancialPeriodsPeriodid400
+    | GetUserFinancialPeriodsPeriodid401
+    | GetUserFinancialPeriodsPeriodid404;
 };

@@ -6,13 +6,9 @@
 import type { Transaction } from "./Transaction.ts";
 
 /**
- * @description Transação criada
+ * @description Sucesso
  */
 export type PostTransactionsCreate201 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -21,6 +17,50 @@ export type PostTransactionsCreate201 = {
    * @type string | undefined
    */
   message?: string;
+};
+
+export const postTransactionsCreate400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostTransactionsCreate400SuccessEnumKey =
+  (typeof postTransactionsCreate400SuccessEnum)[keyof typeof postTransactionsCreate400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostTransactionsCreate400 = {
+  /**
+   * @type boolean
+   */
+  success: PostTransactionsCreate400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postTransactionsCreate401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostTransactionsCreate401SuccessEnumKey =
+  (typeof postTransactionsCreate401SuccessEnum)[keyof typeof postTransactionsCreate401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostTransactionsCreate401 = {
+  /**
+   * @type boolean
+   */
+  success: PostTransactionsCreate401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export const postTransactionsCreateMutationRequestTypeEnum = {
@@ -37,23 +77,28 @@ export type PostTransactionsCreateMutationRequest = {
    */
   type: PostTransactionsCreateMutationRequestTypeEnumKey;
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string
    */
   title: string;
+  amount: string | number;
   /**
-   * @type number
-   */
-  amount: number;
-  /**
+   * @minLength 1
    * @type string, uuid
    */
   category: string;
   /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+  /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
   /**
-   * @type string | undefined, date-time
+   * @type string | undefined
    */
   date?: string;
 };
@@ -63,5 +108,5 @@ export type PostTransactionsCreateMutationResponse = PostTransactionsCreate201;
 export type PostTransactionsCreateMutation = {
   Response: PostTransactionsCreate201;
   Request: PostTransactionsCreateMutationRequest;
-  Errors: any;
+  Errors: PostTransactionsCreate400 | PostTransactionsCreate401;
 };

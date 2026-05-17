@@ -4,21 +4,17 @@
  */
 
 /**
- * @description Logout realizado
+ * @description Sucesso
  */
 export type PostAuthLogout200 = {
   /**
-   * @type boolean
+   * @type object
    */
-  success: boolean;
-  /**
-   * @type object | undefined
-   */
-  data?: {
+  data: {
     /**
-     * @type boolean | undefined
+     * @type boolean
      */
-    success?: boolean;
+    success: boolean;
   };
   /**
    * @type string | undefined
@@ -26,8 +22,53 @@ export type PostAuthLogout200 = {
   message?: string;
 };
 
+export const postAuthLogout400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthLogout400SuccessEnumKey =
+  (typeof postAuthLogout400SuccessEnum)[keyof typeof postAuthLogout400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PostAuthLogout400 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthLogout400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const postAuthLogout401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthLogout401SuccessEnumKey =
+  (typeof postAuthLogout401SuccessEnum)[keyof typeof postAuthLogout401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PostAuthLogout401 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthLogout401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PostAuthLogoutMutationRequest = {
   /**
+   * @minLength 1
    * @type string
    */
   refreshToken: string;
@@ -38,5 +79,5 @@ export type PostAuthLogoutMutationResponse = PostAuthLogout200;
 export type PostAuthLogoutMutation = {
   Response: PostAuthLogout200;
   Request: PostAuthLogoutMutationRequest;
-  Errors: any;
+  Errors: PostAuthLogout400 | PostAuthLogout401;
 };

@@ -11,17 +11,80 @@ export type DeleteTransactionsIdPathParams = {
 };
 
 /**
- * @description Deletada
+ * @description Sucesso
  */
 export type DeleteTransactionsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
+  data: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const deleteTransactionsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteTransactionsId400SuccessEnumKey =
+  (typeof deleteTransactionsId400SuccessEnum)[keyof typeof deleteTransactionsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type DeleteTransactionsId400 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteTransactionsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteTransactionsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteTransactionsId401SuccessEnumKey =
+  (typeof deleteTransactionsId401SuccessEnum)[keyof typeof deleteTransactionsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type DeleteTransactionsId401 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteTransactionsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const deleteTransactionsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type DeleteTransactionsId404SuccessEnumKey =
+  (typeof deleteTransactionsId404SuccessEnum)[keyof typeof deleteTransactionsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type DeleteTransactionsId404 = {
+  /**
+   * @type boolean
+   */
+  success: DeleteTransactionsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type DeleteTransactionsIdMutationResponse = DeleteTransactionsId200;
@@ -29,5 +92,8 @@ export type DeleteTransactionsIdMutationResponse = DeleteTransactionsId200;
 export type DeleteTransactionsIdMutation = {
   Response: DeleteTransactionsId200;
   PathParams: DeleteTransactionsIdPathParams;
-  Errors: any;
+  Errors:
+    | DeleteTransactionsId400
+    | DeleteTransactionsId401
+    | DeleteTransactionsId404;
 };

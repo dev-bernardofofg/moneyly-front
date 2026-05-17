@@ -1,14 +1,22 @@
 {
   "type": "object",
-  "required": ["id", "startDate", "endDate"],
   "properties": {
     "id": { "type": "string", "format": "uuid" },
-    "startDate": { "type": "string", "format": "date-time" },
-    "endDate": { "type": "string", "format": "date-time" },
-    "label": { "type": "string" },
-    "transactionCount": { "type": "number" },
-    "isStored": { "type": "boolean" },
-    "isCurrent": { "type": "boolean" }
+    "userId": { "type": "string", "format": "uuid" },
+    "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "isActive": { "type": "boolean", "nullable": true },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
+  "required": [
+    "id",
+    "userId",
+    "startDate",
+    "endDate",
+    "isActive",
+    "createdAt",
+    "updatedAt"
+  ],
   "x-readme-ref-name": "FinancialPeriod"
 }

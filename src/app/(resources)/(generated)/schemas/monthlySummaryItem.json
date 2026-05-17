@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "month": { "type": "string", "example": "2026-04" },
+    "label": { "type": "string", "example": "Abril 2026" },
+    "income": { "type": "number" },
+    "expense": { "type": "number" },
+    "balance": { "type": "number" }
+  },
+  "required": ["month", "label", "income", "expense", "balance"],
+  "x-readme-ref-name": "MonthlySummaryItem"
+}

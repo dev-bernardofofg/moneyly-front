@@ -3,29 +3,47 @@
  * Do not edit manually.
  */
 
-import type { Pagination } from "./Pagination.ts";
 import type { Transaction } from "./Transaction.ts";
 import type { TransactionListSummary } from "./TransactionListSummary.ts";
 
 export type GetTransactionsQueryParams = {
   /**
-   * @type number | undefined
+   * @type string | undefined
+   */
+  category?: string;
+  /**
+   * @type string | undefined
+   */
+  startDate?: string;
+  /**
+   * @type string | undefined
+   */
+  endDate?: string;
+  /**
+   * @type integer | undefined
    */
   page?: number;
   /**
-   * @type number | undefined
+   * @type integer | undefined
    */
   limit?: number;
 };
 
+export const getTransactions200SuccessEnum = {
+  true: true,
+} as const;
+
+export type GetTransactions200SuccessEnumKey =
+  (typeof getTransactions200SuccessEnum)[keyof typeof getTransactions200SuccessEnum];
+
 /**
- * @description Lista de transações com resumo do período
+ * @description Sucesso
  */
 export type GetTransactions200 = {
   /**
    * @type boolean
    */
-  success: boolean;
+  success: GetTransactions200SuccessEnumKey;
   /**
    * @type array
    */
@@ -33,7 +51,32 @@ export type GetTransactions200 = {
   /**
    * @type object
    */
-  pagination: Pagination;
+  pagination: {
+    /**
+     * @type number
+     */
+    page: number;
+    /**
+     * @type number
+     */
+    limit: number;
+    /**
+     * @type number
+     */
+    total: number;
+    /**
+     * @type number
+     */
+    totalPages: number;
+    /**
+     * @type boolean
+     */
+    hasNext: boolean;
+    /**
+     * @type boolean
+     */
+    hasPrev: boolean;
+  };
   /**
    * @type object
    */
@@ -44,10 +87,54 @@ export type GetTransactions200 = {
   message?: string;
 };
 
+export const getTransactions400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactions400SuccessEnumKey =
+  (typeof getTransactions400SuccessEnum)[keyof typeof getTransactions400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetTransactions400 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactions400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getTransactions401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactions401SuccessEnumKey =
+  (typeof getTransactions401SuccessEnum)[keyof typeof getTransactions401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetTransactions401 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactions401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetTransactionsQueryResponse = GetTransactions200;
 
 export type GetTransactionsQuery = {
   Response: GetTransactions200;
   QueryParams: GetTransactionsQueryParams;
-  Errors: any;
+  Errors: GetTransactions400 | GetTransactions401;
 };

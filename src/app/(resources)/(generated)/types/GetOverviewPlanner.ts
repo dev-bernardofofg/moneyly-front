@@ -3,56 +3,69 @@
  * Do not edit manually.
  */
 
-import type { PlannerAlert } from "./PlannerAlert.ts";
-import type { PlannerStats } from "./PlannerStats.ts";
+import type { PlannerOverview } from "./PlannerOverview.ts";
 
 /**
- * @description Planejamento financeiro
+ * @description Sucesso
  */
 export type GetOverviewPlanner200 = {
   /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
    * @type object
    */
-  data: {
-    /**
-     * @type object
-     */
-    stats: PlannerStats;
-    /**
-     * @type object
-     */
-    currentPeriod: {
-      /**
-       * @type string, date-time
-       */
-      startDate: string;
-      /**
-       * @type string, date-time
-       */
-      endDate: string;
-      /**
-       * @type string
-       */
-      description: string;
-    };
-    /**
-     * @type array
-     */
-    alerts: PlannerAlert[];
-  };
+  data: PlannerOverview;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const getOverviewPlanner400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewPlanner400SuccessEnumKey =
+  (typeof getOverviewPlanner400SuccessEnum)[keyof typeof getOverviewPlanner400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetOverviewPlanner400 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewPlanner400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getOverviewPlanner401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetOverviewPlanner401SuccessEnumKey =
+  (typeof getOverviewPlanner401SuccessEnum)[keyof typeof getOverviewPlanner401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetOverviewPlanner401 = {
+  /**
+   * @type boolean
+   */
+  success: GetOverviewPlanner401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetOverviewPlannerQueryResponse = GetOverviewPlanner200;
 
 export type GetOverviewPlannerQuery = {
   Response: GetOverviewPlanner200;
-  Errors: any;
+  Errors: GetOverviewPlanner400 | GetOverviewPlanner401;
 };

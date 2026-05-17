@@ -19,83 +19,35 @@ export type Goal = {
   /**
    * @type string
    */
-  description?: string | null;
+  description: string | null;
   /**
+   * @description Valor decimal como string
    * @type string
    */
   targetAmount: string;
   /**
+   * @description Valor decimal como string
    * @type string
    */
-  currentAmount: string;
+  currentAmount: string | null;
   /**
-   * @type string, date-time
+   * @type string
    */
   targetDate: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   startDate: string;
   /**
    * @type boolean
    */
-  isActive?: boolean | null;
+  isActive: boolean | null;
   /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
   /**
-   * @type string, date-time
+   * @type string
    */
   updatedAt: string;
-  /**
-   * @type object | undefined
-   */
-  progress?: {
-    /**
-     * @type number
-     */
-    percentage: number;
-    /**
-     * @type number
-     */
-    daysRemaining: number;
-    /**
-     * @type number
-     */
-    remaining: number;
-  };
-  /**
-   * @type array | undefined
-   */
-  milestones?: {
-    /**
-     * @type string, uuid
-     */
-    id: string;
-    /**
-     * @type string, uuid
-     */
-    goalId: string;
-    /**
-     * @type number
-     */
-    percentage: number;
-    /**
-     * @type string
-     */
-    amount: string;
-    /**
-     * @type boolean
-     */
-    isReached: boolean;
-    /**
-     * @type string, date-time
-     */
-    reachedAt?: string | null;
-    /**
-     * @type string, date-time
-     */
-    createdAt: string;
-  }[];
 };

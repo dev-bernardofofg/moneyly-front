@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "stats": {
+      "type": "object",
+      "properties": {
+        "totalBudgeted": { "type": "number" },
+        "totalSavingsGoal": { "type": "number" },
+        "totalSaved": { "type": "number" },
+        "savingsProgress": { "type": "number" },
+        "budgetPercentage": { "type": "number" },
+        "savingsPercentage": { "type": "number" },
+        "remainingToSave": { "type": "number" },
+        "availableForBudget": { "type": "number" }
+      },
+      "required": [
+        "totalBudgeted",
+        "totalSavingsGoal",
+        "totalSaved",
+        "savingsProgress",
+        "budgetPercentage",
+        "savingsPercentage",
+        "remainingToSave",
+        "availableForBudget"
+      ]
+    },
+    "currentPeriod": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "example": "2026-05-17T00:00:00.000Z"
+        },
+        "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "description": { "type": "string" }
+      },
+      "required": ["startDate", "endDate", "description"]
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["danger", "warning", "info"] },
+          "message": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "category": { "type": "string" },
+          "goal": { "type": "string" },
+          "percentage": { "type": "number" },
+          "daysRemaining": { "type": "number" }
+        },
+        "required": ["type", "message", "priority"]
+      }
+    }
+  },
+  "required": ["stats", "currentPeriod", "alerts"],
+  "x-readme-ref-name": "PlannerOverview"
+}

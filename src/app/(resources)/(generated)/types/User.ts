@@ -24,32 +24,21 @@ export type User = {
    * @type string
    */
   avatar?: string | null;
+  monthlyIncome: string | number;
   /**
-   * @type string
+   * @type integer
    */
-  monthlyIncome?: string | null;
+  financialDayStart: number;
   /**
-   * @minLength 1
-   * @maxLength 31
-   * @type number
+   * @type integer
    */
-  financialDayStart?: number | null;
-  /**
-   * @minLength 1
-   * @maxLength 31
-   * @type number
-   */
-  financialDayEnd?: number | null;
+  financialDayEnd: number;
   /**
    * @type boolean
    */
-  firstAccess?: boolean | null;
+  firstAccess: boolean | null;
   /**
-   * @type string, date-time
+   * @type string
    */
   createdAt: string;
-  /**
-   * @type string, date-time
-   */
-  updatedAt: string;
 };

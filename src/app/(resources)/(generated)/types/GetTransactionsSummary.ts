@@ -4,57 +4,63 @@
  */
 
 /**
- * @description Resumo financeiro
+ * @description Sucesso
  */
 export type GetTransactionsSummary200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
-  /**
-   * @type object
-   */
-  data: {
-    /**
-     * @type number
-     */
-    totalIncome: number;
-    /**
-     * @type number
-     */
-    totalExpenses: number;
-    /**
-     * @type number
-     */
-    balance: number;
-    /**
-     * @type number
-     */
-    monthlyIncome: number;
-    /**
-     * @type number
-     */
-    percentUsed: number;
-    /**
-     * @type string
-     */
-    alert?: string | null;
-    /**
-     * @type object | undefined
-     */
-    byCategory?: {
-      [key: string]: number;
-    };
-  };
+  data?: any | null;
   /**
    * @type string | undefined
    */
   message?: string;
 };
 
+export const getTransactionsSummary400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummary400SuccessEnumKey =
+  (typeof getTransactionsSummary400SuccessEnum)[keyof typeof getTransactionsSummary400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetTransactionsSummary400 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummary400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getTransactionsSummary401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetTransactionsSummary401SuccessEnumKey =
+  (typeof getTransactionsSummary401SuccessEnum)[keyof typeof getTransactionsSummary401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetTransactionsSummary401 = {
+  /**
+   * @type boolean
+   */
+  success: GetTransactionsSummary401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type GetTransactionsSummaryQueryResponse = GetTransactionsSummary200;
 
 export type GetTransactionsSummaryQuery = {
   Response: GetTransactionsSummary200;
-  Errors: any;
+  Errors: GetTransactionsSummary400 | GetTransactionsSummary401;
 };

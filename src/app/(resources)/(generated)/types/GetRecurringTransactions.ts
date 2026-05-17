@@ -3,35 +3,38 @@
  * Do not edit manually.
  */
 
-import type { Pagination } from "./Pagination.ts";
 import type { RecurringTransaction } from "./RecurringTransaction.ts";
 
 export type GetRecurringTransactionsQueryParams = {
   /**
-   * @description Incluir transações desativadas (default: false)
-   * @type boolean | undefined
+   * @type boolean
    */
-  includeInactive?: boolean;
+  includeInactive?: boolean | null;
   /**
-   * @description Página (default: 1)
-   * @type number | undefined
+   * @type integer | undefined
    */
   page?: number;
   /**
-   * @description Itens por página (default: 10, max: 100)
-   * @type number | undefined
+   * @type integer | undefined
    */
   limit?: number;
 };
 
+export const getRecurringTransactions200SuccessEnum = {
+  true: true,
+} as const;
+
+export type GetRecurringTransactions200SuccessEnumKey =
+  (typeof getRecurringTransactions200SuccessEnum)[keyof typeof getRecurringTransactions200SuccessEnum];
+
 /**
- * @description Lista paginada de transações recorrentes
+ * @description Sucesso
  */
 export type GetRecurringTransactions200 = {
   /**
    * @type boolean
    */
-  success: boolean;
+  success: GetRecurringTransactions200SuccessEnumKey;
   /**
    * @type array
    */
@@ -39,11 +42,80 @@ export type GetRecurringTransactions200 = {
   /**
    * @type object
    */
-  pagination: Pagination;
+  pagination: {
+    /**
+     * @type number
+     */
+    page: number;
+    /**
+     * @type number
+     */
+    limit: number;
+    /**
+     * @type number
+     */
+    total: number;
+    /**
+     * @type number
+     */
+    totalPages: number;
+    /**
+     * @type boolean
+     */
+    hasNext: boolean;
+    /**
+     * @type boolean
+     */
+    hasPrev: boolean;
+  };
   /**
    * @type string | undefined
    */
   message?: string;
+};
+
+export const getRecurringTransactions400SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetRecurringTransactions400SuccessEnumKey =
+  (typeof getRecurringTransactions400SuccessEnum)[keyof typeof getRecurringTransactions400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type GetRecurringTransactions400 = {
+  /**
+   * @type boolean
+   */
+  success: GetRecurringTransactions400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const getRecurringTransactions401SuccessEnum = {
+  false: false,
+} as const;
+
+export type GetRecurringTransactions401SuccessEnumKey =
+  (typeof getRecurringTransactions401SuccessEnum)[keyof typeof getRecurringTransactions401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type GetRecurringTransactions401 = {
+  /**
+   * @type boolean
+   */
+  success: GetRecurringTransactions401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
 };
 
 export type GetRecurringTransactionsQueryResponse = GetRecurringTransactions200;
@@ -51,5 +123,5 @@ export type GetRecurringTransactionsQueryResponse = GetRecurringTransactions200;
 export type GetRecurringTransactionsQuery = {
   Response: GetRecurringTransactions200;
   QueryParams: GetRecurringTransactionsQueryParams;
-  Errors: any;
+  Errors: GetRecurringTransactions400 | GetRecurringTransactions401;
 };

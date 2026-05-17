@@ -1,41 +1,46 @@
 {
   "type": "object",
-  "required": [
-    "id",
-    "userId",
-    "type",
-    "title",
-    "amount",
-    "date",
-    "categoryId",
-    "createdAt",
-    "updatedAt"
-  ],
   "properties": {
     "id": { "type": "string", "format": "uuid" },
-    "userId": { "type": "string", "format": "uuid" },
     "type": { "type": "string", "enum": ["income", "expense"] },
     "title": { "type": "string" },
-    "amount": { "type": "string" },
+    "amount": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
     "description": { "type": "string", "nullable": true },
-    "date": { "type": "string", "format": "date-time" },
-    "categoryId": { "type": "string", "format": "uuid" },
-    "periodId": { "type": "string", "format": "uuid", "nullable": true },
+    "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "periodId": { "type": "string", "nullable": true, "format": "uuid" },
     "recurringTransactionId": {
       "type": "string",
-      "format": "uuid",
-      "nullable": true
+      "nullable": true,
+      "format": "uuid"
     },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "category": {
       "type": "object",
-      "required": ["id", "name"],
       "properties": {
         "id": { "type": "string", "format": "uuid" },
         "name": { "type": "string" }
-      }
+      },
+      "required": ["id", "name"],
+      "x-readme-ref-name": "TransactionCategory"
     }
   },
+  "required": [
+    "id",
+    "type",
+    "title",
+    "amount",
+    "description",
+    "date",
+    "periodId",
+    "recurringTransactionId",
+    "createdAt",
+    "updatedAt",
+    "category"
+  ],
   "x-readme-ref-name": "Transaction"
 }

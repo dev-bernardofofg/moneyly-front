@@ -3,20 +3,47 @@
  * Do not edit manually.
  */
 
-import type { AuthResponse } from "./AuthResponse.ts";
+import type { AuthSession } from "./AuthSession.ts";
 
 /**
- * @description Login com Google realizado
+ * @description Sucesso
  */
-export type PostAuthGoogle200 = AuthResponse;
+export type PostAuthGoogle200 = {
+  /**
+   * @type object
+   */
+  data: AuthSession;
+  /**
+   * @type string | undefined
+   */
+  message?: string;
+};
+
+export const postAuthGoogle400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthGoogle400SuccessEnumKey =
+  (typeof postAuthGoogle400SuccessEnum)[keyof typeof postAuthGoogle400SuccessEnum];
 
 /**
- * @description Falha na autenticação com Google
+ * @description Requisição inválida
  */
-export type PostAuthGoogle401 = any;
+export type PostAuthGoogle400 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthGoogle400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type PostAuthGoogleMutationRequest = {
   /**
+   * @minLength 1
    * @type string
    */
   idToken: string;
@@ -27,5 +54,5 @@ export type PostAuthGoogleMutationResponse = PostAuthGoogle200;
 export type PostAuthGoogleMutation = {
   Response: PostAuthGoogle200;
   Request: PostAuthGoogleMutationRequest;
-  Errors: PostAuthGoogle401;
+  Errors: PostAuthGoogle400;
 };

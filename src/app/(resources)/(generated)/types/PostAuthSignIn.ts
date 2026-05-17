@@ -3,24 +3,53 @@
  * Do not edit manually.
  */
 
-import type { AuthResponse } from "./AuthResponse.ts";
+import type { AuthSession } from "./AuthSession.ts";
 
 /**
- * @description Login realizado
+ * @description Sucesso
  */
-export type PostAuthSignIn200 = AuthResponse;
+export type PostAuthSignIn200 = {
+  /**
+   * @type object
+   */
+  data: AuthSession;
+  /**
+   * @type string | undefined
+   */
+  message?: string;
+};
+
+export const postAuthSignIn400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PostAuthSignIn400SuccessEnumKey =
+  (typeof postAuthSignIn400SuccessEnum)[keyof typeof postAuthSignIn400SuccessEnum];
 
 /**
- * @description Credenciais inválidas
+ * @description Requisição inválida
  */
-export type PostAuthSignIn401 = any;
+export type PostAuthSignIn400 = {
+  /**
+   * @type boolean
+   */
+  success: PostAuthSignIn400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
 
 export type PostAuthSignInMutationRequest = {
   /**
+   * @maxLength 100
    * @type string, email
    */
   email: string;
   /**
+   * @minLength 1
+   * @maxLength 128
    * @type string
    */
   password: string;
@@ -31,5 +60,5 @@ export type PostAuthSignInMutationResponse = PostAuthSignIn200;
 export type PostAuthSignInMutation = {
   Response: PostAuthSignIn200;
   Request: PostAuthSignInMutationRequest;
-  Errors: PostAuthSignIn401;
+  Errors: PostAuthSignIn400;
 };

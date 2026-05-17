@@ -13,13 +13,9 @@ export type PutGoalsIdPathParams = {
 };
 
 /**
- * @description Atualizada
+ * @description Sucesso
  */
 export type PutGoalsId200 = {
-  /**
-   * @type boolean
-   */
-  success: boolean;
   /**
    * @type object
    */
@@ -30,27 +26,90 @@ export type PutGoalsId200 = {
   message?: string;
 };
 
+export const putGoalsId400SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutGoalsId400SuccessEnumKey =
+  (typeof putGoalsId400SuccessEnum)[keyof typeof putGoalsId400SuccessEnum];
+
+/**
+ * @description Requisição inválida
+ */
+export type PutGoalsId400 = {
+  /**
+   * @type boolean
+   */
+  success: PutGoalsId400SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putGoalsId401SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutGoalsId401SuccessEnumKey =
+  (typeof putGoalsId401SuccessEnum)[keyof typeof putGoalsId401SuccessEnum];
+
+/**
+ * @description Não autenticado
+ */
+export type PutGoalsId401 = {
+  /**
+   * @type boolean
+   */
+  success: PutGoalsId401SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
+export const putGoalsId404SuccessEnum = {
+  false: false,
+} as const;
+
+export type PutGoalsId404SuccessEnumKey =
+  (typeof putGoalsId404SuccessEnum)[keyof typeof putGoalsId404SuccessEnum];
+
+/**
+ * @description Recurso não encontrado
+ */
+export type PutGoalsId404 = {
+  /**
+   * @type boolean
+   */
+  success: PutGoalsId404SuccessEnumKey;
+  /**
+   * @type string
+   */
+  error: string;
+  details?: any | null;
+};
+
 export type PutGoalsIdMutationRequest = {
   /**
+   * @minLength 1
+   * @maxLength 100
    * @type string | undefined
    */
   title?: string;
   /**
+   * @maxLength 500
    * @type string | undefined
    */
   description?: string;
+  targetAmount?: string | number;
   /**
-   * @type number | undefined
-   */
-  targetAmount?: number;
-  /**
-   * @type string | undefined, date
+   * @type string | undefined
    */
   targetDate?: string;
-  /**
-   * @type number | undefined
-   */
-  currentAmount?: number;
+  currentAmount?: string | number;
   /**
    * @type boolean | undefined
    */
@@ -63,5 +122,5 @@ export type PutGoalsIdMutation = {
   Response: PutGoalsId200;
   Request: PutGoalsIdMutationRequest;
   PathParams: PutGoalsIdPathParams;
-  Errors: any;
+  Errors: PutGoalsId400 | PutGoalsId401 | PutGoalsId404;
 };

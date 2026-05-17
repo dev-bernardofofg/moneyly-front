@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "monthlyLimit": {
+      "type": "string",
+      "nullable": true,
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "category": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "name": { "type": "string" }
+      },
+      "required": ["id", "name"],
+      "x-readme-ref-name": "TransactionCategory"
+    },
+    "spent": { "type": "number" },
+    "remaining": { "type": "number" },
+    "percentage": { "type": "number" },
+    "status": {
+      "type": "string",
+      "description": "safe | attention | warning | exceeded"
+    }
+  },
+  "required": [
+    "id",
+    "monthlyLimit",
+    "category",
+    "spent",
+    "remaining",
+    "percentage",
+    "status"
+  ],
+  "x-readme-ref-name": "BudgetProgress"
+}
