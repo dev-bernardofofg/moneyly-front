@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { FN_UTILS_DATE } from "@/app/(helpers)/date";
 
 export const UpsertTransactionSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
@@ -21,7 +22,7 @@ export const UpsertTransactionDefaultValues = {
   amount: "",
   category: "",
   description: "",
-  date: new Date().toISOString().split('T')[0],
+  date: FN_UTILS_DATE.today(),
 };
 
 export type UpsertTransactionFormValues = z.infer<

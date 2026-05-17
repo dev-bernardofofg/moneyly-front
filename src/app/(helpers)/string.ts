@@ -1,3 +1,5 @@
+import { FN_UTILS_DATE } from "./date";
+
 export const FN_UTILS_STRING = {
   avatarUser: (name: string) => {
     return name
@@ -53,13 +55,6 @@ export const FN_UTILS_STRING = {
     return String(Math.round(n * 100));
   },
 
-  formatEndDayDate: (value: string) => {
-    const date = new Date(value);
-
-    // Define o final do dia em UTC
-    const endOfDayDate = new Date(date);
-    endOfDayDate.setUTCHours(23, 59, 59, 999);
-
-    return endOfDayDate.toISOString();
-  },
+  /** @deprecated use FN_UTILS_DATE.endOfBusinessDayISO (fuso America/Sao_Paulo). */
+  formatEndDayDate: (value: string) => FN_UTILS_DATE.endOfBusinessDayISO(value),
 };
