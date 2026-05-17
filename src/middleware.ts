@@ -16,6 +16,7 @@ export function middleware(request: NextRequest) {
   // Rotas privadas que precisam de autenticação
   const privateRoutes = [
     "/dashboard",
+    "/insights",
     "/categories",
     "/transactions",
     "/initial-config",

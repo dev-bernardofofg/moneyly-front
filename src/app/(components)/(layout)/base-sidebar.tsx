@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { IconType } from "@/lib/utils";
-import { ArrowRightLeft, ChevronUp, Goal, Home, LogOut, Moon, RefreshCcw, Sun, TableProperties, User } from "lucide-react";
+import { ArrowRightLeft, ChevronUp, Goal, Home, Lightbulb, LogOut, Moon, RefreshCcw, Sun, TableProperties, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -89,6 +89,7 @@ export const BaseSidebar = () => {
       <SidebarContent className="p-2">
         <SidebarGroupCustom label="Início">
           <SidebarItem Icon={Home} href="/dashboard" title="Dashboard" />
+          <SidebarItem Icon={Lightbulb} href="/insights" title="Insights" />
         </SidebarGroupCustom>
         <SidebarGroupCustom label="Gestão">
           <SidebarItem Icon={ArrowRightLeft} href="/transactions" title="Transações" />
