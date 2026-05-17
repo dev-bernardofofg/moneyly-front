@@ -55,5 +55,8 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 - **F1 Saldo projetado**: Section em `/insights` via `useGetOverviewForecast` (`ForecastResponse`). Detalhe: `.specs/features/01-cash-flow-forecast.md`.
 - **F2 Alertas**: `notification-bell.tsx` no Header global (`useGetNotifications` + patch read/read-all). ⚠️ migration back `0004` não aplicada → runtime erra até `db:push`. Detalhe: `.specs/features/02-budget-alerts.md`.
 
+- **F3 Assinaturas**: `insights/subscriptions-section.tsx` (`useGetTransactionsSubscriptions`) + CTA recorrente. Detalhe: `.specs/features/03-subscription-detector.md`.
+- **F4 Comparativo**: `insights/comparison-section.tsx` (`useGetOverviewInsightsComparison`), cor por signal. Detalhe: `.specs/features/04-comparative-insights.md`.
+
 ## Não implementado / parcial
-- **F3 detector de assinaturas / F4 insights comparativos**: não iniciados (aguardam contrato back).
+- Roadmap R/F atual (R1–R5, F1–F4) todo Done no front. Próximos: aguardar novas features no contrato back.
