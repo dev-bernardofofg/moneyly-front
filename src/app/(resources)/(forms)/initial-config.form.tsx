@@ -74,7 +74,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <DollarSign className="size-4 text-green-600" />
+            <DollarSign className="size-4 text-income" />
             <h3 className="text-base font-semibold text-gray-900 dark:text-white">Renda Mensal</h3>
           </div>
 
@@ -89,16 +89,16 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
     
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Calendar className="size-4 text-blue-600" />
+            <Calendar className="size-4 text-info" />
             <h3 className="text-base font-semibold text-gray-900 dark:text-white">Período Financeiro</h3>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 dark:bg-blue-950 dark:border-blue-800">
+          <div className="bg-info/5 border border-info/20 rounded-lg p-4">
             <div className="flex items-start gap-2">
-              <Info className="size-4 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-blue-800 dark:text-blue-400">
+              <Info className="size-4 text-info mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-info">
                 <p className="font-medium mb-1">Como funciona o período financeiro?</p>
-                <p className="text-blue-700 dark:text-blue-400">
+                <p className="text-info/80">
                   Defina em qual dia do mês seu período financeiro começa e termina.
                   Pode cruzar meses (ex: do dia 5 ao dia 4 do próximo mês).
                 </p>
@@ -124,11 +124,11 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 dark:bg-gray-800 dark:border-gray-700">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-income rounded-full"></div>
                 <span className="text-gray-700 dark:text-white/40">Dia 1 ao 31: Período mensal completo</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-info rounded-full"></div>
                 <span className="text-gray-700 dark:text-white/40">Dia 5 ao 4: Cruza meses (5 jan - 4 fev)</span>
               </div>
               <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
 
         <Button
           type="submit"
-          className="w-full h-10 font-medium bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 dark:from-green-500 dark:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700"
+          className="w-full h-10 font-medium bg-income text-income-foreground hover:bg-income/90"
           disabled={isPending}
         >
           {isPending ? (

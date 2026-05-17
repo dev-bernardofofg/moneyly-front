@@ -37,26 +37,26 @@ export const NotificationsPopover = ({
   const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
       case "success":
-        return <Check className="size-4 text-green-600" />;
+        return <Check className="size-4 text-income" />;
       case "warning":
-        return <Clock className="size-4 text-yellow-600" />;
+        return <Clock className="size-4 text-warn" />;
       case "error":
-        return <X className="size-4 text-red-600" />;
+        return <X className="size-4 text-expense" />;
       default:
-        return <Bell className="size-4 text-blue-600" />;
+        return <Bell className="size-4 text-info" />;
     }
   };
 
   const getNotificationColor = (type: Notification["type"]) => {
     switch (type) {
       case "success":
-        return "border-l-green-500 bg-green-50 dark:bg-green-950/20";
+        return "border-l-income bg-income/5";
       case "warning":
-        return "border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20";
+        return "border-l-warn bg-warn/5";
       case "error":
-        return "border-l-red-500 bg-red-50 dark:bg-red-950/20";
+        return "border-l-expense bg-expense/5";
       default:
-        return "border-l-blue-500 bg-blue-50 dark:bg-blue-950/20";
+        return "border-l-info bg-info/5";
     }
   };
 
@@ -133,18 +133,18 @@ export const NotificationsPopover = ({
                         variant="ghost"
                         size="sm"
                         onClick={() => onMarkAsRead?.(notification.id)}
-                        className="size-6 p-0 hover:bg-green-100 dark:hover:bg-green-900/20"
+                        className="size-6 p-0 hover:bg-income/10"
                       >
-                        <Check className="size-3 text-green-600" />
+                        <Check className="size-3 text-income" />
                       </Button>
                     )}
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => onDelete?.(notification.id)}
-                      className="size-6 p-0 hover:bg-red-100 dark:hover:bg-red-900/20"
+                      className="size-6 p-0 hover:bg-expense/10"
                     >
-                      <X className="size-3 text-red-600" />
+                      <X className="size-3 text-expense" />
                     </Button>
                   </div>
                 </div>

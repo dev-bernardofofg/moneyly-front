@@ -57,13 +57,13 @@ export const PeriodNavigator = ({
                 isSelected
                   ? "bg-primary text-primary-foreground border-primary shadow-md"
                   : isCurrent
-                    ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800 dark:hover:bg-green-900 dark:hover:border-green-700"
+                    ? "bg-income/10 text-income border-income/30 hover:bg-income/20"
                     : "bg-muted/50 text-muted-foreground border-border hover:bg-muted hover:border-muted-foreground/30 dark:bg-muted/90 dark:text-muted-foreground/50 dark:border-muted-foreground/30 dark:hover:bg-muted/90 dark:hover:border-muted-foreground/30"
               )}
             >
               <div className="flex items-center gap-1.5 flex-1 min-w-0">
                 {isCurrent ? (
-                  <TrendingUp className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <TrendingUp className="h-3.5 w-3.5 text-income flex-shrink-0" />
                 ) : (
                   <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                 )}
@@ -78,7 +78,7 @@ export const PeriodNavigator = ({
                   isSelected
                     ? "bg-primary-foreground/20 text-primary-foreground"
                     : isCurrent
-                      ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800 dark:hover:bg-green-900 dark:hover:border-green-700"
+                      ? "bg-income/15 text-income"
                       : "bg-muted-foreground/20 text-muted-foreground dark:bg-muted-foreground/90 dark:text-muted-foreground/50 dark:border-muted-foreground/30 dark:hover:bg-muted-foreground/90 dark:hover:border-muted-foreground/30"
                 )}
               >

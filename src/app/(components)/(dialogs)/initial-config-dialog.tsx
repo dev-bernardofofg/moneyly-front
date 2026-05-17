@@ -25,8 +25,8 @@ export const InitialConfigDialog = ({ open, onOpenChange: _onOpenChange, onSucce
         <Card className="border-0 shadow-none">
           <CardHeader className="text-center space-y-2">
             <div className="flex justify-center mb-4">
-              <div className="size-12  bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                <DollarSign className="size-6 text-white" />
+              <div className="size-12 bg-income rounded-full flex items-center justify-center">
+                <DollarSign className="size-6 text-income-foreground" />
               </div>
             </div>
             <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">

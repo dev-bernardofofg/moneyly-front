@@ -22,37 +22,37 @@ export const AlertsPopover = ({
   const getAlertIcon = (type: string) => {
     switch (type) {
       case "info":
-        return <Info className="size-4 text-blue-600" />;
+        return <Info className="size-4 text-info" />;
       case "warning":
-        return <AlertTriangle className="size-4 text-yellow-600" />;
+        return <AlertTriangle className="size-4 text-warn" />;
       case "error":
-        return <XCircle className="size-4 text-red-600" />;
+        return <XCircle className="size-4 text-expense" />;
       default:
-        return <CheckCircle className="size-4 text-green-600" />;
+        return <CheckCircle className="size-4 text-income" />;
     }
   };
 
   const getAlertColor = (type: string) => {
     switch (type) {
       case "info":
-        return "border-l-green-500 bg-green-50 dark:bg-green-950/20";
+        return "border-l-income bg-income/5";
       case "warning":
-        return "border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20";
+        return "border-l-warn bg-warn/5";
       case "error":
-        return "border-l-red-500 bg-red-50 dark:bg-red-950/20";
+        return "border-l-expense bg-expense/5";
       default:
-        return "border-l-blue-500 bg-blue-50 dark:bg-blue-950/20";
+        return "border-l-info bg-info/5";
     }
   };
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case "high":
-        return <Badge variant="destructive" className="text-xs text-red-600">Alta</Badge>;
+        return <Badge variant="destructive" className="text-xs text-expense">Alta</Badge>;
       case "medium":
-        return <Badge variant="secondary" className="text-xs text-yellow-600">Média</Badge>;
+        return <Badge variant="secondary" className="text-xs text-warn">Média</Badge>;
       case "low":
-        return <Badge variant="secondary" className="text-xs text-green-600">Baixa</Badge>;
+        return <Badge variant="secondary" className="text-xs text-income">Baixa</Badge>;
     }
   };
 

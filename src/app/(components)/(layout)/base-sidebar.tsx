@@ -109,7 +109,7 @@ export const BaseSidebar = () => {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg bg-green-400 text-white">
+                <AvatarFallback className="rounded-lg bg-primary text-primary-foreground">
                   {FN_UTILS_STRING.avatarUser(user?.name || "")}
                 </AvatarFallback>
               </Avatar>
@@ -140,7 +140,7 @@ export const BaseSidebar = () => {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600">
+            <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive">
               <LogOut className="size-4" />
               <span>Sair</span>
             </DropdownMenuItem>

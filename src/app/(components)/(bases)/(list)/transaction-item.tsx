@@ -6,9 +6,9 @@ import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 export const TransactionItem = ({ amount, type, category, date }: RecentTransactionItem) => {
   const gradientByTypeTransaction = (type: string) => {
     if (type === "income") {
-      return "bg-gradient-to-r from-green-500/70 to-green-800";
+      return "bg-gradient-to-r from-income/70 to-income";
     }
-    return "bg-gradient-to-r from-red-500/70 to-red-800";
+    return "bg-gradient-to-r from-expense/70 to-expense";
   }
   return (
     <div className="flex items-center justify-between gap-2">
@@ -22,7 +22,7 @@ export const TransactionItem = ({ amount, type, category, date }: RecentTransact
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <p className={cn("text-sm font-medium", type === "income" ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400")}>{FN_UTILS_NUMBERS.formatCurrencyToNumber(amount)}</p>
+        <p className={cn("text-sm font-medium", type === "income" ? "text-income" : "text-expense")}>{FN_UTILS_NUMBERS.formatCurrencyToNumber(amount)}</p>
       </div>
     </div>
   )

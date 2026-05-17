@@ -32,9 +32,9 @@ const variantsStats = cva(
 const variantsText = cva("text-2xl font-bold", {
   variants: {
     variant: {
-      default: "text-green-600",
-      secondary: "text-blue-600",
-      destructive: "text-red-600",
+      default: "text-income",
+      secondary: "text-info",
+      destructive: "text-expense",
     },
   }
 })
@@ -42,9 +42,9 @@ const variantsText = cva("text-2xl font-bold", {
 const variantsIcon = cva("size-4", {
   variants: {
     variant: {
-      default: "text-green-600",
-      secondary: "text-blue-600",
-      destructive: "text-red-600",
+      default: "text-income",
+      secondary: "text-info",
+      destructive: "text-expense",
     },
   }
 })

@@ -113,8 +113,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                     className={cn(
                       "relative grid grid-cols-2 rounded-lg border overflow-hidden h-11 p-0.5 gap-0.5 transition-colors duration-300",
                       field.value === "income"
-                        ? "border-green-500/60 bg-green-500/5"
-                        : "border-red-500/60 bg-red-500/5"
+                        ? "border-income/60 bg-income/5"
+                        : "border-expense/60 bg-expense/5"
                     )}
                   >
                     <button
@@ -123,8 +123,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                       className={cn(
                         "relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300",
                         field.value === "income"
-                          ? "bg-green-500 text-white shadow-sm shadow-green-500/40"
-                          : "text-muted-foreground hover:text-foreground hover:bg-green-500/10"
+                          ? "bg-income text-income-foreground shadow-sm shadow-income/40"
+                          : "text-muted-foreground hover:text-foreground hover:bg-income/10"
                       )}
                     >
                       <TrendingUp className="size-3.5 shrink-0" />
@@ -136,8 +136,8 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                       className={cn(
                         "relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300",
                         field.value === "expense"
-                          ? "bg-red-500 text-white shadow-sm shadow-red-500/40"
-                          : "text-muted-foreground hover:text-foreground hover:bg-red-500/10"
+                          ? "bg-expense text-expense-foreground shadow-sm shadow-expense/40"
+                          : "text-muted-foreground hover:text-foreground hover:bg-expense/10"
                       )}
                     >
                       <TrendingDown className="size-3.5 shrink-0" />

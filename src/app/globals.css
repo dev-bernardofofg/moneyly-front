@@ -44,6 +44,14 @@
   --color-critical: hsl(var(--critical));
   --color-critical-foreground: hsl(var(--critical-foreground));
 
+  /* Transaction / informational semantics — design system §08 */
+  --color-income: hsl(var(--income));
+  --color-income-foreground: hsl(var(--income-foreground));
+  --color-expense: hsl(var(--expense));
+  --color-expense-foreground: hsl(var(--expense-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+
   --color-sidebar: hsl(var(--sidebar-background));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
@@ -141,6 +149,14 @@
     --critical: 0 84% 60%;        /* #ef4444 — "Limite excedido" */
     --critical-foreground: 0 0% 100%;
 
+    /* Transaction / informational semantics — design system §08 */
+    --income: 142 76% 36%;        /* #16a34a — receita */
+    --income-foreground: 0 0% 100%;
+    --expense: 0 72% 51%;         /* #dc2626 — despesa */
+    --expense-foreground: 0 0% 100%;
+    --info: 221 83% 53%;          /* #2563eb — informativo */
+    --info-foreground: 0 0% 100%;
+
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 100%;
@@ -191,6 +207,14 @@
     --danger-foreground: 0 0% 100%;
     --critical: 0 84% 60%;
     --critical-foreground: 0 0% 100%;
+
+    /* Transaction / informational semantics — identical across themes */
+    --income: 142 76% 36%;
+    --income-foreground: 0 0% 100%;
+    --expense: 0 72% 51%;
+    --expense-foreground: 0 0% 100%;
+    --info: 221 83% 53%;
+    --info-foreground: 0 0% 100%;
 
     --radius: 0.5rem;
 
