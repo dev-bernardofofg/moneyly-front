@@ -49,9 +49,9 @@ export function MonthlyHistoryChart({ data, isLoading }: Props) {
       showAverageLine
       showHoverBounds
       isLoading={isLoading}
-      tooltipValueFormatter={FN_UTILS_NUMBERS.formatNumberToCurrency}
+      tooltipValueFormatter={FN_UTILS_NUMBERS.formatCurrency}
       yAxisProps={{
-        tickFormatter: (v: number | string) => FN_UTILS_NUMBERS.formatNumberToCurrency(v),
+        tickFormatter: (v: number | string) => FN_UTILS_NUMBERS.formatCurrency(v),
         width: 96,
       }}
       className="size-full"

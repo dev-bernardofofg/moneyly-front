@@ -1,6 +1,7 @@
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number'
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LucideIcon } from 'lucide-react'
@@ -9,7 +10,7 @@ interface BaseStatsProps {
   name: string
   value: number | string
   Icon: LucideIcon
-  description?: string
+  description?: string | React.ReactNode
   isMonetary?: boolean
   variant?: "default" | "secondary" | "destructive"
   loading?: boolean
@@ -19,7 +20,7 @@ interface BaseStatsProps {
 }
 
 const variantsStats = cva(
-  "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200", {
+  "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200 h-full", {
   variants: {
     variant: {
       default: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
@@ -102,12 +103,13 @@ export const BaseStats = ({
                 initial={{ opacity: 0, y: 5, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -5, scale: 0.98 }}
+                className={cn("", !isMonetary && 'capitalize')}
                 transition={{
                   duration: 0.25,
                   ease: "easeOut"
                 }}
               >
-                {isMonetary ? FN_UTILS_NUMBERS.formatCurrencyToNumber(value) : value}
+                {isMonetary ? FN_UTILS_NUMBERS.formatCurrency(value) : value}
               </motion.span>
             )}
           </AnimatePresence>

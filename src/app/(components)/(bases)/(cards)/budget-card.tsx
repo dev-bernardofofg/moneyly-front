@@ -58,13 +58,13 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
         <div className="flex justify-between text-sm">
           <span className="dark:text-slate-400 text-slate-600">Gasto</span>
           <span className="font-medium dark:text-slate-200 text-slate-600">
-            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.spent || 0)}
+            {FN_UTILS_NUMBERS.formatCurrency(budget.spent || 0)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="dark:text-slate-400 text-slate-600">Limite</span>
           <span className="dark:text-slate-200 text-slate-600">
-            {FN_UTILS_NUMBERS.formatNumberToCurrency(budget.monthlyLimit || 0)}
+            {FN_UTILS_NUMBERS.formatCurrency(budget.monthlyLimit || 0)}
           </span>
         </div>
 
@@ -77,7 +77,7 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
           </div>
           <div className="flex justify-between text-xs text-slate-400">
             <span>{percentage.toFixed(0)}% usado</span>
-            {/* <span>{FN_UTILS_NUMBERS.formatCurrencyToNumber(budget.remaining || 0)} restante</span> */}
+            {/* <span>{FN_UTILS_NUMBERS.formatCurrency(budget.remaining || 0)} restante</span> */}
           </div>
         </div>
       </div>

@@ -1,22 +1,38 @@
+const BRL_CURRENCY_FORMATTER = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const BRL_DECIMAL_FORMATTER = new Intl.NumberFormat("pt-BR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const parseMonetaryValue = (value: number | string): number => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  const cleaned = value.replace(/R\$\s*/gi, "").trim();
+  if (cleaned === "") return 0;
+
+  const normalized = cleaned.includes(",")
+    ? cleaned.replace(/\./g, "").replace(",", ".")
+    : cleaned;
+
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
 export const FN_UTILS_NUMBERS = {
-  formatCurrencyToNumber: (value: number | string) => {
-    return (value as number).toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      style: "currency",
-      currency: "BRL",
-    });
-  },
+  formatCurrency: (value: number | string): string =>
+    BRL_CURRENCY_FORMATTER.format(parseMonetaryValue(value)),
 
-  formatNumberToCurrency: (value: number | string) => {
-    if (value === 0 || value === "0") {
-      return "R$ 0,00";
-    }
-    return `R$ ${Number(value).toFixed(2).replace(".", ",")}`;
-  },
-
-  formatPercentageFormatted: (value: number) => {
-    return `${value.toFixed(2)}%`;
+  formatPercentage: (value: number): string => {
+    if (!Number.isFinite(value)) return "0,00%";
+    return `${BRL_DECIMAL_FORMATTER.format(value)}%`;
   },
 
   formatInstallments: (

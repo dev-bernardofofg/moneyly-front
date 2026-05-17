@@ -22,7 +22,7 @@ export const TransactionItem = ({ amount, type, category, date }: RecentTransact
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <p className={cn("text-sm font-medium", type === "income" ? "text-income" : "text-expense")}>{FN_UTILS_NUMBERS.formatCurrencyToNumber(amount)}</p>
+        <p className={cn("text-sm font-medium", type === "income" ? "text-income" : "text-expense")}>{FN_UTILS_NUMBERS.formatCurrency(amount)}</p>
       </div>
     </div>
   )

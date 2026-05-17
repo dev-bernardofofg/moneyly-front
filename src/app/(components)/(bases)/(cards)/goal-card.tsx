@@ -48,7 +48,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Progresso</span>
-            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentageFormatted(progressPercentage)}</span>
+            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentage(progressPercentage)}</span>
           </div>
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
@@ -58,9 +58,9 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-primary font-medium">
-              {FN_UTILS_NUMBERS.formatNumberToCurrency(currentAmount)}
+              {FN_UTILS_NUMBERS.formatCurrency(currentAmount)}
             </span>
-            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatNumberToCurrency(targetAmount)}</span>
+            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatCurrency(targetAmount)}</span>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="dark:bg-slate-600 bg-slate-200 p-2 rounded-lg flex items-center justify-between">
           <div className="text-sm dark:text-slate-400 text-slate-600">Faltam</div>
           <div className="font-semibold text-lg dark:text-slate-100 text-slate-600">
-            {FN_UTILS_NUMBERS.formatNumberToCurrency(remaining)}
+            {FN_UTILS_NUMBERS.formatCurrency(remaining)}
           </div>
         </div>
 

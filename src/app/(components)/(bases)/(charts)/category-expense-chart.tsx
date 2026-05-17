@@ -45,7 +45,7 @@ export function CategoryExpenseChart({ data, categories, isLoading }: Props) {
       hideLegend
       isLoading={isLoading}
       yAxisProps={{
-        tickFormatter: (v: number) => FN_UTILS_NUMBERS.formatNumberToCurrency(v),
+        tickFormatter: (v: number) => FN_UTILS_NUMBERS.formatCurrency(v),
         width: 72,
       }}
       className="h-64 w-full"

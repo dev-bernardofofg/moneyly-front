@@ -30,7 +30,7 @@ const InsightsPage = () => {
   return (
     <Fade>
       <Header title="Insights" />
-      <StaggeredFade variant="page" className="grid gap-4 overflow-y-auto p-1">
+      <StaggeredFade variant="page" className="grid gap-2 overflow-y-auto p-1">
         <StaggeredFade className="grid grid-cols-1 gap-2 md:grid-cols-4">
           <BaseStats
             name="Gasto no período"
@@ -75,7 +75,7 @@ const InsightsPage = () => {
               Icon={TrendingDown}
               description={
                 trend?.currentMonth?.label && trend?.previousMonth?.label
-                  ? `${trend.previousMonth.label} → ${trend.currentMonth.label}`
+                  ? <span className="capitalize">{`${trend.previousMonth.label} → ${trend.currentMonth.label}`}</span>
                   : "Sem mês anterior para comparar"
               }
               variant={
@@ -124,7 +124,7 @@ const InsightsPage = () => {
               Icon={TrendingUp}
               description={
                 allTime?.bestMonth
-                  ? FN_UTILS_NUMBERS.formatNumberToCurrency(
+                  ? FN_UTILS_NUMBERS.formatCurrency(
                       allTime.bestMonth.balance ?? 0
                     )
                   : undefined
@@ -138,7 +138,7 @@ const InsightsPage = () => {
               Icon={TrendingDown}
               description={
                 allTime?.worstMonth
-                  ? FN_UTILS_NUMBERS.formatNumberToCurrency(
+                  ? FN_UTILS_NUMBERS.formatCurrency(
                       allTime.worstMonth.balance ?? 0
                     )
                   : undefined
@@ -169,7 +169,7 @@ const InsightsPage = () => {
                       {cat.percentage.toFixed(1)}%
                     </span>
                     <span className="font-semibold text-expense">
-                      {FN_UTILS_NUMBERS.formatNumberToCurrency(cat.amount)}
+                      {FN_UTILS_NUMBERS.formatCurrency(cat.amount)}
                     </span>
                   </div>
                 </li>
