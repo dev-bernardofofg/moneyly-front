@@ -42,3 +42,5 @@ next-env.d.ts
 
 # claude
 .claude
+# contrato gerado a partir de ../moneyly-back/openapi.json
+/openapi.json

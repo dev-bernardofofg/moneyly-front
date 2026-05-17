@@ -3,7 +3,7 @@ import { defineConfig } from "orval";
 export default defineConfig({
   moneyly: {
     input: {
-      target: "./openapi.json",
+      target: "../moneyly-back/openapi.json",
     },
     output: {
       mode: "tags-split",

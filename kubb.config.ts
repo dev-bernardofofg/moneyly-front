@@ -1,11 +1,12 @@
 import { defineConfig } from "@kubb/core";
 import { pluginOas } from "@kubb/plugin-oas";
 import { pluginTs } from "@kubb/plugin-ts";
-import { pluginZod } from "@kubb/plugin-zod";
+// pluginZod removido: zod gerado não é consumido (forms usam (resources)/(schemas) à mão)
+// e o plugin quebra em `allOf:[{$ref},{nullable:true}]` do contrato back.
 
 export default defineConfig({
   input: {
-    path: "./openapi.json",
+    path: "../moneyly-back/openapi.json",
   },
   output: {
     path: "./src/app/(resources)/(generated)",
@@ -15,11 +16,6 @@ export default defineConfig({
     pluginTs({
       output: {
         path: "types",
-      },
-    }),
-    pluginZod({
-      output: {
-        path: "zod",
       },
     }),
   ],
