@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "title": { "type": "string" },
+    "categoryId": { "type": "string", "format": "uuid" },
+    "categoryName": { "type": "string" },
+    "averageAmount": { "type": "number" },
+    "occurrences": { "type": "integer" },
+    "cadence": { "type": "string", "enum": ["weekly", "monthly", "yearly"] },
+    "firstDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "lastDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "nextEstimatedDate": {
+      "type": "string",
+      "example": "2026-05-17T00:00:00.000Z"
+    },
+    "monthlyCost": { "type": "number" }
+  },
+  "required": [
+    "title",
+    "categoryId",
+    "categoryName",
+    "averageAmount",
+    "occurrences",
+    "cadence",
+    "firstDate",
+    "lastDate",
+    "nextEstimatedDate",
+    "monthlyCost"
+  ],
+  "x-readme-ref-name": "SubscriptionCandidate"
+}

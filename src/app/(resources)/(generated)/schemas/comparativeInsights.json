@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "basis": {
+      "type": "object",
+      "properties": {
+        "periodsCompared": { "type": "integer" },
+        "currentPeriod": {
+          "type": "object",
+          "properties": {
+            "startDate": { "type": "string" },
+            "endDate": { "type": "string" },
+            "label": { "type": "string" }
+          },
+          "required": ["startDate", "endDate", "label"]
+        }
+      },
+      "required": ["periodsCompared", "currentPeriod"]
+    },
+    "totals": {
+      "type": "object",
+      "properties": {
+        "currentExpense": { "type": "number" },
+        "averageExpense": { "type": "number" },
+        "deltaPct": { "type": "number", "nullable": true },
+        "signal": { "type": "string", "enum": ["up", "down", "stable"] }
+      },
+      "required": ["currentExpense", "averageExpense", "deltaPct", "signal"]
+    },
+    "byCategory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categoryId": { "type": "string", "format": "uuid" },
+          "categoryName": { "type": "string" },
+          "currentExpense": { "type": "number" },
+          "averageExpense": { "type": "number" },
+          "deltaPct": { "type": "number", "nullable": true },
+          "signal": { "type": "string", "enum": ["up", "down", "stable"] },
+          "message": { "type": "string" }
+        },
+        "required": [
+          "categoryId",
+          "categoryName",
+          "currentExpense",
+          "averageExpense",
+          "deltaPct",
+          "signal",
+          "message"
+        ]
+      }
+    },
+    "highlights": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["basis", "totals", "byCategory", "highlights"],
+  "x-readme-ref-name": "ComparativeInsights"
+}

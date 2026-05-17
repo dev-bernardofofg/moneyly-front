@@ -30,6 +30,10 @@ import type {
   GetOverviewInsights200,
   GetOverviewInsights400,
   GetOverviewInsights401,
+  GetOverviewInsightsComparison200,
+  GetOverviewInsightsComparison400,
+  GetOverviewInsightsComparison401,
+  GetOverviewInsightsComparisonParams,
   GetOverviewPeriods200,
   GetOverviewPeriods400,
   GetOverviewPeriods401,
@@ -819,6 +823,178 @@ export function useGetOverviewForecast<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewForecastQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Insights comparativos (período atual vs média)
+ */
+export const getOverviewInsightsComparison = (
+  params?: GetOverviewInsightsComparisonParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<GetOverviewInsightsComparison200>({
+    url: `/overview/insights/comparison`,
+    method: "GET",
+    params,
+    signal,
+  });
+};
+
+export const getGetOverviewInsightsComparisonQueryKey = (
+  params?: GetOverviewInsightsComparisonParams,
+) => {
+  return [
+    `/overview/insights/comparison`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetOverviewInsightsComparisonQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+  TError = GetOverviewInsightsComparison400 | GetOverviewInsightsComparison401,
+>(
+  params?: GetOverviewInsightsComparisonParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetOverviewInsightsComparisonQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getOverviewInsightsComparison>>
+  > = ({ signal }) => getOverviewInsightsComparison(params, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetOverviewInsightsComparisonQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOverviewInsightsComparison>>
+>;
+export type GetOverviewInsightsComparisonQueryError =
+  | GetOverviewInsightsComparison400
+  | GetOverviewInsightsComparison401;
+
+export function useGetOverviewInsightsComparison<
+  TData = Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+  TError = GetOverviewInsightsComparison400 | GetOverviewInsightsComparison401,
+>(
+  params: undefined | GetOverviewInsightsComparisonParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewInsightsComparison>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOverviewInsightsComparison<
+  TData = Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+  TError = GetOverviewInsightsComparison400 | GetOverviewInsightsComparison401,
+>(
+  params?: GetOverviewInsightsComparisonParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewInsightsComparison>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOverviewInsightsComparison<
+  TData = Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+  TError = GetOverviewInsightsComparison400 | GetOverviewInsightsComparison401,
+>(
+  params?: GetOverviewInsightsComparisonParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Insights comparativos (período atual vs média)
+ */
+
+export function useGetOverviewInsightsComparison<
+  TData = Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+  TError = GetOverviewInsightsComparison400 | GetOverviewInsightsComparison401,
+>(
+  params?: GetOverviewInsightsComparisonParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetOverviewInsightsComparisonQueryOptions(
+    params,
+    options,
+  );
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

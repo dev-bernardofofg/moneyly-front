@@ -3,6 +3,11 @@ export type { AuthSession } from "./types/AuthSession.ts";
 export type { Budget } from "./types/Budget.ts";
 export type { BudgetProgress } from "./types/BudgetProgress.ts";
 export type { Category } from "./types/Category.ts";
+export type {
+  ByCategorySignalEnumKey,
+  ComparativeInsights,
+  TotalsSignalEnumKey,
+} from "./types/ComparativeInsights.ts";
 export type { DashboardOverview } from "./types/DashboardOverview.ts";
 export type { DashboardStats } from "./types/DashboardStats.ts";
 export type {
@@ -162,6 +167,16 @@ export type {
   GetOverviewInsightsQueryResponse,
 } from "./types/GetOverviewInsights.ts";
 export type {
+  GetOverviewInsightsComparison200,
+  GetOverviewInsightsComparison400,
+  GetOverviewInsightsComparison400SuccessEnumKey,
+  GetOverviewInsightsComparison401,
+  GetOverviewInsightsComparison401SuccessEnumKey,
+  GetOverviewInsightsComparisonQuery,
+  GetOverviewInsightsComparisonQueryParams,
+  GetOverviewInsightsComparisonQueryResponse,
+} from "./types/GetOverviewInsightsComparison.ts";
+export type {
   GetOverviewPeriods200,
   GetOverviewPeriods400,
   GetOverviewPeriods400SuccessEnumKey,
@@ -223,6 +238,15 @@ export type {
   GetTransactionsExportQueryParams,
   GetTransactionsExportQueryResponse,
 } from "./types/GetTransactionsExport.ts";
+export type {
+  GetTransactionsSubscriptions200,
+  GetTransactionsSubscriptions400,
+  GetTransactionsSubscriptions400SuccessEnumKey,
+  GetTransactionsSubscriptions401,
+  GetTransactionsSubscriptions401SuccessEnumKey,
+  GetTransactionsSubscriptionsQuery,
+  GetTransactionsSubscriptionsQueryResponse,
+} from "./types/GetTransactionsSubscriptions.ts";
 export type {
   GetTransactionsSummary200,
   GetTransactionsSummary400,
@@ -554,12 +578,18 @@ export type {
   RecurringTransactionTypeEnumKey,
 } from "./types/RecurringTransaction.ts";
 export type {
+  SubscriptionCandidate,
+  SubscriptionCandidateCadenceEnumKey,
+} from "./types/SubscriptionCandidate.ts";
+export type {
   Transaction,
   TransactionTypeEnumKey,
 } from "./types/Transaction.ts";
 export type { TransactionCategory } from "./types/TransactionCategory.ts";
 export type { TransactionListSummary } from "./types/TransactionListSummary.ts";
 export type { User } from "./types/User.ts";
+export { byCategorySignalEnum } from "./types/ComparativeInsights.ts";
+export { totalsSignalEnum } from "./types/ComparativeInsights.ts";
 export { deleteBudgetsId400SuccessEnum } from "./types/DeleteBudgetsId.ts";
 export { deleteBudgetsId401SuccessEnum } from "./types/DeleteBudgetsId.ts";
 export { deleteBudgetsId404SuccessEnum } from "./types/DeleteBudgetsId.ts";
@@ -595,6 +625,8 @@ export { getOverviewForecast400SuccessEnum } from "./types/GetOverviewForecast.t
 export { getOverviewForecast401SuccessEnum } from "./types/GetOverviewForecast.ts";
 export { getOverviewInsights400SuccessEnum } from "./types/GetOverviewInsights.ts";
 export { getOverviewInsights401SuccessEnum } from "./types/GetOverviewInsights.ts";
+export { getOverviewInsightsComparison400SuccessEnum } from "./types/GetOverviewInsightsComparison.ts";
+export { getOverviewInsightsComparison401SuccessEnum } from "./types/GetOverviewInsightsComparison.ts";
 export { getOverviewPeriods400SuccessEnum } from "./types/GetOverviewPeriods.ts";
 export { getOverviewPeriods401SuccessEnum } from "./types/GetOverviewPeriods.ts";
 export { getOverviewPlanner400SuccessEnum } from "./types/GetOverviewPlanner.ts";
@@ -610,6 +642,8 @@ export { getTransactions400SuccessEnum } from "./types/GetTransactions.ts";
 export { getTransactions401SuccessEnum } from "./types/GetTransactions.ts";
 export { getTransactionsExport400SuccessEnum } from "./types/GetTransactionsExport.ts";
 export { getTransactionsExport401SuccessEnum } from "./types/GetTransactionsExport.ts";
+export { getTransactionsSubscriptions400SuccessEnum } from "./types/GetTransactionsSubscriptions.ts";
+export { getTransactionsSubscriptions401SuccessEnum } from "./types/GetTransactionsSubscriptions.ts";
 export { getTransactionsSummary400SuccessEnum } from "./types/GetTransactionsSummary.ts";
 export { getTransactionsSummary401SuccessEnum } from "./types/GetTransactionsSummary.ts";
 export { getTransactionsSummaryByMonth400SuccessEnum } from "./types/GetTransactionsSummaryByMonth.ts";
@@ -686,4 +720,5 @@ export { putUserIncomeAndPeriod401SuccessEnum } from "./types/PutUserIncomeAndPe
 export { recentTransactionItemTypeEnum } from "./types/RecentTransactionItem.ts";
 export { recurringTransactionFrequencyEnum } from "./types/RecurringTransaction.ts";
 export { recurringTransactionTypeEnum } from "./types/RecurringTransaction.ts";
+export { subscriptionCandidateCadenceEnum } from "./types/SubscriptionCandidate.ts";
 export { transactionTypeEnum } from "./types/Transaction.ts";

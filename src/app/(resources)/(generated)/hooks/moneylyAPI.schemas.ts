@@ -368,6 +368,83 @@ export interface PlannerOverview {
   alerts: PlannerOverviewAlertsItem[];
 }
 
+export type ComparativeInsightsBasisCurrentPeriod = {
+  startDate: string;
+  endDate: string;
+  label: string;
+};
+
+export type ComparativeInsightsBasis = {
+  periodsCompared: number;
+  currentPeriod: ComparativeInsightsBasisCurrentPeriod;
+};
+
+export type ComparativeInsightsTotalsSignal =
+  (typeof ComparativeInsightsTotalsSignal)[keyof typeof ComparativeInsightsTotalsSignal];
+
+export const ComparativeInsightsTotalsSignal = {
+  up: "up",
+  down: "down",
+  stable: "stable",
+} as const;
+
+export type ComparativeInsightsTotals = {
+  currentExpense: number;
+  averageExpense: number;
+  /** @nullable */
+  deltaPct: number | null;
+  signal: ComparativeInsightsTotalsSignal;
+};
+
+export type ComparativeInsightsByCategoryItemSignal =
+  (typeof ComparativeInsightsByCategoryItemSignal)[keyof typeof ComparativeInsightsByCategoryItemSignal];
+
+export const ComparativeInsightsByCategoryItemSignal = {
+  up: "up",
+  down: "down",
+  stable: "stable",
+} as const;
+
+export type ComparativeInsightsByCategoryItem = {
+  categoryId: string;
+  categoryName: string;
+  currentExpense: number;
+  averageExpense: number;
+  /** @nullable */
+  deltaPct: number | null;
+  signal: ComparativeInsightsByCategoryItemSignal;
+  message: string;
+};
+
+export interface ComparativeInsights {
+  basis: ComparativeInsightsBasis;
+  totals: ComparativeInsightsTotals;
+  byCategory: ComparativeInsightsByCategoryItem[];
+  highlights: string[];
+}
+
+export type SubscriptionCandidateCadence =
+  (typeof SubscriptionCandidateCadence)[keyof typeof SubscriptionCandidateCadence];
+
+export const SubscriptionCandidateCadence = {
+  weekly: "weekly",
+  monthly: "monthly",
+  yearly: "yearly",
+} as const;
+
+export interface SubscriptionCandidate {
+  title: string;
+  categoryId: string;
+  categoryName: string;
+  averageAmount: number;
+  occurrences: number;
+  cadence: SubscriptionCandidateCadence;
+  firstDate: string;
+  lastDate: string;
+  nextEstimatedDate: string;
+  monthlyCost: number;
+}
+
 export type NotificationType =
   (typeof NotificationType)[keyof typeof NotificationType];
 
@@ -932,6 +1009,23 @@ export type GetTransactionsExport401 = {
   details?: unknown | null;
 };
 
+export type GetTransactionsSubscriptions200 = {
+  data: SubscriptionCandidate[];
+  message?: string;
+};
+
+export type GetTransactionsSubscriptions400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSubscriptions401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
 export type PostCategoriesCreateBody = {
   /** @minLength 1 */
   name: string;
@@ -1372,6 +1466,31 @@ export type GetOverviewForecast400 = {
 };
 
 export type GetOverviewForecast401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewInsightsComparisonParams = {
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  periodsBack?: number;
+};
+
+export type GetOverviewInsightsComparison200 = {
+  data: ComparativeInsights;
+  message?: string;
+};
+
+export type GetOverviewInsightsComparison400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewInsightsComparison401 = {
   success: boolean;
   error: string;
   details?: unknown | null;

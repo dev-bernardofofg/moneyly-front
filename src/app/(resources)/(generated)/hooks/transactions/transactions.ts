@@ -33,6 +33,9 @@ import type {
   GetTransactionsExport401,
   GetTransactionsExportParams,
   GetTransactionsParams,
+  GetTransactionsSubscriptions200,
+  GetTransactionsSubscriptions400,
+  GetTransactionsSubscriptions401,
   GetTransactionsSummary200,
   GetTransactionsSummary400,
   GetTransactionsSummary401,
@@ -1108,6 +1111,159 @@ export function useGetTransactionsExport<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsExportQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Detectar assinaturas (heurística)
+ */
+export const getTransactionsSubscriptions = (signal?: AbortSignal) => {
+  return customInstance<GetTransactionsSubscriptions200>({
+    url: `/transactions/subscriptions`,
+    method: "GET",
+    signal,
+  });
+};
+
+export const getGetTransactionsSubscriptionsQueryKey = () => {
+  return [`/transactions/subscriptions`] as const;
+};
+
+export const getGetTransactionsSubscriptionsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+  TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTransactionsSubscriptionsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTransactionsSubscriptions>>
+  > = ({ signal }) => getTransactionsSubscriptions(signal);
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTransactionsSubscriptionsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTransactionsSubscriptions>>
+>;
+export type GetTransactionsSubscriptionsQueryError =
+  | GetTransactionsSubscriptions400
+  | GetTransactionsSubscriptions401;
+
+export function useGetTransactionsSubscriptions<
+  TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+  TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+          TError,
+          Awaited<ReturnType<typeof getTransactionsSubscriptions>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTransactionsSubscriptions<
+  TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+  TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+          TError,
+          Awaited<ReturnType<typeof getTransactionsSubscriptions>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTransactionsSubscriptions<
+  TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+  TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Detectar assinaturas (heurística)
+ */
+
+export function useGetTransactionsSubscriptions<
+  TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+  TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTransactionsSubscriptionsQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
