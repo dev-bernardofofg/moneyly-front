@@ -12,7 +12,7 @@
 - **Geração de contrato:** Kubb 4.33 (tipos TS + Zod) + Orval 8.5 (hooks React Query) — `pnpm generate-hooks`
 - **Gráficos:** recharts · **Datas:** date-fns + date-fns-tz · **URL state:** nuqs
 - **Auth Google:** `@react-oauth/google` · **Toaster:** sonner
-- **Package manager:** pnpm · **Dev:** `pnpm dev` porta **5173**
+- **Package manager:** pnpm · **Dev:** `pnpm dev` porta default Next **3000**
 
 ## App Router — route groups
 
