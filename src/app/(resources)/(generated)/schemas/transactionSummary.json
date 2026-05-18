@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "totalIncome": { "type": "number" },
+    "totalExpenses": { "type": "number" },
+    "monthlyIncome": { "type": "number" },
+    "balance": { "type": "number" },
+    "percentUsed": { "type": "number", "nullable": true },
+    "byCategory": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "alert": { "type": "string", "nullable": true }
+  },
+  "required": [
+    "totalIncome",
+    "totalExpenses",
+    "monthlyIncome",
+    "balance",
+    "percentUsed",
+    "byCategory",
+    "alert"
+  ],
+  "x-readme-ref-name": "TransactionSummary"
+}

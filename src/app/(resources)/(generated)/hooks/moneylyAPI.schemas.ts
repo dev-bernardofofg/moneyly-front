@@ -317,8 +317,8 @@ export type FinancialInsightsCurrentPeriod = {
 };
 
 export type FinancialInsightsTrend = {
-  previousMonth: MonthlySummaryItem & (unknown | null);
-  currentMonth: MonthlySummaryItem & (unknown | null);
+  previousMonth: MonthlySummaryItem | null;
+  currentMonth: MonthlySummaryItem | null;
   /** @nullable */
   expenseChange: number | null;
   /** @nullable */
@@ -328,8 +328,8 @@ export type FinancialInsightsTrend = {
 export type FinancialInsightsAllTime = {
   averageMonthlyExpense: number;
   averageMonthlyIncome: number;
-  bestMonth: MonthlySummaryItem & (unknown | null);
-  worstMonth: MonthlySummaryItem & (unknown | null);
+  bestMonth: MonthlySummaryItem | null;
+  worstMonth: MonthlySummaryItem | null;
   totalMonths: number;
   totalTransactions: number;
 };
@@ -506,6 +506,42 @@ export interface Notification {
   dedupeKey: string;
   isRead: boolean;
   createdAt: string;
+}
+
+export type TransactionSummaryByCategory = { [key: string]: number };
+
+export interface TransactionSummary {
+  totalIncome: number;
+  totalExpenses: number;
+  monthlyIncome: number;
+  balance: number;
+  /** @nullable */
+  percentUsed: number | null;
+  byCategory: TransactionSummaryByCategory;
+  /** @nullable */
+  alert: string | null;
+}
+
+export type CurrentPeriodSummaryCurrentPeriod = {
+  startDate: string;
+  endDate: string;
+  description: string;
+};
+
+export type CurrentPeriodSummaryByCategory = { [key: string]: number };
+
+export interface CurrentPeriodSummary {
+  currentPeriod: CurrentPeriodSummaryCurrentPeriod;
+  totalIncome: number;
+  totalExpenses: number;
+  monthlyIncome: number;
+  balance: number;
+  /** @nullable */
+  percentUsed: number | null;
+  byCategory: CurrentPeriodSummaryByCategory;
+  /** @nullable */
+  alert: string | null;
+  transactionsCount: number;
 }
 
 export type ForecastResponsePeriod = {
@@ -973,7 +1009,7 @@ export type DeleteTransactionsId404 = {
 };
 
 export type GetTransactionsSummary200 = {
-  data?: unknown | null;
+  data: TransactionSummary;
   message?: string;
 };
 
@@ -1007,7 +1043,7 @@ export type GetTransactionsSummaryByMonth401 = {
 };
 
 export type GetTransactionsSummaryCurrentPeriod200 = {
-  data?: unknown | null;
+  data: CurrentPeriodSummary;
   message?: string;
 };
 

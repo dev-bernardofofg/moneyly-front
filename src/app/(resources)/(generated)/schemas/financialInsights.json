@@ -36,9 +36,9 @@
               },
               "required": ["month", "label", "income", "expense", "balance"],
               "x-readme-ref-name": "MonthlySummaryItem"
-            },
-            { "nullable": true }
-          ]
+            }
+          ],
+          "nullable": true
         },
         "currentMonth": {
           "allOf": [
@@ -53,9 +53,9 @@
               },
               "required": ["month", "label", "income", "expense", "balance"],
               "x-readme-ref-name": "MonthlySummaryItem"
-            },
-            { "nullable": true }
-          ]
+            }
+          ],
+          "nullable": true
         },
         "expenseChange": { "type": "number", "nullable": true },
         "incomeChange": { "type": "number", "nullable": true }
@@ -85,9 +85,9 @@
               },
               "required": ["month", "label", "income", "expense", "balance"],
               "x-readme-ref-name": "MonthlySummaryItem"
-            },
-            { "nullable": true }
-          ]
+            }
+          ],
+          "nullable": true
         },
         "worstMonth": {
           "allOf": [
@@ -102,9 +102,9 @@
               },
               "required": ["month", "label", "income", "expense", "balance"],
               "x-readme-ref-name": "MonthlySummaryItem"
-            },
-            { "nullable": true }
-          ]
+            }
+          ],
+          "nullable": true
         },
         "totalMonths": { "type": "integer" },
         "totalTransactions": { "type": "integer" }

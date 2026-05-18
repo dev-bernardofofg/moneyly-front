@@ -3,11 +3,16 @@
  * Do not edit manually.
  */
 
+import type { CurrentPeriodSummary } from "./CurrentPeriodSummary.ts";
+
 /**
  * @description Sucesso
  */
 export type GetTransactionsSummaryCurrentPeriod200 = {
-  data?: any | null;
+  /**
+   * @type object
+   */
+  data: CurrentPeriodSummary;
   /**
    * @type string | undefined
    */

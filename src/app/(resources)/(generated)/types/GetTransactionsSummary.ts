@@ -3,11 +3,16 @@
  * Do not edit manually.
  */
 
+import type { TransactionSummary } from "./TransactionSummary.ts";
+
 /**
  * @description Sucesso
  */
 export type GetTransactionsSummary200 = {
-  data?: any | null;
+  /**
+   * @type object
+   */
+  data: TransactionSummary;
   /**
    * @type string | undefined
    */

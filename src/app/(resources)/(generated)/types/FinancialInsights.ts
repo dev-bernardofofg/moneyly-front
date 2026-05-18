@@ -39,8 +39,8 @@ export type FinancialInsights = {
    * @type object
    */
   trend: {
-    previousMonth: MonthlySummaryItem & any;
-    currentMonth: MonthlySummaryItem & any;
+    previousMonth: MonthlySummaryItem | null;
+    currentMonth: MonthlySummaryItem | null;
     /**
      * @type number
      */
@@ -62,8 +62,8 @@ export type FinancialInsights = {
      * @type number
      */
     averageMonthlyIncome: number;
-    bestMonth: MonthlySummaryItem & any;
-    worstMonth: MonthlySummaryItem & any;
+    bestMonth: MonthlySummaryItem | null;
+    worstMonth: MonthlySummaryItem | null;
     /**
      * @type integer
      */

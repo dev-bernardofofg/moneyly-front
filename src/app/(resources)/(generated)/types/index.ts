@@ -8,6 +8,7 @@ export type {
   ComparativeInsights,
   TotalsSignalEnumKey,
 } from "./ComparativeInsights.ts";
+export type { CurrentPeriodSummary } from "./CurrentPeriodSummary.ts";
 export type {
   ComparisonSignalEnumKey,
   DashboardOverview,
@@ -587,6 +588,7 @@ export type {
 export type { Transaction, TransactionTypeEnumKey } from "./Transaction.ts";
 export type { TransactionCategory } from "./TransactionCategory.ts";
 export type { TransactionListSummary } from "./TransactionListSummary.ts";
+export type { TransactionSummary } from "./TransactionSummary.ts";
 export type { User } from "./User.ts";
 export { byCategorySignalEnum } from "./ComparativeInsights.ts";
 export { totalsSignalEnum } from "./ComparativeInsights.ts";
