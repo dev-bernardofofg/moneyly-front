@@ -1,6 +1,6 @@
 # F5 (Front↔Back) — Prévias no Dashboard
 
-**Status:** parcial (F1 feito no front; F3/F4 aguardam back). **Tipo:** UX/perf.
+**Status:** Done. **Tipo:** UX/perf.
 
 ## Contexto
 
@@ -26,12 +26,12 @@ data.previews?: {
 }
 ```
 
-- Aditivo, opcional → não quebra contrato atual do dashboard (R1).
-- Back reusa heurísticas de F3/F4 mas resume (sem listas completas) e pode cachear por período/usuário.
-- Front então renderiza 2 mini-cards no dashboard ligando para `/insights` (detalhe completo lá).
-
-Registrar em `moneyly-back/.specs/features/` quando o back priorizar. Até lá: dashboard mostra só F1 + sininho (F2).
+**✅ Back entregou:** `data.previews{subscriptions{count,topMonthlyCost,topTitle},comparison{signal,deltaPct,topHighlight}}` em `GET /overview/dashboard` (aditivo, 1 só `findAllByUserId`, F3/F4 resumido). `DashboardOverview` openapi estendido.
 
 ## Front (feito)
 
-- `src/app/(routes)/(private)/dashboard/page.tsx`: card "Saldo projetado" (`useGetOverviewForecast`, `periodId` do `PeriodProvider`), clicável → `/insights`.
+- `src/app/(routes)/(private)/dashboard/page.tsx`:
+  - Card "Saldo projetado" (`useGetOverviewForecast`, `periodId` do `PeriodProvider`).
+  - Card "Possíveis assinaturas" (`previews.subscriptions.count` + `topTitle`).
+  - Card "Despesa vs média" (`previews.comparison.deltaPct` + cor por `signal`, `topHighlight`).
+  - Todos clicáveis → `/insights` (detalhe completo). F3/F4 via `previews` = **zero call extra** (mesmo `useGetOverviewDashboard`). F2 = sininho global.

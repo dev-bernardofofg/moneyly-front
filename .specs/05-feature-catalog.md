@@ -58,5 +58,7 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 - **F3 Assinaturas**: `insights/subscriptions-section.tsx` (`useGetTransactionsSubscriptions`) + CTA recorrente. Detalhe: `.specs/features/03-subscription-detector.md`.
 - **F4 Comparativo**: `insights/comparison-section.tsx` (`useGetOverviewInsightsComparison`), cor por signal. Detalhe: `.specs/features/04-comparative-insights.md`.
 
+- **F5 Prévias dashboard**: `dashboard/page.tsx` 3 mini-cards (F1 forecast + `previews.subscriptions`/`comparison` do `useGetOverviewDashboard`), clicáveis → `/insights`. Detalhe: `.specs/features/05-dashboard-previews.md`.
+
 ## Não implementado / parcial
-- Roadmap R/F atual (R1–R5, F1–F4) todo Done no front. Próximos: aguardar novas features no contrato back.
+- Roadmap R/F atual (R1–R5, F1–F5) todo Done no front. Próximos: aguardar novas features no contrato back.
