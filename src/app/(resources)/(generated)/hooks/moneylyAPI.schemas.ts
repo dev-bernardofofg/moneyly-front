@@ -266,6 +266,36 @@ export type DashboardOverviewChart = {
   categories: DashboardOverviewChartCategoriesItem[];
 };
 
+export type DashboardOverviewPreviewsSubscriptions = {
+  count: number;
+  /** @nullable */
+  topMonthlyCost: number | null;
+  /** @nullable */
+  topTitle: string | null;
+};
+
+export type DashboardOverviewPreviewsComparisonSignal =
+  (typeof DashboardOverviewPreviewsComparisonSignal)[keyof typeof DashboardOverviewPreviewsComparisonSignal];
+
+export const DashboardOverviewPreviewsComparisonSignal = {
+  up: "up",
+  down: "down",
+  stable: "stable",
+} as const;
+
+export type DashboardOverviewPreviewsComparison = {
+  signal: DashboardOverviewPreviewsComparisonSignal;
+  /** @nullable */
+  deltaPct: number | null;
+  /** @nullable */
+  topHighlight: string | null;
+};
+
+export type DashboardOverviewPreviews = {
+  subscriptions: DashboardOverviewPreviewsSubscriptions;
+  comparison: DashboardOverviewPreviewsComparison;
+};
+
 export interface DashboardOverview {
   stats: DashboardStats;
   /** @nullable */
@@ -274,6 +304,7 @@ export interface DashboardOverview {
   chart: DashboardOverviewChart;
   recentTransactions: RecentTransactionItem[];
   transactionsCount: number;
+  previews: DashboardOverviewPreviews;
 }
 
 export type FinancialInsightsCurrentPeriod = {

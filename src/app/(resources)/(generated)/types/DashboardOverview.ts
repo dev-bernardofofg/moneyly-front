@@ -7,6 +7,15 @@ import type { DashboardStats } from "./DashboardStats.ts";
 import type { FinancialPeriodSummary } from "./FinancialPeriodSummary.ts";
 import type { RecentTransactionItem } from "./RecentTransactionItem.ts";
 
+export const comparisonSignalEnum = {
+  up: "up",
+  down: "down",
+  stable: "stable",
+} as const;
+
+export type ComparisonSignalEnumKey =
+  (typeof comparisonSignalEnum)[keyof typeof comparisonSignalEnum];
+
 export type DashboardOverview = {
   /**
    * @type object
@@ -88,4 +97,43 @@ export type DashboardOverview = {
    * @type integer
    */
   transactionsCount: number;
+  /**
+   * @type object
+   */
+  previews: {
+    /**
+     * @type object
+     */
+    subscriptions: {
+      /**
+       * @type integer
+       */
+      count: number;
+      /**
+       * @type number
+       */
+      topMonthlyCost: number | null;
+      /**
+       * @type string
+       */
+      topTitle: string | null;
+    };
+    /**
+     * @type object
+     */
+    comparison: {
+      /**
+       * @type string
+       */
+      signal: ComparisonSignalEnumKey;
+      /**
+       * @type number
+       */
+      deltaPct: number | null;
+      /**
+       * @type string
+       */
+      topHighlight: string | null;
+    };
+  };
 };

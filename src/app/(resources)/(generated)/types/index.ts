@@ -8,7 +8,10 @@ export type {
   ComparativeInsights,
   TotalsSignalEnumKey,
 } from "./ComparativeInsights.ts";
-export type { DashboardOverview } from "./DashboardOverview.ts";
+export type {
+  ComparisonSignalEnumKey,
+  DashboardOverview,
+} from "./DashboardOverview.ts";
 export type { DashboardStats } from "./DashboardStats.ts";
 export type {
   DeleteBudgetsId200,
@@ -587,6 +590,7 @@ export type { TransactionListSummary } from "./TransactionListSummary.ts";
 export type { User } from "./User.ts";
 export { byCategorySignalEnum } from "./ComparativeInsights.ts";
 export { totalsSignalEnum } from "./ComparativeInsights.ts";
+export { comparisonSignalEnum } from "./DashboardOverview.ts";
 export { deleteBudgetsId400SuccessEnum } from "./DeleteBudgetsId.ts";
 export { deleteBudgetsId401SuccessEnum } from "./DeleteBudgetsId.ts";
 export { deleteBudgetsId404SuccessEnum } from "./DeleteBudgetsId.ts";
