@@ -13,7 +13,7 @@ import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { getGetGoalsQueryKey, usePostGoalsIdAddAmount } from "../../../(resources)/(generated)/hooks/goals/goals"
-import { AddValueToGoalFormValues, AddValueToGoalSchema } from "../../../(resources)/(schemas)/goal.schema"
+import { AddValueToGoalDefaultValues, AddValueToGoalFormValues, AddValueToGoalSchema } from "../../../(resources)/(schemas)/goal.schema"
 import { CustomAxiosError } from "../../../(types)/error.type"
 import { getGetOverviewPlannerQueryKey } from "@/app/(resources)/(generated)/hooks/overview/overview"
 interface AddValueToGoalFormProps {
@@ -25,6 +25,7 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
 
   const form = useForm<AddValueToGoalFormValues>({
     resolver: zodResolver(AddValueToGoalSchema),
+    defaultValues: AddValueToGoalDefaultValues,
   })
 
   const { mutate: addValueToGoal, isPending } = usePostGoalsIdAddAmount({

@@ -30,7 +30,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     resolver: zodResolver(UpsertTransactionSchema),
     defaultValues: transaction ? {
       ...transaction,
-      amount: FN_UTILS_STRING.formatDotToComma(transaction.amount as string),
+      amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount as string),
       date: transaction.date as string,
       category: transaction.category?.id,
       description: transaction.description as string,
@@ -101,7 +101,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       <DialogClose ref={closeRef} className="hidden" />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleUpsertTransaction)}>
-          <BaseInput control={form.control} name="title" label="Título" autoFocus />
+          <BaseInput control={form.control} name="title" label="Título" placeholder="Ex: Mercado" autoFocus />
           <div className="grid grid-cols-2 gap-2">
             <Controller
               control={form.control}
@@ -154,7 +154,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
           <BaseDatePicker control={form.control} name="date" label="Data" />
 
           <div className="flex items-center justify-between gap-3">
-            <BaseButton type="button" className="w-fit" variant="destructive" onClick={() => form.reset()}>
+            <BaseButton type="button" className="w-fit" variant="outline" aria-label="Limpar formulário" title="Limpar formulário" onClick={() => form.reset()}>
               <BrushCleaning />
             </BaseButton>
             <BaseButton type="submit" className="w-full" isLoading={isPending || isUpdating}>{transaction ? "Atualizar" : "Criar"}</BaseButton>

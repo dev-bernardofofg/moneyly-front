@@ -5,7 +5,7 @@ import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-pic
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
-import { getErrorMessage } from "@/app/(helpers)/errors"
+import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { CustomAxiosError } from "@/app/(types)/error.type"
 import { DialogClose } from "@/components/ui/dialog"
@@ -46,6 +46,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['title', 'description', 'targetAmount', 'targetDate']);
       },
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
@@ -62,6 +63,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['title', 'description', 'targetAmount', 'targetDate']);
       },
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
@@ -82,11 +84,11 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
       <DialogClose ref={closeRef} className="hidden" />
       <Form  {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
-          <BaseInput name="title" label="Título" control={form.control} />
+          <BaseInput name="title" label="Título" control={form.control} placeholder="Ex: Reserva de emergência" autoFocus />
           <BaseTextarea name="description" label="Descrição" control={form.control} />
           <BaseInput name="targetAmount" label="Valor alvo" control={form.control} type="money" placeholder="0,00" />
           <BaseDatePicker name="targetDate" label="Data de término" control={form.control} />
-          <BaseButton type="submit" className="w-full" isLoading={createMutation.isPending}>
+          <BaseButton type="submit" className="w-full" isLoading={goal ? updateMutation.isPending : createMutation.isPending}>
             {goal ? "Atualizar" : "Criar"}
           </BaseButton>
         </BaseForm>

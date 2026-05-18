@@ -88,10 +88,15 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
             >
               <FormItem>
                 {label && (
-                  <div className="flex justify-between">
-                    {fieldState.error && showError ? (
-                      <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
-                    ) : <FormLabel>{label}</FormLabel>}
+                  <div className="flex justify-between gap-2">
+                    <FormLabel className={cn(fieldState.error && showError && "text-destructive")}>
+                      {label}
+                    </FormLabel>
+                    {fieldState.error && showError && (
+                      <span className="text-xs font-medium text-destructive">
+                        {fieldState.error.message}
+                      </span>
+                    )}
                   </div>
                 )}
                 <FormControl>

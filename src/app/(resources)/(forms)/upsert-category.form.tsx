@@ -73,7 +73,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
       <DialogClose ref={closeRef} className="hidden" />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
-          <BaseInput name="name" label="Nome" control={form.control} />
+          <BaseInput name="name" label="Nome" control={form.control} placeholder="Ex: Alimentação" autoFocus />
           <BaseButton
             type="submit"
             className="w-full"

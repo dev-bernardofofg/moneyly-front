@@ -7,6 +7,7 @@ import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
 import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
+import { FN_UTILS_DATE } from "@/app/(helpers)/date";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { CustomAxiosError } from "@/app/(types)/error.type";
 import { DialogClose } from "@/components/ui/dialog";
@@ -132,8 +133,7 @@ export const UpsertTransactionRecurringForm = ({
           type: data.type,
           startDate: (() => {
             if (!data.startDate) return undefined;
-            const today = new Date().toISOString().split("T")[0];
-            if (data.startDate <= today) return undefined;
+            if (data.startDate <= FN_UTILS_DATE.today()) return undefined;
             return `${data.startDate}T12:00:00.000Z`;
           })(),
         },
@@ -253,7 +253,7 @@ export const UpsertTransactionRecurringForm = ({
           </div>
 
           <div className="flex items-center justify-between gap-3">
-            <BaseButton type="button" className="w-fit" variant="destructive" onClick={() => form.reset()}>
+            <BaseButton type="button" className="w-fit" variant="outline" aria-label="Limpar formulário" title="Limpar formulário" onClick={() => form.reset()}>
               <BrushCleaning />
             </BaseButton>
             <BaseButton type="submit" className="w-full" isLoading={isCreating || isUpdating}>

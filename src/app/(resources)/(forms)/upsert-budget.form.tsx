@@ -4,7 +4,7 @@ import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
-import { getErrorMessage } from "@/app/(helpers)/errors"
+import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { CustomAxiosError } from "@/app/(types)/error.type"
 import { DialogClose } from "@/components/ui/dialog"
@@ -17,6 +17,7 @@ import { toast } from "sonner"
 import { BudgetProgress } from "../(generated)"
 import { getGetBudgetsQueryKey, usePostBudgets, usePutBudgetsId } from "../(generated)/hooks/budgets/budgets"
 import { useGetCategories } from "../(generated)/hooks/categories/categories"
+import { getGetOverviewDashboardQueryKey, getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview"
 import { CreateBudgetDefaultValues, CreateBudgetFormValues, CreateBudgetSchema } from "../(schemas)/budget.schema"
 import { TransactionCategory } from "../(generated)/hooks/moneylyAPI.schemas"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -43,9 +44,12 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
         toast.success("Orçamento criado com sucesso");
         closeRef.current?.click();
         queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['categoryId', 'monthlyLimit']);
       },
     },
   });
@@ -56,9 +60,12 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
         toast.success("Orçamento atualizado com sucesso");
         closeRef.current?.click();
         queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
       },
       onError: (error: CustomAxiosError) => {
         toast.error(getErrorMessage(error));
+        setFormFieldErrors(error, form.setError, ['categoryId', 'monthlyLimit']);
       },
     },
   });
