@@ -179,6 +179,7 @@ export const UpsertTransactionRecurringForm = ({
               name="categoryId"
               label="Categoria"
               isLoading={isLoadingCategories}
+              emptyMessage="Nenhuma categoria. Crie em Categorias."
               options={
                 categories?.data?.map((category: Category) => ({
                   label: category.name || "",

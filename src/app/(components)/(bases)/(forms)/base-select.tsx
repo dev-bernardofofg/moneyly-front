@@ -36,6 +36,7 @@ export interface IBaseSelect<T extends FieldValues> {
   selectDate?: string | boolean;
   type?: "default" | "full-date"
   className?: string;
+  emptyMessage?: string;
 }
 
 export const BaseSelect = <T extends FieldValues>({
@@ -51,6 +52,7 @@ export const BaseSelect = <T extends FieldValues>({
   selectDate = false,
   className,
   type = "default",
+  emptyMessage = "Nenhuma opção disponível",
 }: IBaseSelect<T>) => {
   const isFullDate = type === "full-date"
 
@@ -69,9 +71,14 @@ export const BaseSelect = <T extends FieldValues>({
               transition={{ duration: 0.2 }}
               className="flex items-center justify-between"
             >
-              {fieldState.error ? (
-                <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
-              ) : <FormLabel>{label}</FormLabel>}
+              <FormLabel className={cn(fieldState.error && "text-destructive")}>
+                {label}
+              </FormLabel>
+              {fieldState.error && (
+                <span className="text-xs font-medium text-destructive">
+                  {fieldState.error.message}
+                </span>
+              )}
             </motion.div>
           )}
 
@@ -125,7 +132,11 @@ export const BaseSelect = <T extends FieldValues>({
                     >
                       {day.toString()}
                     </SelectItem>
-                  )) : options.map((option) => (
+                  )) : options.length === 0 ? (
+                    <div className="px-2 py-4 text-center text-sm text-muted-foreground">
+                      {emptyMessage}
+                    </div>
+                  ) : options.map((option) => (
                     <SelectItem
                       key={option.value}
                       value={String(option.value)}

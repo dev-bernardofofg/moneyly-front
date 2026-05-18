@@ -71,6 +71,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
               value: category.id || "ID da categoria",
             }))}
             placeholder={budget ? undefined : "Selecione uma categoria disponível"}
+            emptyMessage="Nenhuma categoria. Crie em Categorias."
             disabled={!!budget}
           />
           <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} type="money" placeholder="0,00" />

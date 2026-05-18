@@ -123,7 +123,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                 </div>
               )}
             />
-            <BaseSelect control={form.control} name="category" label="Categoria" isLoading={isLoadingCategories} options={categories?.data?.map((category: Category) => ({ label: category.name || '', value: category.id || '' })) || []} />
+            <BaseSelect control={form.control} name="category" label="Categoria" isLoading={isLoadingCategories} emptyMessage="Nenhuma categoria. Crie em Categorias." options={categories?.data?.map((category: Category) => ({ label: category.name || '', value: category.id || '' })) || []} />
           </div>
           <BaseInput control={form.control} name="amount" label="Valor" type="money" placeholder="0,00" />
           <BaseTextarea control={form.control} name="description" label="Descrição" />
