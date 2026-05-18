@@ -1,11 +1,12 @@
 "use client";
 
+import { useDialogCloseGuard } from "@/app/(components)/(bases)/(portals)/base-dialog";
 import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
 import { CustomAxiosError } from "@/app/(types)/error.type";
 import { DialogClose } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   DefaultValues,
   FieldValues,
@@ -45,6 +46,13 @@ export const useUpsertDialog = <TForm extends FieldValues>({
     defaultValues,
   });
 
+  // Bloqueia fechar o dialog (X/Esc/fora) com alterações não salvas.
+  const guard = useDialogCloseGuard();
+  useEffect(() => {
+    guard?.setGuard(() => !form.formState.isDirty);
+    return () => guard?.setGuard(null);
+  }, [guard, form]);
+
   const invalidate = () =>
     invalidateKeys.forEach((queryKey) =>
       queryClient.invalidateQueries({ queryKey })
@@ -62,6 +70,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
   const onUpdated = () => {
     toast.success(successMessage.update);
     invalidate();
+    form.reset(); // limpa isDirty p/ não disparar o guard ao fechar
     close();
   };
 
