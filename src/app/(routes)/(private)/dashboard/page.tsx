@@ -19,7 +19,7 @@ import { DashboardStats } from "@/app/(resources)/(generated)/types/DashboardSta
 import { MonthlyHistoryChart } from "@/app/(components)/(bases)/(charts)/monthly-history-chart";
 import { ROUTES } from "@/app/(utils)/routes";
 import { useRouter } from "next/navigation";
-import { Loader2, PiggyBank, Receipt } from "lucide-react";
+import { Loader2, PiggyBank, Receipt, RefreshCcw, Scale } from "lucide-react";
 import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
 import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 import { TransactionTabs } from "@/app/(resources)/(forms)/transaction.tabs";
@@ -42,6 +42,11 @@ const DashboardPage = () => {
       }
     );
   const forecast = forecastData?.data;
+
+  // F3/F4 prévias: vêm do mesmo /overview/dashboard (resumido no back), zero call extra.
+  const previews = overviewData?.data?.previews;
+  const subs = previews?.subscriptions;
+  const cmp = previews?.comparison;
 
   const { push } = useRouter();
 
@@ -95,6 +100,42 @@ const DashboardPage = () => {
                 : "destructive"
             }
             loading={forecastLoading}
+            clickable
+            onClick={() => push(ROUTES.INSIGHTS)}
+          />
+
+          <BaseStats
+            name="Possíveis assinaturas"
+            value={subs?.count ?? 0}
+            Icon={RefreshCcw}
+            description={
+              subs?.topTitle
+                ? `Maior: ${subs.topTitle}`
+                : "Prévia · ver em Insights"
+            }
+            variant="secondary"
+            loading={isPostingOverview}
+            clickable
+            onClick={() => push(ROUTES.INSIGHTS)}
+          />
+
+          <BaseStats
+            name="Despesa vs média"
+            value={
+              cmp?.deltaPct == null
+                ? "—"
+                : `${cmp.deltaPct > 0 ? "+" : ""}${cmp.deltaPct.toFixed(1)}%`
+            }
+            Icon={Scale}
+            description={cmp?.topHighlight ?? "Prévia · ver em Insights"}
+            variant={
+              cmp?.signal === "up"
+                ? "destructive"
+                : cmp?.signal === "down"
+                  ? "default"
+                  : "secondary"
+            }
+            loading={isPostingOverview}
             clickable
             onClick={() => push(ROUTES.INSIGHTS)}
           />
