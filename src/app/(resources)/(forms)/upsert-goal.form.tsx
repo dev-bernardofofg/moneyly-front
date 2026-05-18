@@ -5,16 +5,9 @@ import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-pic
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
-import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors"
+import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
-import { CustomAxiosError } from "@/app/(types)/error.type"
-import { DialogClose } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useQueryClient } from "@tanstack/react-query"
-import { useRef } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import { Goal } from "../(generated)"
 import { getGetGoalsQueryKey, usePostGoals, usePutGoalsId } from "../(generated)/hooks/goals/goals"
 import { getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview"
@@ -25,63 +18,48 @@ interface UpsertGoalFormProps {
 }
 
 export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const queryClient = useQueryClient();
-  const form = useForm<GoalFormValues>({
-    resolver: zodResolver(GoalSchema),
-    defaultValues: goal ? {
-      title: goal.title || "",
-      description: goal.description || "",
-      targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
-      targetDate: goal.targetDate,
-    } : GoalDefaultValues,
-  })
+  const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
+    useUpsertDialog<GoalFormValues>({
+      schema: GoalSchema,
+      defaultValues: goal ? {
+        title: goal.title || "",
+        description: goal.description || "",
+        targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
+        targetDate: goal.targetDate,
+      } : GoalDefaultValues,
+      invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
+      errorFields: ['title', 'description', 'targetAmount', 'targetDate'],
+      successMessage: {
+        create: "Meta criada com sucesso",
+        update: "Meta atualizada com sucesso",
+      },
+    })
 
   const createMutation = usePostGoals({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Meta criada com sucesso");
-        closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['title', 'description', 'targetAmount', 'targetDate']);
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
-      },
-    }
+    mutation: { onSuccess: onCreated, onError },
   });
 
   const updateMutation = usePutGoalsId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Meta atualizada com sucesso");
-        closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['title', 'description', 'targetAmount', 'targetDate']);
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
-      },
-    }
+    mutation: { onSuccess: onUpdated, onError },
   });
 
   const handleForm = (data: GoalFormValues) => {
+    const payload = {
+      title: data.title,
+      description: data.description,
+      targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount),
+      targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate),
+    };
     if (goal) {
-      updateMutation.mutate({ id: goal.id || "", data: { title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) } });
+      updateMutation.mutate({ id: goal.id || "", data: payload });
     } else {
-      createMutation.mutate({ data: { title: data.title, description: data.description, targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount), targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate) } });
+      createMutation.mutate({ data: payload });
     }
   }
 
   return (
     <>
-      <DialogClose ref={closeRef} className="hidden" />
+      <DialogCloseHidden />
       <Form  {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
           <BaseInput name="title" label="Título" control={form.control} placeholder="Ex: Reserva de emergência" autoFocus />
@@ -95,4 +73,4 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
       </Form>
     </>
   )
-} 
+}

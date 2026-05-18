@@ -5,20 +5,13 @@ import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-pic
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
-import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
-import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
+import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog";
 import { FN_UTILS_DATE } from "@/app/(helpers)/date";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
-import { CustomAxiosError } from "@/app/(types)/error.type";
-import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { BrushCleaning, TrendingDown, TrendingUp } from "lucide-react";
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 import { Category, RecurringTransaction } from "../(generated)";
 import { useGetCategories } from "../(generated)/hooks/categories/categories";
 import {
@@ -56,59 +49,45 @@ export const UpsertTransactionRecurringForm = ({
 }: {
   recurringTransaction?: RecurringTransaction;
 }) => {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const queryClient = useQueryClient();
-
-  const form = useForm<UpsertTransactionRecurringFormValues>({
-    resolver: zodResolver(UpsertTransactionRecurringSchema),
-    defaultValues: recurringTransaction
-      ? {
-          type: recurringTransaction.type as "income" | "expense",
-          title: recurringTransaction.title,
-          amount: FN_UTILS_STRING.formatDotToComma(recurringTransaction.amount),
-          categoryId: recurringTransaction.categoryId,
-          frequency: recurringTransaction.frequency as "daily" | "weekly" | "monthly" | "yearly",
-          dayOfWeek: recurringTransaction.dayOfWeek != null ? String(recurringTransaction.dayOfWeek) : "",
-          dayOfMonth: recurringTransaction.dayOfMonth != null ? String(recurringTransaction.dayOfMonth) : "",
-          description: recurringTransaction.description ?? "",
-          totalInstallments: recurringTransaction.totalInstallments != null ? String(recurringTransaction.totalInstallments) : "",
-        }
-      : UpsertTransactionRecurringDefaultValues,
-  });
+  const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
+    useUpsertDialog<UpsertTransactionRecurringFormValues>({
+      schema: UpsertTransactionRecurringSchema,
+      defaultValues: recurringTransaction
+        ? {
+            type: recurringTransaction.type as "income" | "expense",
+            title: recurringTransaction.title,
+            amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(recurringTransaction.amount),
+            categoryId: recurringTransaction.categoryId,
+            frequency: recurringTransaction.frequency as "daily" | "weekly" | "monthly" | "yearly",
+            dayOfWeek: recurringTransaction.dayOfWeek != null ? String(recurringTransaction.dayOfWeek) : "",
+            dayOfMonth: recurringTransaction.dayOfMonth != null ? String(recurringTransaction.dayOfMonth) : "",
+            description: recurringTransaction.description ?? "",
+            totalInstallments: recurringTransaction.totalInstallments != null ? String(recurringTransaction.totalInstallments) : "",
+          }
+        : UpsertTransactionRecurringDefaultValues,
+      invalidateKeys: [getGetRecurringTransactionsQueryKey()],
+      errorFields: [...FIELDS],
+      successMessage: {
+        create: "Transação recorrente criada com sucesso",
+        update: "Transação recorrente atualizada com sucesso",
+      },
+    });
 
   const frequency = form.watch("frequency");
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: getGetRecurringTransactionsQueryKey() });
-
   const { mutate: createRecurring, isPending: isCreating } = usePostRecurringTransactions({
     mutation: {
-      onSuccess: () => {
-        toast.success("Transação recorrente criada com sucesso");
-        invalidate();
-        form.reset();
-        closeRef.current?.click();
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, [...FIELDS]);
-      },
+      onSuccess: onCreated,
+      onError,
     },
   });
 
   const { mutate: updateRecurring, isPending: isUpdating } = usePutRecurringTransactionsId({
     mutation: {
-      onSuccess: () => {
-        toast.success("Transação recorrente atualizada com sucesso");
-        invalidate();
-        closeRef.current?.click();
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, [...FIELDS]);
-      },
+      onSuccess: onUpdated,
+      onError,
     },
   });
 
@@ -145,7 +124,7 @@ export const UpsertTransactionRecurringForm = ({
 
   return (
     <>
-      <DialogClose ref={closeRef} className="hidden" />
+      <DialogCloseHidden />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleSubmit)}>
           <BaseInput control={form.control} name="title" label="Título" placeholder="Ex: Pagamento de aluguel" autoFocus />

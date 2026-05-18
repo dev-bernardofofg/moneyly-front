@@ -3,15 +3,8 @@
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button'
 import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form'
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input'
-import { queryClient } from '@/app/(contexts)'
-import { getErrorMessage, setFormFieldErrors } from '@/app/(helpers)/errors'
-import { CustomAxiosError } from '@/app/(types)/error.type'
-import { DialogClose } from '@/components/ui/dialog'
+import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog'
 import { Form } from '@/components/ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useRef } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import { getGetCategoriesQueryKey, usePostCategoriesCreate, usePutCategoriesUpdateId } from '../(generated)/hooks/categories/categories'
 import { TransactionCategory } from '../(generated)/hooks/moneylyAPI.schemas'
 import { CreateCategoryDefaultValues, CreateCategoryFormValues, CreateCategorySchema } from '../(schemas)/category.schema'
@@ -23,41 +16,26 @@ interface UpsertCategoryFormProps {
 export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
   const isUpdate = !!category;
 
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  const form = useForm<CreateCategoryFormValues>({
-    resolver: zodResolver(CreateCategorySchema),
-    defaultValues: isUpdate ? category : CreateCategoryDefaultValues,
-  })
+  const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
+    useUpsertDialog<CreateCategoryFormValues>({
+      schema: CreateCategorySchema,
+      defaultValues: isUpdate
+        ? (category as CreateCategoryFormValues)
+        : CreateCategoryDefaultValues,
+      invalidateKeys: [getGetCategoriesQueryKey()],
+      errorFields: ['name'],
+      successMessage: {
+        create: "Categoria criada com sucesso",
+        update: "Categoria atualizada com sucesso",
+      },
+    });
 
   const createMutation = usePostCategoriesCreate({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Categoria criada com sucesso");
-        form.reset();
-        closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: getGetCategoriesQueryKey() });
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['name']);
-      },
-    },
+    mutation: { onSuccess: onCreated, onError },
   });
 
   const updateMutation = usePutCategoriesUpdateId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Categoria atualizada com sucesso");
-        form.reset();
-        closeRef.current?.click();
-        queryClient.invalidateQueries({ queryKey: getGetCategoriesQueryKey() });
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['name']);
-      },
-    },
+    mutation: { onSuccess: onUpdated, onError },
   });
 
   const handleForm = (data: CreateCategoryFormValues) => {
@@ -70,7 +48,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
 
   return (
     <>
-      <DialogClose ref={closeRef} className="hidden" />
+      <DialogCloseHidden />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
           <BaseInput name="name" label="Nome" control={form.control} placeholder="Ex: Alimentação" autoFocus />

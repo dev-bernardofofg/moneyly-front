@@ -3,45 +3,34 @@
 import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
-import { queryClient } from "@/app/(contexts)"
-import { getErrorMessage } from "@/app/(helpers)/errors"
+import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
-import { DialogClose } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRef } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { getGetGoalsQueryKey, usePostGoalsIdAddAmount } from "../../../(resources)/(generated)/hooks/goals/goals"
+import { usePostGoalsIdAddAmount } from "../../../(resources)/(generated)/hooks/goals/goals"
+import { getGetGoalsQueryKey } from "../../../(resources)/(generated)/hooks/goals/goals"
 import { AddValueToGoalDefaultValues, AddValueToGoalFormValues, AddValueToGoalSchema } from "../../../(resources)/(schemas)/goal.schema"
-import { CustomAxiosError } from "../../../(types)/error.type"
 import { getGetOverviewPlannerQueryKey } from "@/app/(resources)/(generated)/hooks/overview/overview"
+
 interface AddValueToGoalFormProps {
   goalId: string
 }
 
 export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
-  const closeRef = useRef<HTMLButtonElement>(null)
-
-  const form = useForm<AddValueToGoalFormValues>({
-    resolver: zodResolver(AddValueToGoalSchema),
-    defaultValues: AddValueToGoalDefaultValues,
-  })
+  const { form, onCreated, onError, DialogCloseHidden } =
+    useUpsertDialog<AddValueToGoalFormValues>({
+      schema: AddValueToGoalSchema,
+      defaultValues: AddValueToGoalDefaultValues,
+      invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
+      errorFields: ['amount'],
+      successMessage: {
+        create: "Valor adicionado com sucesso",
+        update: "Valor adicionado com sucesso",
+      },
+    })
 
   const { mutate: addValueToGoal, isPending } = usePostGoalsIdAddAmount({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Valor adicionado com sucesso")
-        closeRef.current?.click()
-        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() })
-        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() })
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error))
-      }
-    },
+    mutation: { onSuccess: onCreated, onError },
   })
-
 
   const handleForm = (data: AddValueToGoalFormValues) => {
     addValueToGoal({
@@ -54,7 +43,7 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
 
   return (
     <>
-      <DialogClose ref={closeRef} className="hidden" />
+      <DialogCloseHidden />
       <Form  {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
           <BaseInput
@@ -63,6 +52,7 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
             control={form.control}
             type="money"
             placeholder="0,00"
+            autoFocus
           />
           <BaseButton
             type="submit"

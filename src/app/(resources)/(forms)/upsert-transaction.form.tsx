@@ -4,18 +4,12 @@ import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea";
-import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
+import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
-import { CustomAxiosError } from "@/app/(types)/error.type";
-import { DialogClose } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { BrushCleaning, TrendingDown, TrendingUp } from "lucide-react";
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 import { Category, Transaction } from "../(generated)";
 import { useGetCategories } from "../(generated)/hooks/categories/categories";
 import { getGetOverviewDashboardQueryKey, getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview";
@@ -23,57 +17,39 @@ import { getGetTransactionsQueryKey, getGetTransactionsSummaryQueryKey, usePostT
 import { UpsertTransactionDefaultValues, UpsertTransactionFormValues, UpsertTransactionSchema } from "../(schemas)/transaction.schema";
 
 export const UpsertTransactionForm = ({ transaction }: { transaction?: Transaction }) => {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const queryClient = useQueryClient();
-  
-  const form = useForm<UpsertTransactionFormValues>({
-    resolver: zodResolver(UpsertTransactionSchema),
-    defaultValues: transaction ? {
-      ...transaction,
-      amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount as string),
-      date: transaction.date as string,
-      category: transaction.category?.id,
-      description: transaction.description as string,
-      title: transaction.title as string,
-      type: transaction.type as "income" | "expense",
-    } : UpsertTransactionDefaultValues,
-  });
+  const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
+    useUpsertDialog<UpsertTransactionFormValues>({
+      schema: UpsertTransactionSchema,
+      defaultValues: transaction ? {
+        ...transaction,
+        amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount as string),
+        date: transaction.date as string,
+        category: transaction.category?.id,
+        description: transaction.description as string,
+        title: transaction.title as string,
+        type: transaction.type as "income" | "expense",
+      } : UpsertTransactionDefaultValues,
+      invalidateKeys: [
+        getGetOverviewDashboardQueryKey(),
+        getGetTransactionsQueryKey(),
+        getGetTransactionsSummaryQueryKey(),
+        getGetOverviewPlannerQueryKey(),
+      ],
+      errorFields: ['title', 'amount', 'type', 'category', 'date', 'description'],
+      successMessage: {
+        create: "Transação criada com sucesso",
+        update: "Transação atualizada com sucesso",
+      },
+    });
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
   const { mutate: createTransaction, isPending } = usePostTransactionsCreate({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Transação criada com sucesso");
-        queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
-        form.reset();
-        closeRef.current?.click();
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['title', 'amount', 'type', 'category', 'date', 'description']);
-      },
-    },
+    mutation: { onSuccess: onCreated, onError },
   });
 
   const { mutate: updateTransaction, isPending: isUpdating } = usePutTransactionsId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Transação atualizada com sucesso");
-        queryClient.invalidateQueries({ queryKey: getGetOverviewDashboardQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetOverviewPlannerQueryKey() });
-        closeRef.current?.click();
-      },
-      onError: (error: CustomAxiosError) => {
-        toast.error(getErrorMessage(error));
-        setFormFieldErrors(error, form.setError, ['title', 'amount', 'type', 'category', 'date', 'description']);
-      },
-    },
+    mutation: { onSuccess: onUpdated, onError },
   });
 
   const handleUpsertTransaction = (data: UpsertTransactionFormValues) => {
@@ -98,7 +74,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
 
   return (
     <>
-      <DialogClose ref={closeRef} className="hidden" />
+      <DialogCloseHidden />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleUpsertTransaction)}>
           <BaseInput control={form.control} name="title" label="Título" placeholder="Ex: Mercado" autoFocus />
