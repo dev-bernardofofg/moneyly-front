@@ -1,8 +1,8 @@
 "use client"
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button'
 import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form'
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input'
+import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer'
 import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog'
 import { Form } from '@/components/ui/form'
 import { getGetCategoriesQueryKey, usePostCategoriesCreate, usePutCategoriesUpdateId } from '../(generated)/hooks/categories/categories'
@@ -52,13 +52,10 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
           <BaseInput name="name" label="Nome" control={form.control} placeholder="Ex: Alimentação" autoFocus />
-          <BaseButton
-            type="submit"
-            className="w-full"
+          <DialogFormFooter
+            submitLabel={isUpdate ? "Atualizar categoria" : "Criar categoria"}
             isLoading={isUpdate ? updateMutation.isPending : createMutation.isPending}
-          >
-            {isUpdate ? "Atualizar categoria" : "Criar categoria"}
-          </BaseButton>
+          />
         </BaseForm>
       </Form>
     </>

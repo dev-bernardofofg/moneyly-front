@@ -1,15 +1,15 @@
 "use client";
 
-import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button";
 import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker";
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
+import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer";
 import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog";
 import { FN_UTILS_DATE } from "@/app/(helpers)/date";
 import { FN_UTILS_STRING } from "@/app/(helpers)/string";
 import { Form } from "@/components/ui/form";
-import { BrushCleaning, TrendingDown, TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Category, RecurringTransaction } from "../(generated)";
@@ -232,14 +232,10 @@ export const UpsertTransactionRecurringForm = ({
             )}
           </div>
 
-          <div className="flex items-center justify-between gap-3">
-            <BaseButton type="button" className="w-fit" variant="outline" aria-label="Limpar formulário" title="Limpar formulário" onClick={() => form.reset()}>
-              <BrushCleaning />
-            </BaseButton>
-            <BaseButton type="submit" className="w-full" isLoading={isCreating || isUpdating}>
-              {recurringTransaction ? "Atualizar" : "Criar"}
-            </BaseButton>
-          </div>
+          <DialogFormFooter
+            submitLabel={recurringTransaction ? "Atualizar" : "Criar"}
+            isLoading={isCreating || isUpdating}
+          />
         </BaseForm>
       </Form>
     </>

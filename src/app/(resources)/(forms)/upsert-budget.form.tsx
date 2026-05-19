@@ -1,9 +1,9 @@
 "use client"
 
-import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select"
+import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer"
 import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { Form } from "@/components/ui/form"
@@ -75,9 +75,10 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
             disabled={!!budget}
           />
           <BaseInput name="monthlyLimit" label="Limite mensal" control={form.control} type="money" placeholder="0,00" />
-          <BaseButton type="submit" className="w-full" isLoading={budget ? updateMutation.isPending : createMutation.isPending}>
-            {budget ? "Atualizar" : "Criar"}
-          </BaseButton>
+          <DialogFormFooter
+            submitLabel={budget ? "Atualizar" : "Criar"}
+            isLoading={budget ? updateMutation.isPending : createMutation.isPending}
+          />
         </BaseForm>
       </Form>
     </>

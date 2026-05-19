@@ -1,8 +1,8 @@
 "use client"
 
-import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
+import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer"
 import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { Form } from "@/components/ui/form"
@@ -54,13 +54,7 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
             placeholder="0,00"
             autoFocus
           />
-          <BaseButton
-            type="submit"
-            className="w-full"
-            isLoading={isPending}
-          >
-            Adicionar
-          </BaseButton>
+          <DialogFormFooter submitLabel="Adicionar" isLoading={isPending} />
         </BaseForm>
       </Form>
     </>

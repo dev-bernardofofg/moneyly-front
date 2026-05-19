@@ -1,10 +1,10 @@
 "use client"
 
-import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
 import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker"
 import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
 import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
 import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
+import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer"
 import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
 import { FN_UTILS_STRING } from "@/app/(helpers)/string"
 import { Form } from "@/components/ui/form"
@@ -66,9 +66,10 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
           <BaseTextarea name="description" label="Descrição" control={form.control} />
           <BaseInput name="targetAmount" label="Valor alvo" control={form.control} type="money" placeholder="0,00" />
           <BaseDatePicker name="targetDate" label="Data de término" control={form.control} />
-          <BaseButton type="submit" className="w-full" isLoading={goal ? updateMutation.isPending : createMutation.isPending}>
-            {goal ? "Atualizar" : "Criar"}
-          </BaseButton>
+          <DialogFormFooter
+            submitLabel={goal ? "Atualizar" : "Criar"}
+            isLoading={goal ? updateMutation.isPending : createMutation.isPending}
+          />
         </BaseForm>
       </Form>
     </>
