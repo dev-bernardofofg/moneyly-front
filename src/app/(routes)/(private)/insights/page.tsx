@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats";
-import { Section } from "@/app/(components)/(bases)/(cards)/section";
-import { Header } from "@/app/(components)/(layout)/header";
-import { Fade } from "@/app/(components)/(motions)/fade";
-import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import {
-  useGetOverviewForecast,
-  useGetOverviewInsights,
-} from "@/app/(resources)/(generated)/hooks/overview/overview";
+import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
+import { Section } from '@/app/(components)/(bases)/(cards)/section';
+import { Header } from '@/app/(components)/(layout)/header';
+import { Fade } from '@/app/(components)/(motions)/fade';
+import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
 import {
   BarChart3,
   CalendarClock,
@@ -17,25 +13,24 @@ import {
   TrendingDown,
   TrendingUp,
   Wallet,
-} from "lucide-react";
-import { ComparisonSection } from "./comparison-section";
-import { SubscriptionsSection } from "./subscriptions-section";
+} from 'lucide-react';
+import { ComparisonSection } from './comparison-section';
+import { SubscriptionsSection } from './subscriptions-section';
+import { useInsightsAction } from './insights.action';
 
-const pct = (v: number | null | undefined) =>
-  v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(1)}%`;
+const formatDelta = (v: number | null | undefined) =>
+  v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
 
 const InsightsPage = () => {
-  const { data, isLoading } = useGetOverviewInsights();
-  const insights = data?.data;
-
-  const { data: forecastData, isLoading: forecastLoading } =
-    useGetOverviewForecast();
-  const forecast = forecastData?.data;
-
-  const cp = insights?.currentPeriod;
-  const trend = insights?.trend;
-  const allTime = insights?.allTime;
-  const topCategories = insights?.topCategories ?? [];
+  const {
+    isLoading,
+    forecast,
+    forecastLoading,
+    currentPeriod,
+    trend,
+    allTime,
+    topCategories,
+  } = useInsightsAction();
 
   return (
     <Fade>
@@ -48,11 +43,7 @@ const InsightsPage = () => {
               value={forecast?.realized.balance ?? 0}
               Icon={Wallet}
               isMonetary
-              variant={
-                (forecast?.realized.balance ?? 0) >= 0
-                  ? "default"
-                  : "destructive"
-              }
+              variant={(forecast?.realized.balance ?? 0) >= 0 ? 'default' : 'destructive'}
               loading={forecastLoading}
             />
             <BaseStats
@@ -77,11 +68,7 @@ const InsightsPage = () => {
               Icon={PiggyBank}
               description={`${forecast?.projected.occurrences.length ?? 0} ocorrências previstas`}
               isMonetary
-              variant={
-                (forecast?.projectedEndBalance ?? 0) >= 0
-                  ? "default"
-                  : "destructive"
-              }
+              variant={(forecast?.projectedEndBalance ?? 0) >= 0 ? 'default' : 'destructive'}
               loading={forecastLoading}
             />
           </div>
@@ -90,7 +77,7 @@ const InsightsPage = () => {
         <StaggeredFade className="grid grid-cols-1 gap-2 md:grid-cols-4">
           <BaseStats
             name="Gasto no período"
-            value={cp?.currentExpense ?? 0}
+            value={currentPeriod?.currentExpense ?? 0}
             Icon={Wallet}
             isMonetary
             variant="destructive"
@@ -98,18 +85,18 @@ const InsightsPage = () => {
           />
           <BaseStats
             name="Projeção de gasto"
-            value={cp?.projectedExpense ?? 0}
+            value={currentPeriod?.projectedExpense ?? 0}
             Icon={TrendingUp}
-            description={cp?.isOnTrack ? "No ritmo do orçamento" : "Acima do previsto"}
+            description={currentPeriod?.isOnTrack ? 'No ritmo do orçamento' : 'Acima do previsto'}
             isMonetary
-            variant={cp?.isOnTrack ? "default" : "destructive"}
+            variant={currentPeriod?.isOnTrack ? 'default' : 'destructive'}
             loading={isLoading}
           />
           <BaseStats
             name="Período decorrido"
-            value={`${cp?.daysElapsed ?? 0}/${cp?.totalDays ?? 0} dias`}
+            value={`${currentPeriod?.daysElapsed ?? 0}/${currentPeriod?.totalDays ?? 0} dias`}
             Icon={CalendarClock}
-            description={`${(cp?.completionPercentage ?? 0).toFixed(0)}% concluído`}
+            description={`${(currentPeriod?.completionPercentage ?? 0).toFixed(0)}% concluído`}
             variant="secondary"
             loading={isLoading}
           />
@@ -127,30 +114,26 @@ const InsightsPage = () => {
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <BaseStats
               name="Variação de despesa"
-              value={pct(trend?.expenseChange)}
+              value={formatDelta(trend?.expenseChange)}
               Icon={TrendingDown}
               description={
-                trend?.currentMonth?.label && trend?.previousMonth?.label
-                  ? <span className="capitalize">{`${trend.previousMonth.label} → ${trend.currentMonth.label}`}</span>
-                  : "Sem mês anterior para comparar"
+                trend?.currentMonth?.label && trend?.previousMonth?.label ? (
+                  <span className="capitalize">{`${trend.previousMonth.label} → ${trend.currentMonth.label}`}</span>
+                ) : (
+                  'Sem mês anterior para comparar'
+                )
               }
-              variant={
-                (trend?.expenseChange ?? 0) > 0 ? "destructive" : "default"
-              }
+              variant={(trend?.expenseChange ?? 0) > 0 ? 'destructive' : 'default'}
               loading={isLoading}
             />
             <BaseStats
               name="Variação de receita"
-              value={pct(trend?.incomeChange)}
+              value={formatDelta(trend?.incomeChange)}
               Icon={TrendingUp}
               description={
-                trend?.currentMonth?.label
-                  ? `Mês atual: ${trend.currentMonth.label}`
-                  : undefined
+                trend?.currentMonth?.label ? `Mês atual: ${trend.currentMonth.label}` : undefined
               }
-              variant={
-                (trend?.incomeChange ?? 0) >= 0 ? "default" : "destructive"
-              }
+              variant={(trend?.incomeChange ?? 0) >= 0 ? 'default' : 'destructive'}
               loading={isLoading}
             />
           </div>
@@ -176,13 +159,11 @@ const InsightsPage = () => {
             />
             <BaseStats
               name="Melhor mês"
-              value={allTime?.bestMonth?.label ?? "—"}
+              value={allTime?.bestMonth?.label ?? '—'}
               Icon={TrendingUp}
               description={
                 allTime?.bestMonth
-                  ? FN_UTILS_NUMBERS.formatCurrency(
-                      allTime.bestMonth.balance ?? 0
-                    )
+                  ? FN_UTILS_NUMBERS.formatCurrency(allTime.bestMonth.balance ?? 0)
                   : undefined
               }
               variant="default"
@@ -190,13 +171,11 @@ const InsightsPage = () => {
             />
             <BaseStats
               name="Pior mês"
-              value={allTime?.worstMonth?.label ?? "—"}
+              value={allTime?.worstMonth?.label ?? '—'}
               Icon={TrendingDown}
               description={
                 allTime?.worstMonth
-                  ? FN_UTILS_NUMBERS.formatCurrency(
-                      allTime.worstMonth.balance ?? 0
-                    )
+                  ? FN_UTILS_NUMBERS.formatCurrency(allTime.worstMonth.balance ?? 0)
                   : undefined
               }
               variant="destructive"
@@ -208,24 +187,19 @@ const InsightsPage = () => {
         <Section Icon={Wallet} title="Top categorias">
           {topCategories.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">
-              {isLoading ? "Carregando..." : "Sem dados de categorias."}
+              {isLoading ? 'Carregando...' : 'Sem dados de categorias.'}
             </p>
           ) : (
             <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-              {topCategories.map((cat) => (
-                <li
-                  key={cat.name}
-                  className="flex items-center justify-between py-3"
-                >
-                  <span className="font-medium text-slate-900 dark:text-slate-100">
-                    {cat.name}
-                  </span>
+              {topCategories.map((category) => (
+                <li key={category.name} className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-900 dark:text-slate-100">{category.name}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-sm text-muted-foreground">
-                      {cat.percentage.toFixed(1)}%
+                      {category.percentage.toFixed(1)}%
                     </span>
                     <span className="font-semibold text-expense">
-                      {FN_UTILS_NUMBERS.formatCurrency(cat.amount)}
+                      {FN_UTILS_NUMBERS.formatCurrency(category.amount)}
                     </span>
                   </div>
                 </li>

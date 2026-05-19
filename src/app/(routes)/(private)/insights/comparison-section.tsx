@@ -1,49 +1,47 @@
-"use client";
+'use client';
 
-import { Section } from "@/app/(components)/(bases)/(cards)/section";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import { useGetOverviewInsightsComparison } from "@/app/(resources)/(generated)/hooks/overview/overview";
-import type { ComparativeInsights } from "@/app/(resources)/(generated)/types/ComparativeInsights";
-import { ArrowDownRight, ArrowUpRight, Minus, Scale } from "lucide-react";
+import { Section } from '@/app/(components)/(bases)/(cards)/section';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { useGetOverviewInsightsComparison } from '@/app/(resources)/(generated)/hooks/overview/overview';
+import type { ComparativeInsights } from '@/app/(resources)/(generated)/types/ComparativeInsights';
+import { ArrowDownRight, ArrowUpRight, Minus, Scale } from 'lucide-react';
 
-type Signal = ComparativeInsights["totals"]["signal"];
+type Signal = ComparativeInsights['totals']['signal'];
 
 // up = despesa subiu = ruim (vermelho); down = caiu = bom (verde); stable = neutro.
 const signalUi = (signal: Signal) => {
   switch (signal) {
-    case "up":
-      return { Icon: ArrowUpRight, cls: "text-expense" };
-    case "down":
-      return { Icon: ArrowDownRight, cls: "text-income" };
+    case 'up':
+      return { Icon: ArrowUpRight, className: 'text-expense' };
+    case 'down':
+      return { Icon: ArrowDownRight, className: 'text-income' };
     default:
-      return { Icon: Minus, cls: "text-muted-foreground" };
+      return { Icon: Minus, className: 'text-muted-foreground' };
   }
 };
 
-const pct = (v: number | null) =>
-  v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(1)}%`;
+const formatDelta = (value: number | null) =>
+  value == null ? '—' : `${value > 0 ? '+' : ''}${value.toFixed(1)}%`;
 
 export const ComparisonSection = () => {
   const { data, isLoading } = useGetOverviewInsightsComparison();
-  const cmp = data?.data;
+  const comparison = data?.data;
 
-  const totals = cmp?.totals;
-  const byCategory = cmp?.byCategory ?? [];
-  const highlights = cmp?.highlights ?? [];
-  const t = totals && signalUi(totals.signal);
+  const totals = comparison?.totals;
+  const byCategory = comparison?.byCategory ?? [];
+  const highlights = comparison?.highlights ?? [];
+  const totalsUi = totals && signalUi(totals.signal);
 
   return (
     <Section
       Icon={Scale}
       title={`Comparativo vs média${
-        cmp?.basis ? ` (${cmp.basis.periodsCompared} períodos)` : ""
+        comparison?.basis ? ` (${comparison.basis.periodsCompared} períodos)` : ''
       }`}
     >
       {isLoading ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">
-          Carregando...
-        </p>
-      ) : !cmp || byCategory.length === 0 ? (
+        <p className="py-6 text-center text-sm text-muted-foreground">Carregando...</p>
+      ) : !comparison || byCategory.length === 0 ? (
         <p className="py-6 text-center text-sm text-muted-foreground">
           Sem histórico suficiente para comparar.
         </p>
@@ -59,52 +57,50 @@ export const ComparisonSection = () => {
                 média {FN_UTILS_NUMBERS.formatCurrency(totals?.averageExpense ?? 0)}
               </p>
             </div>
-            {t && (
-              <div className={`flex items-center gap-1 font-semibold ${t.cls}`}>
-                <t.Icon className="size-5" />
-                {pct(totals?.deltaPct ?? null)}
+            {totalsUi && (
+              <div className={`flex items-center gap-1 font-semibold ${totalsUi.className}`}>
+                <totalsUi.Icon className="size-5" />
+                {formatDelta(totals?.deltaPct ?? null)}
               </div>
             )}
           </div>
 
           {highlights.length > 0 && (
             <ul className="space-y-1">
-              {highlights.map((h, i) => (
+              {highlights.map((highlight, index) => (
                 <li
-                  key={i}
+                  key={index}
                   className="rounded-md border-l-2 border-l-primary bg-primary/5 px-3 py-2 text-sm"
                 >
-                  {h}
+                  {highlight}
                 </li>
               ))}
             </ul>
           )}
 
           <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-            {byCategory.map((c) => {
-              const ui = signalUi(c.signal);
+            {byCategory.map((category) => {
+              const categoryUi = signalUi(category.signal);
               return (
                 <li
-                  key={c.categoryId}
+                  key={category.categoryId}
                   className="flex items-center justify-between gap-3 py-2"
                 >
                   <div className="min-w-0">
                     <p className="truncate font-medium text-slate-900 dark:text-slate-100">
-                      {c.categoryName}
+                      {category.categoryName}
                     </p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {c.message}
-                    </p>
+                    <p className="truncate text-xs text-muted-foreground">{category.message}</p>
                   </div>
                   <div className="flex items-center gap-3 whitespace-nowrap">
                     <span className="text-sm">
-                      {FN_UTILS_NUMBERS.formatCurrency(c.currentExpense)}
+                      {FN_UTILS_NUMBERS.formatCurrency(category.currentExpense)}
                     </span>
                     <span
-                      className={`flex items-center gap-0.5 text-sm font-semibold ${ui.cls}`}
+                      className={`flex items-center gap-0.5 text-sm font-semibold ${categoryUi.className}`}
                     >
-                      <ui.Icon className="size-4" />
-                      {pct(c.deltaPct)}
+                      <categoryUi.Icon className="size-4" />
+                      {formatDelta(category.deltaPct)}
                     </span>
                   </div>
                 </li>

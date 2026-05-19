@@ -4,16 +4,16 @@ import { Section } from "@/app/(components)/(bases)/(cards)/section"
 import { Header } from "@/app/(components)/(layout)/header"
 import { Fade } from "@/app/(components)/(motions)/fade"
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade"
-import { useAuth } from "@/app/(contexts)/auth-provider"
 import { ProfileConfigFinanceForm } from "@/app/(routes)/(private)/profile/profile-config-finance.form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { Settings, User } from "lucide-react"
+import { useProfileAction } from "./profile.action"
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  const { user, financeDefaultValues } = useProfileAction()
 
   return (
     <Fade>
@@ -51,13 +51,7 @@ export default function ProfilePage() {
           title="Configurações Financeiras"
         >
           {user && (
-            <ProfileConfigFinanceForm
-              defaultValues={{
-                financialDayStart: user.financialDayStart?.toString() ?? '',
-                financialDayEnd: user.financialDayEnd?.toString() ?? '',
-                monthlyIncome: user.monthlyIncome?.toString() ?? '',
-              }}
-            />
+            <ProfileConfigFinanceForm defaultValues={financeDefaultValues} />
           )}
         </Section>
       </StaggeredFade>

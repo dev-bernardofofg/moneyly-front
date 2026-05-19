@@ -1,37 +1,19 @@
 "use client"
 
 import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button"
-import { PeriodNavigatorWrapper } from "@/app/(components)/(bases)/(layout)/period-navigator-wrapper"
 import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog"
+import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
 import { Header } from "@/app/(components)/(layout)/header"
 import { Fade } from "@/app/(components)/(motions)/fade"
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade"
 import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form"
+import { TransactionTable } from "@/app/(routes)/(private)/transactions/transaction.table"
+import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from "./transaction.action"
 import { ExportCsvButton } from "./export-csv-button"
 
-import { BaseStats } from "@/app/(components)/(bases)/(stats)/base-stats"
-import { useGetTransactions } from "@/app/(resources)/(generated)/hooks/transactions/transactions"
-import { TransactionTable } from "@/app/(routes)/(private)/transactions/transaction.table"
-import { usePagination } from "@/hooks/use-pagination"
-import { TRANSACTION_STATS_INTERATOR } from "./transaction.utils"
-import { parseAsInteger, useQueryStates } from "nuqs";
-
 const TransactionsPage = () => {
-  const [paginationParams, setPaginationParams] = useQueryStates({
-    page: parseAsInteger.withDefault(1),
-    limit: parseAsInteger.withDefault(10),
-  })
-
-  const { data: transactions, isLoading } = useGetTransactions({
-    page: paginationParams.page,
-    limit: paginationParams.limit,
-  });
-
-
-  const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: transactions?.pagination,
-    onPaginationChange: setPaginationParams
-  })
+  const { data: transactions, isLoading, paginationParams, setPaginationParams } =
+    useTransactionsAction()
 
   return (
     <Fade>
@@ -65,14 +47,13 @@ const TransactionsPage = () => {
               loading={isLoading}
             />
           ))}
-
         </StaggeredFade>
-          <TransactionTable
-            isLoading={isLoading}
-            transactions={transactions?.data ?? []}
-            tableOptions={{
-              pagination: pagination,
-            }} onPaginationChange={handlePaginationChange} />
+        <TransactionTable
+          isLoading={isLoading}
+          transactions={transactions?.data ?? []}
+          tableOptions={{ pagination: paginationParams }}
+          onPaginationChange={setPaginationParams}
+        />
       </StaggeredFade>
     </Fade>
   )

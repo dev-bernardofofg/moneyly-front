@@ -6,27 +6,16 @@ import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { UpsertTransactionRecurringForm } from "@/app/(resources)/(forms)/upsert-transaction-recurring.form";
-import { useGetRecurringTransactions } from "@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions";
-import { usePagination } from "@/hooks/use-pagination";
-import { parseAsInteger, useQueryStates } from "nuqs";
 import { RecurringTransactionTable } from "./recurring-transaction.table";
+import { useRecurringTransactionsAction } from "./recurring-transaction.action";
 
 const RecurringTransactionsPage = () => {
-  const [paginationParams, setPaginationParams] = useQueryStates({
-    page: parseAsInteger.withDefault(1),
-    limit: parseAsInteger.withDefault(10),
-  });
-
-  const { data: recurringTransactions, isLoading } = useGetRecurringTransactions({
-    includeInactive: true,
-    page: paginationParams.page,
-    limit: paginationParams.limit,
-  });
-
-  const { pagination, handlePaginationChange } = usePagination({
-    serverPagination: recurringTransactions?.pagination,
-    onPaginationChange: setPaginationParams,
-  });
+  const {
+    data: recurringTransactions,
+    isLoading,
+    paginationParams,
+    setPaginationParams,
+  } = useRecurringTransactionsAction();
 
   return (
     <Fade>
@@ -53,8 +42,8 @@ const RecurringTransactionsPage = () => {
         <RecurringTransactionTable
           isLoading={isLoading}
           recurringTransactions={recurringTransactions?.data ?? []}
-          tableOptions={{ pagination }}
-          onPaginationChange={handlePaginationChange}
+          tableOptions={{ pagination: paginationParams }}
+          onPaginationChange={setPaginationParams}
         />
       </StaggeredFade>
     </Fade>

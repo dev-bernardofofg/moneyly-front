@@ -31,28 +31,28 @@ export const SubscriptionsSection = () => {
         </p>
       ) : (
         <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-          {candidates.map((c) => (
+          {candidates.map((candidate) => (
             <li
-              key={`${c.title}-${c.categoryId}`}
+              key={`${candidate.title}-${candidate.categoryId}`}
               className="flex items-center justify-between gap-3 py-3"
             >
               <div className="min-w-0">
                 <p className="truncate font-medium text-slate-900 dark:text-slate-100">
-                  {c.title}
+                  {candidate.title}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {c.categoryName} · {CADENCE_LABEL[c.cadence]} ·{" "}
-                  {c.occurrences}x · ~
-                  {FN_UTILS_NUMBERS.formatCurrency(c.monthlyCost)}/mês
+                  {candidate.categoryName} · {CADENCE_LABEL[candidate.cadence]} ·{" "}
+                  {candidate.occurrences}x · ~
+                  {FN_UTILS_NUMBERS.formatCurrency(candidate.monthlyCost)}/mês
                 </p>
               </div>
               <div className="flex items-center gap-3 whitespace-nowrap">
                 <span className="text-sm font-semibold text-expense">
-                  {FN_UTILS_NUMBERS.formatCurrency(c.averageAmount)}
+                  {FN_UTILS_NUMBERS.formatCurrency(candidate.averageAmount)}
                 </span>
                 <BaseDialog
                   title="Virar recorrente"
-                  description={`Cadastrar "${c.title}" como transação recorrente`}
+                  description={`Cadastrar "${candidate.title}" como transação recorrente`}
                   trigger={
                     <BaseButton variant="outline">
                       <Repeat className="mr-1 size-4" />
