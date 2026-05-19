@@ -1,64 +1,44 @@
-"use client"
+'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button'
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog'
-import { Header } from '@/app/(components)/(layout)/header'
-import { Fade } from '@/app/(components)/(motions)/fade'
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
-import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form'
-import { useGetCategories } from '@/app/(resources)/(generated)/hooks/categories/categories'
-import { usePagination } from '@/hooks/use-pagination'
-import { useState } from 'react'
-import { CategoryTable } from './category.table'
+import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
+import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { Header } from '@/app/(components)/(layout)/header';
+import { Fade } from '@/app/(components)/(motions)/fade';
+import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
+import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form';
+import { CategoryTable } from './category.table';
+import { useCategoryAction } from './category.action';
 
 const CategoriesPage = () => {
-  const [currentPagination, setCurrentPagination] = useState({
-    page: 1,
-    limit: 10,
-  });
-
-  const { data, isLoading } = useGetCategories({
-    page: currentPagination.page,
-    limit: currentPagination.limit,
-  })
-
-
-  // GET /categories/ não é paginado no contrato (envelope { data, message }).
-  // Paginação fica client-side só para a tabela.
-  const { pagination, handlePaginationChange } = usePagination({
-    onPaginationChange: setCurrentPagination
-  })
+  const { data, isLoading, paginationParams, setPaginationParams } = useCategoryAction();
 
   return (
     <Fade>
       <Header
         title="Categorias"
-        actions={
-          [<BaseDialog
+        actions={[
+          <BaseDialog
             key="new-category-dialog"
             title="Nova categoria"
             description="Adicione uma nova categoria"
-            trigger={<BaseButton>
-              Nova categoria
-            </BaseButton>}
+            trigger={<BaseButton>Nova categoria</BaseButton>}
           >
             <UpsertCategoryForm />
-          </BaseDialog>
-          ]
-        }
+          </BaseDialog>,
+        ]}
       />
       <StaggeredFade variant="page" className="grid grid-rows-[auto]">
         <CategoryTable
           categories={data?.data || []}
           tableOptions={{
-            pagination: pagination,
+            pagination: paginationParams,
           }}
-          onPaginationChange={handlePaginationChange}
+          onPaginationChange={setPaginationParams}
           isLoading={isLoading}
         />
       </StaggeredFade>
     </Fade>
-  )
-}
+  );
+};
 
-export default CategoriesPage
+export default CategoriesPage;

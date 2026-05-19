@@ -8,21 +8,29 @@ interface ConfirmActionFormProps {
   title: string;
   description: string;
   trigger: React.ReactNode;
+  isLoading?: boolean;
 
-  variant?: "default" | "active";
+  variant?: 'default' | 'active';
 }
 
-export const ConfirmActionForm = ({ onConfirm, title, description, trigger, variant = "default" }: ConfirmActionFormProps) => {
+export const ConfirmActionForm = ({
+  onConfirm,
+  title,
+  description,
+  trigger,
+  variant = 'default',
+  isLoading,
+}: ConfirmActionFormProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(!open);
-  }
+  };
 
   const handleConfirm = () => {
     onConfirm();
     handleClose();
-  }
+  };
 
   return (
     <BaseDialog
@@ -37,11 +45,20 @@ export const ConfirmActionForm = ({ onConfirm, title, description, trigger, vari
           <XIcon className="size-4" />
           Cancelar
         </BaseButton>
-        <BaseButton variant={variant === "active" ? "default" : "destructive"} className="w-full" onClick={handleConfirm} >
-          {variant === "active" ? <PowerIcon className="size-4" /> : <TrashIcon className="size-4" />}
+        <BaseButton
+          variant={variant === 'active' ? 'default' : 'destructive'}
+          className="w-full"
+          onClick={handleConfirm}
+          isLoading={isLoading}
+        >
+          {variant === 'active' ? (
+            <PowerIcon className="size-4" />
+          ) : (
+            <TrashIcon className="size-4" />
+          )}
           Confirmar
         </BaseButton>
       </div>
     </BaseDialog>
-  )
-}
+  );
+};

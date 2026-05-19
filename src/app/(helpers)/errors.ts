@@ -13,22 +13,18 @@ export const extractApiErrorMessage = (data: unknown): string => {
 }
 
 export const getErrorMessage = (error: CustomAxiosError) => {
-  // Formato 1: error.data.error (formato padrão da API)
   if (error?.data?.error) {
     return error.data.error;
   }
 
-  // Formato 2: error.data.details.message
   if (error?.data?.details?.message) {
     return error.data.details.message;
   }
 
-  // Formato 3: error.data.message
   if (error?.data && "message" in error.data) {
     return (error.data as { message: string }).message;
   }
 
-  // Fallback
   return error?.message || "Erro inesperado";
 };
 

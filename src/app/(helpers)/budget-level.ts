@@ -6,12 +6,6 @@ import {
   XCircle,
 } from "lucide-react";
 
-/**
- * Budget state scale — design system §02 (BUDGET_LEVELS).
- * Colors map to the centralized state tokens in globals.css
- * (--ok / --warn / --danger / --critical), exposed as Tailwind
- * utilities: bg-ok, bg-warn, bg-danger, bg-critical, text-*, etc.
- */
 export interface BudgetLevel {
   label: string;
   badgeClass: string;

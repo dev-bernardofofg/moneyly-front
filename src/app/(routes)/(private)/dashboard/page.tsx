@@ -10,7 +10,6 @@ import { Header } from "@/app/(components)/(layout)/header";
 import { Fade } from "@/app/(components)/(motions)/fade";
 import { StaggeredFade } from "@/app/(components)/(motions)/staggered-fade";
 import { usePeriod } from "@/app/(contexts)/period-provider";
-import { UpsertTransactionForm } from "@/app/(resources)/(forms)/upsert-transaction.form";
 import {
   useGetOverviewDashboard,
   useGetOverviewForecast,
@@ -20,39 +19,15 @@ import { MonthlyHistoryChart } from "@/app/(components)/(bases)/(charts)/monthly
 import { ROUTES } from "@/app/(utils)/routes";
 import { useRouter } from "next/navigation";
 import { Loader2, PiggyBank, Receipt, RefreshCcw, Scale } from "lucide-react";
-import { DASHBOARD_STATS_INTERATOR } from "./dashboard.utils";
+import { DASHBOARD_STATS_INTERATOR, useDashboardAction } from "./dashboard.action";
 import { RecentTransactionItem } from "@/app/(resources)/(generated)";
 import { TransactionTabs } from "@/app/(resources)/(forms)/transaction.tabs";
 
 const DashboardPage = () => {
-  const { selectedPeriodId } = usePeriod();
-  const { data: overviewData, isPending: isPostingOverview } = useGetOverviewDashboard({
-    periodId: selectedPeriodId || undefined,
-  });
-
-  // Prévia leve (escopo período). F3/F4 ficam só em /insights (scan de histórico
-  // pesado p/ a homepage — ver .specs/features/05-dashboard-previews.md).
-  const { data: forecastData, isLoading: forecastLoading } =
-    useGetOverviewForecast(
-      { periodId: selectedPeriodId || undefined },
-      {
-        query: {
-          queryKey: ["/overview/forecast", selectedPeriodId || undefined],
-        },
-      }
-    );
-  const forecast = forecastData?.data;
-
-  // F3/F4 prévias: vêm do mesmo /overview/dashboard (resumido no back), zero call extra.
-  const previews = overviewData?.data?.previews;
-  const subs = previews?.subscriptions;
-  const cmp = previews?.comparison;
-
   const { push } = useRouter();
-
-  const recentTransactions = overviewData?.data?.recentTransactions ?? [];
-  const chartSeries = overviewData?.data?.chart?.data ?? [];
-
+  const { data, loading } = useDashboardAction();
+  const { forecast, subs, cmp, recentTransactions, chartSeries, stats } = data;
+  const { isPostingOverview, forecastLoading } = loading;
   return (
     <Fade>
       <Header
@@ -79,7 +54,7 @@ const DashboardPage = () => {
             <BaseStats
               key={stat.indicator}
               name={stat.name}
-              value={((overviewData?.data?.stats as DashboardStats | undefined)?.[stat.indicator as keyof DashboardStats] ?? 0) as number}
+              value={((stats as DashboardStats | undefined)?.[stat.indicator as keyof DashboardStats] ?? 0) as number}
               Icon={stat.icon}
               description={stat.description}
               isMonetary={stat.isMonetary}
