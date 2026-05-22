@@ -22,21 +22,19 @@ const formatDelta = (v: number | null | undefined) =>
   v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
 
 const InsightsPage = () => {
-  const {
-    isLoading,
-    forecast,
-    forecastLoading,
-    currentPeriod,
-    trend,
-    allTime,
-    topCategories,
-  } = useInsightsAction();
+  const { isLoading, forecast, forecastLoading, currentPeriod, trend, allTime, topCategories } =
+    useInsightsAction();
 
   return (
     <Fade>
       <Header title="Insights" />
       <StaggeredFade variant="page" className="grid gap-2 overflow-y-auto p-1">
-        <Section Icon={PiggyBank} title="Saldo projetado (fim do período)">
+        <Section
+          Icon={PiggyBank}
+          title="Saldo projetado (fim do período)"
+          className="p-2"
+          classNameHeader="p-3"
+        >
           <div className="grid grid-cols-1 gap-2 md:grid-cols-4">
             <BaseStats
               name="Saldo realizado"
@@ -110,7 +108,12 @@ const InsightsPage = () => {
           />
         </StaggeredFade>
 
-        <Section Icon={TrendingUp} title="Tendência mês a mês">
+        <Section
+          Icon={TrendingUp}
+          title="Tendência mês a mês"
+          className="p-2"
+          classNameHeader="p-3"
+        >
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <BaseStats
               name="Variação de despesa"
@@ -139,7 +142,7 @@ const InsightsPage = () => {
           </div>
         </Section>
 
-        <Section Icon={BarChart3} title="Histórico geral">
+        <Section Icon={BarChart3} title="Histórico geral" className="p-2" classNameHeader="p-3">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <BaseStats
               name="Despesa média mensal"
@@ -184,16 +187,21 @@ const InsightsPage = () => {
           </div>
         </Section>
 
-        <Section Icon={Wallet} title="Top categorias">
+        <Section Icon={Wallet} title="Top categorias" className="p-2" classNameHeader="p-3">
           {topCategories.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">
               {isLoading ? 'Carregando...' : 'Sem dados de categorias.'}
             </p>
           ) : (
-            <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+            <ul className="space-y-1">
               {topCategories.map((category) => (
-                <li key={category.name} className="flex items-center justify-between py-3">
-                  <span className="font-medium text-slate-900 dark:text-slate-100">{category.name}</span>
+                <li
+                  key={category.name}
+                  className="flex items-center justify-between p-3 bg-white/95 dark:bg-slate-800 rounded-lg shadow-xs border border-slate-200 dark:border-slate-700"
+                >
+                  <span className="font-medium text-slate-900 dark:text-slate-100">
+                    {category.name}
+                  </span>
                   <div className="flex items-center gap-3">
                     <span className="text-sm text-muted-foreground">
                       {category.percentage.toFixed(1)}%

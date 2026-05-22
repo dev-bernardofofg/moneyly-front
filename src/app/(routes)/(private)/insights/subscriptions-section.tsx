@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { BaseButton } from "@/app/(components)/(bases)/(clickable)/base-button";
-import { Section } from "@/app/(components)/(bases)/(cards)/section";
-import { BaseDialog } from "@/app/(components)/(bases)/(portals)/base-dialog";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import { UpsertTransactionRecurringForm } from "@/app/(resources)/(forms)/upsert-transaction-recurring.form";
-import { useGetTransactionsSubscriptions } from "@/app/(resources)/(generated)/hooks/transactions/transactions";
-import type { SubscriptionCandidate } from "@/app/(resources)/(generated)/types/SubscriptionCandidate";
-import { RefreshCcw, Repeat } from "lucide-react";
+import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
+import { Section } from '@/app/(components)/(bases)/(cards)/section';
+import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { UpsertTransactionRecurringForm } from '@/app/(resources)/(forms)/upsert-transaction-recurring.form';
+import { useGetTransactionsSubscriptions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
+import type { SubscriptionCandidate } from '@/app/(resources)/(generated)/types/SubscriptionCandidate';
+import { RefreshCcw, Repeat } from 'lucide-react';
 
-const CADENCE_LABEL: Record<SubscriptionCandidate["cadence"], string> = {
-  weekly: "Semanal",
-  monthly: "Mensal",
-  yearly: "Anual",
+const CADENCE_LABEL: Record<SubscriptionCandidate['cadence'], string> = {
+  weekly: 'Semanal',
+  monthly: 'Mensal',
+  yearly: 'Anual',
 };
 
 export const SubscriptionsSection = () => {
@@ -20,11 +20,9 @@ export const SubscriptionsSection = () => {
   const candidates = data?.data ?? [];
 
   return (
-    <Section Icon={RefreshCcw} title="Possíveis assinaturas">
+    <Section Icon={RefreshCcw} title="Possíveis assinaturas" className="p-2" classNameHeader="p-3">
       {isLoading ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">
-          Carregando...
-        </p>
+        <p className="py-6 text-center text-sm text-muted-foreground">Carregando...</p>
       ) : candidates.length === 0 ? (
         <p className="py-6 text-center text-sm text-muted-foreground">
           Nenhum gasto recorrente não cadastrado detectado.
@@ -41,7 +39,7 @@ export const SubscriptionsSection = () => {
                   {candidate.title}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {candidate.categoryName} · {CADENCE_LABEL[candidate.cadence]} ·{" "}
+                  {candidate.categoryName} · {CADENCE_LABEL[candidate.cadence]} ·{' '}
                   {candidate.occurrences}x · ~
                   {FN_UTILS_NUMBERS.formatCurrency(candidate.monthlyCost)}/mês
                 </p>

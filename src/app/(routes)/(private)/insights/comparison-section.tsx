@@ -38,6 +38,8 @@ export const ComparisonSection = () => {
       title={`Comparativo vs média${
         comparison?.basis ? ` (${comparison.basis.periodsCompared} períodos)` : ''
       }`}
+      className="p-2"
+      classNameHeader="p-3"
     >
       {isLoading ? (
         <p className="py-6 text-center text-sm text-muted-foreground">Carregando...</p>
@@ -47,7 +49,7 @@ export const ComparisonSection = () => {
         </p>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+          <div className="flex items-center justify-between rounded-lg bg-white/95 p-3 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
             <div>
               <p className="text-sm text-muted-foreground">Despesa do período</p>
               <p className="text-lg font-bold">
@@ -70,7 +72,7 @@ export const ComparisonSection = () => {
               {highlights.map((highlight, index) => (
                 <li
                   key={index}
-                  className="rounded-md border-l-2 border-l-primary bg-primary/5 px-3 py-2 text-sm"
+                  className="rounded-md border-l-2 border-l-primary bg-primary/5 px-3 py-2 text-sm shadow-xs"
                 >
                   {highlight}
                 </li>
@@ -78,13 +80,13 @@ export const ComparisonSection = () => {
             </ul>
           )}
 
-          <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+          <ul className="space-y-1">
             {byCategory.map((category) => {
               const categoryUi = signalUi(category.signal);
               return (
                 <li
                   key={category.categoryId}
-                  className="flex items-center justify-between gap-3 py-2"
+                  className="flex items-center justify-between gap-3 p-3 bg-white/95 dark:bg-slate-800 rounded-lg shadow-xs border border-slate-200 dark:border-slate-700"
                 >
                   <div className="min-w-0">
                     <p className="truncate font-medium text-slate-900 dark:text-slate-100">
