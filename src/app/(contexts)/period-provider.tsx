@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Period } from "@/app/(types)/period.type";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { Period } from '@/app/(types)/period.type';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 interface PeriodContextType {
   selectedPeriodId: string | null;
@@ -14,27 +14,20 @@ interface PeriodContextType {
 
 const PeriodContext = createContext<PeriodContextType | undefined>(undefined);
 
-const STORAGE_KEY = "moneyly_selected_period";
+const STORAGE_KEY = 'moneyly_selected_period';
 
 export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedPeriodId, setSelectedPeriodIdState] = useState<string | null>(null);
+  const [selectedPeriodId, setSelectedPeriodIdState] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(STORAGE_KEY);
+  });
   const [periods, setPeriods] = useState<Period[]>([]);
   const [loading, setLoading] = useState(false);
-
-  // Carregar período selecionado do localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setSelectedPeriodIdState(stored);
-      }
-    }
-  }, []);
 
   // Persistir período selecionado no localStorage
   const setSelectedPeriodId = useCallback((periodId: string) => {
     setSelectedPeriodIdState(periodId);
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEY, periodId);
     }
   }, []);
@@ -47,8 +40,8 @@ export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (
@@ -70,7 +63,7 @@ export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
 export const usePeriod = () => {
   const context = useContext(PeriodContext);
   if (context === undefined) {
-    throw new Error("usePeriod must be used within a PeriodProvider");
+    throw new Error('usePeriod must be used within a PeriodProvider');
   }
   return context;
-}; 
+};

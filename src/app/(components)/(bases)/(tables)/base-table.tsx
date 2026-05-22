@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Table2Icon } from "lucide-react";
-import Link from "next/link";
+import { AnimatePresence, motion } from 'framer-motion';
+import { Loader2, Table2Icon } from 'lucide-react';
+import Link from 'next/link';
 
-import { Pagination } from "@/app/(components)/(bases)/(pagination)/pagination";
-import { PaginationType } from "@/app/(types)/pagination.type";
+import { Pagination } from '@/app/(components)/(bases)/(pagination)/pagination';
+import { PaginationType } from '@/app/(types)/pagination.type';
 import {
   Table,
   TableBody,
@@ -13,8 +13,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 interface Column<T> {
   header: string;
@@ -39,9 +39,9 @@ interface BaseTableProps<T> {
 
 export interface BaseTableOptions {
   tableOptions: {
-    pagination: PaginationType
-  }
-  onPaginationChange?: (value: PaginationType) => void
+    pagination: PaginationType;
+  };
+  onPaginationChange?: (value: PaginationType) => void;
 }
 
 export function BaseTable<T>({
@@ -51,15 +51,18 @@ export function BaseTable<T>({
   onRowClick,
   title,
   seeMoreLink,
-  emptyMessage = "Nenhum dado encontrado",
+  emptyMessage = 'Nenhum dado encontrado',
   loading = false,
   onPaginationChange,
   pagination,
   keyExtractor,
 }: BaseTableProps<T>) {
-
   return (
-    <div className={cn("grid grid-rows-[auto_1fr] border-slate-200 dark:border-slate-700 rounded-md border bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white relative size-full")}>
+    <div
+      className={cn(
+        'grid grid-rows-[auto_1fr] border-slate-200 dark:border-slate-700 rounded-md border bg-white/95 dark:bg-slate-800 px-3 py-2 text-slate-950 dark:text-white relative size-full'
+      )}
+    >
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -67,10 +70,7 @@ export function BaseTable<T>({
             <h1 className="text-base font-medium">{title}</h1>
           </div>
           {seeMoreLink && (
-            <Link
-              href={seeMoreLink}
-              className="text-muted-foreground text-sm hover:underline"
-            >
+            <Link href={seeMoreLink} className="text-muted-foreground text-sm hover:underline">
               Ver todos
             </Link>
           )}
@@ -103,14 +103,11 @@ export function BaseTable<T>({
               <TableHeader>
                 <TableRow>
                   {columns.map((column) => (
-                    <TableHead
-                      key={String(column.accessorKey)}
-                      className={column.className}
-                    >
+                    <TableHead key={String(column.accessorKey)} className={column.className}>
                       {column.header}
                     </TableHead>
                   ))}
-                  {actions && <TableHead className="w-14"></TableHead>}
+                  {actions && <TableHead className="w-14 text-center">Ações</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -125,27 +122,22 @@ export function BaseTable<T>({
                       transition={{
                         duration: 0.25,
                         delay: index * 0.03,
-                        ease: [0.4, 0, 0.2, 1]
+                        ease: [0.4, 0, 0.2, 1],
                       }}
                       onClick={() => onRowClick?.(item)}
                       className={cn(
-                        onRowClick && "cursor-pointer",
-                        "hover:bg-muted/50 transition-colors"
+                        onRowClick && 'cursor-pointer',
+                        'hover:bg-muted/50 transition-colors'
                       )}
                     >
                       {columns.map((column) => (
-                        <TableCell
-                          key={String(column.accessorKey)}
-                          className={column.className}
-                        >
+                        <TableCell key={String(column.accessorKey)} className={column.className}>
                           {column.cell
                             ? column.cell(item[column.accessorKey], item)
                             : (item[column.accessorKey] as React.ReactNode)}
                         </TableCell>
                       ))}
-                      {actions && (
-                        <TableCell className="w-14">{actions(item)}</TableCell>
-                      )}
+                      {actions && <TableCell className="w-14">{actions(item)}</TableCell>}
                     </motion.tr>
                   ))}
                 </AnimatePresence>
@@ -161,11 +153,11 @@ export function BaseTable<T>({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           className={cn(
-            "sticky bottom-4 right-1/2 rounded-xl",
-            "border border-border/50 shadow-lg shadow-black/5 dark:shadow-black/40",
-            "bg-background/50 dark:bg-background/40",
-            "backdrop-blur-xl backdrop-saturate-150",
-            "ring-1 ring-border/20 dark:ring-white/10",
+            'sticky bottom-4 right-1/2 rounded-xl',
+            'border border-border/50 shadow-lg shadow-black/5 dark:shadow-black/40',
+            'bg-background/50 dark:bg-background/40',
+            'backdrop-blur-xl backdrop-saturate-150',
+            'ring-1 ring-border/20 dark:ring-white/10'
           )}
         >
           <Pagination

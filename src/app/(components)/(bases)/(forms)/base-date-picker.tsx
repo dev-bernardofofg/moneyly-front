@@ -1,35 +1,25 @@
-"use client";
+'use client';
 
-import { format, parseISO, startOfDay } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { motion } from "framer-motion";
-import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
-import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
+import { format, parseISO, startOfDay } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { motion } from 'framer-motion';
+import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { BaseButton } from "../(clickable)/base-button";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { BaseButton } from '../(clickable)/base-button';
 
 type BaseDatePickerProps<T extends FieldValues> = {
   control?: Control<T>;
@@ -52,7 +42,7 @@ export function BaseDatePicker<T extends FieldValues>({
   control,
   name,
   label,
-  placeholder = "Selecione uma data",
+  placeholder = 'Selecione uma data',
   description,
   disableFutureDates = false,
   disablePastDates = false,
@@ -68,14 +58,11 @@ export function BaseDatePicker<T extends FieldValues>({
   const finalControl = control || methods.control;
   const [calendarDate, setCalendarDate] = useState<Date | undefined>(undefined);
 
-  const years = Array.from(
-    { length: toYear - fromYear + 1 },
-    (_, i) => toYear - i,
-  );
+  const years = Array.from({ length: toYear - fromYear + 1 }, (_, i) => toYear - i);
 
   const currentMonth = calendarDate || new Date();
   const currentYear = currentMonth.getFullYear();
-  const currentMonthName = format(currentMonth, "MMMM", { locale: ptBR });
+  const currentMonthName = format(currentMonth, 'MMMM', { locale: ptBR });
 
   const handlePreviousMonth = () => {
     const newDate = new Date(currentMonth);
@@ -103,8 +90,10 @@ export function BaseDatePicker<T extends FieldValues>({
               className="flex items-center justify-between"
             >
               {fieldState.error ? (
-                <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
-              ) : <FormLabel>{label}</FormLabel>}
+                <FormLabel className="text-destructive">{fieldState.error.message}</FormLabel>
+              ) : (
+                <FormLabel>{label}</FormLabel>
+              )}
             </motion.div>
           )}
 
@@ -114,8 +103,8 @@ export function BaseDatePicker<T extends FieldValues>({
                 <BaseButton
                   variant="input"
                   className={cn(
-                    "w-full justify-start text-left font-normal dark:bg-slate-800 bg-slate-100",
-                    !field.value && "text-muted-foreground",
+                    'w-full justify-start text-left font-normal dark:bg-slate-800 bg-white/95',
+                    !field.value && 'text-muted-foreground'
                   )}
                   disabled={isDisabled && !isDateDisabled}
                 >
@@ -145,35 +134,21 @@ export function BaseDatePicker<T extends FieldValues>({
                       </SelectTrigger>
                       <SelectContent>
                         {years.map((year) => (
-                          <SelectItem
-                            key={year}
-                            value={year.toString()}
-                            className="cursor-pointer"
-                          >
+                          <SelectItem key={year} value={year.toString()} className="cursor-pointer">
                             {year}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
 
-                    <div className="text-sm font-medium capitalize">
-                      {currentMonthName}
-                    </div>
+                    <div className="text-sm font-medium capitalize">{currentMonthName}</div>
                   </div>
 
                   <div className="flex gap-1">
-                    <Button
-                      variant="outline"
-                      className="h-7 w-7 p-0"
-                      onClick={handlePreviousMonth}
-                    >
+                    <Button variant="outline" className="h-7 w-7 p-0" onClick={handlePreviousMonth}>
                       <ChevronLeft className="size-4" />
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="h-7 w-7 p-0"
-                      onClick={handleNextMonth}
-                    >
+                    <Button variant="outline" className="h-7 w-7 p-0" onClick={handleNextMonth}>
                       <ChevronRight className="size-4" />
                     </Button>
                   </div>
@@ -186,17 +161,16 @@ export function BaseDatePicker<T extends FieldValues>({
                   selected={field.value ? parseISO(field.value) : undefined}
                   onSelect={(date) => {
                     if (date) {
-                      field.onChange(format(date, "yyyy-MM-dd"));
+                      field.onChange(format(date, 'yyyy-MM-dd'));
                       setCalendarDate(date);
                     } else {
-                      field.onChange("");
+                      field.onChange('');
                       setCalendarDate(undefined);
                     }
                   }}
                   disabled={(date) => {
                     if (disableFutureDates && date > new Date()) return true;
-                    if (disablePastDates && date < startOfDay(new Date()))
-                      return true;
+                    if (disablePastDates && date < startOfDay(new Date())) return true;
                     if (minDate && date < minDate) return true;
                     if (maxDate && date > maxDate) return true;
                     if (isDateAvailable && !isDateAvailable(date)) return true;
@@ -207,32 +181,32 @@ export function BaseDatePicker<T extends FieldValues>({
                   showOutsideDays
                   fixedWeeks
                   classNames={{
-                    months: "space-y-4",
-                    head_row: "flex",
+                    months: 'space-y-4',
+                    head_row: 'flex',
                     head_cell: cn(
-                      "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem] capitalize",
+                      'text-muted-foreground rounded-md w-8 font-normal text-[0.8rem] capitalize'
                     ),
-                    row: "flex w-full mt-2",
+                    row: 'flex w-full mt-2',
                     cell: cn(
-                      "relative p-0 text-center text-sm focus-within:relative focus-within:z-20",
-                      "[&:has([aria-selected])]:bg-accent",
+                      'relative p-0 text-center text-sm focus-within:relative focus-within:z-20',
+                      '[&:has([aria-selected])]:bg-accent'
                     ),
                     day: cn(
-                      "h-8 w-8 p-0 font-normal",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus:bg-accent focus:text-accent-foreground focus:outline-hidden",
+                      'h-8 w-8 p-0 font-normal',
+                      'hover:bg-accent hover:text-accent-foreground',
+                      'focus:bg-accent focus:text-accent-foreground focus:outline-hidden'
                     ),
                     day_selected: cn(
-                      "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
-                      "focus:bg-primary focus:text-primary-foreground",
+                      'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+                      'focus:bg-primary focus:text-primary-foreground'
                     ),
-                    day_today: "bg-accent/50 text-accent-foreground",
-                    day_outside: "text-muted-foreground opacity-50",
-                    day_disabled: "text-muted-foreground opacity-50",
-                    day_hidden: "invisible",
-                    nav: "hidden",
-                    caption: "hidden",
-                    table: "w-full border-collapse space-y-1",
+                    day_today: 'bg-accent/50 text-accent-foreground',
+                    day_outside: 'text-muted-foreground opacity-50',
+                    day_disabled: 'text-muted-foreground opacity-50',
+                    day_hidden: 'invisible',
+                    nav: 'hidden',
+                    caption: 'hidden',
+                    table: 'w-full border-collapse space-y-1',
                   }}
                 />
               </PopoverContent>

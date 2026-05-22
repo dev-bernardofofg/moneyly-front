@@ -1,44 +1,47 @@
-import { queryClient } from '@/app/(contexts)'
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number'
-import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action'
-import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form'
-import { Goal } from '@/app/(resources)/(generated)'
-import { getGetGoalsQueryKey, useDeleteGoalsId } from '@/app/(resources)/(generated)/hooks/goals/goals'
-import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form'
-import { differenceInDays, format } from 'date-fns'
-import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react'
-import { toast } from 'sonner'
-import { BaseButton } from '../(clickable)/base-button'
-import { BaseDialog } from '../(portals)/base-dialog'
+import { queryClient } from '@/app/(contexts)';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action';
+import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form';
+import { Goal } from '@/app/(resources)/(generated)';
+import {
+  getGetGoalsQueryKey,
+  useDeleteGoalsId,
+} from '@/app/(resources)/(generated)/hooks/goals/goals';
+import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form';
+import { differenceInDays, format } from 'date-fns';
+import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { BaseButton } from '../(clickable)/base-button';
+import { BaseDialog } from '../(portals)/base-dialog';
 
 interface GoalCardProps {
-  goal: Goal
+  goal: Goal;
 }
 
 export const GoalCard = ({ goal }: GoalCardProps) => {
   const { mutate: deleteGoal } = useDeleteGoalsId({
     mutation: {
       onSuccess: () => {
-        toast.success("Meta removida com sucesso")
-        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() })
+        toast.success('Meta removida com sucesso');
+        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
       },
     },
-  })
+  });
 
   const handleDeleteGoal = () => {
-    deleteGoal({ id: goal.id || "" })
-  }
+    deleteGoal({ id: goal.id || '' });
+  };
 
-  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null
-  const now = new Date()
-  const isExpired = targetDate ? targetDate.getTime() < now.getTime() : false
-  const currentAmount = Number(goal.currentAmount || 0)
-  const targetAmount = Number(goal.targetAmount || 0)
-  const progressPercentage = targetAmount > 0 ? (currentAmount / targetAmount) * 100 : 0
-  const remaining = targetAmount - currentAmount
+  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null;
+  const now = new Date();
+  const isExpired = targetDate ? targetDate.getTime() < now.getTime() : false;
+  const currentAmount = Number(goal.currentAmount || 0);
+  const targetAmount = Number(goal.targetAmount || 0);
+  const progressPercentage = targetAmount > 0 ? (currentAmount / targetAmount) * 100 : 0;
+  const remaining = targetAmount - currentAmount;
 
   return (
-    <div className="dark:bg-slate-700 bg-slate-100 border dark:border-slate-600 border-slate-300 rounded-lg p-4">
+    <div className="dark:bg-slate-700 bg-white/95 border dark:border-slate-600 border-slate-100 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{goal.title}</h3>
         {goal.isActive && <CheckCircle className="size-5 text-primary" />}
@@ -48,7 +51,9 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Progresso</span>
-            <span className="font-medium dark:text-slate-200 text-slate-900">{FN_UTILS_NUMBERS.formatPercentage(progressPercentage)}</span>
+            <span className="font-medium dark:text-slate-200 text-slate-900">
+              {FN_UTILS_NUMBERS.formatPercentage(progressPercentage)}
+            </span>
           </div>
           <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
             <div
@@ -67,12 +72,16 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         <div className="flex items-center gap-4 text-sm text-slate-400">
           <div className="flex items-center gap-1">
             <Calendar className="size-4" />
-            <span>{targetDate ? format(targetDate, 'dd/MM/yyyy') : "—"}</span>
+            <span>{targetDate ? format(targetDate, 'dd/MM/yyyy') : '—'}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="size-4" />
-            <span className={isExpired ? "text-warn font-medium" : ""}>
-              {!targetDate ? "—" : isExpired ? "Vencido" : `${differenceInDays(targetDate, now)} dias`}
+            <span className={isExpired ? 'text-warn font-medium' : ''}>
+              {!targetDate
+                ? '—'
+                : isExpired
+                  ? 'Vencido'
+                  : `${differenceInDays(targetDate, now)} dias`}
             </span>
           </div>
         </div>
@@ -88,21 +97,25 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
           <BaseDialog
             title="Adicionar valor"
             description="Adicione um valor à meta"
-            trigger={<BaseButton size="sm">
-              <Plus className="size-3 mr-1" />
-              Adicionar
-            </BaseButton>}
+            trigger={
+              <BaseButton size="sm">
+                <Plus className="size-3 mr-1" />
+                Adicionar
+              </BaseButton>
+            }
           >
-            <AddValueToGoalForm goalId={goal.id || ""} />
+            <AddValueToGoalForm goalId={goal.id || ''} />
           </BaseDialog>
 
           <BaseDialog
             title="Editar meta"
             description="Edite a meta"
-            trigger={<BaseButton size="sm" variant="outline">
-              <Edit3 className="size-3 mr-1" />
-              Editar
-            </BaseButton>}
+            trigger={
+              <BaseButton size="sm" variant="outline">
+                <Edit3 className="size-3 mr-1" />
+                Editar
+              </BaseButton>
+            }
           >
             <UpsertGoalForm goal={goal as Goal} />
           </BaseDialog>
@@ -121,5 +134,5 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

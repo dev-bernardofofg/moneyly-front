@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import * as RechartsPrimitive from "recharts";
-import { cn } from "@/lib/utils";
-import * as React from "react";
+import * as RechartsPrimitive from 'recharts';
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+const THEMES = { light: '', dark: '.dark' } as const;
 
 type ThemeKey = keyof typeof THEMES;
 
@@ -26,12 +26,12 @@ function validateChartConfigColors(config: ChartConfig): void {
   for (const [key, value] of Object.entries(config)) {
     if (value.colors) {
       const hasValidThemeKey = VALID_THEME_KEYS.some(
-        (themeKey) => value.colors?.[themeKey] !== undefined,
+        (themeKey) => value.colors?.[themeKey] !== undefined
       );
 
       if (!hasValidThemeKey) {
         throw new Error(
-          `[EvilCharts] Invalid chart config for "${key}": colors object must have at least one theme key (${VALID_THEME_KEYS.join(", ")}). Received empty object or invalid keys.`,
+          `[EvilCharts] Invalid chart config for "${key}": colors object must have at least one theme key (${VALID_THEME_KEYS.join(', ')}). Received empty object or invalid keys.`
         );
       }
     }
@@ -57,7 +57,7 @@ export function useChart() {
   const context = React.useContext(ChartContext);
 
   if (!context) {
-    throw new Error("useChart must be used within a <ChartContainer />");
+    throw new Error('useChart must be used within a <ChartContainer />');
   }
 
   return context;
@@ -65,24 +65,24 @@ export function useChart() {
 
 interface ChartContainerProps
   extends
-    Omit<React.ComponentProps<"div">, "children">,
+    Omit<React.ComponentProps<'div'>, 'children'>,
     Pick<
       React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>,
-      | "initialDimension"
-      | "aspect"
-      | "debounce"
-      | "minHeight"
-      | "minWidth"
-      | "maxHeight"
-      | "height"
-      | "width"
-      | "onResize"
-      | "children"
+      | 'initialDimension'
+      | 'aspect'
+      | 'debounce'
+      | 'minHeight'
+      | 'minWidth'
+      | 'maxHeight'
+      | 'height'
+      | 'width'
+      | 'onResize'
+      | 'children'
     > {
   config: ChartConfig;
   innerResponsiveContainerStyle?: React.ComponentProps<
     typeof RechartsPrimitive.ResponsiveContainer
-  >["style"];
+  >['style'];
   /** Optional content rendered below the chart (e.g. EvilBrush) */
   footer?: React.ReactNode;
 }
@@ -97,7 +97,7 @@ function ChartContainer({
   ...props
 }: Readonly<ChartContainerProps>) {
   const uniqueId = React.useId();
-  const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`;
+  const chartId = `chart-${id ?? uniqueId.replace(/:/g, '')}`;
 
   // Validate chart config at runtime
   validateChartConfigColors(config);
@@ -108,10 +108,10 @@ function ChartContainer({
         data-slot="chart"
         data-chart={chartId}
         className={cn(
-          "min-h-0 w-full flex-1",
+          'min-h-0 w-full flex-1',
           "[&_.recharts-cartesian-axis-tick-value]:fill-muted-foreground [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-transparent [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border relative flex flex-col justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_[class*='recharts-zIndex-layer']]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
-          !footer && "aspect-video",
-          className,
+          !footer && 'aspect-video',
+          className
         )}
         {...props}
       >
@@ -137,15 +137,12 @@ function LoadingIndicator({ isLoading }: { isLoading: boolean }) {
     <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
       <div className="text-primary bg-background flex items-center justify-center gap-2 rounded-md border px-2 py-0.5 text-sm">
         <div className="border-border border-t-primary h-3 w-3 animate-spin rounded-full border" />
-        <span>Loading</span>
+        <span>Carregando...</span>
       </div>
     </div>
   );
 }
 
-// Distribute colors evenly across slots, extra slots go to last color(s)
-// Example: 2 colors for 4 slots → [red, red, pink, pink]
-// Example: 3 colors for 4 slots → [red, pink, blue, blue]
 function distributeColors(colorsArray: string[], maxCount: number): string[] {
   const availableCount = colorsArray.length;
   if (availableCount >= maxCount) {
@@ -156,8 +153,6 @@ function distributeColors(colorsArray: string[], maxCount: number): string[] {
   const baseSlots = Math.floor(maxCount / availableCount);
   const extraSlots = maxCount % availableCount;
 
-  // First (availableCount - extraSlots) colors get baseSlots each
-  // Last extraSlots colors get (baseSlots + 1) each
   for (let colorIdx = 0; colorIdx < availableCount; colorIdx++) {
     const isExtraColor = colorIdx >= availableCount - extraSlots;
     const slotsForThisColor = baseSlots + (isExtraColor ? 1 : 0);
@@ -193,37 +188,37 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
         return distributedColors.map((color, index) => `  --color-${key}-${index}: ${color};`);
       })
       .filter(Boolean)
-      .join("\n");
+      .join('\n');
 
   const css = Object.entries(THEMES)
     .map(
       ([theme, prefix]) =>
-        `${prefix} [data-chart=${id}] {\n${generateCssVars(theme as keyof typeof THEMES)}\n}`,
+        `${prefix} [data-chart=${id}] {\n${generateCssVars(theme as keyof typeof THEMES)}\n}`
     )
-    .join("\n");
+    .join('\n');
 
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 };
 
 // Helper to extract item config from a payload.
 export function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
-  if (typeof payload !== "object" || payload === null) {
+  if (typeof payload !== 'object' || payload === null) {
     return undefined;
   }
 
   const payloadPayload =
-    "payload" in payload && typeof payload.payload === "object" && payload.payload !== null
+    'payload' in payload && typeof payload.payload === 'object' && payload.payload !== null
       ? payload.payload
       : undefined;
 
   let configLabelKey: string = key;
 
-  if (key in payload && typeof payload[key as keyof typeof payload] === "string") {
+  if (key in payload && typeof payload[key as keyof typeof payload] === 'string') {
     configLabelKey = payload[key as keyof typeof payload] as string;
   } else if (
     payloadPayload &&
     key in payloadPayload &&
-    typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
+    typeof payloadPayload[key as keyof typeof payloadPayload] === 'string'
   ) {
     configLabelKey = payloadPayload[key as keyof typeof payloadPayload] as string;
   }

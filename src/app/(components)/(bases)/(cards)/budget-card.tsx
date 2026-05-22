@@ -1,31 +1,34 @@
-"use client";
+'use client';
 
-import { getBudgetLevel } from "@/app/(helpers)/budget-level";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import { ConfirmActionForm } from "@/app/(resources)/(forms)/confirm-action";
-import { UpsertBudgetForm } from "@/app/(resources)/(forms)/upsert-budget.form";
-import { BudgetProgress } from "@/app/(resources)/(generated)";
-import { getGetBudgetsQueryKey, useDeleteBudgetsId } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
-import { useQueryClient } from "@tanstack/react-query";
-import { Edit3, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { BaseButton } from "../(clickable)/base-button";
-import { BaseDialog } from "../(portals)/base-dialog";
+import { getBudgetLevel } from '@/app/(helpers)/budget-level';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action';
+import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form';
+import { BudgetProgress } from '@/app/(resources)/(generated)';
+import {
+  getGetBudgetsQueryKey,
+  useDeleteBudgetsId,
+} from '@/app/(resources)/(generated)/hooks/budgets/budgets';
+import { useQueryClient } from '@tanstack/react-query';
+import { Edit3, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { BaseButton } from '../(clickable)/base-button';
+import { BaseDialog } from '../(portals)/base-dialog';
 
 interface BudgetCardProps {
   budget: BudgetProgress;
 }
 
 export const BudgetCard = ({ budget }: BudgetCardProps) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { mutate: deleteBudget, isPending } = useDeleteBudgetsId({
     mutation: {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() })
-        toast.success("Orçamento removido com sucesso")
+        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
+        toast.success('Orçamento removido com sucesso');
       },
     },
-  })
+  });
 
   const percentage = budget.percentage || 0;
   const hasData = Boolean(budget.spent && budget.monthlyLimit);
@@ -34,11 +37,11 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
   const IconComponent = level.Icon;
 
   const handleDelete = () => {
-    deleteBudget({ id: budget.id || "" })
-  }
+    deleteBudget({ id: budget.id || '' });
+  };
 
   return (
-    <div className="dark:bg-slate-700 bg-slate-100 border dark:border-slate-600 border-slate-300 rounded-lg p-4">
+    <div className="dark:bg-slate-700 bg-slate-100 border dark:border-slate-600 border-slate-200 rounded-lg p-3">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div
@@ -47,7 +50,9 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
           >
             <IconComponent className="size-5" />
           </div>
-          <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{budget.category?.name}</h3>
+          <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">
+            {budget.category?.name}
+          </h3>
         </div>
         <span className={`px-2 py-1 rounded text-xs font-medium ${level.badgeClass}`}>
           {level.label}
@@ -82,21 +87,28 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
         </div>
       </div>
 
-      <div className="flex gap-2 mt-4">
-        <BaseDialog title="Editar Orçamento" trigger={<BaseButton variant="outline">
-          <Edit3 className="w-3 h-3 mr-1" />
-          Editar
-        </BaseButton>}>
+      <div className="flex gap-2 mt-2">
+        <BaseDialog
+          title="Editar Orçamento"
+          trigger={
+            <BaseButton variant="outline" size="xs">
+              <Edit3 className="size-3 mr-1" />
+              Editar
+            </BaseButton>
+          }
+        >
           <UpsertBudgetForm budget={budget} />
         </BaseDialog>
         <ConfirmActionForm
           onConfirm={handleDelete}
           title="Remover Orçamento"
           description="Tem certeza que deseja remover este orçamento?"
-          trigger={<BaseButton variant="outline" className="w-full" isLoading={isPending}>
-            <Trash2 className="w-3 h-3 mr-1" />
-            Remover
-          </BaseButton>}
+          trigger={
+            <BaseButton variant="destructive" size="xs" isLoading={isPending}>
+              <Trash2 className="size-3 mr-1" />
+              Remover
+            </BaseButton>
+          }
         />
       </div>
     </div>

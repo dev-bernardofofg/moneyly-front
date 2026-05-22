@@ -1,54 +1,58 @@
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number'
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
-import { cva } from 'class-variance-authority'
-import { AnimatePresence, motion } from 'framer-motion'
-import { LucideIcon } from 'lucide-react'
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { cva } from 'class-variance-authority';
+import { AnimatePresence, motion } from 'framer-motion';
+import { LucideIcon } from 'lucide-react';
 
 interface BaseStatsProps {
-  name: string
-  value: number | string
-  Icon: LucideIcon
-  description?: string | React.ReactNode
-  isMonetary?: boolean
-  variant?: "default" | "secondary" | "destructive"
-  loading?: boolean
-  children?: React.ReactNode
-  onClick?: () => void
-  clickable?: boolean
+  name: string;
+  value: number | string;
+  Icon: LucideIcon;
+  description?: string | React.ReactNode;
+  isMonetary?: boolean;
+  variant?: 'default' | 'secondary' | 'destructive';
+  loading?: boolean;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  clickable?: boolean;
 }
 
 const variantsStats = cva(
-  "rounded-lg bg-slate-50 dark:bg-slate-800 dark:border-slate-700 border border-slate-200 h-full", {
-  variants: {
-    variant: {
-      default: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      destructive: "dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors",
+  'rounded-lg bg-white/95 dark:bg-slate-800 dark:border-slate-700 border border-slate-200 h-full',
+  {
+    variants: {
+      variant: {
+        default:
+          'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        destructive:
+          'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors',
+      },
     },
   }
-})
+);
 
-const variantsText = cva("text-2xl font-bold", {
+const variantsText = cva('text-2xl font-bold', {
   variants: {
     variant: {
-      default: "text-income",
-      secondary: "text-info",
-      destructive: "text-expense",
+      default: 'text-income',
+      secondary: 'text-info',
+      destructive: 'text-expense',
     },
-  }
-})
+  },
+});
 
-const variantsIcon = cva("size-4", {
+const variantsIcon = cva('size-4', {
   variants: {
     variant: {
-      default: "text-income",
-      secondary: "text-info",
-      destructive: "text-expense",
+      default: 'text-income',
+      secondary: 'text-info',
+      destructive: 'text-expense',
     },
-  }
-})
+  },
+});
 
 export const BaseStats = ({
   name,
@@ -56,35 +60,39 @@ export const BaseStats = ({
   Icon,
   description,
   isMonetary = false,
-  variant = "default",
+  variant = 'default',
   loading = false,
   children,
   onClick,
-  clickable = false
+  clickable = false,
 }: BaseStatsProps) => {
   const baseClasses = variantsStats({ variant });
   const clickableClasses = clickable
-    ? "cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-    : "";
+    ? 'cursor-pointer hover:shadow-md hover:opacity-70 transition-all'
+    : '';
 
   return (
     <div
       className={`${baseClasses} ${clickableClasses}`}
       onClick={clickable ? onClick : undefined}
-      role={clickable ? "button" : undefined}
+      role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
-      onKeyDown={clickable ? (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      } : undefined}
+      onKeyDown={
+        clickable
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
     >
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
         <CardTitle className="text-sm font-medium">{name}</CardTitle>
         <Icon className={variantsIcon({ variant })} />
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3 pt-0">
         <div className={`${variantsText({ variant })} min-h-[1.5rem] flex items-center`}>
           <AnimatePresence mode="wait">
             {loading ? (
@@ -93,7 +101,7 @@ export const BaseStats = ({
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
                 <Skeleton className="w-12 h-6 bg-slate-200 dark:bg-slate-700" />
               </motion.div>
@@ -103,10 +111,10 @@ export const BaseStats = ({
                 initial={{ opacity: 0, y: 5, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -5, scale: 0.98 }}
-                className={cn("", !isMonetary && 'capitalize')}
+                className={cn('', !isMonetary && 'capitalize')}
                 transition={{
                   duration: 0.25,
-                  ease: "easeOut"
+                  ease: 'easeOut',
                 }}
               >
                 {isMonetary ? FN_UTILS_NUMBERS.formatCurrency(value) : value}
@@ -118,5 +126,5 @@ export const BaseStats = ({
       </CardContent>
       {children}
     </div>
-  )
-}
+  );
+};

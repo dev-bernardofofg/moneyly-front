@@ -79,22 +79,24 @@ export const CategoryTable = ({
         {
           header: 'Criado em',
           accessorKey: 'createdAt',
-          cell: (value, item) => {
+          cell: (_, item) => {
             return (
-              <span className="text-sm text-muted-foreground">
-                {format(item.createdAt || '', 'dd/MM/yyyy HH:mm')}
-              </span>
+              <div className="flex flex-col text-sm font-medium text-muted-foreground">
+                <span>{format(item.createdAt || '', 'dd/MM/yyyy')}</span>
+                <span>{format(item.createdAt || '', 'HH:mm')}</span>
+              </div>
             );
           },
         },
         {
           header: 'Atualizado em',
           accessorKey: 'updatedAt',
-          cell: (value, item) => {
+          cell: (_, item) => {
             return (
-              <span className="text-sm text-muted-foreground">
-                {format(item.updatedAt || '', 'dd/MM/yyyy HH:mm')}
-              </span>
+              <div className="flex flex-col text-sm font-medium text-muted-foreground">
+                <span>{format(item.updatedAt || '', 'dd/MM/yyyy')}</span>
+                <span>{format(item.updatedAt || '', 'HH:mm')}</span>
+              </div>
             );
           },
         },
