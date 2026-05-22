@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Budget } from "./Budget.ts";
+import type { Budget } from './Budget.ts';
 
 /**
  * @description Sucesso

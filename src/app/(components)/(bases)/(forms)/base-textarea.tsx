@@ -1,16 +1,10 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
+import { motion } from 'framer-motion';
+import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 
 type BaseTextareaProps<T extends FieldValues> = {
   control?: Control<T>;
@@ -27,7 +21,7 @@ export function BaseTextarea<T extends FieldValues>({
   label,
   placeholder,
   description,
-  minHeight = "100px",
+  minHeight = '100px',
 }: BaseTextareaProps<T>) {
   const methods = useFormContext<T>();
   const finalControl = control || methods.control;
@@ -46,17 +40,15 @@ export function BaseTextarea<T extends FieldValues>({
               className="flex items-center justify-between"
             >
               {fieldState.error ? (
-                <FormLabel className="text-destructive" >{fieldState.error.message}</FormLabel>
-              ) : <FormLabel>{label}</FormLabel>}
+                <FormLabel className="text-destructive">{fieldState.error.message}</FormLabel>
+              ) : (
+                <FormLabel>{label}</FormLabel>
+              )}
             </motion.div>
           )}
 
           <FormControl>
-            <Textarea
-              {...field}
-              style={{ minHeight }}
-              placeholder={placeholder}
-            />
+            <Textarea {...field} style={{ minHeight }} placeholder={placeholder} />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}

@@ -4,22 +4,20 @@
  */
 
 export const alertsTypeEnum = {
-  danger: "danger",
-  warning: "warning",
-  info: "info",
+  danger: 'danger',
+  warning: 'warning',
+  info: 'info',
 } as const;
 
-export type AlertsTypeEnumKey =
-  (typeof alertsTypeEnum)[keyof typeof alertsTypeEnum];
+export type AlertsTypeEnumKey = (typeof alertsTypeEnum)[keyof typeof alertsTypeEnum];
 
 export const alertsPriorityEnum = {
-  high: "high",
-  medium: "medium",
-  low: "low",
+  high: 'high',
+  medium: 'medium',
+  low: 'low',
 } as const;
 
-export type AlertsPriorityEnumKey =
-  (typeof alertsPriorityEnum)[keyof typeof alertsPriorityEnum];
+export type AlertsPriorityEnumKey = (typeof alertsPriorityEnum)[keyof typeof alertsPriorityEnum];
 
 export type PlannerOverview = {
   /**

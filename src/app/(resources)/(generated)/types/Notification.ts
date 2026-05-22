@@ -4,16 +4,16 @@
  */
 
 export const notificationTypeEnum = {
-  budget_alert: "budget_alert",
+  budget_alert: 'budget_alert',
 } as const;
 
 export type NotificationTypeEnumKey =
   (typeof notificationTypeEnum)[keyof typeof notificationTypeEnum];
 
 export const notificationSeverityEnum = {
-  info: "info",
-  warning: "warning",
-  danger: "danger",
+  info: 'info',
+  warning: 'warning',
+  danger: 'danger',
 } as const;
 
 export type NotificationSeverityEnumKey =

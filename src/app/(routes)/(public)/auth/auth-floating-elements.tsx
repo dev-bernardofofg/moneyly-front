@@ -1,5 +1,5 @@
-import { FloatingElements } from "@/app/(components)/(motions)/floating-elements";
-import { DollarSign, Shield, Target, TrendingUp, User, Zap } from "lucide-react";
+import { FloatingElements } from '@/app/(components)/(motions)/floating-elements';
+import { DollarSign, Shield, Target, TrendingUp, User, Zap } from 'lucide-react';
 
 export const AuthFloatingElements = () => {
   return (
@@ -66,4 +66,3 @@ export const AuthFloatingElements = () => {
     </>
   );
 };
-

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { FinancialPeriodUpdate } from "./FinancialPeriodUpdate.ts";
+import type { FinancialPeriodUpdate } from './FinancialPeriodUpdate.ts';
 
 /**
  * @description Sucesso

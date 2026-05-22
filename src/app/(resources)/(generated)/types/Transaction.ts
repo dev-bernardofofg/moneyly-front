@@ -3,15 +3,14 @@
  * Do not edit manually.
  */
 
-import type { TransactionCategory } from "./TransactionCategory.ts";
+import type { TransactionCategory } from './TransactionCategory.ts';
 
 export const transactionTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
-export type TransactionTypeEnumKey =
-  (typeof transactionTypeEnum)[keyof typeof transactionTypeEnum];
+export type TransactionTypeEnumKey = (typeof transactionTypeEnum)[keyof typeof transactionTypeEnum];
 
 export type Transaction = {
   /**

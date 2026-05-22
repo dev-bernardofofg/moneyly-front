@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   DeleteGoalsId200,
@@ -47,21 +47,18 @@ import type {
   PutGoalsId401,
   PutGoalsId404,
   PutGoalsIdBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Criar meta de poupança
  */
-export const postGoals = (
-  postGoalsBody: PostGoalsBody,
-  signal?: AbortSignal,
-) => {
+export const postGoals = (postGoalsBody: PostGoalsBody, signal?: AbortSignal) => {
   return customInstance<PostGoals201>({
     url: `/goals/`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postGoalsBody,
     signal,
   });
@@ -83,11 +80,9 @@ export const getPostGoalsMutationOptions = <
   { data: PostGoalsBody },
   TContext
 > => {
-  const mutationKey = ["postGoals"];
+  const mutationKey = ['postGoals'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -104,19 +99,14 @@ export const getPostGoalsMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostGoalsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postGoals>>
->;
+export type PostGoalsMutationResult = NonNullable<Awaited<ReturnType<typeof postGoals>>>;
 export type PostGoalsMutationBody = PostGoalsBody;
 export type PostGoalsMutationError = PostGoals400 | PostGoals401;
 
 /**
  * @summary Criar meta de poupança
  */
-export const usePostGoals = <
-  TError = PostGoals400 | PostGoals401,
-  TContext = unknown,
->(
+export const usePostGoals = <TError = PostGoals400 | PostGoals401, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postGoals>>,
@@ -125,7 +115,7 @@ export const usePostGoals = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postGoals>>,
   TError,
@@ -138,7 +128,7 @@ export const usePostGoals = <
  * @summary Listar metas
  */
 export const getGoals = (signal?: AbortSignal) => {
-  return customInstance<GetGoals200>({ url: `/goals/`, method: "GET", signal });
+  return customInstance<GetGoals200>({ url: `/goals/`, method: 'GET', signal });
 };
 
 export const getGetGoalsQueryKey = () => {
@@ -149,17 +139,14 @@ export const getGetGoalsQueryOptions = <
   TData = Awaited<ReturnType<typeof getGoals>>,
   TError = GetGoals400 | GetGoals401,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>
-  >;
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetGoalsQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoals>>> = ({
-    signal,
-  }) => getGoals(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoals>>> = ({ signal }) =>
+    getGoals(signal);
 
   return {
     queryKey,
@@ -171,9 +158,7 @@ export const getGetGoalsQueryOptions = <
   };
 };
 
-export type GetGoalsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getGoals>>
->;
+export type GetGoalsQueryResult = NonNullable<Awaited<ReturnType<typeof getGoals>>>;
 export type GetGoalsQueryError = GetGoals400 | GetGoals401;
 
 export function useGetGoals<
@@ -181,19 +166,17 @@ export function useGetGoals<
   TError = GetGoals400 | GetGoals401,
 >(
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getGoals>>,
           TError,
           Awaited<ReturnType<typeof getGoals>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -202,19 +185,17 @@ export function useGetGoals<
   TError = GetGoals400 | GetGoals401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getGoals>>,
           TError,
           Awaited<ReturnType<typeof getGoals>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -223,11 +204,9 @@ export function useGetGoals<
   TError = GetGoals400 | GetGoals401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -240,20 +219,17 @@ export function useGetGoals<
   TError = GetGoals400 | GetGoals401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetGoalsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -264,7 +240,7 @@ export function useGetGoals<
 export const getGoalsId = (id: string, signal?: AbortSignal) => {
   return customInstance<GetGoalsId200>({
     url: `/goals/${id}`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -279,18 +255,15 @@ export const getGetGoalsIdQueryOptions = <
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>
-    >;
-  },
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>>;
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetGoalsIdQueryKey(id);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsId>>> = ({
-    signal,
-  }) => getGoalsId(id, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsId>>> = ({ signal }) =>
+    getGoalsId(id, signal);
 
   return {
     queryKey,
@@ -298,20 +271,13 @@ export const getGetGoalsIdQueryOptions = <
     enabled: !!id,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getGoalsId>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
-export type GetGoalsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getGoalsId>>
->;
-export type GetGoalsIdQueryError =
-  | GetGoalsId400
-  | GetGoalsId401
-  | GetGoalsId404;
+export type GetGoalsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getGoalsId>>>;
+export type GetGoalsIdQueryError = GetGoalsId400 | GetGoalsId401 | GetGoalsId404;
 
 export function useGetGoalsId<
   TData = Awaited<ReturnType<typeof getGoalsId>>,
@@ -319,19 +285,17 @@ export function useGetGoalsId<
 >(
   id: string,
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getGoalsId>>,
           TError,
           Awaited<ReturnType<typeof getGoalsId>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -341,19 +305,17 @@ export function useGetGoalsId<
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getGoalsId>>,
           TError,
           Awaited<ReturnType<typeof getGoalsId>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -363,11 +325,9 @@ export function useGetGoalsId<
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -381,20 +341,17 @@ export function useGetGoalsId<
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetGoalsIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -402,15 +359,11 @@ export function useGetGoalsId<
 /**
  * @summary Atualizar meta
  */
-export const putGoalsId = (
-  id: string,
-  putGoalsIdBody: PutGoalsIdBody,
-  signal?: AbortSignal,
-) => {
+export const putGoalsId = (id: string, putGoalsIdBody: PutGoalsIdBody, signal?: AbortSignal) => {
   return customInstance<PutGoalsId200>({
     url: `/goals/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putGoalsIdBody,
     signal,
   });
@@ -432,11 +385,9 @@ export const getPutGoalsIdMutationOptions = <
   { id: string; data: PutGoalsIdBody },
   TContext
 > => {
-  const mutationKey = ["putGoalsId"];
+  const mutationKey = ['putGoalsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -453,14 +404,9 @@ export const getPutGoalsIdMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutGoalsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putGoalsId>>
->;
+export type PutGoalsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putGoalsId>>>;
 export type PutGoalsIdMutationBody = PutGoalsIdBody;
-export type PutGoalsIdMutationError =
-  | PutGoalsId400
-  | PutGoalsId401
-  | PutGoalsId404;
+export type PutGoalsIdMutationError = PutGoalsId400 | PutGoalsId401 | PutGoalsId404;
 
 /**
  * @summary Atualizar meta
@@ -477,7 +423,7 @@ export const usePutGoalsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putGoalsId>>,
   TError,
@@ -492,7 +438,7 @@ export const usePutGoalsId = <
 export const deleteGoalsId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteGoalsId200>({
     url: `/goals/${id}`,
-    method: "DELETE",
+    method: 'DELETE',
     signal,
   });
 };
@@ -513,19 +459,16 @@ export const getDeleteGoalsIdMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["deleteGoalsId"];
+  const mutationKey = ['deleteGoalsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteGoalsId>>,
-    { id: string }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteGoalsId>>, { id: string }> = (
+    props
+  ) => {
     const { id } = props ?? {};
 
     return deleteGoalsId(id);
@@ -534,14 +477,9 @@ export const getDeleteGoalsIdMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteGoalsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteGoalsId>>
->;
+export type DeleteGoalsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGoalsId>>>;
 
-export type DeleteGoalsIdMutationError =
-  | DeleteGoalsId400
-  | DeleteGoalsId401
-  | DeleteGoalsId404;
+export type DeleteGoalsIdMutationError = DeleteGoalsId400 | DeleteGoalsId401 | DeleteGoalsId404;
 
 /**
  * @summary Deletar meta
@@ -558,7 +496,7 @@ export const useDeleteGoalsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteGoalsId>>,
   TError,
@@ -573,22 +511,19 @@ export const useDeleteGoalsId = <
 export const postGoalsIdAddAmount = (
   id: string,
   postGoalsIdAddAmountBody: PostGoalsIdAddAmountBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PostGoalsIdAddAmount200>({
     url: `/goals/${id}/add-amount`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postGoalsIdAddAmountBody,
     signal,
   });
 };
 
 export const getPostGoalsIdAddAmountMutationOptions = <
-  TError =
-    | PostGoalsIdAddAmount400
-    | PostGoalsIdAddAmount401
-    | PostGoalsIdAddAmount404,
+  TError = PostGoalsIdAddAmount400 | PostGoalsIdAddAmount401 | PostGoalsIdAddAmount404,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -603,11 +538,9 @@ export const getPostGoalsIdAddAmountMutationOptions = <
   { id: string; data: PostGoalsIdAddAmountBody },
   TContext
 > => {
-  const mutationKey = ["postGoalsIdAddAmount"];
+  const mutationKey = ['postGoalsIdAddAmount'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -637,10 +570,7 @@ export type PostGoalsIdAddAmountMutationError =
  * @summary Adicionar valor à meta
  */
 export const usePostGoalsIdAddAmount = <
-  TError =
-    | PostGoalsIdAddAmount400
-    | PostGoalsIdAddAmount401
-    | PostGoalsIdAddAmount404,
+  TError = PostGoalsIdAddAmount400 | PostGoalsIdAddAmount401 | PostGoalsIdAddAmount404,
   TContext = unknown,
 >(
   options?: {
@@ -651,15 +581,12 @@ export const usePostGoalsIdAddAmount = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postGoalsIdAddAmount>>,
   TError,
   { id: string; data: PostGoalsIdAddAmountBody },
   TContext
 > => {
-  return useMutation(
-    getPostGoalsIdAddAmountMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPostGoalsIdAddAmountMutationOptions(options), queryClient);
 };

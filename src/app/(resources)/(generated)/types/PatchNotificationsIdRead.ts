@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Notification } from "./Notification.ts";
+import type { Notification } from './Notification.ts';
 
 export type PatchNotificationsIdReadPathParams = {
   /**
@@ -92,14 +92,10 @@ export type PatchNotificationsIdRead404 = {
   details?: any | null;
 };
 
-export type PatchNotificationsIdReadMutationResponse =
-  PatchNotificationsIdRead200;
+export type PatchNotificationsIdReadMutationResponse = PatchNotificationsIdRead200;
 
 export type PatchNotificationsIdReadMutation = {
   Response: PatchNotificationsIdRead200;
   PathParams: PatchNotificationsIdReadPathParams;
-  Errors:
-    | PatchNotificationsIdRead400
-    | PatchNotificationsIdRead401
-    | PatchNotificationsIdRead404;
+  Errors: PatchNotificationsIdRead400 | PatchNotificationsIdRead401 | PatchNotificationsIdRead404;
 };

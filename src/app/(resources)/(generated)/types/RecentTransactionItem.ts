@@ -4,8 +4,8 @@
  */
 
 export const recentTransactionItemTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type RecentTransactionItemTypeEnumKey =

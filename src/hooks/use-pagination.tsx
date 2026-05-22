@@ -1,6 +1,6 @@
-import { PaginationType } from "@/app/(types)/pagination.type";
-import { parseAsInteger, useQueryStates } from "nuqs";
-import { useCallback, useEffect, useState } from "react";
+import { PaginationType } from '@/app/(types)/pagination.type';
+import { parseAsInteger, useQueryStates } from 'nuqs';
+import { useCallback, useEffect, useState } from 'react';
 
 interface UsePaginationProps {
   initialPage?: number;
@@ -25,14 +25,10 @@ export const usePagination = ({
     if (serverPagination) {
       setPaginationParams({
         page: Math.max(1, serverPagination.page as number),
-        limit: Math.min(
-          Math.max(1, serverPagination.limit as number),
-          maxLimit
-        ),
+        limit: Math.min(Math.max(1, serverPagination.limit as number), maxLimit),
       });
     }
   }, [serverPagination, maxLimit]);
-    
 
   const resetPagination = useCallback(() => {
     setPaginationParams({

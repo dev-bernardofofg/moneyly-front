@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { SubscriptionCandidate } from "./SubscriptionCandidate.ts";
+import type { SubscriptionCandidate } from './SubscriptionCandidate.ts';
 
 /**
  * @description Sucesso
@@ -63,8 +63,7 @@ export type GetTransactionsSubscriptions401 = {
   details?: any | null;
 };
 
-export type GetTransactionsSubscriptionsQueryResponse =
-  GetTransactionsSubscriptions200;
+export type GetTransactionsSubscriptionsQueryResponse = GetTransactionsSubscriptions200;
 
 export type GetTransactionsSubscriptionsQuery = {
   Response: GetTransactionsSubscriptions200;

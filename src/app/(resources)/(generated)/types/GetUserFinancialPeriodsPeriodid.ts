@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { FinancialPeriod } from "./FinancialPeriod.ts";
+import type { FinancialPeriod } from './FinancialPeriod.ts';
 
 export type GetUserFinancialPeriodsPeriodidPathParams = {
   /**
@@ -92,8 +92,7 @@ export type GetUserFinancialPeriodsPeriodid404 = {
   details?: any | null;
 };
 
-export type GetUserFinancialPeriodsPeriodidQueryResponse =
-  GetUserFinancialPeriodsPeriodid200;
+export type GetUserFinancialPeriodsPeriodidQueryResponse = GetUserFinancialPeriodsPeriodid200;
 
 export type GetUserFinancialPeriodsPeriodidQuery = {
   Response: GetUserFinancialPeriodsPeriodid200;

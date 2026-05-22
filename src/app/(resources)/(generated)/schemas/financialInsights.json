@@ -60,12 +60,7 @@
         "expenseChange": { "type": "number", "nullable": true },
         "incomeChange": { "type": "number", "nullable": true }
       },
-      "required": [
-        "previousMonth",
-        "currentMonth",
-        "expenseChange",
-        "incomeChange"
-      ]
+      "required": ["previousMonth", "currentMonth", "expenseChange", "incomeChange"]
     },
     "allTime": {
       "type": "object",
@@ -146,12 +141,6 @@
       }
     }
   },
-  "required": [
-    "currentPeriod",
-    "trend",
-    "allTime",
-    "topCategories",
-    "monthlyHistory"
-  ],
+  "required": ["currentPeriod", "trend", "allTime", "topCategories", "monthlyHistory"],
   "x-readme-ref-name": "FinancialInsights"
 }

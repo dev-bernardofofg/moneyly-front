@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { WifiOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { WifiOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export function OfflineIndicator() {
   const [isOffline, setIsOffline] = useState(false);
@@ -13,12 +13,12 @@ export function OfflineIndicator() {
     // Verificar estado inicial
     setIsOffline(!navigator.onLine);
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
@@ -32,4 +32,4 @@ export function OfflineIndicator() {
       </div>
     </div>
   );
-} 
+}

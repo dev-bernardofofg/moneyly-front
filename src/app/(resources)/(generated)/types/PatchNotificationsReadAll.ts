@@ -66,8 +66,7 @@ export type PatchNotificationsReadAll401 = {
   details?: any | null;
 };
 
-export type PatchNotificationsReadAllMutationResponse =
-  PatchNotificationsReadAll200;
+export type PatchNotificationsReadAllMutationResponse = PatchNotificationsReadAll200;
 
 export type PatchNotificationsReadAllMutation = {
   Response: PatchNotificationsReadAll200;

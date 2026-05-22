@@ -1,16 +1,16 @@
-import { FieldValues, Path, UseFormSetError } from "react-hook-form";
-import { CustomAxiosError, ErrorDetails } from "../(types)/error.type";
+import { FieldValues, Path, UseFormSetError } from 'react-hook-form';
+import { CustomAxiosError, ErrorDetails } from '../(types)/error.type';
 
 export const extractApiErrorMessage = (data: unknown): string => {
-  if (!data || typeof data !== 'object') return "Erro inesperado"
-  const d = data as Record<string, unknown>
-  if (typeof d.error === 'string') return d.error
-  if (typeof d.message === 'string') return d.message
+  if (!data || typeof data !== 'object') return 'Erro inesperado';
+  const d = data as Record<string, unknown>;
+  if (typeof d.error === 'string') return d.error;
+  if (typeof d.message === 'string') return d.message;
   if (d.details && typeof d.details === 'object' && 'message' in d.details) {
-    return String((d.details as Record<string, unknown>).message)
+    return String((d.details as Record<string, unknown>).message);
   }
-  return "Erro inesperado"
-}
+  return 'Erro inesperado';
+};
 
 export const getErrorMessage = (error: CustomAxiosError) => {
   if (error?.data?.error) {
@@ -21,11 +21,11 @@ export const getErrorMessage = (error: CustomAxiosError) => {
     return error.data.details.message;
   }
 
-  if (error?.data && "message" in error.data) {
+  if (error?.data && 'message' in error.data) {
     return (error.data as { message: string }).message;
   }
 
-  return error?.message || "Erro inesperado";
+  return error?.message || 'Erro inesperado';
 };
 
 export const setFormFieldErrors = <T extends FieldValues>(
@@ -34,17 +34,15 @@ export const setFormFieldErrors = <T extends FieldValues>(
   fields: Path<T>[]
 ) => {
   fields.forEach((field) => {
-    const fieldError = getFieldError(error, field as string)
-    if (fieldError) setError(field, { message: fieldError })
-  })
-}
+    const fieldError = getFieldError(error, field as string);
+    if (fieldError) setError(field, { message: fieldError });
+  });
+};
 
 export const getFieldError = (error: CustomAxiosError, fieldName: string) => {
-  const details = error?.data?.details
+  const details = error?.data?.details;
   if (details && Array.isArray(details)) {
-    const fieldError = details.find(
-      (detail: ErrorDetails) => detail.name === fieldName
-    );
+    const fieldError = details.find((detail: ErrorDetails) => detail.name === fieldName);
     return fieldError?.message || null;
   }
   return null;

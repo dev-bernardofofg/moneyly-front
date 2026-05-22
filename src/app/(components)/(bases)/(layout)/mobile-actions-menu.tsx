@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { ArrowDownCircleIcon } from "lucide-react";
-import { Children, isValidElement, ReactNode } from "react";
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ArrowDownCircleIcon } from 'lucide-react';
+import { Children, isValidElement, ReactNode } from 'react';
 
 interface MobileActionsMenuProps {
   actions: ReactNode;
@@ -30,11 +30,7 @@ const renderActionsInDropdown = (actions: ReactNode): ReactNode => {
   }
 
   if (isValidElement(actions)) {
-    return (
-      <DropdownMenuItem asChild>
-        {actions}
-      </DropdownMenuItem>
-    );
+    return <DropdownMenuItem asChild>{actions}</DropdownMenuItem>;
   }
 
   return actions;
@@ -51,4 +47,4 @@ export const MobileActionsMenu = ({ actions }: MobileActionsMenuProps) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}; 
+};

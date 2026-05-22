@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   type ChartConfig,
@@ -6,32 +6,57 @@ import {
   getColorsCount,
   getLoadingData,
   LoadingIndicator,
-} from "@/components/evilcharts/ui/chart";
-import { EvilBrush, useEvilBrush, type EvilBrushRange } from "@/components/evilcharts/ui/evil-brush";
+} from '@/components/evilcharts/ui/chart';
+import {
+  EvilBrush,
+  useEvilBrush,
+  type EvilBrushRange,
+} from '@/components/evilcharts/ui/evil-brush';
 import {
   ChartTooltip,
   ChartTooltipContent,
   type TooltipRoundness,
   type TooltipVariant,
-} from "@/components/evilcharts/ui/tooltip";
-import { ChartLegend, ChartLegendContent, type ChartLegendVariant } from "@/components/evilcharts/ui/legend";
-import { Bar, BarChart, CartesianGrid, Customized, Rectangle, ReferenceLine, XAxis, YAxis } from "recharts";
-import { useCallback, useId, useMemo, useRef, useState, type ComponentProps, type ReactNode } from "react";
-import { ChartBackground, type BackgroundVariant } from "@/components/evilcharts/ui/background";
-import { RectRadius } from "recharts/types/shape/Rectangle";
-import { motion } from "motion/react";
+} from '@/components/evilcharts/ui/tooltip';
+import {
+  ChartLegend,
+  ChartLegendContent,
+  type ChartLegendVariant,
+} from '@/components/evilcharts/ui/legend';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Customized,
+  Rectangle,
+  ReferenceLine,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
+  useCallback,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from 'react';
+import { ChartBackground, type BackgroundVariant } from '@/components/evilcharts/ui/background';
+import { RectRadius } from 'recharts/types/shape/Rectangle';
+import { motion } from 'motion/react';
 
 // Constants
 const DEFAULT_BAR_RADIUS = 2;
-const LOADING_BAR_DATA_KEY = "loading";
+const LOADING_BAR_DATA_KEY = 'loading';
 const LOADING_ANIMATION_DURATION = 2000; // in milliseconds
 
 type ChartProps = ComponentProps<typeof BarChart>;
 type XAxisProps = ComponentProps<typeof XAxis>;
 type YAxisProps = ComponentProps<typeof YAxis>;
-type BarVariant = "default" | "hatched" | "duotone" | "duotone-reverse" | "gradient" | "stripped";
-type StackType = "default" | "stacked" | "percent";
-type BarLayout = "vertical" | "horizontal";
+type BarVariant = 'default' | 'hatched' | 'duotone' | 'duotone-reverse' | 'gradient' | 'stripped';
+type StackType = 'default' | 'stacked' | 'percent';
+type BarLayout = 'vertical' | 'horizontal';
 
 // Validating Types to make sure user have provided valid data according to chartConfig
 type ValidateConfigKeys<TData, TConfig> = {
@@ -122,9 +147,9 @@ export function EvilBarChart<
   xAxisProps,
   yAxisProps,
   defaultSelectedDataKey = null,
-  barVariant = "default",
-  stackType = "default",
-  layout = "vertical",
+  barVariant = 'default',
+  stackType = 'default',
+  layout = 'vertical',
   barRadius = DEFAULT_BAR_RADIUS,
   barGap,
   barCategoryGap,
@@ -156,7 +181,7 @@ export function EvilBarChart<
   const [isMouseInChart, setIsMouseInChart] = useState(false);
   const [hoveredDataIndex, setHoveredDataIndex] = useState<number | null>(null);
   const { loadingData, onShimmerExit } = useLoadingData(isLoading, loadingBars);
-  const chartId = useId().replace(/:/g, ""); // Remove colons for valid CSS selectors
+  const chartId = useId().replace(/:/g, ''); // Remove colons for valid CSS selectors
 
   // ── Zoom state ──────────────────────────────────────────────────────────
   const { visibleData, brushProps } = useEvilBrush({ data });
@@ -164,14 +189,18 @@ export function EvilBarChart<
 
   const averageByKey = useMemo(() => {
     if (!showAverageLine || isLoading) return {} as Record<string, number>;
-    return Object.keys(chartConfig).reduce((acc, key) => {
-      const values = displayData.map(d => Number(d[key] ?? 0)).filter(v => v > 0);
-      acc[key] = values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0;
-      return acc;
-    }, {} as Record<string, number>);
+    return Object.keys(chartConfig).reduce(
+      (acc, key) => {
+        const values = displayData.map((d) => Number(d[key] ?? 0)).filter((v) => v > 0);
+        acc[key] = values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
   }, [displayData, chartConfig, showAverageLine, isLoading]);
 
-  const hoveredEntry = !isLoading && hoveredDataIndex != null ? displayData[hoveredDataIndex] : null;
+  const hoveredEntry =
+    !isLoading && hoveredDataIndex != null ? displayData[hoveredDataIndex] : null;
 
   // Wrapper function to update state and call parent callback
   const handleSelectionChange = useCallback(
@@ -181,11 +210,11 @@ export function EvilBarChart<
         onSelectionChange(newSelectedDataKey);
       }
     },
-    [onSelectionChange, isClickable],
+    [onSelectionChange, isClickable]
   );
 
-  const isStacked = stackType === "stacked" || stackType === "percent";
-  const isHorizontal = layout === "horizontal";
+  const isStacked = stackType === 'stacked' || stackType === 'percent';
+  const isHorizontal = layout === 'horizontal';
 
   return (
     <ChartContainer
@@ -218,11 +247,11 @@ export function EvilBarChart<
       <BarChart
         id="evil-charts-bar-chart"
         accessibilityLayer
-        layout={isHorizontal ? "vertical" : "horizontal"}
+        layout={isHorizontal ? 'vertical' : 'horizontal'}
         data={isLoading ? loadingData : displayData}
         barGap={barGap}
         barCategoryGap={barCategoryGap}
-        stackOffset={stackType === "percent" ? "expand" : undefined}
+        stackOffset={stackType === 'percent' ? 'expand' : undefined}
         onMouseMove={(state) => {
           setIsMouseInChart(true);
           if (showHoverBounds && state.activeTooltipIndex != null) {
@@ -258,7 +287,7 @@ export function EvilBarChart<
         {xDataKey && !isLoading && (
           <XAxis
             dataKey={isHorizontal ? undefined : xDataKey}
-            type={isHorizontal ? "number" : "category"}
+            type={isHorizontal ? 'number' : 'category'}
             tickLine={false}
             axisLine={false}
             tickMargin={8}
@@ -270,7 +299,7 @@ export function EvilBarChart<
         {(isHorizontal ? xDataKey : yDataKey) && !isLoading && (
           <YAxis
             dataKey={isHorizontal ? xDataKey : yDataKey}
-            type={isHorizontal ? "category" : "number"}
+            type={isHorizontal ? 'category' : 'number'}
             tickLine={false}
             axisLine={false}
             tickMargin={8}
@@ -280,26 +309,32 @@ export function EvilBarChart<
             {...yAxisProps}
             tick={
               showHoverBounds && hoveredEntry && !isHorizontal
-                ? ((tickProps: { x?: number | string; y?: number | string; payload?: { value: number | string } }) => {
-                  const fmt = yAxisProps?.tickFormatter as ((v: number | string) => string) | undefined;
-                  const tx = Number(tickProps.x);
-                  const ty = Number(tickProps.y);
-                  const tv = tickProps.payload?.value ?? "";
-                  return (
-                    <text
-                      x={tx}
-                      y={ty}
-                      dy={4}
-                      textAnchor="end"
-                      fontSize={11}
-                      fill="hsl(var(--muted-foreground))"
-                      opacity={0.25}
-                    >
-                      {fmt ? fmt(tv) : String(tv)}
-                    </text>
-                  );
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                }) as any
+                ? (((tickProps: {
+                    x?: number | string;
+                    y?: number | string;
+                    payload?: { value: number | string };
+                  }) => {
+                    const fmt = yAxisProps?.tickFormatter as
+                      | ((v: number | string) => string)
+                      | undefined;
+                    const tx = Number(tickProps.x);
+                    const ty = Number(tickProps.y);
+                    const tv = tickProps.payload?.value ?? '';
+                    return (
+                      <text
+                        x={tx}
+                        y={ty}
+                        dy={4}
+                        textAnchor="end"
+                        fontSize={11}
+                        fill="hsl(var(--muted-foreground))"
+                        opacity={0.25}
+                      >
+                        {fmt ? fmt(tv) : String(tv)}
+                      </text>
+                    );
+                     
+                  }) as any)
                 : yAxisProps?.tick
             }
           />
@@ -348,10 +383,10 @@ export function EvilBarChart<
               <Bar
                 key={dataKey}
                 dataKey={dataKey}
-                stackId={isStacked ? "evil-stacked" : undefined}
+                stackId={isStacked ? 'evil-stacked' : undefined}
                 fill={`url(#${chartId}-colors-${dataKey})`}
                 radius={barRadius}
-                style={isClickable || enableHoverHighlight ? { cursor: "pointer" } : undefined}
+                style={isClickable || enableHoverHighlight ? { cursor: 'pointer' } : undefined}
                 shape={(props: unknown) => (
                   <CustomBar {...(props as BarShapeProps)} {...customBarProps} />
                 )}
@@ -362,38 +397,44 @@ export function EvilBarChart<
             );
           })}
         {/* ======== AVERAGE LINES (no inline labels — rendered via Customized) ======== */}
-        {showAverageLine && Object.entries(averageByKey).map(([key, avg]) =>
-          avg > 0 && (
-            <ReferenceLine
-              key={`avg-${key}`}
-              y={avg}
-              stroke={`var(--color-${key}-0)`}
-              strokeDasharray="5 3"
-              strokeOpacity={hoveredEntry ? 0.25 : 0.55}
-              strokeWidth={1}
-            />
-          )
-        )}
+        {showAverageLine &&
+          Object.entries(averageByKey).map(
+            ([key, avg]) =>
+              avg > 0 && (
+                <ReferenceLine
+                  key={`avg-${key}`}
+                  y={avg}
+                  stroke={`var(--color-${key}-0)`}
+                  strokeDasharray="5 3"
+                  strokeOpacity={hoveredEntry ? 0.25 : 0.55}
+                  strokeWidth={1}
+                />
+              )
+          )}
         {/* ======== HOVER VALUE REFERENCE LINES ======== */}
-        {showHoverBounds && hoveredEntry && Object.keys(chartConfig).map(key => {
-          const value = Number(hoveredEntry[key] ?? 0);
-          if (!value) return null;
-          return (
-            <ReferenceLine
-              key={`hover-ref-${key}`}
-              y={value}
-              stroke={`var(--color-${key}-0)`}
-              strokeDasharray="3 2"
-              strokeOpacity={0.5}
-              strokeWidth={1}
-            />
-          );
-        })}
+        {showHoverBounds &&
+          hoveredEntry &&
+          Object.keys(chartConfig).map((key) => {
+            const value = Number(hoveredEntry[key] ?? 0);
+            if (!value) return null;
+            return (
+              <ReferenceLine
+                key={`hover-ref-${key}`}
+                y={value}
+                stroke={`var(--color-${key}-0)`}
+                strokeDasharray="3 2"
+                strokeOpacity={0.5}
+                strokeWidth={1}
+              />
+            );
+          })}
         {/* ======== AVERAGE PILL LABELS ON Y AXIS (always shown) ======== */}
         {showAverageLine && (
           <Customized
             component={(props: Record<string, unknown>) => {
-              const yAxisMap = props.yAxisMap as Record<string, { scale: (v: number) => number }> | undefined;
+              const yAxisMap = props.yAxisMap as
+                | Record<string, { scale: (v: number) => number }>
+                | undefined;
               const offset = props.offset as { left: number } | undefined;
               if (!yAxisMap || !offset) return null;
               const yAxis = Object.values(yAxisMap)[0];
@@ -427,16 +468,18 @@ export function EvilBarChart<
         {showHoverBounds && hoveredEntry && (
           <Customized
             component={(props: Record<string, unknown>) => {
-              const yAxisMap = props.yAxisMap as Record<string, { scale: (v: number) => number }> | undefined;
+              const yAxisMap = props.yAxisMap as
+                | Record<string, { scale: (v: number) => number }>
+                | undefined;
               const offset = props.offset as { left: number } | undefined;
               if (!yAxisMap || !offset) return null;
               const yAxis = Object.values(yAxisMap)[0];
               if (!yAxis?.scale) return null;
 
               const entries = Object.keys(chartConfig)
-                .map(key => ({ key, value: Number(hoveredEntry[key] ?? 0) }))
-                .filter(e => e.value > 0)
-                .map(e => ({ ...e, y: yAxis.scale(e.value) }))
+                .map((key) => ({ key, value: Number(hoveredEntry[key] ?? 0) }))
+                .filter((e) => e.value > 0)
+                .map((e) => ({ ...e, y: yAxis.scale(e.value) }))
                 .sort((a, b) => a.y - b.y); // top to bottom
 
               if (!entries.length) return null;
@@ -450,29 +493,51 @@ export function EvilBarChart<
                 adjusted.push({ ...e, labelY });
               });
 
-              const ys = entries.map(e => e.y);
+              const ys = entries.map((e) => e.y);
               const yTop = Math.min(...ys);
               const yBottom = Math.max(...ys);
               const bx = offset.left - 6;
               const showBracket = entries.length > 1 && yBottom - yTop > 8;
-              const delta = entries.length > 1
-                ? Math.abs(entries[entries.length - 1].value - entries[0].value)
-                : 0;
+              const delta =
+                entries.length > 1
+                  ? Math.abs(entries[entries.length - 1].value - entries[0].value)
+                  : 0;
 
               return (
                 <motion.g
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
                 >
                   {showBracket && (
                     <g>
-                      <line x1={bx} y1={yTop} x2={bx} y2={yBottom}
-                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
-                      <line x1={bx - 3} y1={yTop} x2={bx + 3} y2={yTop}
-                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
-                      <line x1={bx - 3} y1={yBottom} x2={bx + 3} y2={yBottom}
-                        stroke="hsl(var(--muted-foreground))" strokeOpacity={0.5} strokeWidth={1} />
+                      <line
+                        x1={bx}
+                        y1={yTop}
+                        x2={bx}
+                        y2={yBottom}
+                        stroke="hsl(var(--muted-foreground))"
+                        strokeOpacity={0.5}
+                        strokeWidth={1}
+                      />
+                      <line
+                        x1={bx - 3}
+                        y1={yTop}
+                        x2={bx + 3}
+                        y2={yTop}
+                        stroke="hsl(var(--muted-foreground))"
+                        strokeOpacity={0.5}
+                        strokeWidth={1}
+                      />
+                      <line
+                        x1={bx - 3}
+                        y1={yBottom}
+                        x2={bx + 3}
+                        y2={yBottom}
+                        stroke="hsl(var(--muted-foreground))"
+                        strokeOpacity={0.5}
+                        strokeWidth={1}
+                      />
                       <DeltaBadge
                         x={bx}
                         y={(yTop + yBottom) / 2}
@@ -515,19 +580,19 @@ export function EvilBarChart<
           {/* Shared vertical color gradient - always rendered for fill */}
           <VerticalColorGradientStyle chartConfig={chartConfig} chartId={chartId} />
           {/* Variant-specific styles */}
-          {barVariant === "hatched" && (
+          {barVariant === 'hatched' && (
             <HatchedPatternStyle chartConfig={chartConfig} chartId={chartId} />
           )}
-          {barVariant === "duotone" && (
+          {barVariant === 'duotone' && (
             <DuotonePatternStyle chartConfig={chartConfig} chartId={chartId} />
           )}
-          {barVariant === "duotone-reverse" && (
+          {barVariant === 'duotone-reverse' && (
             <DuotoneReversePatternStyle chartConfig={chartConfig} chartId={chartId} />
           )}
-          {barVariant === "gradient" && (
+          {barVariant === 'gradient' && (
             <GradientPatternStyle chartConfig={chartConfig} chartId={chartId} />
           )}
-          {barVariant === "stripped" && (
+          {barVariant === 'stripped' && (
             <StrippedPatternStyle chartConfig={chartConfig} chartId={chartId} />
           )}
           {/* Buffer bar hatched pattern - always rendered when enableBufferBar */}
@@ -599,19 +664,15 @@ const CustomBar = (props: CustomBarProps) => {
     onClick,
   } = props;
 
-  const index = typeof props.index === "number" ? props.index : -1;
+  const index = typeof props.index === 'number' ? props.index : -1;
   const isLastBar = enableBufferBar && dataLength > 0 && index === dataLength - 1;
 
   const payload = props.payload as Record<string, number> | undefined;
-  const siblingsAreZero = allDataKeys
-    .filter((k) => k !== dataKey)
-    .every((k) => !payload?.[k]);
+  const siblingsAreZero = allDataKeys.filter((k) => k !== dataKey).every((k) => !payload?.[k]);
   const barIndex = allDataKeys.indexOf(dataKey);
   const N = allDataKeys.length;
-  const barX = siblingsAreZero && N > 1
-    ? x + (N / 2 - barIndex - 0.5) * (width + groupBarGap)
-    : x;
-  const isStripped = barVariant === "stripped";
+  const barX = siblingsAreZero && N > 1 ? x + (N / 2 - barIndex - 0.5) * (width + groupBarGap) : x;
+  const isStripped = barVariant === 'stripped';
 
   const getFill = () => {
     // Buffer bar: last bar always uses hatched pattern
@@ -620,15 +681,15 @@ const CustomBar = (props: CustomBarProps) => {
     }
 
     switch (barVariant) {
-      case "hatched":
+      case 'hatched':
         return `url(#${chartId}-hatched-${dataKey})`;
-      case "duotone":
+      case 'duotone':
         return `url(#${chartId}-duotone-${dataKey})`;
-      case "duotone-reverse":
+      case 'duotone-reverse':
         return `url(#${chartId}-duotone-reverse-${dataKey})`;
-      case "gradient":
+      case 'gradient':
         return `url(#${chartId}-gradient-${dataKey})`;
-      case "stripped":
+      case 'stripped':
         return `url(#${chartId}-stripped-${dataKey})`;
       default:
         return `url(#${chartId}-colors-${dataKey})`;
@@ -643,7 +704,7 @@ const CustomBar = (props: CustomBarProps) => {
     isMouseInChart,
     isActive,
   });
-  const cursorStyle = isClickable || enableHoverHighlight ? { cursor: "pointer" } : undefined;
+  const cursorStyle = isClickable || enableHoverHighlight ? { cursor: 'pointer' } : undefined;
 
   // For stripped: top corners rounded, bottom flat [topLeft, topRight, bottomRight, bottomLeft]
   // For others: all corners rounded
@@ -1038,7 +1099,11 @@ const GradientPatternStyle = ({
           y2="1"
         >
           <stop offset="0%" stopColor={`var(--color-${dataKey}-0)`} stopOpacity={1} />
-          <stop offset="100%" stopColor={`var(--color-${dataKey}-1, var(--color-${dataKey}-0))`} stopOpacity={0.3} />
+          <stop
+            offset="100%"
+            stopColor={`var(--color-${dataKey}-1, var(--color-${dataKey}-0))`}
+            stopOpacity={0.3}
+          />
         </linearGradient>
       ))}
     </>
@@ -1125,7 +1190,7 @@ const GlowFilterStyle = ({ chartId, glowingBars }: { chartId: string; glowingBar
 const generateEasedGradientStops = (
   steps: number = 17,
   minOpacity: number = 0.05,
-  maxOpacity: number = 0.9,
+  maxOpacity: number = 0.9
 ) => {
   return Array.from({ length: steps }, (_, i) => {
     const t = i / (steps - 1);
@@ -1150,7 +1215,7 @@ export function useLoadingData(isLoading: boolean, loadingBars: number = 12) {
   const loadingData = useMemo(
     () => getLoadingData(loadingBars, 20, 80),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loadingBars, loadingDataKey],
+    [loadingBars, loadingDataKey]
   );
 
   return { loadingData, onShimmerExit };
@@ -1198,12 +1263,12 @@ const LoadingBarPatternStyle = ({
           animate={{ x: endX }}
           transition={{
             duration: LOADING_ANIMATION_DURATION / 1000,
-            ease: "linear",
+            ease: 'linear',
             repeat: Infinity,
-            repeatType: "loop",
+            repeatType: 'loop',
           }}
           onUpdate={(latest) => {
-            const xValue = typeof latest.x === "number" ? latest.x : startX;
+            const xValue = typeof latest.x === 'number' ? latest.x : startX;
             const lastX = lastXRef.current;
             if (xValue >= 1 && lastX < 1) {
               onShimmerExit();
@@ -1264,7 +1329,7 @@ const YAxisPill = ({
   color,
   formatter,
   prefix,
-  variant = "solid",
+  variant = 'solid',
 }: {
   x: number;
   y: number;
@@ -1272,7 +1337,7 @@ const YAxisPill = ({
   color: string;
   formatter?: (v: number | string) => ReactNode;
   prefix?: string;
-  variant?: "solid" | "ghost";
+  variant?: 'solid' | 'ghost';
 }) => {
   const text = formatter ? String(formatter(value)) : String(value);
   const full = prefix ? `${prefix} ${text}` : text;
@@ -1283,7 +1348,7 @@ const YAxisPill = ({
   const w = textWidth + padX * 2;
   const px = x - w - 2; // pill ends 2px left of chart area
   const py = y - height / 2;
-  const isSolid = variant === "solid";
+  const isSolid = variant === 'solid';
 
   return (
     <g>
@@ -1293,7 +1358,7 @@ const YAxisPill = ({
         width={w}
         height={height}
         rx={3}
-        fill={isSolid ? color : "transparent"}
+        fill={isSolid ? color : 'transparent'}
         fillOpacity={isSolid ? 0.18 : 0}
         stroke={color}
         strokeOpacity={isSolid ? 0.7 : 0.4}

@@ -1,19 +1,19 @@
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-type LogoVariant = 'gradient' | 'solid' | 'mono-black' | 'mono-white' | 'reverse'
-type LogoLockup = 'horizontal' | 'stacked' | 'mark'
+type LogoVariant = 'gradient' | 'solid' | 'mono-black' | 'mono-white' | 'reverse';
+type LogoLockup = 'horizontal' | 'stacked' | 'mark';
 
 interface LogoProps {
-  className?: string
+  className?: string;
   /** Show the "Moneyly" wordmark (back-compat alias of lockup !== 'mark'). */
-  fullName?: boolean
-  href?: boolean
-  animate?: boolean
+  fullName?: boolean;
+  href?: boolean;
+  animate?: boolean;
   /** Mark size in px (box side). Default 48. */
-  size?: number
-  variant?: LogoVariant
-  lockup?: LogoLockup
+  size?: number;
+  variant?: LogoVariant;
+  lockup?: LogoLockup;
 }
 
 /** Canonical mark — design system §02. 24-unit glyph, 55% occupancy. */
@@ -23,7 +23,7 @@ const MARK_BG: Record<LogoVariant, string> = {
   'mono-black': 'bg-[#0b0f0c]',
   'mono-white': 'bg-white',
   reverse: 'bg-primary',
-}
+};
 
 /** Glyph stroke colour per variant. */
 const MARK_STROKE: Record<LogoVariant, string> = {
@@ -32,23 +32,22 @@ const MARK_STROKE: Record<LogoVariant, string> = {
   'mono-black': '#ffffff',
   'mono-white': 'hsl(144 53% 4%)',
   reverse: 'hsl(127 30% 18%)',
-}
+};
 
 const Mark = ({
   size,
   variant,
   animate,
 }: {
-  size: number
-  variant: LogoVariant
-  animate: boolean
+  size: number;
+  variant: LogoVariant;
+  animate: boolean;
 }) => (
   <div
     className={cn(
       'flex items-center justify-center shrink-0',
       MARK_BG[variant],
-      variant === 'gradient' &&
-        'shadow-[0_14px_32px_-10px_hsl(127_44%_50%/0.55)]',
+      variant === 'gradient' && 'shadow-[0_14px_32px_-10px_hsl(127_44%_50%/0.55)]',
       animate && 'animate-float'
     )}
     style={{ width: size, height: size, borderRadius: size * 0.172 }}
@@ -66,7 +65,7 @@ const Mark = ({
       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
     </svg>
   </div>
-)
+);
 
 export const Logo = ({
   className,
@@ -77,18 +76,12 @@ export const Logo = ({
   variant = 'gradient',
   lockup,
 }: LogoProps) => {
-  const resolvedLockup: LogoLockup =
-    lockup ?? (fullName ? 'horizontal' : 'mark')
-  const showWord = resolvedLockup !== 'mark'
-  const stacked = resolvedLockup === 'stacked'
+  const resolvedLockup: LogoLockup = lockup ?? (fullName ? 'horizontal' : 'mark');
+  const showWord = resolvedLockup !== 'mark';
+  const stacked = resolvedLockup === 'stacked';
 
   const content = (
-    <div
-      className={cn(
-        'flex items-center justify-center gap-2',
-        stacked && 'flex-col'
-      )}
-    >
+    <div className={cn('flex items-center justify-center gap-2', stacked && 'flex-col')}>
       <Mark size={size} variant={variant} animate={animate} />
       {showWord && (
         <span className="text-lg font-bold tracking-[-0.02em] text-slate-950 dark:text-white">
@@ -96,7 +89,7 @@ export const Logo = ({
         </span>
       )}
     </div>
-  )
+  );
 
   return (
     <div className={cn('flex items-center justify-center', className)}>
@@ -108,5 +101,5 @@ export const Logo = ({
         content
       )}
     </div>
-  )
-}
+  );
+};

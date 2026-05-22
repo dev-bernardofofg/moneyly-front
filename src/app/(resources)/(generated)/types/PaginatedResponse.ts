@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Pagination } from "./Pagination.ts";
+import type { Pagination } from './Pagination.ts';
 
 export type PaginatedResponse = {
   /**

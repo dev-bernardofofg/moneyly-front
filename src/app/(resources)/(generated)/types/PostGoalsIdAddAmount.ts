@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Goal } from "./Goal.ts";
+import type { Goal } from './Goal.ts';
 
 export type PostGoalsIdAddAmountPathParams = {
   /**
@@ -102,8 +102,5 @@ export type PostGoalsIdAddAmountMutation = {
   Response: PostGoalsIdAddAmount200;
   Request: PostGoalsIdAddAmountMutationRequest;
   PathParams: PostGoalsIdAddAmountPathParams;
-  Errors:
-    | PostGoalsIdAddAmount400
-    | PostGoalsIdAddAmount401
-    | PostGoalsIdAddAmount404;
+  Errors: PostGoalsIdAddAmount400 | PostGoalsIdAddAmount401 | PostGoalsIdAddAmount404;
 };

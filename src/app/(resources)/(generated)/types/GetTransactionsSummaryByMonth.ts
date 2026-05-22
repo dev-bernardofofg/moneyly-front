@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { MonthlySummaryItem } from "./MonthlySummaryItem.ts";
+import type { MonthlySummaryItem } from './MonthlySummaryItem.ts';
 
 /**
  * @description Sucesso
@@ -63,8 +63,7 @@ export type GetTransactionsSummaryByMonth401 = {
   details?: any | null;
 };
 
-export type GetTransactionsSummaryByMonthQueryResponse =
-  GetTransactionsSummaryByMonth200;
+export type GetTransactionsSummaryByMonthQueryResponse = GetTransactionsSummaryByMonth200;
 
 export type GetTransactionsSummaryByMonthQuery = {
   Response: GetTransactionsSummaryByMonth200;

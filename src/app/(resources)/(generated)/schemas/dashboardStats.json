@@ -7,12 +7,6 @@
     "percentUsed": { "type": "number", "nullable": true },
     "remainingBudget": { "type": "number" }
   },
-  "required": [
-    "totalIncome",
-    "totalExpense",
-    "balance",
-    "percentUsed",
-    "remainingBudget"
-  ],
+  "required": ["totalIncome", "totalExpense", "balance", "percentUsed", "remainingBudget"],
   "x-readme-ref-name": "DashboardStats"
 }

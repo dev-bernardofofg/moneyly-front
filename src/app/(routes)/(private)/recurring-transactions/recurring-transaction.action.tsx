@@ -1,5 +1,5 @@
-import { useGetRecurringTransactions } from "@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions";
-import { usePagination } from "@/hooks/use-pagination";
+import { useGetRecurringTransactions } from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
+import { usePagination } from '@/hooks/use-pagination';
 
 export const useRecurringTransactionsAction = () => {
   const { paginationParams, setPaginationParams } = usePagination();

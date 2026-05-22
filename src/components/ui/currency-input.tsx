@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import * as React from "react";
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 interface CurrencyInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   value?: number;
@@ -9,7 +9,7 @@ interface CurrencyInputProps extends Omit<React.InputHTMLAttributes<HTMLInputEle
 }
 
 const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
-  ({ className, value = 0, onChange, placeholder = "0,00", ...props }, ref) => {
+  ({ className, value = 0, onChange, placeholder = '0,00', ...props }, ref) => {
     const formatCurrency = (value: number): string => {
       return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
@@ -54,7 +54,7 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
       <input
         type="text"
         className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          'flex h-10 w-full rounded-md border border-input bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
           className
         )}
         ref={ref}
@@ -69,6 +69,6 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
   }
 );
 
-CurrencyInput.displayName = "CurrencyInput";
+CurrencyInput.displayName = 'CurrencyInput';
 
 export { CurrencyInput };

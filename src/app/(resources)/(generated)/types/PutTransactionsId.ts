@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.ts";
+import type { Transaction } from './Transaction.ts';
 
 export type PutTransactionsIdPathParams = {
   /**
@@ -93,8 +93,8 @@ export type PutTransactionsId404 = {
 };
 
 export const putTransactionsIdMutationRequestTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PutTransactionsIdMutationRequestTypeEnumKey =

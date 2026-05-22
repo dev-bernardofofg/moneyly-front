@@ -1,9 +1,9 @@
-import { usePeriod } from "@/app/(contexts)/period-provider";
-import { getBudgets } from "@/app/(resources)/(generated)/hooks/budgets/budgets";
-import { getGoals } from "@/app/(resources)/(generated)/hooks/goals/goals";
+import { usePeriod } from '@/app/(contexts)/period-provider';
+import { getBudgets } from '@/app/(resources)/(generated)/hooks/budgets/budgets';
+import { getGoals } from '@/app/(resources)/(generated)/hooks/goals/goals';
 
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 export const usePeriodInvalidation = () => {
   const queryClient = useQueryClient();

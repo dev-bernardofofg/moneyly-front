@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { RecurringTransaction } from "./RecurringTransaction.ts";
+import type { RecurringTransaction } from './RecurringTransaction.ts';
 
 /**
  * @description Sucesso
@@ -64,18 +64,18 @@ export type PostRecurringTransactions401 = {
 };
 
 export const postRecurringTransactionsMutationRequestTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PostRecurringTransactionsMutationRequestTypeEnumKey =
   (typeof postRecurringTransactionsMutationRequestTypeEnum)[keyof typeof postRecurringTransactionsMutationRequestTypeEnum];
 
 export const postRecurringTransactionsMutationRequestFrequencyEnum = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type PostRecurringTransactionsMutationRequestFrequencyEnumKey =
@@ -129,8 +129,7 @@ export type PostRecurringTransactionsMutationRequest = {
   startDate?: string;
 };
 
-export type PostRecurringTransactionsMutationResponse =
-  PostRecurringTransactions201;
+export type PostRecurringTransactionsMutationResponse = PostRecurringTransactions201;
 
 export type PostRecurringTransactionsMutation = {
   Response: PostRecurringTransactions201;

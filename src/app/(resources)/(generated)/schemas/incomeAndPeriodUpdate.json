@@ -6,11 +6,6 @@
     "financialDayEnd": { "type": "integer" },
     "firstAccess": { "type": "boolean" }
   },
-  "required": [
-    "monthlyIncome",
-    "financialDayStart",
-    "financialDayEnd",
-    "firstAccess"
-  ],
+  "required": ["monthlyIncome", "financialDayStart", "financialDayEnd", "firstAccess"],
   "x-readme-ref-name": "IncomeAndPeriodUpdate"
 }

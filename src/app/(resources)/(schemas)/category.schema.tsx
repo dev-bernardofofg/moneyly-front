@@ -1,11 +1,11 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const CreateCategorySchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-})
+  name: z.string().min(1, 'Nome é obrigatório'),
+});
 
 export const CreateCategoryDefaultValues = {
-  name: "",
-}
+  name: '',
+};
 
-export type CreateCategoryFormValues = z.infer<typeof CreateCategorySchema>
+export type CreateCategoryFormValues = z.infer<typeof CreateCategorySchema>;

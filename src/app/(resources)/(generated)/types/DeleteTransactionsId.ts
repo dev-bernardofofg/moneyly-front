@@ -92,8 +92,5 @@ export type DeleteTransactionsIdMutationResponse = DeleteTransactionsId200;
 export type DeleteTransactionsIdMutation = {
   Response: DeleteTransactionsId200;
   PathParams: DeleteTransactionsIdPathParams;
-  Errors:
-    | DeleteTransactionsId400
-    | DeleteTransactionsId401
-    | DeleteTransactionsId404;
+  Errors: DeleteTransactionsId400 | DeleteTransactionsId401 | DeleteTransactionsId404;
 };

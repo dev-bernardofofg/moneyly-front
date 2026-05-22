@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { BaseSidebar } from "../(components)/(layout)/base-sidebar";
-import { InitialConfigGuard } from "../(components)/(layout)/initial-config-guard";
-import { usePeriodInvalidation } from "../(hooks)/use-period-invalidation";
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { BaseSidebar } from '../(components)/(layout)/base-sidebar';
+import { InitialConfigGuard } from '../(components)/(layout)/initial-config-guard';
+import { usePeriodInvalidation } from '../(hooks)/use-period-invalidation';
 
 export const PrivateLayout = ({ children }: React.PropsWithChildren) => {
   usePeriodInvalidation();
@@ -12,9 +12,7 @@ export const PrivateLayout = ({ children }: React.PropsWithChildren) => {
     <InitialConfigGuard>
       <SidebarProvider>
         <BaseSidebar />
-        <div className="flex-1 overflow-hidden">
-          {children}
-        </div>
+        <div className="flex-1 overflow-hidden">{children}</div>
       </SidebarProvider>
     </InitialConfigGuard>
   );

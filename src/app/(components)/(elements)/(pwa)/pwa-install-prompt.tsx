@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { usePWA } from "@/hooks/use-pwa";
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Button } from '@/components/ui/button';
+import { usePWA } from '@/hooks/use-pwa';
+import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-const PWA_DISMISSED_KEY = "pwa-install-dismissed";
+const PWA_DISMISSED_KEY = 'pwa-install-dismissed';
 
 export function PWAInstallPrompt() {
   const { isInstallable, installPWA } = usePWA();
@@ -26,7 +26,7 @@ export function PWAInstallPrompt() {
 
   const handleDismiss = () => {
     // Save to localStorage that user dismissed the prompt
-    localStorage.setItem(PWA_DISMISSED_KEY, "true");
+    localStorage.setItem(PWA_DISMISSED_KEY, 'true');
     setShowInstallPrompt(false);
   };
 
@@ -42,23 +42,14 @@ export function PWAInstallPrompt() {
           </p>
         </div>
         <div className="flex items-center gap-2 ml-4">
-          <Button
-            size="sm"
-            onClick={handleInstallClick}
-            className="text-xs"
-          >
+          <Button size="sm" onClick={handleInstallClick} className="text-xs">
             Instalar
           </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={handleDismiss}
-            className="p-1 h-8 w-8"
-          >
+          <Button size="sm" variant="ghost" onClick={handleDismiss} className="p-1 h-8 w-8">
             <X className="h-4 w-4" />
           </Button>
         </div>
       </div>
     </div>
   );
-} 
+}

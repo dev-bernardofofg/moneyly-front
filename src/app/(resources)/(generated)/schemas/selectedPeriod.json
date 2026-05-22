@@ -1,13 +1,6 @@
 {
   "type": "object",
-  "required": [
-    "id",
-    "startDate",
-    "endDate",
-    "label",
-    "transactionCount",
-    "description"
-  ],
+  "required": ["id", "startDate", "endDate", "label", "transactionCount", "description"],
   "properties": {
     "id": { "type": "string", "format": "uuid" },
     "startDate": { "type": "string", "format": "date-time" },

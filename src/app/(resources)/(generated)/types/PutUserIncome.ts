@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { IncomeUpdate } from "./IncomeUpdate.ts";
+import type { IncomeUpdate } from './IncomeUpdate.ts';
 
 /**
  * @description Sucesso

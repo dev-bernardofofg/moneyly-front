@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { FinancialInsights } from "./FinancialInsights.ts";
+import type { FinancialInsights } from './FinancialInsights.ts';
 
 /**
  * @description Sucesso

@@ -1,3 +1,3 @@
-import PrivateLayout from "@/app/(layouts)/private-layout";
+import PrivateLayout from '@/app/(layouts)/private-layout';
 
 export default PrivateLayout;

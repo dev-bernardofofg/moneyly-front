@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { EvilBarChart } from "@/components/evilcharts/charts/bar-chart";
-import { type ChartConfig } from "@/components/evilcharts/ui/chart";
-import { ChartCategory } from "@/app/(resources)/(generated)/types/ChartCategory";
-import { PeriodChartItem } from "@/app/(resources)/(generated)/types/PeriodChartItem";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
+import { EvilBarChart } from '@/components/evilcharts/charts/bar-chart';
+import { type ChartConfig } from '@/components/evilcharts/ui/chart';
+import { ChartCategory } from '@/app/(resources)/(generated)/types/ChartCategory';
+import { PeriodChartItem } from '@/app/(resources)/(generated)/types/PeriodChartItem';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
 
 type DataPoint = { category: string; amount: number };
 
 const chartConfig = {
   amount: {
-    label: "Gasto",
+    label: 'Gasto',
     colors: {
-      light: ["#f43f5e", "#fb923c"],
-      dark: ["#f43f5e", "#c026d3"],
+      light: ['#f43f5e', '#fb923c'],
+      dark: ['#f43f5e', '#c026d3'],
     },
   },
 } satisfies ChartConfig;
@@ -24,7 +24,7 @@ function buildData(data: PeriodChartItem[], categories: ChartCategory[]): DataPo
       category: cat.name,
       amount: data.reduce((sum, item) => sum + (Number(item[cat.name]) || 0), 0),
     }))
-    .sort((a, b) => a.category.localeCompare(b.category, "pt-BR"));
+    .sort((a, b) => a.category.localeCompare(b.category, 'pt-BR'));
 }
 
 type Props = {

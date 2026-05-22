@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { ComparativeInsights } from "./ComparativeInsights.ts";
+import type { ComparativeInsights } from './ComparativeInsights.ts';
 
 export type GetOverviewInsightsComparisonQueryParams = {
   /**
@@ -72,8 +72,7 @@ export type GetOverviewInsightsComparison401 = {
   details?: any | null;
 };
 
-export type GetOverviewInsightsComparisonQueryResponse =
-  GetOverviewInsightsComparison200;
+export type GetOverviewInsightsComparisonQueryResponse = GetOverviewInsightsComparison200;
 
 export type GetOverviewInsightsComparisonQuery = {
   Response: GetOverviewInsightsComparison200;

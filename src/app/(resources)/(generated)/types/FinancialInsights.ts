@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { MonthlySummaryItem } from "./MonthlySummaryItem.ts";
+import type { MonthlySummaryItem } from './MonthlySummaryItem.ts';
 
 export type FinancialInsights = {
   /**

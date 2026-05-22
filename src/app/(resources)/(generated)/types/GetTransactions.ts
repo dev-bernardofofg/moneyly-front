@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.ts";
-import type { TransactionListSummary } from "./TransactionListSummary.ts";
+import type { Transaction } from './Transaction.ts';
+import type { TransactionListSummary } from './TransactionListSummary.ts';
 
 export type GetTransactionsQueryParams = {
   /**

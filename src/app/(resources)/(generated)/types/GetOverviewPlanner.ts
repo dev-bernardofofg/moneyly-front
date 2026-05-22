@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { PlannerOverview } from "./PlannerOverview.ts";
+import type { PlannerOverview } from './PlannerOverview.ts';
 
 /**
  * @description Sucesso

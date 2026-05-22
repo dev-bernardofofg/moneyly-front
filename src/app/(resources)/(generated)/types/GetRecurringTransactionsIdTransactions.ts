@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.ts";
+import type { Transaction } from './Transaction.ts';
 
 export type GetRecurringTransactionsIdTransactionsPathParams = {
   /**

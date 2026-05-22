@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ZIndexLayer } from "recharts";
-import { useId } from "react";
+import { ZIndexLayer } from 'recharts';
+import { useId } from 'react';
 
 // ── Background Variant Types ─────────────────────────────────────────────────
 // To add a new variant:
@@ -10,17 +10,17 @@ import { useId } from "react";
 // 3. Register it in PATTERN_MAP
 
 export type BackgroundVariant =
-  | "dots"
-  | "grid"
-  | "cross-hatch"
-  | "diagonal-lines"
-  | "plus"
-  | "falling-triangles"
-  | "4-pointed-star"
-  | "tiny-checkers"
-  | "overlapping-circles"
-  | "wiggle-lines"
-  | "bubbles";
+  | 'dots'
+  | 'grid'
+  | 'cross-hatch'
+  | 'diagonal-lines'
+  | 'plus'
+  | 'falling-triangles'
+  | '4-pointed-star'
+  | 'tiny-checkers'
+  | 'overlapping-circles'
+  | 'wiggle-lines'
+  | 'bubbles';
 
 // ── Pattern Components ───────────────────────────────────────────────────────
 
@@ -186,13 +186,13 @@ const PATTERN_MAP: Record<BackgroundVariant, React.FC<PatternProps>> = {
   grid: GridPattern,
   plus: PlusPattern,
   bubbles: BubblesPattern,
-  "cross-hatch": CrossHatchPattern,
-  "diagonal-lines": DiagonalLinesPattern,
-  "falling-triangles": FallingTrianglesPattern,
-  "4-pointed-star": FourPointedStarPattern,
-  "tiny-checkers": TinyCheckersPattern,
-  "overlapping-circles": OverlappingCirclesPattern,
-  "wiggle-lines": WiggleLinesPattern,
+  'cross-hatch': CrossHatchPattern,
+  'diagonal-lines': DiagonalLinesPattern,
+  'falling-triangles': FallingTrianglesPattern,
+  '4-pointed-star': FourPointedStarPattern,
+  'tiny-checkers': TinyCheckersPattern,
+  'overlapping-circles': OverlappingCirclesPattern,
+  'wiggle-lines': WiggleLinesPattern,
 };
 
 // ── Main Component ───────────────────────────────────────────────────────────
@@ -204,7 +204,7 @@ interface ChartBackgroundProps {
 }
 
 export function ChartBackground({ variant }: ChartBackgroundProps) {
-  const baseId = useId().replace(/:/g, "");
+  const baseId = useId().replace(/:/g, '');
   const patternId = `${baseId}-bg-${variant}`;
   const maskId = `${baseId}-bg-edge-fade`;
   const filterId = `${baseId}-bg-blur`;

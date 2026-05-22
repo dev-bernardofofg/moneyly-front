@@ -3,14 +3,14 @@
  * Do not edit manually.
  */
 
-import type { DashboardStats } from "./DashboardStats.ts";
-import type { FinancialPeriodSummary } from "./FinancialPeriodSummary.ts";
-import type { RecentTransactionItem } from "./RecentTransactionItem.ts";
+import type { DashboardStats } from './DashboardStats.ts';
+import type { FinancialPeriodSummary } from './FinancialPeriodSummary.ts';
+import type { RecentTransactionItem } from './RecentTransactionItem.ts';
 
 export const comparisonSignalEnum = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
 export type ComparisonSignalEnumKey =

@@ -5,13 +5,13 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 import type {
   MutationFunction,
   QueryClient,
   UseMutationOptions,
   UseMutationResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   PostAuthGoogle200,
@@ -30,21 +30,18 @@ import type {
   PostAuthSignUp201,
   PostAuthSignUp400,
   PostAuthSignUpBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Cadastro de usuário
  */
-export const postAuthSignUp = (
-  postAuthSignUpBody: PostAuthSignUpBody,
-  signal?: AbortSignal,
-) => {
+export const postAuthSignUp = (postAuthSignUpBody: PostAuthSignUpBody, signal?: AbortSignal) => {
   return customInstance<PostAuthSignUp201>({
     url: `/auth/sign-up`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postAuthSignUpBody,
     signal,
   });
@@ -66,11 +63,9 @@ export const getPostAuthSignUpMutationOptions = <
   { data: PostAuthSignUpBody },
   TContext
 > => {
-  const mutationKey = ["postAuthSignUp"];
+  const mutationKey = ['postAuthSignUp'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -87,19 +82,14 @@ export const getPostAuthSignUpMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAuthSignUpMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAuthSignUp>>
->;
+export type PostAuthSignUpMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthSignUp>>>;
 export type PostAuthSignUpMutationBody = PostAuthSignUpBody;
 export type PostAuthSignUpMutationError = PostAuthSignUp400;
 
 /**
  * @summary Cadastro de usuário
  */
-export const usePostAuthSignUp = <
-  TError = PostAuthSignUp400,
-  TContext = unknown,
->(
+export const usePostAuthSignUp = <TError = PostAuthSignUp400, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postAuthSignUp>>,
@@ -108,7 +98,7 @@ export const usePostAuthSignUp = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postAuthSignUp>>,
   TError,
@@ -120,14 +110,11 @@ export const usePostAuthSignUp = <
 /**
  * @summary Login
  */
-export const postAuthSignIn = (
-  postAuthSignInBody: PostAuthSignInBody,
-  signal?: AbortSignal,
-) => {
+export const postAuthSignIn = (postAuthSignInBody: PostAuthSignInBody, signal?: AbortSignal) => {
   return customInstance<PostAuthSignIn200>({
     url: `/auth/sign-in`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postAuthSignInBody,
     signal,
   });
@@ -149,11 +136,9 @@ export const getPostAuthSignInMutationOptions = <
   { data: PostAuthSignInBody },
   TContext
 > => {
-  const mutationKey = ["postAuthSignIn"];
+  const mutationKey = ['postAuthSignIn'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -170,19 +155,14 @@ export const getPostAuthSignInMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAuthSignInMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAuthSignIn>>
->;
+export type PostAuthSignInMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthSignIn>>>;
 export type PostAuthSignInMutationBody = PostAuthSignInBody;
 export type PostAuthSignInMutationError = PostAuthSignIn400;
 
 /**
  * @summary Login
  */
-export const usePostAuthSignIn = <
-  TError = PostAuthSignIn400,
-  TContext = unknown,
->(
+export const usePostAuthSignIn = <TError = PostAuthSignIn400, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postAuthSignIn>>,
@@ -191,7 +171,7 @@ export const usePostAuthSignIn = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postAuthSignIn>>,
   TError,
@@ -203,14 +183,11 @@ export const usePostAuthSignIn = <
 /**
  * @summary Login com Google
  */
-export const postAuthGoogle = (
-  postAuthGoogleBody: PostAuthGoogleBody,
-  signal?: AbortSignal,
-) => {
+export const postAuthGoogle = (postAuthGoogleBody: PostAuthGoogleBody, signal?: AbortSignal) => {
   return customInstance<PostAuthGoogle200>({
     url: `/auth/google`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postAuthGoogleBody,
     signal,
   });
@@ -232,11 +209,9 @@ export const getPostAuthGoogleMutationOptions = <
   { data: PostAuthGoogleBody },
   TContext
 > => {
-  const mutationKey = ["postAuthGoogle"];
+  const mutationKey = ['postAuthGoogle'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -253,19 +228,14 @@ export const getPostAuthGoogleMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAuthGoogleMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAuthGoogle>>
->;
+export type PostAuthGoogleMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthGoogle>>>;
 export type PostAuthGoogleMutationBody = PostAuthGoogleBody;
 export type PostAuthGoogleMutationError = PostAuthGoogle400;
 
 /**
  * @summary Login com Google
  */
-export const usePostAuthGoogle = <
-  TError = PostAuthGoogle400,
-  TContext = unknown,
->(
+export const usePostAuthGoogle = <TError = PostAuthGoogle400, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postAuthGoogle>>,
@@ -274,7 +244,7 @@ export const usePostAuthGoogle = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postAuthGoogle>>,
   TError,
@@ -286,14 +256,11 @@ export const usePostAuthGoogle = <
 /**
  * @summary Renovar access token
  */
-export const postAuthRefresh = (
-  postAuthRefreshBody: PostAuthRefreshBody,
-  signal?: AbortSignal,
-) => {
+export const postAuthRefresh = (postAuthRefreshBody: PostAuthRefreshBody, signal?: AbortSignal) => {
   return customInstance<PostAuthRefresh200>({
     url: `/auth/refresh`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postAuthRefreshBody,
     signal,
   });
@@ -315,11 +282,9 @@ export const getPostAuthRefreshMutationOptions = <
   { data: PostAuthRefreshBody },
   TContext
 > => {
-  const mutationKey = ["postAuthRefresh"];
+  const mutationKey = ['postAuthRefresh'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -345,10 +310,7 @@ export type PostAuthRefreshMutationError = PostAuthRefresh400;
 /**
  * @summary Renovar access token
  */
-export const usePostAuthRefresh = <
-  TError = PostAuthRefresh400,
-  TContext = unknown,
->(
+export const usePostAuthRefresh = <TError = PostAuthRefresh400, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postAuthRefresh>>,
@@ -357,7 +319,7 @@ export const usePostAuthRefresh = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postAuthRefresh>>,
   TError,
@@ -369,14 +331,11 @@ export const usePostAuthRefresh = <
 /**
  * @summary Logout (revoga refresh token)
  */
-export const postAuthLogout = (
-  postAuthLogoutBody: PostAuthLogoutBody,
-  signal?: AbortSignal,
-) => {
+export const postAuthLogout = (postAuthLogoutBody: PostAuthLogoutBody, signal?: AbortSignal) => {
   return customInstance<PostAuthLogout200>({
     url: `/auth/logout`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postAuthLogoutBody,
     signal,
   });
@@ -398,11 +357,9 @@ export const getPostAuthLogoutMutationOptions = <
   { data: PostAuthLogoutBody },
   TContext
 > => {
-  const mutationKey = ["postAuthLogout"];
+  const mutationKey = ['postAuthLogout'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -419,9 +376,7 @@ export const getPostAuthLogoutMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAuthLogoutMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAuthLogout>>
->;
+export type PostAuthLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthLogout>>>;
 export type PostAuthLogoutMutationBody = PostAuthLogoutBody;
 export type PostAuthLogoutMutationError = PostAuthLogout400 | PostAuthLogout401;
 
@@ -440,7 +395,7 @@ export const usePostAuthLogout = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postAuthLogout>>,
   TError,

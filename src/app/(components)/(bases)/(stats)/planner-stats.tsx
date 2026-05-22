@@ -1,17 +1,17 @@
-"use client"
+'use client';
 
-import { AlertsPopover } from '@/app/(components)/(bases)/(notifications)/alerts-popover'
-import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats'
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade'
-import { PlannerAlert } from '@/app/(resources)/(generated)/types/PlannerAlert'
-import { Bell, PieChart, Target, TrendingUp } from 'lucide-react'
+import { AlertsPopover } from '@/app/(components)/(bases)/(notifications)/alerts-popover';
+import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
+import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
+import { PlannerAlert } from '@/app/(resources)/(generated)/types/PlannerAlert';
+import { Bell, PieChart, Target, TrendingUp } from 'lucide-react';
 
 interface PlannerStatsProps {
-  totalBudgeted?: number
-  savingsGoal?: number
-  alreadySaved?: number
-  alerts?: PlannerAlert[]
-  loading?: boolean
+  totalBudgeted?: number;
+  savingsGoal?: number;
+  alreadySaved?: number;
+  alerts?: PlannerAlert[];
+  loading?: boolean;
 }
 
 export const PlannerStats = ({
@@ -22,7 +22,7 @@ export const PlannerStats = ({
   loading = false,
 }: PlannerStatsProps) => {
   return (
-    <StaggeredFade className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
+    <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
       <BaseStats
         name="Total Orçado"
         Icon={PieChart}
@@ -60,5 +60,5 @@ export const PlannerStats = ({
         }
       />
     </StaggeredFade>
-  )
-}
+  );
+};

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Notification } from "./Notification.ts";
+import type { Notification } from './Notification.ts';
 
 export type GetNotificationsQueryParams = {
   /**

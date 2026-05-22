@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CurrentPeriodSummary } from "./CurrentPeriodSummary.ts";
+import type { CurrentPeriodSummary } from './CurrentPeriodSummary.ts';
 
 /**
  * @description Sucesso
@@ -68,7 +68,5 @@ export type GetTransactionsSummaryCurrentPeriodQueryResponse =
 
 export type GetTransactionsSummaryCurrentPeriodQuery = {
   Response: GetTransactionsSummaryCurrentPeriod200;
-  Errors:
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401;
+  Errors: GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401;
 };

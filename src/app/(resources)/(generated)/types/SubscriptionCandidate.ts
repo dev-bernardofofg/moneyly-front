@@ -4,9 +4,9 @@
  */
 
 export const subscriptionCandidateCadenceEnum = {
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type SubscriptionCandidateCadenceEnumKey =

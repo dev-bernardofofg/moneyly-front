@@ -87,8 +87,7 @@ export type DeleteRecurringTransactionsId404 = {
   details?: any | null;
 };
 
-export type DeleteRecurringTransactionsIdMutationResponse =
-  DeleteRecurringTransactionsId200;
+export type DeleteRecurringTransactionsIdMutationResponse = DeleteRecurringTransactionsId200;
 
 export type DeleteRecurringTransactionsIdMutation = {
   Response: DeleteRecurringTransactionsId200;

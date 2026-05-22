@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   GetNotifications200,
@@ -33,28 +33,23 @@ import type {
   PatchNotificationsReadAll200,
   PatchNotificationsReadAll400,
   PatchNotificationsReadAll401,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Listar notificações (paginado)
  */
-export const getNotifications = (
-  params?: GetNotificationsParams,
-  signal?: AbortSignal,
-) => {
+export const getNotifications = (params?: GetNotificationsParams, signal?: AbortSignal) => {
   return customInstance<GetNotifications200>({
     url: `/notifications/`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
-export const getGetNotificationsQueryKey = (
-  params?: GetNotificationsParams,
-) => {
+export const getGetNotificationsQueryKey = (params?: GetNotificationsParams) => {
   return [`/notifications/`, ...(params ? [params] : [])] as const;
 };
 
@@ -64,42 +59,28 @@ export const getGetNotificationsQueryOptions = <
 >(
   params?: GetNotificationsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getNotifications>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>;
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetNotificationsQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetNotificationsQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getNotifications>>
-  > = ({ signal }) => getNotifications(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotifications>>> = ({ signal }) =>
+    getNotifications(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getNotifications>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
-export type GetNotificationsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getNotifications>>
->;
-export type GetNotificationsQueryError =
-  | GetNotifications400
-  | GetNotifications401;
+export type GetNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotifications>>>;
+export type GetNotificationsQueryError = GetNotifications400 | GetNotifications401;
 
 export function useGetNotifications<
   TData = Awaited<ReturnType<typeof getNotifications>>,
@@ -107,23 +88,17 @@ export function useGetNotifications<
 >(
   params: undefined | GetNotificationsParams,
   options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getNotifications>>,
-        TError,
-        TData
-      >
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotifications>>,
           TError,
           Awaited<ReturnType<typeof getNotifications>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -133,23 +108,17 @@ export function useGetNotifications<
 >(
   params?: GetNotificationsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getNotifications>>,
-        TError,
-        TData
-      >
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotifications>>,
           TError,
           Awaited<ReturnType<typeof getNotifications>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -159,15 +128,9 @@ export function useGetNotifications<
 >(
   params?: GetNotificationsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getNotifications>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -181,24 +144,17 @@ export function useGetNotifications<
 >(
   params?: GetNotificationsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getNotifications>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetNotificationsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -209,7 +165,7 @@ export function useGetNotifications<
 export const patchNotificationsReadAll = (signal?: AbortSignal) => {
   return customInstance<PatchNotificationsReadAll200>({
     url: `/notifications/read-all`,
-    method: "PATCH",
+    method: 'PATCH',
     signal,
   });
 };
@@ -230,11 +186,9 @@ export const getPatchNotificationsReadAllMutationOptions = <
   void,
   TContext
 > => {
-  const mutationKey = ["patchNotificationsReadAll"];
+  const mutationKey = ['patchNotificationsReadAll'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -272,17 +226,14 @@ export const usePatchNotificationsReadAll = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof patchNotificationsReadAll>>,
   TError,
   void,
   TContext
 > => {
-  return useMutation(
-    getPatchNotificationsReadAllMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPatchNotificationsReadAllMutationOptions(options), queryClient);
 };
 /**
  * @summary Marcar notificação como lida
@@ -290,16 +241,13 @@ export const usePatchNotificationsReadAll = <
 export const patchNotificationsIdRead = (id: string, signal?: AbortSignal) => {
   return customInstance<PatchNotificationsIdRead200>({
     url: `/notifications/${id}/read`,
-    method: "PATCH",
+    method: 'PATCH',
     signal,
   });
 };
 
 export const getPatchNotificationsIdReadMutationOptions = <
-  TError =
-    | PatchNotificationsIdRead400
-    | PatchNotificationsIdRead401
-    | PatchNotificationsIdRead404,
+  TError = PatchNotificationsIdRead400 | PatchNotificationsIdRead401 | PatchNotificationsIdRead404,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -314,11 +262,9 @@ export const getPatchNotificationsIdReadMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["patchNotificationsIdRead"];
+  const mutationKey = ['patchNotificationsIdRead'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -348,10 +294,7 @@ export type PatchNotificationsIdReadMutationError =
  * @summary Marcar notificação como lida
  */
 export const usePatchNotificationsIdRead = <
-  TError =
-    | PatchNotificationsIdRead400
-    | PatchNotificationsIdRead401
-    | PatchNotificationsIdRead404,
+  TError = PatchNotificationsIdRead400 | PatchNotificationsIdRead401 | PatchNotificationsIdRead404,
   TContext = unknown,
 >(
   options?: {
@@ -362,15 +305,12 @@ export const usePatchNotificationsIdRead = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof patchNotificationsIdRead>>,
   TError,
   { id: string },
   TContext
 > => {
-  return useMutation(
-    getPatchNotificationsIdReadMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPatchNotificationsIdReadMutationOptions(options), queryClient);
 };

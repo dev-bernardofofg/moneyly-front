@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   DeleteRecurringTransactionsId200,
@@ -51,21 +51,21 @@ import type {
   PutRecurringTransactionsId401,
   PutRecurringTransactionsId404,
   PutRecurringTransactionsIdBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Criar transação recorrente
  */
 export const postRecurringTransactions = (
   postRecurringTransactionsBody: PostRecurringTransactionsBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PostRecurringTransactions201>({
     url: `/recurring-transactions/`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postRecurringTransactionsBody,
     signal,
   });
@@ -87,11 +87,9 @@ export const getPostRecurringTransactionsMutationOptions = <
   { data: PostRecurringTransactionsBody },
   TContext
 > => {
-  const mutationKey = ["postRecurringTransactions"];
+  const mutationKey = ['postRecurringTransactions'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -111,8 +109,7 @@ export const getPostRecurringTransactionsMutationOptions = <
 export type PostRecurringTransactionsMutationResult = NonNullable<
   Awaited<ReturnType<typeof postRecurringTransactions>>
 >;
-export type PostRecurringTransactionsMutationBody =
-  PostRecurringTransactionsBody;
+export type PostRecurringTransactionsMutationBody = PostRecurringTransactionsBody;
 export type PostRecurringTransactionsMutationError =
   | PostRecurringTransactions400
   | PostRecurringTransactions401;
@@ -132,36 +129,31 @@ export const usePostRecurringTransactions = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postRecurringTransactions>>,
   TError,
   { data: PostRecurringTransactionsBody },
   TContext
 > => {
-  return useMutation(
-    getPostRecurringTransactionsMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPostRecurringTransactionsMutationOptions(options), queryClient);
 };
 /**
  * @summary Listar recorrentes (paginado)
  */
 export const getRecurringTransactions = (
   params?: GetRecurringTransactionsParams,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<GetRecurringTransactions200>({
     url: `/recurring-transactions/`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
-export const getGetRecurringTransactionsQueryKey = (
-  params?: GetRecurringTransactionsParams,
-) => {
+export const getGetRecurringTransactionsQueryKey = (params?: GetRecurringTransactionsParams) => {
   return [`/recurring-transactions/`, ...(params ? [params] : [])] as const;
 };
 
@@ -172,33 +164,26 @@ export const getGetRecurringTransactionsQueryOptions = <
   params?: GetRecurringTransactionsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getRecurringTransactions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetRecurringTransactionsQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetRecurringTransactionsQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getRecurringTransactions>>
-  > = ({ signal }) => getRecurringTransactions(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRecurringTransactions>>> = ({
+    signal,
+  }) => getRecurringTransactions(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getRecurringTransactions>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetRecurringTransactionsQueryResult = NonNullable<
@@ -215,11 +200,7 @@ export function useGetRecurringTransactions<
   params: undefined | GetRecurringTransactionsParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getRecurringTransactions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -227,10 +208,10 @@ export function useGetRecurringTransactions<
           TError,
           Awaited<ReturnType<typeof getRecurringTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -241,11 +222,7 @@ export function useGetRecurringTransactions<
   params?: GetRecurringTransactionsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getRecurringTransactions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -253,10 +230,10 @@ export function useGetRecurringTransactions<
           TError,
           Awaited<ReturnType<typeof getRecurringTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -267,14 +244,10 @@ export function useGetRecurringTransactions<
   params?: GetRecurringTransactionsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getRecurringTransactions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -289,23 +262,18 @@ export function useGetRecurringTransactions<
   params?: GetRecurringTransactionsParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getRecurringTransactions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetRecurringTransactionsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -316,12 +284,12 @@ export function useGetRecurringTransactions<
 export const putRecurringTransactionsId = (
   id: string,
   putRecurringTransactionsIdBody: PutRecurringTransactionsIdBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutRecurringTransactionsId200>({
     url: `/recurring-transactions/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putRecurringTransactionsIdBody,
     signal,
   });
@@ -346,11 +314,9 @@ export const getPutRecurringTransactionsIdMutationOptions = <
   { id: string; data: PutRecurringTransactionsIdBody },
   TContext
 > => {
-  const mutationKey = ["putRecurringTransactionsId"];
+  const mutationKey = ['putRecurringTransactionsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -370,8 +336,7 @@ export const getPutRecurringTransactionsIdMutationOptions = <
 export type PutRecurringTransactionsIdMutationResult = NonNullable<
   Awaited<ReturnType<typeof putRecurringTransactionsId>>
 >;
-export type PutRecurringTransactionsIdMutationBody =
-  PutRecurringTransactionsIdBody;
+export type PutRecurringTransactionsIdMutationBody = PutRecurringTransactionsIdBody;
 export type PutRecurringTransactionsIdMutationError =
   | PutRecurringTransactionsId400
   | PutRecurringTransactionsId401
@@ -395,28 +360,22 @@ export const usePutRecurringTransactionsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putRecurringTransactionsId>>,
   TError,
   { id: string; data: PutRecurringTransactionsIdBody },
   TContext
 > => {
-  return useMutation(
-    getPutRecurringTransactionsIdMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPutRecurringTransactionsIdMutationOptions(options), queryClient);
 };
 /**
  * @summary Deletar recorrente
  */
-export const deleteRecurringTransactionsId = (
-  id: string,
-  signal?: AbortSignal,
-) => {
+export const deleteRecurringTransactionsId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteRecurringTransactionsId200>({
     url: `/recurring-transactions/${id}`,
-    method: "DELETE",
+    method: 'DELETE',
     signal,
   });
 };
@@ -440,11 +399,9 @@ export const getDeleteRecurringTransactionsIdMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["deleteRecurringTransactionsId"];
+  const mutationKey = ['deleteRecurringTransactionsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -488,35 +445,27 @@ export const useDeleteRecurringTransactionsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteRecurringTransactionsId>>,
   TError,
   { id: string },
   TContext
 > => {
-  return useMutation(
-    getDeleteRecurringTransactionsIdMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getDeleteRecurringTransactionsIdMutationOptions(options), queryClient);
 };
 /**
  * @summary Histórico de execuções
  */
-export const getRecurringTransactionsIdTransactions = (
-  id: string,
-  signal?: AbortSignal,
-) => {
+export const getRecurringTransactionsIdTransactions = (id: string, signal?: AbortSignal) => {
   return customInstance<GetRecurringTransactionsIdTransactions200>({
     url: `/recurring-transactions/${id}/transactions`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
 
-export const getGetRecurringTransactionsIdTransactionsQueryKey = (
-  id: string,
-) => {
+export const getGetRecurringTransactionsIdTransactionsQueryKey = (id: string) => {
   return [`/recurring-transactions/${id}/transactions`] as const;
 };
 
@@ -536,13 +485,11 @@ export const getGetRecurringTransactionsIdTransactionsQueryOptions = <
         TData
       >
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ??
-    getGetRecurringTransactionsIdTransactionsQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetRecurringTransactionsIdTransactionsQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>
@@ -591,10 +538,10 @@ export function useGetRecurringTransactionsIdTransactions<
           TError,
           Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -620,10 +567,10 @@ export function useGetRecurringTransactionsIdTransactions<
           TError,
           Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -644,7 +591,7 @@ export function useGetRecurringTransactionsIdTransactions<
       >
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -669,19 +616,15 @@ export function useGetRecurringTransactionsIdTransactions<
       >
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetRecurringTransactionsIdTransactionsQueryOptions(
-    id,
-    options,
-  );
+  const queryOptions = getGetRecurringTransactionsIdTransactionsQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -689,13 +632,10 @@ export function useGetRecurringTransactionsIdTransactions<
 /**
  * @summary Reativar recorrente
  */
-export const patchRecurringTransactionsIdReactivate = (
-  id: string,
-  signal?: AbortSignal,
-) => {
+export const patchRecurringTransactionsIdReactivate = (id: string, signal?: AbortSignal) => {
   return customInstance<PatchRecurringTransactionsIdReactivate200>({
     url: `/recurring-transactions/${id}/reactivate`,
-    method: "PATCH",
+    method: 'PATCH',
     signal,
   });
 };
@@ -719,11 +659,9 @@ export const getPatchRecurringTransactionsIdReactivateMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["patchRecurringTransactionsIdReactivate"];
+  const mutationKey = ['patchRecurringTransactionsIdReactivate'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -767,7 +705,7 @@ export const usePatchRecurringTransactionsIdReactivate = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof patchRecurringTransactionsIdReactivate>>,
   TError,
@@ -776,19 +714,16 @@ export const usePatchRecurringTransactionsIdReactivate = <
 > => {
   return useMutation(
     getPatchRecurringTransactionsIdReactivateMutationOptions(options),
-    queryClient,
+    queryClient
   );
 };
 /**
  * @summary Desativar recorrente
  */
-export const patchRecurringTransactionsIdDeactivate = (
-  id: string,
-  signal?: AbortSignal,
-) => {
+export const patchRecurringTransactionsIdDeactivate = (id: string, signal?: AbortSignal) => {
   return customInstance<PatchRecurringTransactionsIdDeactivate200>({
     url: `/recurring-transactions/${id}/deactivate`,
-    method: "PATCH",
+    method: 'PATCH',
     signal,
   });
 };
@@ -812,11 +747,9 @@ export const getPatchRecurringTransactionsIdDeactivateMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["patchRecurringTransactionsIdDeactivate"];
+  const mutationKey = ['patchRecurringTransactionsIdDeactivate'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -860,7 +793,7 @@ export const usePatchRecurringTransactionsIdDeactivate = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof patchRecurringTransactionsIdDeactivate>>,
   TError,
@@ -869,6 +802,6 @@ export const usePatchRecurringTransactionsIdDeactivate = <
 > => {
   return useMutation(
     getPatchRecurringTransactionsIdDeactivateMutationOptions(options),
-    queryClient,
+    queryClient
   );
 };

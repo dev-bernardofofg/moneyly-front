@@ -6,14 +6,7 @@
     "data": { "type": "array", "items": { "type": "object" } },
     "pagination": {
       "type": "object",
-      "required": [
-        "page",
-        "limit",
-        "total",
-        "totalPages",
-        "hasNext",
-        "hasPrev"
-      ],
+      "required": ["page", "limit", "total", "totalPages", "hasNext", "hasPrev"],
       "properties": {
         "page": { "type": "number" },
         "limit": { "type": "number" },

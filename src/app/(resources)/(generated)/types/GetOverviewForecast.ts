@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { ForecastResponse } from "./ForecastResponse.ts";
+import type { ForecastResponse } from './ForecastResponse.ts';
 
 export type GetOverviewForecastQueryParams = {
   /**

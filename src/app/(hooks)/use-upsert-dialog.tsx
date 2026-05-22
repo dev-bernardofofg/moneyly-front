@@ -1,20 +1,15 @@
-"use client";
+'use client';
 
-import { useDialogCloseGuard } from "@/app/(components)/(bases)/(portals)/base-dialog";
-import { getErrorMessage, setFormFieldErrors } from "@/app/(helpers)/errors";
-import { CustomAxiosError } from "@/app/(types)/error.type";
-import { DialogClose } from "@/components/ui/dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
-import {
-  DefaultValues,
-  FieldValues,
-  Path,
-  useForm,
-} from "react-hook-form";
-import { toast } from "sonner";
-import type { ZodType } from "zod";
+import { useDialogCloseGuard } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { getErrorMessage, setFormFieldErrors } from '@/app/(helpers)/errors';
+import { CustomAxiosError } from '@/app/(types)/error.type';
+import { DialogClose } from '@/components/ui/dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
+import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import type { ZodType } from 'zod';
 
 interface UseUpsertDialogOptions<TForm extends FieldValues> {
   schema: ZodType<TForm>;
@@ -54,9 +49,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
   }, [guard, form]);
 
   const invalidate = () =>
-    invalidateKeys.forEach((queryKey) =>
-      queryClient.invalidateQueries({ queryKey })
-    );
+    invalidateKeys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
 
   const close = () => closeRef.current?.click();
 
@@ -79,9 +72,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
     setFormFieldErrors(error, form.setError, errorFields);
   };
 
-  const DialogCloseHidden = () => (
-    <DialogClose ref={closeRef} className="hidden" />
-  );
+  const DialogCloseHidden = () => <DialogClose ref={closeRef} className="hidden" />;
 
   return { form, closeRef, onCreated, onUpdated, onError, DialogCloseHidden };
 };

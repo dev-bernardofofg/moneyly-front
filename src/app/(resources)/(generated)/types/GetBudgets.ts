@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { BudgetProgress } from "./BudgetProgress.ts";
+import type { BudgetProgress } from './BudgetProgress.ts';
 
 export type GetBudgetsQueryParams = {
   /**

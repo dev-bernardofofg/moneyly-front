@@ -4,18 +4,17 @@
  */
 
 export const totalsSignalEnum = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
-export type TotalsSignalEnumKey =
-  (typeof totalsSignalEnum)[keyof typeof totalsSignalEnum];
+export type TotalsSignalEnumKey = (typeof totalsSignalEnum)[keyof typeof totalsSignalEnum];
 
 export const byCategorySignalEnum = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
 export type ByCategorySignalEnumKey =

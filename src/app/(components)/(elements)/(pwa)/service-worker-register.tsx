@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export function ServiceWorkerRegister() {
   useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
         navigator.serviceWorker
-          .register("/sw.js")
+          .register('/sw.js')
           .then(() => {
             // Service Worker registrado com sucesso
           })
@@ -19,4 +19,4 @@ export function ServiceWorkerRegister() {
   }, []);
 
   return null;
-} 
+}

@@ -1,22 +1,27 @@
-'use client'
+'use client';
 
-import { InitialConfigForm } from '@/app/(resources)/(forms)/initial-config.form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { DollarSign } from 'lucide-react'
+import { InitialConfigForm } from '@/app/(resources)/(forms)/initial-config.form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { DollarSign } from 'lucide-react';
 
 interface InitialConfigDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onSuccess: () => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSuccess: () => void;
 }
 
-
-export const InitialConfigDialog = ({ open, onOpenChange: _onOpenChange, onSuccess }: InitialConfigDialogProps) => {
+export const InitialConfigDialog = ({
+  open,
+  onOpenChange: _onOpenChange,
+  onSuccess,
+}: InitialConfigDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={_onOpenChange}>
-      <DialogTitle className="sr-only" >Configurações Financeiras</DialogTitle>
-      <DialogDescription className="sr-only">Defina seu rendimento e período financeiro</DialogDescription>
+      <DialogTitle className="sr-only">Configurações Financeiras</DialogTitle>
+      <DialogDescription className="sr-only">
+        Defina seu rendimento e período financeiro
+      </DialogDescription>
       <DialogContent
         className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 [&>button.absolute]:hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -38,13 +43,15 @@ export const InitialConfigDialog = ({ open, onOpenChange: _onOpenChange, onSucce
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <InitialConfigForm onSuccess={() => {
-              _onOpenChange(false)
-              onSuccess()
-            }} />
+            <InitialConfigForm
+              onSuccess={() => {
+                _onOpenChange(false);
+                onSuccess();
+              }}
+            />
           </CardContent>
         </Card>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+};

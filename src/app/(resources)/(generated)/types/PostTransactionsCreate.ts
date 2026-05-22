@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Transaction } from "./Transaction.ts";
+import type { Transaction } from './Transaction.ts';
 
 /**
  * @description Sucesso
@@ -64,8 +64,8 @@ export type PostTransactionsCreate401 = {
 };
 
 export const postTransactionsCreateMutationRequestTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PostTransactionsCreateMutationRequestTypeEnumKey =

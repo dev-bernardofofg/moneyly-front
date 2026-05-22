@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { EvilBarChart } from "@/components/evilcharts/charts/bar-chart";
-import { type ChartConfig } from "@/components/evilcharts/ui/chart";
-import { CategoryChartItem } from "@/app/(resources)/(generated)/types/CategoryChartItem";
-import { FN_UTILS_NUMBERS } from "@/app/(helpers)/number";
-import { BarChart3 } from "lucide-react";
+import { EvilBarChart } from '@/components/evilcharts/charts/bar-chart';
+import { type ChartConfig } from '@/components/evilcharts/ui/chart';
+import { CategoryChartItem } from '@/app/(resources)/(generated)/types/CategoryChartItem';
+import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { BarChart3 } from 'lucide-react';
 
 const chartConfig = {
   income: {
-    label: "Receita",
+    label: 'Receita',
     colors: {
-      light: ["#89D192", "#b8eabe"],
-      dark: ["#89D192", "#5aba69"],
+      light: ['#89D192', '#b8eabe'],
+      dark: ['#89D192', '#5aba69'],
     },
   },
   expense: {
-    label: "Despesa",
+    label: 'Despesa',
     colors: {
-      light: ["#ef4444", "#f87171"],
-      dark: ["#dc2626", "#ef4444"],
+      light: ['#ef4444', '#f87171'],
+      dark: ['#dc2626', '#ef4444'],
     },
   },
 } satisfies ChartConfig;
@@ -29,7 +29,7 @@ type Props = {
 };
 
 export function MonthlyHistoryChart({ data, isLoading }: Props) {
-  const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+  const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
 
   if (!isLoading && sorted.length === 0) {
     return (

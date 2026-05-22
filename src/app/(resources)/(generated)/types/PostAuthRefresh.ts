@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { AuthRefresh } from "./AuthRefresh.ts";
+import type { AuthRefresh } from './AuthRefresh.ts';
 
 /**
  * @description Sucesso

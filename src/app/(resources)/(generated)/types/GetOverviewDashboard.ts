@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { DashboardOverview } from "./DashboardOverview.ts";
+import type { DashboardOverview } from './DashboardOverview.ts';
 
 export type GetOverviewDashboardQueryParams = {
   /**

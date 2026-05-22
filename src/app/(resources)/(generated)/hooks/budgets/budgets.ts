@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   DeleteBudgetsId200,
@@ -39,21 +39,18 @@ import type {
   PutBudgetsId401,
   PutBudgetsId404,
   PutBudgetsIdBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Criar orçamento por categoria
  */
-export const postBudgets = (
-  postBudgetsBody: PostBudgetsBody,
-  signal?: AbortSignal,
-) => {
+export const postBudgets = (postBudgetsBody: PostBudgetsBody, signal?: AbortSignal) => {
   return customInstance<PostBudgets201>({
     url: `/budgets/`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postBudgetsBody,
     signal,
   });
@@ -75,11 +72,9 @@ export const getPostBudgetsMutationOptions = <
   { data: PostBudgetsBody },
   TContext
 > => {
-  const mutationKey = ["postBudgets"];
+  const mutationKey = ['postBudgets'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -96,19 +91,14 @@ export const getPostBudgetsMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostBudgetsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postBudgets>>
->;
+export type PostBudgetsMutationResult = NonNullable<Awaited<ReturnType<typeof postBudgets>>>;
 export type PostBudgetsMutationBody = PostBudgetsBody;
 export type PostBudgetsMutationError = PostBudgets400 | PostBudgets401;
 
 /**
  * @summary Criar orçamento por categoria
  */
-export const usePostBudgets = <
-  TError = PostBudgets400 | PostBudgets401,
-  TContext = unknown,
->(
+export const usePostBudgets = <TError = PostBudgets400 | PostBudgets401, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postBudgets>>,
@@ -117,7 +107,7 @@ export const usePostBudgets = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postBudgets>>,
   TError,
@@ -132,7 +122,7 @@ export const usePostBudgets = <
 export const getBudgets = (params?: GetBudgetsParams, signal?: AbortSignal) => {
   return customInstance<GetBudgets200>({
     url: `/budgets/`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
@@ -148,34 +138,27 @@ export const getGetBudgetsQueryOptions = <
 >(
   params?: GetBudgetsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-    >;
-  },
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>>;
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetBudgetsQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBudgets>>> = ({
-    signal,
-  }) => getBudgets(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBudgets>>> = ({ signal }) =>
+    getBudgets(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getBudgets>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
-export type GetBudgetsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getBudgets>>
->;
+export type GetBudgetsQueryResult = NonNullable<Awaited<ReturnType<typeof getBudgets>>>;
 export type GetBudgetsQueryError = GetBudgets400 | GetBudgets401;
 
 export function useGetBudgets<
@@ -184,19 +167,17 @@ export function useGetBudgets<
 >(
   params: undefined | GetBudgetsParams,
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBudgets>>,
           TError,
           Awaited<ReturnType<typeof getBudgets>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -206,19 +187,17 @@ export function useGetBudgets<
 >(
   params?: GetBudgetsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBudgets>>,
           TError,
           Awaited<ReturnType<typeof getBudgets>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -228,11 +207,9 @@ export function useGetBudgets<
 >(
   params?: GetBudgetsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -246,20 +223,17 @@ export function useGetBudgets<
 >(
   params?: GetBudgetsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetBudgetsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -270,12 +244,12 @@ export function useGetBudgets<
 export const putBudgetsId = (
   id: string,
   putBudgetsIdBody: PutBudgetsIdBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutBudgetsId200>({
     url: `/budgets/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putBudgetsIdBody,
     signal,
   });
@@ -297,11 +271,9 @@ export const getPutBudgetsIdMutationOptions = <
   { id: string; data: PutBudgetsIdBody },
   TContext
 > => {
-  const mutationKey = ["putBudgetsId"];
+  const mutationKey = ['putBudgetsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -318,14 +290,9 @@ export const getPutBudgetsIdMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutBudgetsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putBudgetsId>>
->;
+export type PutBudgetsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putBudgetsId>>>;
 export type PutBudgetsIdMutationBody = PutBudgetsIdBody;
-export type PutBudgetsIdMutationError =
-  | PutBudgetsId400
-  | PutBudgetsId401
-  | PutBudgetsId404;
+export type PutBudgetsIdMutationError = PutBudgetsId400 | PutBudgetsId401 | PutBudgetsId404;
 
 /**
  * @summary Atualizar orçamento
@@ -342,7 +309,7 @@ export const usePutBudgetsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putBudgetsId>>,
   TError,
@@ -357,7 +324,7 @@ export const usePutBudgetsId = <
 export const deleteBudgetsId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteBudgetsId200>({
     url: `/budgets/${id}`,
-    method: "DELETE",
+    method: 'DELETE',
     signal,
   });
 };
@@ -378,11 +345,9 @@ export const getDeleteBudgetsIdMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["deleteBudgetsId"];
+  const mutationKey = ['deleteBudgetsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -423,7 +388,7 @@ export const useDeleteBudgetsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteBudgetsId>>,
   TError,

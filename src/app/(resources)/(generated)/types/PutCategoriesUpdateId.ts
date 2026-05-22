@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { Category } from "./Category.ts";
+import type { Category } from './Category.ts';
 
 export type PutCategoriesUpdateIdPathParams = {
   /**
@@ -106,8 +106,5 @@ export type PutCategoriesUpdateIdMutation = {
   Response: PutCategoriesUpdateId200;
   Request: PutCategoriesUpdateIdMutationRequest;
   PathParams: PutCategoriesUpdateIdPathParams;
-  Errors:
-    | PutCategoriesUpdateId400
-    | PutCategoriesUpdateId401
-    | PutCategoriesUpdateId404;
+  Errors: PutCategoriesUpdateId400 | PutCategoriesUpdateId401 | PutCategoriesUpdateId404;
 };

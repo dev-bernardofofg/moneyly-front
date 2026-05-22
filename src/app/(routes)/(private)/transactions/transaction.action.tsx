@@ -1,33 +1,33 @@
-import { useGetTransactions } from "@/app/(resources)/(generated)/hooks/transactions/transactions";
-import { usePagination } from "@/hooks/use-pagination";
-import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
+import { useGetTransactions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
+import { usePagination } from '@/hooks/use-pagination';
+import { DollarSign, TrendingDown, TrendingUp } from 'lucide-react';
 
 export const TRANSACTION_STATS_INTERATOR = [
   {
-    name: "Rendimento Mensal",
-    indicator: "monthlyIncome",
+    name: 'Rendimento Mensal',
+    indicator: 'monthlyIncome',
     icon: DollarSign,
-    description: "Rendimento mensal cadastrado",
+    description: 'Rendimento mensal cadastrado',
     isMonetary: true,
-    variant: "default",
+    variant: 'default',
     loading: false,
   },
   {
-    name: "Entradas",
-    indicator: "totalIncome",
+    name: 'Entradas',
+    indicator: 'totalIncome',
     icon: TrendingUp,
-    description: "Entradas totais",
+    description: 'Entradas totais',
     isMonetary: true,
-    variant: "default",
+    variant: 'default',
     loading: false,
   },
   {
-    name: "Saídas",
-    indicator: "totalExpense",
+    name: 'Saídas',
+    indicator: 'totalExpense',
     icon: TrendingDown,
-    description: "Gastos totais",
+    description: 'Gastos totais',
     isMonetary: true,
-    variant: "destructive",
+    variant: 'destructive',
     loading: false,
   },
 ] as const;

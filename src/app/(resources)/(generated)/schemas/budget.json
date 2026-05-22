@@ -12,13 +12,6 @@
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
-  "required": [
-    "id",
-    "userId",
-    "categoryId",
-    "monthlyLimit",
-    "createdAt",
-    "updatedAt"
-  ],
+  "required": ["id", "userId", "categoryId", "monthlyLimit", "createdAt", "updatedAt"],
   "x-readme-ref-name": "Budget"
 }

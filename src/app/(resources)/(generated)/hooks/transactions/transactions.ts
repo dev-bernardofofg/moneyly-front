@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   DeleteTransactionsId200,
@@ -54,21 +54,21 @@ import type {
   PutTransactionsId401,
   PutTransactionsId404,
   PutTransactionsIdBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Criar transação
  */
 export const postTransactionsCreate = (
   postTransactionsCreateBody: PostTransactionsCreateBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PostTransactionsCreate201>({
     url: `/transactions/create`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postTransactionsCreateBody,
     signal,
   });
@@ -90,11 +90,9 @@ export const getPostTransactionsCreateMutationOptions = <
   { data: PostTransactionsCreateBody },
   TContext
 > => {
-  const mutationKey = ["postTransactionsCreate"];
+  const mutationKey = ['postTransactionsCreate'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -134,28 +132,22 @@ export const usePostTransactionsCreate = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postTransactionsCreate>>,
   TError,
   { data: PostTransactionsCreateBody },
   TContext
 > => {
-  return useMutation(
-    getPostTransactionsCreateMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPostTransactionsCreateMutationOptions(options), queryClient);
 };
 /**
  * @summary Listar transações (paginado)
  */
-export const getTransactions = (
-  params?: GetTransactionsParams,
-  signal?: AbortSignal,
-) => {
+export const getTransactions = (params?: GetTransactionsParams, signal?: AbortSignal) => {
   return customInstance<GetTransactions200>({
     url: `/transactions/`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
@@ -171,38 +163,27 @@ export const getGetTransactionsQueryOptions = <
 >(
   params?: GetTransactionsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactions>>,
-        TError,
-        TData
-      >
-    >;
-  },
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>>;
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetTransactionsQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactions>>> = ({
-    signal,
-  }) => getTransactions(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactions>>> = ({ signal }) =>
+    getTransactions(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTransactions>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
-export type GetTransactionsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getTransactions>>
->;
+export type GetTransactionsQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactions>>>;
 export type GetTransactionsQueryError = GetTransactions400 | GetTransactions401;
 
 export function useGetTransactions<
@@ -211,23 +192,17 @@ export function useGetTransactions<
 >(
   params: undefined | GetTransactionsParams,
   options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactions>>,
-        TError,
-        TData
-      >
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTransactions>>,
           TError,
           Awaited<ReturnType<typeof getTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -237,23 +212,17 @@ export function useGetTransactions<
 >(
   params?: GetTransactionsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactions>>,
-        TError,
-        TData
-      >
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTransactions>>,
           TError,
           Awaited<ReturnType<typeof getTransactions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -263,15 +232,9 @@ export function useGetTransactions<
 >(
   params?: GetTransactionsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactions>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -285,24 +248,17 @@ export function useGetTransactions<
 >(
   params?: GetTransactionsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactions>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -313,12 +269,12 @@ export function useGetTransactions<
 export const putTransactionsId = (
   id: string,
   putTransactionsIdBody: PutTransactionsIdBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutTransactionsId200>({
     url: `/transactions/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putTransactionsIdBody,
     signal,
   });
@@ -340,11 +296,9 @@ export const getPutTransactionsIdMutationOptions = <
   { id: string; data: PutTransactionsIdBody },
   TContext
 > => {
-  const mutationKey = ["putTransactionsId"];
+  const mutationKey = ['putTransactionsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -385,7 +339,7 @@ export const usePutTransactionsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putTransactionsId>>,
   TError,
@@ -400,16 +354,13 @@ export const usePutTransactionsId = <
 export const deleteTransactionsId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteTransactionsId200>({
     url: `/transactions/${id}`,
-    method: "DELETE",
+    method: 'DELETE',
     signal,
   });
 };
 
 export const getDeleteTransactionsIdMutationOptions = <
-  TError =
-    | DeleteTransactionsId400
-    | DeleteTransactionsId401
-    | DeleteTransactionsId404,
+  TError = DeleteTransactionsId400 | DeleteTransactionsId401 | DeleteTransactionsId404,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -424,11 +375,9 @@ export const getDeleteTransactionsIdMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["deleteTransactionsId"];
+  const mutationKey = ['deleteTransactionsId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -458,10 +407,7 @@ export type DeleteTransactionsIdMutationError =
  * @summary Deletar transação
  */
 export const useDeleteTransactionsId = <
-  TError =
-    | DeleteTransactionsId400
-    | DeleteTransactionsId401
-    | DeleteTransactionsId404,
+  TError = DeleteTransactionsId400 | DeleteTransactionsId401 | DeleteTransactionsId404,
   TContext = unknown,
 >(
   options?: {
@@ -472,17 +418,14 @@ export const useDeleteTransactionsId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteTransactionsId>>,
   TError,
   { id: string },
   TContext
 > => {
-  return useMutation(
-    getDeleteTransactionsIdMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getDeleteTransactionsIdMutationOptions(options), queryClient);
 };
 /**
  * @summary Resumo financeiro
@@ -490,7 +433,7 @@ export const useDeleteTransactionsId = <
 export const getTransactionsSummary = (signal?: AbortSignal) => {
   return customInstance<GetTransactionsSummary200>({
     url: `/transactions/summary`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -504,32 +447,24 @@ export const getGetTransactionsSummaryQueryOptions = <
   TError = GetTransactionsSummary400 | GetTransactionsSummary401,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTransactionsSummary>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTransactionsSummaryQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTransactionsSummaryQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTransactionsSummary>>
-  > = ({ signal }) => getTransactionsSummary(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummary>>> = ({ signal }) =>
+    getTransactionsSummary(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTransactionsSummary>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetTransactionsSummaryQueryResult = NonNullable<
@@ -545,11 +480,7 @@ export function useGetTransactionsSummary<
 >(
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummary>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -557,10 +488,10 @@ export function useGetTransactionsSummary<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummary>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -570,11 +501,7 @@ export function useGetTransactionsSummary<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummary>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -582,10 +509,10 @@ export function useGetTransactionsSummary<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummary>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -595,14 +522,10 @@ export function useGetTransactionsSummary<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummary>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -616,23 +539,18 @@ export function useGetTransactionsSummary<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummary>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsSummaryQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -643,7 +561,7 @@ export function useGetTransactionsSummary<
 export const getTransactionsSummaryByMonth = (signal?: AbortSignal) => {
   return customInstance<GetTransactionsSummaryByMonth200>({
     url: `/transactions/summary-by-month`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -657,32 +575,25 @@ export const getGetTransactionsSummaryByMonthQueryOptions = <
   TError = GetTransactionsSummaryByMonth400 | GetTransactionsSummaryByMonth401,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTransactionsSummaryByMonthQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTransactionsSummaryByMonthQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>
-  > = ({ signal }) => getTransactionsSummaryByMonth(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>> = ({
+    signal,
+  }) => getTransactionsSummaryByMonth(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetTransactionsSummaryByMonthQueryResult = NonNullable<
@@ -698,11 +609,7 @@ export function useGetTransactionsSummaryByMonth<
 >(
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -710,10 +617,10 @@ export function useGetTransactionsSummaryByMonth<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -723,11 +630,7 @@ export function useGetTransactionsSummaryByMonth<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -735,10 +638,10 @@ export function useGetTransactionsSummaryByMonth<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -748,14 +651,10 @@ export function useGetTransactionsSummaryByMonth<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -769,23 +668,18 @@ export function useGetTransactionsSummaryByMonth<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsSummaryByMonthQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -796,7 +690,7 @@ export function useGetTransactionsSummaryByMonth<
 export const getTransactionsSummaryCurrentPeriod = (signal?: AbortSignal) => {
   return customInstance<GetTransactionsSummaryCurrentPeriod200>({
     url: `/transactions/summary-current-period`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -807,26 +701,19 @@ export const getGetTransactionsSummaryCurrentPeriodQueryKey = () => {
 
 export const getGetTransactionsSummaryCurrentPeriodQueryOptions = <
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-  TError =
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401,
+  TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>, TError, TData>
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTransactionsSummaryCurrentPeriodQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTransactionsSummaryCurrentPeriodQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>
-  > = ({ signal }) => getTransactionsSummaryCurrentPeriod(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>> = ({
+    signal,
+  }) => getTransactionsSummaryCurrentPeriod(signal);
 
   return {
     queryKey,
@@ -849,9 +736,7 @@ export type GetTransactionsSummaryCurrentPeriodQueryError =
 
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-  TError =
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401,
+  TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
 >(
   options: {
     query: Partial<
@@ -867,18 +752,16 @@ export function useGetTransactionsSummaryCurrentPeriod<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-  TError =
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401,
+  TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
 >(
   options?: {
     query?: Partial<
@@ -894,18 +777,16 @@ export function useGetTransactionsSummaryCurrentPeriod<
           TError,
           Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-  TError =
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401,
+  TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
 >(
   options?: {
     query?: Partial<
@@ -916,7 +797,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
       >
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -926,9 +807,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
 
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
-  TError =
-    | GetTransactionsSummaryCurrentPeriod400
-    | GetTransactionsSummaryCurrentPeriod401,
+  TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
 >(
   options?: {
     query?: Partial<
@@ -939,17 +818,15 @@ export function useGetTransactionsSummaryCurrentPeriod<
       >
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions =
-    getGetTransactionsSummaryCurrentPeriodQueryOptions(options);
+  const queryOptions = getGetTransactionsSummaryCurrentPeriodQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -959,19 +836,17 @@ export function useGetTransactionsSummaryCurrentPeriod<
  */
 export const getTransactionsExport = (
   params?: GetTransactionsExportParams,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<string>({
     url: `/transactions/export`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
-export const getGetTransactionsExportQueryKey = (
-  params?: GetTransactionsExportParams,
-) => {
+export const getGetTransactionsExportQueryKey = (params?: GetTransactionsExportParams) => {
   return [`/transactions/export`, ...(params ? [params] : [])] as const;
 };
 
@@ -982,41 +857,31 @@ export const getGetTransactionsExportQueryOptions = <
   params?: GetTransactionsExportParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsExport>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTransactionsExportQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetTransactionsExportQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTransactionsExport>>
-  > = ({ signal }) => getTransactionsExport(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsExport>>> = ({ signal }) =>
+    getTransactionsExport(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTransactionsExport>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetTransactionsExportQueryResult = NonNullable<
   Awaited<ReturnType<typeof getTransactionsExport>>
 >;
-export type GetTransactionsExportQueryError =
-  | GetTransactionsExport400
-  | GetTransactionsExport401;
+export type GetTransactionsExportQueryError = GetTransactionsExport400 | GetTransactionsExport401;
 
 export function useGetTransactionsExport<
   TData = Awaited<ReturnType<typeof getTransactionsExport>>,
@@ -1025,11 +890,7 @@ export function useGetTransactionsExport<
   params: undefined | GetTransactionsExportParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsExport>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -1037,10 +898,10 @@ export function useGetTransactionsExport<
           TError,
           Awaited<ReturnType<typeof getTransactionsExport>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1051,11 +912,7 @@ export function useGetTransactionsExport<
   params?: GetTransactionsExportParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsExport>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -1063,10 +920,10 @@ export function useGetTransactionsExport<
           TError,
           Awaited<ReturnType<typeof getTransactionsExport>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1077,14 +934,10 @@ export function useGetTransactionsExport<
   params?: GetTransactionsExportParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsExport>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1099,23 +952,18 @@ export function useGetTransactionsExport<
   params?: GetTransactionsExportParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsExport>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsExportQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -1126,7 +974,7 @@ export function useGetTransactionsExport<
 export const getTransactionsSubscriptions = (signal?: AbortSignal) => {
   return customInstance<GetTransactionsSubscriptions200>({
     url: `/transactions/subscriptions`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -1140,32 +988,25 @@ export const getGetTransactionsSubscriptionsQueryOptions = <
   TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData>
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTransactionsSubscriptionsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetTransactionsSubscriptionsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTransactionsSubscriptions>>
-  > = ({ signal }) => getTransactionsSubscriptions(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSubscriptions>>> = ({
+    signal,
+  }) => getTransactionsSubscriptions(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetTransactionsSubscriptionsQueryResult = NonNullable<
@@ -1181,11 +1022,7 @@ export function useGetTransactionsSubscriptions<
 >(
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -1193,10 +1030,10 @@ export function useGetTransactionsSubscriptions<
           TError,
           Awaited<ReturnType<typeof getTransactionsSubscriptions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1206,11 +1043,7 @@ export function useGetTransactionsSubscriptions<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -1218,10 +1051,10 @@ export function useGetTransactionsSubscriptions<
           TError,
           Awaited<ReturnType<typeof getTransactionsSubscriptions>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1231,14 +1064,10 @@ export function useGetTransactionsSubscriptions<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -1252,23 +1081,18 @@ export function useGetTransactionsSubscriptions<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetTransactionsSubscriptionsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }

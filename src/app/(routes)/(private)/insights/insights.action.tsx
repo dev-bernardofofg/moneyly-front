@@ -1,14 +1,13 @@
 import {
   useGetOverviewForecast,
   useGetOverviewInsights,
-} from "@/app/(resources)/(generated)/hooks/overview/overview";
+} from '@/app/(resources)/(generated)/hooks/overview/overview';
 
 export const useInsightsAction = () => {
   const { data, isLoading } = useGetOverviewInsights();
   const insights = data?.data;
 
-  const { data: forecastData, isLoading: forecastLoading } =
-    useGetOverviewForecast();
+  const { data: forecastData, isLoading: forecastLoading } = useGetOverviewForecast();
   const forecast = forecastData?.data;
 
   return {

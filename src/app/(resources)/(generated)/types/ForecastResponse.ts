@@ -4,12 +4,11 @@
  */
 
 export const occurrencesTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
-export type OccurrencesTypeEnumKey =
-  (typeof occurrencesTypeEnum)[keyof typeof occurrencesTypeEnum];
+export type OccurrencesTypeEnumKey = (typeof occurrencesTypeEnum)[keyof typeof occurrencesTypeEnum];
 
 export type ForecastResponse = {
   /**

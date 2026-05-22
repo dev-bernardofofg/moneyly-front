@@ -10,12 +10,11 @@ export interface TransactionCategory {
   name: string;
 }
 
-export type TransactionType =
-  (typeof TransactionType)[keyof typeof TransactionType];
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType];
 
 export const TransactionType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export interface Transaction {
@@ -141,18 +140,18 @@ export type RecurringTransactionType =
   (typeof RecurringTransactionType)[keyof typeof RecurringTransactionType];
 
 export const RecurringTransactionType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type RecurringTransactionFrequency =
   (typeof RecurringTransactionFrequency)[keyof typeof RecurringTransactionFrequency];
 
 export const RecurringTransactionFrequency = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export interface RecurringTransaction {
@@ -215,8 +214,8 @@ export type RecentTransactionItemType =
   (typeof RecentTransactionItemType)[keyof typeof RecentTransactionItemType];
 
 export const RecentTransactionItemType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export interface RecentTransactionItem {
@@ -278,9 +277,9 @@ export type DashboardOverviewPreviewsComparisonSignal =
   (typeof DashboardOverviewPreviewsComparisonSignal)[keyof typeof DashboardOverviewPreviewsComparisonSignal];
 
 export const DashboardOverviewPreviewsComparisonSignal = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
 export type DashboardOverviewPreviewsComparison = {
@@ -369,18 +368,18 @@ export type PlannerOverviewAlertsItemType =
   (typeof PlannerOverviewAlertsItemType)[keyof typeof PlannerOverviewAlertsItemType];
 
 export const PlannerOverviewAlertsItemType = {
-  danger: "danger",
-  warning: "warning",
-  info: "info",
+  danger: 'danger',
+  warning: 'warning',
+  info: 'info',
 } as const;
 
 export type PlannerOverviewAlertsItemPriority =
   (typeof PlannerOverviewAlertsItemPriority)[keyof typeof PlannerOverviewAlertsItemPriority];
 
 export const PlannerOverviewAlertsItemPriority = {
-  high: "high",
-  medium: "medium",
-  low: "low",
+  high: 'high',
+  medium: 'medium',
+  low: 'low',
 } as const;
 
 export type PlannerOverviewAlertsItem = {
@@ -414,9 +413,9 @@ export type ComparativeInsightsTotalsSignal =
   (typeof ComparativeInsightsTotalsSignal)[keyof typeof ComparativeInsightsTotalsSignal];
 
 export const ComparativeInsightsTotalsSignal = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
 export type ComparativeInsightsTotals = {
@@ -431,9 +430,9 @@ export type ComparativeInsightsByCategoryItemSignal =
   (typeof ComparativeInsightsByCategoryItemSignal)[keyof typeof ComparativeInsightsByCategoryItemSignal];
 
 export const ComparativeInsightsByCategoryItemSignal = {
-  up: "up",
-  down: "down",
-  stable: "stable",
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
 } as const;
 
 export type ComparativeInsightsByCategoryItem = {
@@ -458,9 +457,9 @@ export type SubscriptionCandidateCadence =
   (typeof SubscriptionCandidateCadence)[keyof typeof SubscriptionCandidateCadence];
 
 export const SubscriptionCandidateCadence = {
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export interface SubscriptionCandidate {
@@ -476,20 +475,18 @@ export interface SubscriptionCandidate {
   monthlyCost: number;
 }
 
-export type NotificationType =
-  (typeof NotificationType)[keyof typeof NotificationType];
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 
 export const NotificationType = {
-  budget_alert: "budget_alert",
+  budget_alert: 'budget_alert',
 } as const;
 
-export type NotificationSeverity =
-  (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
+export type NotificationSeverity = (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
 
 export const NotificationSeverity = {
-  info: "info",
-  warning: "warning",
-  danger: "danger",
+  info: 'info',
+  warning: 'warning',
+  danger: 'danger',
 } as const;
 
 export interface Notification {
@@ -561,8 +558,8 @@ export type ForecastResponseProjectedOccurrencesItemType =
   (typeof ForecastResponseProjectedOccurrencesItemType)[keyof typeof ForecastResponseProjectedOccurrencesItemType];
 
 export const ForecastResponseProjectedOccurrencesItemType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type ForecastResponseProjectedOccurrencesItem = {
@@ -858,8 +855,8 @@ export type PostTransactionsCreateBodyType =
   (typeof PostTransactionsCreateBodyType)[keyof typeof PostTransactionsCreateBodyType];
 
 export const PostTransactionsCreateBodyType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PostTransactionsCreateBody = {
@@ -942,8 +939,8 @@ export type PutTransactionsIdBodyType =
   (typeof PutTransactionsIdBodyType)[keyof typeof PutTransactionsIdBodyType];
 
 export const PutTransactionsIdBodyType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PutTransactionsIdBody = {
@@ -1567,18 +1564,18 @@ export type PostRecurringTransactionsBodyType =
   (typeof PostRecurringTransactionsBodyType)[keyof typeof PostRecurringTransactionsBodyType];
 
 export const PostRecurringTransactionsBodyType = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type PostRecurringTransactionsBodyFrequency =
   (typeof PostRecurringTransactionsBodyFrequency)[keyof typeof PostRecurringTransactionsBodyFrequency];
 
 export const PostRecurringTransactionsBodyFrequency = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type PostRecurringTransactionsBody = {
@@ -1672,10 +1669,10 @@ export type PutRecurringTransactionsIdBodyFrequency =
   (typeof PutRecurringTransactionsIdBodyFrequency)[keyof typeof PutRecurringTransactionsIdBodyFrequency];
 
 export const PutRecurringTransactionsIdBodyFrequency = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type PutRecurringTransactionsIdBody = {

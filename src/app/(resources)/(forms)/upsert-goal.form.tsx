@@ -1,39 +1,41 @@
-"use client"
+'use client';
 
-import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker"
-import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form"
-import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input"
-import { BaseTextarea } from "@/app/(components)/(bases)/(forms)/base-textarea"
-import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer"
-import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog"
-import { FN_UTILS_STRING } from "@/app/(helpers)/string"
-import { Form } from "@/components/ui/form"
-import { Goal } from "../(generated)"
-import { getGetGoalsQueryKey, usePostGoals, usePutGoalsId } from "../(generated)/hooks/goals/goals"
-import { getGetOverviewPlannerQueryKey } from "../(generated)/hooks/overview/overview"
-import { GoalDefaultValues, GoalFormValues, GoalSchema } from "../(schemas)/goal.schema"
+import { BaseDatePicker } from '@/app/(components)/(bases)/(forms)/base-date-picker';
+import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
+import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
+import { BaseTextarea } from '@/app/(components)/(bases)/(forms)/base-textarea';
+import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer';
+import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
+import { FN_UTILS_STRING } from '@/app/(helpers)/string';
+import { Form } from '@/components/ui/form';
+import { Goal } from '../(generated)';
+import { getGetGoalsQueryKey, usePostGoals, usePutGoalsId } from '../(generated)/hooks/goals/goals';
+import { getGetOverviewPlannerQueryKey } from '../(generated)/hooks/overview/overview';
+import { GoalDefaultValues, GoalFormValues, GoalSchema } from '../(schemas)/goal.schema';
 
 interface UpsertGoalFormProps {
-  goal?: Goal
+  goal?: Goal;
 }
 
 export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<GoalFormValues>({
       schema: GoalSchema,
-      defaultValues: goal ? {
-        title: goal.title || "",
-        description: goal.description || "",
-        targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
-        targetDate: goal.targetDate,
-      } : GoalDefaultValues,
+      defaultValues: goal
+        ? {
+            title: goal.title || '',
+            description: goal.description || '',
+            targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
+            targetDate: goal.targetDate,
+          }
+        : GoalDefaultValues,
       invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
       errorFields: ['title', 'description', 'targetAmount', 'targetDate'],
       successMessage: {
-        create: "Meta criada com sucesso",
-        update: "Meta atualizada com sucesso",
+        create: 'Meta criada com sucesso',
+        update: 'Meta atualizada com sucesso',
       },
-    })
+    });
 
   const createMutation = usePostGoals({
     mutation: { onSuccess: onCreated, onError },
@@ -51,27 +53,39 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
       targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate),
     };
     if (goal) {
-      updateMutation.mutate({ id: goal.id || "", data: payload });
+      updateMutation.mutate({ id: goal.id || '', data: payload });
     } else {
       createMutation.mutate({ data: payload });
     }
-  }
+  };
 
   return (
     <>
       <DialogCloseHidden />
-      <Form  {...form}>
+      <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleForm)}>
-          <BaseInput name="title" label="Título" control={form.control} placeholder="Ex: Reserva de emergência" autoFocus />
+          <BaseInput
+            name="title"
+            label="Título"
+            control={form.control}
+            placeholder="Ex: Reserva de emergência"
+            autoFocus
+          />
           <BaseTextarea name="description" label="Descrição" control={form.control} />
-          <BaseInput name="targetAmount" label="Valor alvo" control={form.control} type="money" placeholder="0,00" />
+          <BaseInput
+            name="targetAmount"
+            label="Valor alvo"
+            control={form.control}
+            type="money"
+            placeholder="0,00"
+          />
           <BaseDatePicker name="targetDate" label="Data de término" control={form.control} />
           <DialogFormFooter
-            submitLabel={goal ? "Atualizar" : "Criar"}
+            submitLabel={goal ? 'Atualizar' : 'Criar'}
             isLoading={goal ? updateMutation.isPending : createMutation.isPending}
           />
         </BaseForm>
       </Form>
     </>
-  )
-}
+  );
+};

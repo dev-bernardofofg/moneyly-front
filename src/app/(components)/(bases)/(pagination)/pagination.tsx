@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
   page: number;
@@ -55,12 +55,12 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
             return (
               <Button
                 key={pageNumber}
-                variant={page === pageNumber ? "default" : "outline"}
+                variant={page === pageNumber ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => handlePageChange(pageNumber)}
                 className="size-8 p-0 text-xs"
                 aria-label={`Página ${pageNumber}`}
-                aria-current={page === pageNumber ? "page" : undefined}
+                aria-current={page === pageNumber ? 'page' : undefined}
               >
                 {pageNumber}
               </Button>
@@ -80,8 +80,11 @@ export function Pagination({ page, limit, total, onPageChange }: PaginationProps
         </Button>
       </div>
 
-      <div className="flex justify-end gap-2"> 
-        <span className="text-sm text-muted-foreground"> {startItem}-{endItem} de {total} </span>
+      <div className="flex justify-end gap-2">
+        <span className="text-sm text-muted-foreground">
+          {' '}
+          {startItem}-{endItem} de {total}{' '}
+        </span>
       </div>
     </nav>
   );

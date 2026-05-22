@@ -10,13 +10,7 @@
         "percentUsed": { "type": "number", "nullable": true },
         "remainingBudget": { "type": "number" }
       },
-      "required": [
-        "totalIncome",
-        "totalExpense",
-        "balance",
-        "percentUsed",
-        "remainingBudget"
-      ],
+      "required": ["totalIncome", "totalExpense", "balance", "percentUsed", "remainingBudget"],
       "x-readme-ref-name": "DashboardStats"
     },
     "selectedPeriod": {
@@ -33,14 +27,7 @@
         "transactionCount": { "type": "integer" },
         "description": { "type": "string" }
       },
-      "required": [
-        "id",
-        "startDate",
-        "endDate",
-        "label",
-        "transactionCount",
-        "description"
-      ]
+      "required": ["id", "startDate", "endDate", "label", "transactionCount", "description"]
     },
     "availablePeriods": {
       "type": "array",

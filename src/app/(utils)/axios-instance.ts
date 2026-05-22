@@ -1,14 +1,14 @@
-import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
-import { extractApiErrorMessage } from "../(helpers)/errors";
-import { deleteCookie, getCookie, setCookie } from "./cookies";
+import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { extractApiErrorMessage } from '../(helpers)/errors';
+import { deleteCookie, getCookie, setCookie } from './cookies';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
   withCredentials: true,
-})
+});
 
 const refreshApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
 });
 
 // Flag para evitar múltiplos refreshs simultâneos
@@ -34,7 +34,7 @@ const processQueue = (error: any = null, token: string | null = null) => {
 // Interceptor de request (headers, auth, etc.)
 api.interceptors.request.use(
   (config) => {
-    const token = getCookie("auth_token");
+    const token = getCookie('auth_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -66,20 +66,20 @@ api.interceptors.response.use(
     }
 
     // Se está tentando fazer refresh na própria rota de refresh, retorna erro
-    if (originalRequest.url?.includes("/auth/refresh")) {
+    if (originalRequest.url?.includes('/auth/refresh')) {
       // Refresh token inválido ou expirado - fazer logout
-      deleteCookie("auth_token");
-      deleteCookie("refresh_token");
-      localStorage.removeItem("auth_user");
+      deleteCookie('auth_token');
+      deleteCookie('refresh_token');
+      localStorage.removeItem('auth_user');
 
       // Se estiver no browser, redirecionar para login
-      if (typeof window !== "undefined") {
-        window.location.href = "/auth";
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth';
       }
 
       return Promise.reject({
         status: 401,
-        message: "Sessão expirada. Faça login novamente.",
+        message: 'Sessão expirada. Faça login novamente.',
         data: error.response?.data,
       });
     }
@@ -104,24 +104,24 @@ api.interceptors.response.use(
     originalRequest._retry = true;
     isRefreshing = true;
 
-    const refreshToken = getCookie("refresh_token");
+    const refreshToken = getCookie('refresh_token');
 
     if (!refreshToken) {
       // Sem refresh token - fazer logout
-      processQueue(new Error("Refresh token não encontrado"), null);
+      processQueue(new Error('Refresh token não encontrado'), null);
       isRefreshing = false;
 
-      deleteCookie("auth_token");
-      deleteCookie("refresh_token");
-      localStorage.removeItem("auth_user");
+      deleteCookie('auth_token');
+      deleteCookie('refresh_token');
+      localStorage.removeItem('auth_user');
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/auth";
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth';
       }
 
       return Promise.reject({
         status: 401,
-        message: "Sessão expirada. Faça login novamente.",
+        message: 'Sessão expirada. Faça login novamente.',
         data: error.response?.data,
       });
     }
@@ -136,11 +136,11 @@ api.interceptors.response.use(
         message?: string;
         error?: string;
       }>(
-        "/auth/refresh",
+        '/auth/refresh',
         { refreshToken },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -148,9 +148,7 @@ api.interceptors.response.use(
       // Verifica se a resposta indica erro
       if (response.data.error) {
         const errorMessage =
-          response.data.error ||
-          response.data.message ||
-          "Token de refresh inválido ou expirado";
+          response.data.error || response.data.message || 'Token de refresh inválido ou expirado';
 
         throw new Error(errorMessage);
       }
@@ -158,11 +156,11 @@ api.interceptors.response.use(
       const newAccessToken = response.data?.data?.accessToken;
 
       if (!newAccessToken) {
-        throw new Error("Token de acesso não retornado no refresh");
+        throw new Error('Token de acesso não retornado no refresh');
       }
 
       // Atualiza o token no cookie
-      setCookie("auth_token", newAccessToken);
+      setCookie('auth_token', newAccessToken);
 
       // Atualiza o header da requisição original
       if (originalRequest.headers) {
@@ -178,16 +176,16 @@ api.interceptors.response.use(
       // Erro ao fazer refresh - fazer logout
       processQueue(refreshError, null);
 
-      deleteCookie("auth_token");
-      deleteCookie("refresh_token");
-      localStorage.removeItem("auth_user");
+      deleteCookie('auth_token');
+      deleteCookie('refresh_token');
+      localStorage.removeItem('auth_user');
 
       const errorMessage = refreshError?.response?.data
         ? extractApiErrorMessage(refreshError.response.data)
-        : refreshError?.message ?? "Sessão expirada. Faça login novamente.";
+        : (refreshError?.message ?? 'Sessão expirada. Faça login novamente.');
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/auth";
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth';
       }
 
       return Promise.reject({
@@ -201,12 +199,8 @@ api.interceptors.response.use(
   }
 );
 
-
-export const customInstance = async <T>(
-  config: AxiosRequestConfig,
-): Promise<T> => {
+export const customInstance = async <T>(config: AxiosRequestConfig): Promise<T> => {
   return (await api(config)).data;
 };
 
 export { api };
-

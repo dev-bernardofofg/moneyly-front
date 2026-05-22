@@ -4,18 +4,18 @@
  */
 
 export const recurringTransactionTypeEnum = {
-  income: "income",
-  expense: "expense",
+  income: 'income',
+  expense: 'expense',
 } as const;
 
 export type RecurringTransactionTypeEnumKey =
   (typeof recurringTransactionTypeEnum)[keyof typeof recurringTransactionTypeEnum];
 
 export const recurringTransactionFrequencyEnum = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type RecurringTransactionFrequencyEnumKey =

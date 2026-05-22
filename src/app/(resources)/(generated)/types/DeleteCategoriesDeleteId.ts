@@ -87,14 +87,10 @@ export type DeleteCategoriesDeleteId404 = {
   details?: any | null;
 };
 
-export type DeleteCategoriesDeleteIdMutationResponse =
-  DeleteCategoriesDeleteId200;
+export type DeleteCategoriesDeleteIdMutationResponse = DeleteCategoriesDeleteId200;
 
 export type DeleteCategoriesDeleteIdMutation = {
   Response: DeleteCategoriesDeleteId200;
   PathParams: DeleteCategoriesDeleteIdPathParams;
-  Errors:
-    | DeleteCategoriesDeleteId400
-    | DeleteCategoriesDeleteId401
-    | DeleteCategoriesDeleteId404;
+  Errors: DeleteCategoriesDeleteId400 | DeleteCategoriesDeleteId401 | DeleteCategoriesDeleteId404;
 };

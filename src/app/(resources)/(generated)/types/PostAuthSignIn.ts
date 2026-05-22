@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { AuthSession } from "./AuthSession.ts";
+import type { AuthSession } from './AuthSession.ts';
 
 /**
  * @description Sucesso

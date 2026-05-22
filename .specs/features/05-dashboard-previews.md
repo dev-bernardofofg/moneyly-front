@@ -8,12 +8,12 @@
 
 ## Custo por fonte
 
-| Preview | Endpoint | Custo | Decisão |
-|---|---|---|---|
-| F1 forecast | `GET /overview/forecast` | leve (escopo período) | ✅ feito: `BaseStats` "Saldo projetado" no dashboard, clicável → `/insights`. 1 call leve, query key próprio. |
-| F2 alertas | `GET /notifications` | barato/indexado | ✅ já coberto: `NotificationBell` global no Header (mesma query, cache compartilhado, zero call extra). |
-| F3 assinaturas | `GET /transactions/subscriptions` | **pesado** (`findAllByUserId` + heurística) | ❌ não chamar na homepage. |
-| F4 comparativo | `GET /overview/insights/comparison` | **pesado** (scan histórico + N períodos) | ❌ não chamar na homepage. |
+| Preview        | Endpoint                            | Custo                                       | Decisão                                                                                                       |
+| -------------- | ----------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| F1 forecast    | `GET /overview/forecast`            | leve (escopo período)                       | ✅ feito: `BaseStats` "Saldo projetado" no dashboard, clicável → `/insights`. 1 call leve, query key próprio. |
+| F2 alertas     | `GET /notifications`                | barato/indexado                             | ✅ já coberto: `NotificationBell` global no Header (mesma query, cache compartilhado, zero call extra).       |
+| F3 assinaturas | `GET /transactions/subscriptions`   | **pesado** (`findAllByUserId` + heurística) | ❌ não chamar na homepage.                                                                                    |
+| F4 comparativo | `GET /overview/insights/comparison` | **pesado** (scan histórico + N períodos)    | ❌ não chamar na homepage.                                                                                    |
 
 ## Pedido ao backend
 

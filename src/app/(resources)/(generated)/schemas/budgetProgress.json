@@ -25,14 +25,6 @@
       "description": "safe | attention | warning | exceeded"
     }
   },
-  "required": [
-    "id",
-    "monthlyLimit",
-    "category",
-    "spent",
-    "remaining",
-    "percentage",
-    "status"
-  ],
+  "required": ["id", "monthlyLimit", "category", "spent", "remaining", "percentage", "status"],
   "x-readme-ref-name": "BudgetProgress"
 }

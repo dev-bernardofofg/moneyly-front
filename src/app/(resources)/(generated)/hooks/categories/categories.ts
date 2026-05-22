@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   DeleteCategoriesDeleteId200,
@@ -39,21 +39,21 @@ import type {
   PutCategoriesUpdateId401,
   PutCategoriesUpdateId404,
   PutCategoriesUpdateIdBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Criar categoria
  */
 export const postCategoriesCreate = (
   postCategoriesCreateBody: PostCategoriesCreateBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PostCategoriesCreate201>({
     url: `/categories/create`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     data: postCategoriesCreateBody,
     signal,
   });
@@ -75,11 +75,9 @@ export const getPostCategoriesCreateMutationOptions = <
   { data: PostCategoriesCreateBody },
   TContext
 > => {
-  const mutationKey = ["postCategoriesCreate"];
+  const mutationKey = ['postCategoriesCreate'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -100,9 +98,7 @@ export type PostCategoriesCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof postCategoriesCreate>>
 >;
 export type PostCategoriesCreateMutationBody = PostCategoriesCreateBody;
-export type PostCategoriesCreateMutationError =
-  | PostCategoriesCreate400
-  | PostCategoriesCreate401;
+export type PostCategoriesCreateMutationError = PostCategoriesCreate400 | PostCategoriesCreate401;
 
 /**
  * @summary Criar categoria
@@ -119,28 +115,22 @@ export const usePostCategoriesCreate = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof postCategoriesCreate>>,
   TError,
   { data: PostCategoriesCreateBody },
   TContext
 > => {
-  return useMutation(
-    getPostCategoriesCreateMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPostCategoriesCreateMutationOptions(options), queryClient);
 };
 /**
  * @summary Listar categorias
  */
-export const getCategories = (
-  params?: GetCategoriesParams,
-  signal?: AbortSignal,
-) => {
+export const getCategories = (params?: GetCategoriesParams, signal?: AbortSignal) => {
   return customInstance<GetCategories200>({
     url: `/categories/`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
@@ -156,34 +146,27 @@ export const getGetCategoriesQueryOptions = <
 >(
   params?: GetCategoriesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>
-    >;
-  },
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>>;
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetCategoriesQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({
-    signal,
-  }) => getCategories(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({ signal }) =>
+    getCategories(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getCategories>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
-export type GetCategoriesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getCategories>>
->;
+export type GetCategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCategories>>>;
 export type GetCategoriesQueryError = GetCategories400 | GetCategories401;
 
 export function useGetCategories<
@@ -192,19 +175,17 @@ export function useGetCategories<
 >(
   params: undefined | GetCategoriesParams,
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCategories>>,
           TError,
           Awaited<ReturnType<typeof getCategories>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -214,19 +195,17 @@ export function useGetCategories<
 >(
   params?: GetCategoriesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCategories>>,
           TError,
           Awaited<ReturnType<typeof getCategories>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -236,11 +215,9 @@ export function useGetCategories<
 >(
   params?: GetCategoriesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -254,20 +231,17 @@ export function useGetCategories<
 >(
   params?: GetCategoriesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetCategoriesQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -278,22 +252,19 @@ export function useGetCategories<
 export const putCategoriesUpdateId = (
   id: string,
   putCategoriesUpdateIdBody: PutCategoriesUpdateIdBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutCategoriesUpdateId200>({
     url: `/categories/update/${id}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putCategoriesUpdateIdBody,
     signal,
   });
 };
 
 export const getPutCategoriesUpdateIdMutationOptions = <
-  TError =
-    | PutCategoriesUpdateId400
-    | PutCategoriesUpdateId401
-    | PutCategoriesUpdateId404,
+  TError = PutCategoriesUpdateId400 | PutCategoriesUpdateId401 | PutCategoriesUpdateId404,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -308,11 +279,9 @@ export const getPutCategoriesUpdateIdMutationOptions = <
   { id: string; data: PutCategoriesUpdateIdBody },
   TContext
 > => {
-  const mutationKey = ["putCategoriesUpdateId"];
+  const mutationKey = ['putCategoriesUpdateId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -342,10 +311,7 @@ export type PutCategoriesUpdateIdMutationError =
  * @summary Atualizar categoria
  */
 export const usePutCategoriesUpdateId = <
-  TError =
-    | PutCategoriesUpdateId400
-    | PutCategoriesUpdateId401
-    | PutCategoriesUpdateId404,
+  TError = PutCategoriesUpdateId400 | PutCategoriesUpdateId401 | PutCategoriesUpdateId404,
   TContext = unknown,
 >(
   options?: {
@@ -356,17 +322,14 @@ export const usePutCategoriesUpdateId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putCategoriesUpdateId>>,
   TError,
   { id: string; data: PutCategoriesUpdateIdBody },
   TContext
 > => {
-  return useMutation(
-    getPutCategoriesUpdateIdMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPutCategoriesUpdateIdMutationOptions(options), queryClient);
 };
 /**
  * @summary Deletar categoria
@@ -374,16 +337,13 @@ export const usePutCategoriesUpdateId = <
 export const deleteCategoriesDeleteId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteCategoriesDeleteId200>({
     url: `/categories/delete/${id}`,
-    method: "DELETE",
+    method: 'DELETE',
     signal,
   });
 };
 
 export const getDeleteCategoriesDeleteIdMutationOptions = <
-  TError =
-    | DeleteCategoriesDeleteId400
-    | DeleteCategoriesDeleteId401
-    | DeleteCategoriesDeleteId404,
+  TError = DeleteCategoriesDeleteId400 | DeleteCategoriesDeleteId401 | DeleteCategoriesDeleteId404,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -398,11 +358,9 @@ export const getDeleteCategoriesDeleteIdMutationOptions = <
   { id: string },
   TContext
 > => {
-  const mutationKey = ["deleteCategoriesDeleteId"];
+  const mutationKey = ['deleteCategoriesDeleteId'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -432,10 +390,7 @@ export type DeleteCategoriesDeleteIdMutationError =
  * @summary Deletar categoria
  */
 export const useDeleteCategoriesDeleteId = <
-  TError =
-    | DeleteCategoriesDeleteId400
-    | DeleteCategoriesDeleteId401
-    | DeleteCategoriesDeleteId404,
+  TError = DeleteCategoriesDeleteId400 | DeleteCategoriesDeleteId401 | DeleteCategoriesDeleteId404,
   TContext = unknown,
 >(
   options?: {
@@ -446,15 +401,12 @@ export const useDeleteCategoriesDeleteId = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteCategoriesDeleteId>>,
   TError,
   { id: string },
   TContext
 > => {
-  return useMutation(
-    getDeleteCategoriesDeleteIdMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getDeleteCategoriesDeleteIdMutationOptions(options), queryClient);
 };

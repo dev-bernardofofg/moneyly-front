@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { TransactionSummary } from "./TransactionSummary.ts";
+import type { TransactionSummary } from './TransactionSummary.ts';
 
 /**
  * @description Sucesso

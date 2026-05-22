@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { TransactionCategory } from "./TransactionCategory.ts";
+import type { TransactionCategory } from './TransactionCategory.ts';
 
 export type BudgetProgress = {
   /**

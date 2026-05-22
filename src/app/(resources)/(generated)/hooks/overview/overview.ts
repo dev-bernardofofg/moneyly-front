@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -16,7 +16,7 @@ import type {
   UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   GetOverviewDashboard200,
@@ -40,9 +40,9 @@ import type {
   GetOverviewPlanner200,
   GetOverviewPlanner400,
   GetOverviewPlanner401,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Períodos financeiros disponíveis
@@ -50,7 +50,7 @@ import { customInstance } from "../../../../(utils)/axios-instance";
 export const getOverviewPeriods = (signal?: AbortSignal) => {
   return customInstance<GetOverviewPeriods200>({
     url: `/overview/periods`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -63,63 +63,46 @@ export const getGetOverviewPeriodsQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewPeriods>>,
   TError = GetOverviewPeriods400 | GetOverviewPeriods401,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getOverviewPeriods>>,
-      TError,
-      TData
-    >
-  >;
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetOverviewPeriodsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewPeriods>>
-  > = ({ signal }) => getOverviewPeriods(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewPeriods>>> = ({ signal }) =>
+    getOverviewPeriods(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewPeriods>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewPeriodsQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOverviewPeriods>>
 >;
-export type GetOverviewPeriodsQueryError =
-  | GetOverviewPeriods400
-  | GetOverviewPeriods401;
+export type GetOverviewPeriodsQueryError = GetOverviewPeriods400 | GetOverviewPeriods401;
 
 export function useGetOverviewPeriods<
   TData = Awaited<ReturnType<typeof getOverviewPeriods>>,
   TError = GetOverviewPeriods400 | GetOverviewPeriods401,
 >(
   options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPeriods>>,
-        TError,
-        TData
-      >
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getOverviewPeriods>>,
           TError,
           Awaited<ReturnType<typeof getOverviewPeriods>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -129,11 +112,7 @@ export function useGetOverviewPeriods<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPeriods>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -141,10 +120,10 @@ export function useGetOverviewPeriods<
           TError,
           Awaited<ReturnType<typeof getOverviewPeriods>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -153,15 +132,9 @@ export function useGetOverviewPeriods<
   TError = GetOverviewPeriods400 | GetOverviewPeriods401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPeriods>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -174,24 +147,17 @@ export function useGetOverviewPeriods<
   TError = GetOverviewPeriods400 | GetOverviewPeriods401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPeriods>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPeriods>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewPeriodsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -199,21 +165,16 @@ export function useGetOverviewPeriods<
 /**
  * @summary Dados do dashboard
  */
-export const getOverviewDashboard = (
-  params?: GetOverviewDashboardParams,
-  signal?: AbortSignal,
-) => {
+export const getOverviewDashboard = (params?: GetOverviewDashboardParams, signal?: AbortSignal) => {
   return customInstance<GetOverviewDashboard200>({
     url: `/overview/dashboard`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
-export const getGetOverviewDashboardQueryKey = (
-  params?: GetOverviewDashboardParams,
-) => {
+export const getGetOverviewDashboardQueryKey = (params?: GetOverviewDashboardParams) => {
   return [`/overview/dashboard`, ...(params ? [params] : [])] as const;
 };
 
@@ -224,41 +185,31 @@ export const getGetOverviewDashboardQueryOptions = <
   params?: GetOverviewDashboardParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewDashboard>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetOverviewDashboardQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewDashboardQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewDashboard>>
-  > = ({ signal }) => getOverviewDashboard(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewDashboard>>> = ({ signal }) =>
+    getOverviewDashboard(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewDashboard>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewDashboardQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOverviewDashboard>>
 >;
-export type GetOverviewDashboardQueryError =
-  | GetOverviewDashboard400
-  | GetOverviewDashboard401;
+export type GetOverviewDashboardQueryError = GetOverviewDashboard400 | GetOverviewDashboard401;
 
 export function useGetOverviewDashboard<
   TData = Awaited<ReturnType<typeof getOverviewDashboard>>,
@@ -267,11 +218,7 @@ export function useGetOverviewDashboard<
   params: undefined | GetOverviewDashboardParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewDashboard>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -279,10 +226,10 @@ export function useGetOverviewDashboard<
           TError,
           Awaited<ReturnType<typeof getOverviewDashboard>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -293,11 +240,7 @@ export function useGetOverviewDashboard<
   params?: GetOverviewDashboardParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewDashboard>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -305,10 +248,10 @@ export function useGetOverviewDashboard<
           TError,
           Awaited<ReturnType<typeof getOverviewDashboard>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -319,14 +262,10 @@ export function useGetOverviewDashboard<
   params?: GetOverviewDashboardParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewDashboard>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -341,23 +280,18 @@ export function useGetOverviewDashboard<
   params?: GetOverviewDashboardParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewDashboard>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewDashboard>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewDashboardQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -368,7 +302,7 @@ export function useGetOverviewDashboard<
 export const getOverviewPlanner = (signal?: AbortSignal) => {
   return customInstance<GetOverviewPlanner200>({
     url: `/overview/planner`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -381,63 +315,46 @@ export const getGetOverviewPlannerQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getOverviewPlanner>>,
-      TError,
-      TData
-    >
-  >;
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetOverviewPlannerQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewPlanner>>
-  > = ({ signal }) => getOverviewPlanner(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewPlanner>>> = ({ signal }) =>
+    getOverviewPlanner(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewPlanner>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewPlannerQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOverviewPlanner>>
 >;
-export type GetOverviewPlannerQueryError =
-  | GetOverviewPlanner400
-  | GetOverviewPlanner401;
+export type GetOverviewPlannerQueryError = GetOverviewPlanner400 | GetOverviewPlanner401;
 
 export function useGetOverviewPlanner<
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
   options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPlanner>>,
-        TError,
-        TData
-      >
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getOverviewPlanner>>,
           TError,
           Awaited<ReturnType<typeof getOverviewPlanner>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -447,11 +364,7 @@ export function useGetOverviewPlanner<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPlanner>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -459,10 +372,10 @@ export function useGetOverviewPlanner<
           TError,
           Awaited<ReturnType<typeof getOverviewPlanner>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -471,15 +384,9 @@ export function useGetOverviewPlanner<
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPlanner>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -492,24 +399,17 @@ export function useGetOverviewPlanner<
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewPlanner>>,
-        TError,
-        TData
-      >
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewPlannerQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -520,7 +420,7 @@ export function useGetOverviewPlanner<
 export const getOverviewInsights = (signal?: AbortSignal) => {
   return customInstance<GetOverviewInsights200>({
     url: `/overview/insights`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -533,40 +433,29 @@ export const getGetOverviewInsightsQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getOverviewInsights>>,
-      TError,
-      TData
-    >
-  >;
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetOverviewInsightsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewInsights>>
-  > = ({ signal }) => getOverviewInsights(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewInsights>>> = ({ signal }) =>
+    getOverviewInsights(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewInsights>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewInsightsQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOverviewInsights>>
 >;
-export type GetOverviewInsightsQueryError =
-  | GetOverviewInsights400
-  | GetOverviewInsights401;
+export type GetOverviewInsightsQueryError = GetOverviewInsights400 | GetOverviewInsights401;
 
 export function useGetOverviewInsights<
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
@@ -574,11 +463,7 @@ export function useGetOverviewInsights<
 >(
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsights>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -586,10 +471,10 @@ export function useGetOverviewInsights<
           TError,
           Awaited<ReturnType<typeof getOverviewInsights>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -599,11 +484,7 @@ export function useGetOverviewInsights<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsights>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -611,10 +492,10 @@ export function useGetOverviewInsights<
           TError,
           Awaited<ReturnType<typeof getOverviewInsights>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -624,14 +505,10 @@ export function useGetOverviewInsights<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsights>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -645,23 +522,18 @@ export function useGetOverviewInsights<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsights>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewInsightsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -669,21 +541,16 @@ export function useGetOverviewInsights<
 /**
  * @summary Saldo projetado (cash-flow forecast)
  */
-export const getOverviewForecast = (
-  params?: GetOverviewForecastParams,
-  signal?: AbortSignal,
-) => {
+export const getOverviewForecast = (params?: GetOverviewForecastParams, signal?: AbortSignal) => {
   return customInstance<GetOverviewForecast200>({
     url: `/overview/forecast`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
-export const getGetOverviewForecastQueryKey = (
-  params?: GetOverviewForecastParams,
-) => {
+export const getGetOverviewForecastQueryKey = (params?: GetOverviewForecastParams) => {
   return [`/overview/forecast`, ...(params ? [params] : [])] as const;
 };
 
@@ -694,41 +561,31 @@ export const getGetOverviewForecastQueryOptions = <
   params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewForecast>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetOverviewForecastQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewForecastQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewForecast>>
-  > = ({ signal }) => getOverviewForecast(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewForecast>>> = ({ signal }) =>
+    getOverviewForecast(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewForecast>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewForecastQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOverviewForecast>>
 >;
-export type GetOverviewForecastQueryError =
-  | GetOverviewForecast400
-  | GetOverviewForecast401;
+export type GetOverviewForecastQueryError = GetOverviewForecast400 | GetOverviewForecast401;
 
 export function useGetOverviewForecast<
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
@@ -737,11 +594,7 @@ export function useGetOverviewForecast<
   params: undefined | GetOverviewForecastParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewForecast>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -749,10 +602,10 @@ export function useGetOverviewForecast<
           TError,
           Awaited<ReturnType<typeof getOverviewForecast>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -763,11 +616,7 @@ export function useGetOverviewForecast<
   params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewForecast>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -775,10 +624,10 @@ export function useGetOverviewForecast<
           TError,
           Awaited<ReturnType<typeof getOverviewForecast>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -789,14 +638,10 @@ export function useGetOverviewForecast<
   params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewForecast>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -811,23 +656,18 @@ export function useGetOverviewForecast<
   params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewForecast>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetOverviewForecastQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -837,23 +677,20 @@ export function useGetOverviewForecast<
  */
 export const getOverviewInsightsComparison = (
   params?: GetOverviewInsightsComparisonParams,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<GetOverviewInsightsComparison200>({
     url: `/overview/insights/comparison`,
-    method: "GET",
+    method: 'GET',
     params,
     signal,
   });
 };
 
 export const getGetOverviewInsightsComparisonQueryKey = (
-  params?: GetOverviewInsightsComparisonParams,
+  params?: GetOverviewInsightsComparisonParams
 ) => {
-  return [
-    `/overview/insights/comparison`,
-    ...(params ? [params] : []),
-  ] as const;
+  return [`/overview/insights/comparison`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetOverviewInsightsComparisonQueryOptions = <
@@ -863,33 +700,26 @@ export const getGetOverviewInsightsComparisonQueryOptions = <
   params?: GetOverviewInsightsComparisonParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetOverviewInsightsComparisonQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewInsightsComparisonQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getOverviewInsightsComparison>>
-  > = ({ signal }) => getOverviewInsightsComparison(params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewInsightsComparison>>> = ({
+    signal,
+  }) => getOverviewInsightsComparison(params, signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetOverviewInsightsComparisonQueryResult = NonNullable<
@@ -906,11 +736,7 @@ export function useGetOverviewInsightsComparison<
   params: undefined | GetOverviewInsightsComparisonParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -918,10 +744,10 @@ export function useGetOverviewInsightsComparison<
           TError,
           Awaited<ReturnType<typeof getOverviewInsightsComparison>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -932,11 +758,7 @@ export function useGetOverviewInsightsComparison<
   params?: GetOverviewInsightsComparisonParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -944,10 +766,10 @@ export function useGetOverviewInsightsComparison<
           TError,
           Awaited<ReturnType<typeof getOverviewInsightsComparison>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -958,14 +780,10 @@ export function useGetOverviewInsightsComparison<
   params?: GetOverviewInsightsComparisonParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -980,26 +798,18 @@ export function useGetOverviewInsightsComparison<
   params?: GetOverviewInsightsComparisonParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getOverviewInsightsComparison>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsightsComparison>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetOverviewInsightsComparisonQueryOptions(
-    params,
-    options,
-  );
+  const queryOptions = getGetOverviewInsightsComparisonQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }

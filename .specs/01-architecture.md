@@ -18,19 +18,19 @@
 
 Base: `src/app/`. Pastas `(grupo)` não viram segmento de URL.
 
-| Grupo | Papel |
-|---|---|
-| `(routes)/(private)/` | Telas autenticadas: `dashboard`, `transactions`, `categories`, `recurring-transactions`, `planner`, `profile`. `layout.tsx` = `PrivateLayout`. |
-| `(routes)/(public)/` | `auth` (sign-in/sign-up). `layout.tsx` = `PublicLayout`. |
-| `(resources)/(generated)/` | ⚠️ **Gerado por Kubb+Orval** — `types/`, `zod/`, `schemas/`, `hooks/<tag>/`. Nunca editar à mão. |
-| `(resources)/(forms)/` | Forms `upsert-*.form.tsx` (RHF + zod) + `confirm-action.tsx`, `transaction.tabs.tsx`. |
-| `(resources)/(schemas)/` | Zod **de formulário** escrito à mão (`*.schema.tsx`). NÃO é tipo de API. |
-| `(components)/(bases)/(x)/` | Biblioteca de componentes compostos (cards, charts, forms, tables, stats, swipers...). |
-| `(contexts)/` | Providers: `auth-provider`, `period-provider`, `theme-provider`, `index.tsx` (raiz). |
-| `(helpers)/` | `number.ts` (BRL), `string.ts` (parse moeda), `errors.ts`, `budget-level.ts`. |
-| `(hooks)/` + `src/hooks/` | Hooks de app (`use-periods`, `use-pagination`, `use-disclosure`...). |
-| `(utils)/` | `axios-instance.ts`, `cookies.ts`, `routes.ts`, `env.ts`. |
-| `(layouts)/` | `private-layout.tsx`, `public-layout.tsx`. |
+| Grupo                       | Papel                                                                                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `(routes)/(private)/`       | Telas autenticadas: `dashboard`, `transactions`, `categories`, `recurring-transactions`, `planner`, `profile`. `layout.tsx` = `PrivateLayout`. |
+| `(routes)/(public)/`        | `auth` (sign-in/sign-up). `layout.tsx` = `PublicLayout`.                                                                                       |
+| `(resources)/(generated)/`  | ⚠️ **Gerado por Kubb+Orval** — `types/`, `zod/`, `schemas/`, `hooks/<tag>/`. Nunca editar à mão.                                               |
+| `(resources)/(forms)/`      | Forms `upsert-*.form.tsx` (RHF + zod) + `confirm-action.tsx`, `transaction.tabs.tsx`.                                                          |
+| `(resources)/(schemas)/`    | Zod **de formulário** escrito à mão (`*.schema.tsx`). NÃO é tipo de API.                                                                       |
+| `(components)/(bases)/(x)/` | Biblioteca de componentes compostos (cards, charts, forms, tables, stats, swipers...).                                                         |
+| `(contexts)/`               | Providers: `auth-provider`, `period-provider`, `theme-provider`, `index.tsx` (raiz).                                                           |
+| `(helpers)/`                | `number.ts` (BRL), `string.ts` (parse moeda), `errors.ts`, `budget-level.ts`.                                                                  |
+| `(hooks)/` + `src/hooks/`   | Hooks de app (`use-periods`, `use-pagination`, `use-disclosure`...).                                                                           |
+| `(utils)/`                  | `axios-instance.ts`, `cookies.ts`, `routes.ts`, `env.ts`.                                                                                      |
+| `(layouts)/`                | `private-layout.tsx`, `public-layout.tsx`.                                                                                                     |
 
 `src/middleware.ts` = guarda de rota (cookie `auth_token`). `src/lib/utils.ts` = `cn()`.
 

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { usePWA } from "@/hooks/use-pwa";
-import { Download } from "lucide-react";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { usePWA } from '@/hooks/use-pwa';
+import { Download } from 'lucide-react';
+import { useState } from 'react';
 
 export function InstallPWAButton() {
   const { isInstallable, installPWA } = usePWA();
@@ -16,7 +16,7 @@ export function InstallPWAButton() {
     try {
       await installPWA();
     } catch (error) {
-      console.error("Error installing PWA:", error);
+      console.error('Error installing PWA:', error);
     } finally {
       setIsInstalling(false);
     }
@@ -32,7 +32,7 @@ export function InstallPWAButton() {
       className={`w-full gap-2 text-xs ${isInstallable && 'hidden'}`}
     >
       <Download className="h-4 w-4" />
-      {isInstalling ? "Instalando..." : "Instalar App"}
+      {isInstalling ? 'Instalando...' : 'Instalar App'}
     </Button>
   );
-} 
+}

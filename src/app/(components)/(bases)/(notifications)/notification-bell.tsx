@@ -1,42 +1,38 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
 import {
   getGetNotificationsQueryKey,
   useGetNotifications,
   usePatchNotificationsIdRead,
   usePatchNotificationsReadAll,
-} from "@/app/(resources)/(generated)/hooks/notifications/notifications";
-import { Notification } from "@/app/(resources)/(generated)/types/Notification";
-import { useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, Bell, Check, Info, XCircle } from "lucide-react";
-import { useState } from "react";
+} from '@/app/(resources)/(generated)/hooks/notifications/notifications';
+import { Notification } from '@/app/(resources)/(generated)/types/Notification';
+import { useQueryClient } from '@tanstack/react-query';
+import { AlertTriangle, Bell, Check, Info, XCircle } from 'lucide-react';
+import { useState } from 'react';
 
-const severityIcon = (severity: Notification["severity"]) => {
+const severityIcon = (severity: Notification['severity']) => {
   switch (severity) {
-    case "danger":
+    case 'danger':
       return <XCircle className="size-4 text-expense" />;
-    case "warning":
+    case 'warning':
       return <AlertTriangle className="size-4 text-warn" />;
     default:
       return <Info className="size-4 text-info" />;
   }
 };
 
-const severityColor = (severity: Notification["severity"]) => {
+const severityColor = (severity: Notification['severity']) => {
   switch (severity) {
-    case "danger":
-      return "border-l-expense bg-expense/5";
-    case "warning":
-      return "border-l-warn bg-warn/5";
+    case 'danger':
+      return 'border-l-expense bg-expense/5';
+    case 'warning':
+      return 'border-l-warn bg-warn/5';
     default:
-      return "border-l-info bg-info/5";
+      return 'border-l-info bg-info/5';
   }
 };
 
@@ -69,13 +65,13 @@ export const NotificationBell = () => {
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label={`Notificações${unreadCount ? ` (${unreadCount} não lidas)` : ""}`}
+          aria-label={`Notificações${unreadCount ? ` (${unreadCount} não lidas)` : ''}`}
           className="relative flex size-9 items-center justify-center rounded-md text-slate-600 transition-colors hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700"
         >
           <Bell className="size-5" />
           {unreadCount > 0 && (
             <span className="absolute -right-0.5 -top-0.5 flex min-w-4 items-center justify-center rounded-full bg-expense px-1 text-[10px] font-bold leading-4 text-white">
-              {unreadCount > 9 ? "9+" : unreadCount}
+              {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </button>
@@ -108,19 +104,15 @@ export const NotificationBell = () => {
               <div
                 key={n.id}
                 className={`rounded-lg border-l-4 p-3 transition-colors ${
-                  n.isRead ? "opacity-60" : severityColor(n.severity)
+                  n.isRead ? 'opacity-60' : severityColor(n.severity)
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-1 items-start gap-2">
                     {severityIcon(n.severity)}
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground">
-                        {n.title}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {n.message}
-                      </p>
+                      <p className="text-sm font-medium text-foreground">{n.title}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{n.message}</p>
                     </div>
                   </div>
                   {!n.isRead && (

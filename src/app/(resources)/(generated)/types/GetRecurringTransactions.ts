@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { RecurringTransaction } from "./RecurringTransaction.ts";
+import type { RecurringTransaction } from './RecurringTransaction.ts';
 
 export type GetRecurringTransactionsQueryParams = {
   /**

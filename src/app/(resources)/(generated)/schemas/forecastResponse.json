@@ -42,13 +42,7 @@
                 "example": "2026-05-17T00:00:00.000Z"
               }
             },
-            "required": [
-              "recurringTransactionId",
-              "title",
-              "type",
-              "amount",
-              "date"
-            ]
+            "required": ["recurringTransactionId", "title", "type", "amount", "date"]
           }
         }
       },
@@ -57,12 +51,6 @@
     "projectedEndBalance": { "type": "number" },
     "asOf": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
-  "required": [
-    "period",
-    "realized",
-    "projected",
-    "projectedEndBalance",
-    "asOf"
-  ],
+  "required": ["period", "realized", "projected", "projectedEndBalance", "asOf"],
   "x-readme-ref-name": "ForecastResponse"
 }

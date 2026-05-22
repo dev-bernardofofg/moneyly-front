@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Loader2, Plus } from "lucide-react";
-import { ComponentProps } from "react";
+import { Loader2, Plus } from 'lucide-react';
+import { ComponentProps } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface BaseButtonProps extends ComponentProps<typeof Button> {
   isLoading?: boolean;
   loadingText?: string;
-  clickAction?: "default" | "sign-out" | "create"
+  clickAction?: 'default' | 'sign-out' | 'create';
 }
 
 export const BaseButton = ({
@@ -18,12 +18,12 @@ export const BaseButton = ({
   loadingText,
   className,
   disabled,
-  clickAction = "default",
+  clickAction = 'default',
   ...props
 }: BaseButtonProps) => {
   return (
     <Button
-      className={cn("hover:cursor-pointer", className)}
+      className={cn('hover:cursor-pointer', className)}
       disabled={disabled || isLoading}
       {...props}
     >
@@ -34,7 +34,7 @@ export const BaseButton = ({
         </>
       ) : (
         <>
-          {clickAction === "create" && <Plus className="mr-1 size-4 " />}
+          {clickAction === 'create' && <Plus className="mr-1 size-4 " />}
 
           {children}
         </>

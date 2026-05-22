@@ -1,4 +1,4 @@
-import { useAuth } from "@/app/(contexts)/auth-provider";
+import { useAuth } from '@/app/(contexts)/auth-provider';
 
 export const useInitialConfig = () => {
   const { user } = useAuth();
@@ -8,7 +8,7 @@ export const useInitialConfig = () => {
 
     return (
       !user.monthlyIncome ||
-      user.monthlyIncome === "0" ||
+      user.monthlyIncome === '0' ||
       user.financialDayStart === undefined ||
       user.financialDayEnd === undefined
     );

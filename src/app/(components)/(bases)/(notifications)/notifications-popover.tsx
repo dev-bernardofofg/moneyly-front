@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { Bell, Check, Clock, X } from "lucide-react";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
+import { Bell, Check, Clock, X } from 'lucide-react';
+import { useState } from 'react';
 
 export interface Notification {
   id: string;
   title: string;
   message: string;
-  type: "info" | "warning" | "error" | "success";
+  type: 'info' | 'warning' | 'error' | 'success';
   timestamp: Date;
   read: boolean;
 }
@@ -28,35 +28,35 @@ export const NotificationsPopover = ({
   onMarkAsRead,
   onMarkAllAsRead,
   onDelete,
-  trigger
+  trigger,
 }: NotificationsPopoverProps) => {
   const [open, setOpen] = useState(false);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const getNotificationIcon = (type: Notification["type"]) => {
+  const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
-      case "success":
+      case 'success':
         return <Check className="size-4 text-income" />;
-      case "warning":
+      case 'warning':
         return <Clock className="size-4 text-warn" />;
-      case "error":
+      case 'error':
         return <X className="size-4 text-expense" />;
       default:
         return <Bell className="size-4 text-info" />;
     }
   };
 
-  const getNotificationColor = (type: Notification["type"]) => {
+  const getNotificationColor = (type: Notification['type']) => {
     switch (type) {
-      case "success":
-        return "border-l-income bg-income/5";
-      case "warning":
-        return "border-l-warn bg-warn/5";
-      case "error":
-        return "border-l-expense bg-expense/5";
+      case 'success':
+        return 'border-l-income bg-income/5';
+      case 'warning':
+        return 'border-l-warn bg-warn/5';
+      case 'error':
+        return 'border-l-expense bg-expense/5';
       default:
-        return "border-l-info bg-info/5";
+        return 'border-l-info bg-info/5';
     }
   };
 
@@ -67,7 +67,7 @@ export const NotificationsPopover = ({
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return "Agora";
+    if (minutes < 1) return 'Agora';
     if (minutes < 60) return `${minutes}m atrás`;
     if (hours < 24) return `${hours}h atrás`;
     return `${days}d atrás`;
@@ -76,9 +76,7 @@ export const NotificationsPopover = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="relative cursor-pointer">
-          {trigger}
-        </div>
+        <div className="relative cursor-pointer">{trigger}</div>
       </PopoverTrigger>
       <PopoverContent className="w-80 max-h-96 overflow-hidden" align="end">
         <div className="flex items-center justify-between mb-3">
@@ -107,21 +105,16 @@ export const NotificationsPopover = ({
             notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-3 rounded-lg border-l-4 transition-colors ${notification.read
-                  ? "opacity-60"
-                  : getNotificationColor(notification.type)
-                  }`}
+                className={`p-3 rounded-lg border-l-4 transition-colors ${
+                  notification.read ? 'opacity-60' : getNotificationColor(notification.type)
+                }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-2 flex-1">
                     {getNotificationIcon(notification.type)}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">
-                        {notification.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {notification.message}
-                      </p>
+                      <p className="text-sm font-medium text-foreground">{notification.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{notification.message}</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         {formatTime(notification.timestamp)}
                       </p>
@@ -155,4 +148,4 @@ export const NotificationsPopover = ({
       </PopoverContent>
     </Popover>
   );
-}; 
+};

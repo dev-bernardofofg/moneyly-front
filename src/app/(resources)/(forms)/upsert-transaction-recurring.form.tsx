@@ -1,48 +1,59 @@
-"use client";
+'use client';
 
-import { BaseDatePicker } from "@/app/(components)/(bases)/(forms)/base-date-picker";
-import { BaseForm } from "@/app/(components)/(bases)/(forms)/base-form";
-import { BaseInput } from "@/app/(components)/(bases)/(forms)/base-input";
-import { BaseSelect } from "@/app/(components)/(bases)/(forms)/base-select";
-import { DialogFormFooter } from "@/app/(components)/(bases)/(forms)/dialog-form-footer";
-import { useUpsertDialog } from "@/app/(hooks)/use-upsert-dialog";
-import { FN_UTILS_DATE } from "@/app/(helpers)/date";
-import { FN_UTILS_STRING } from "@/app/(helpers)/string";
-import { Form } from "@/components/ui/form";
-import { TrendingDown, TrendingUp } from "lucide-react";
-import { Controller } from "react-hook-form";
-import { cn } from "@/lib/utils";
-import { Category, RecurringTransaction } from "../(generated)";
-import { useGetCategories } from "../(generated)/hooks/categories/categories";
+import { BaseDatePicker } from '@/app/(components)/(bases)/(forms)/base-date-picker';
+import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
+import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
+import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
+import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer';
+import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
+import { FN_UTILS_STRING } from '@/app/(helpers)/string';
+import { Form } from '@/components/ui/form';
+import { TrendingDown, TrendingUp } from 'lucide-react';
+import { Controller } from 'react-hook-form';
+import { cn } from '@/lib/utils';
+import { Category, RecurringTransaction } from '../(generated)';
+import { useGetCategories } from '../(generated)/hooks/categories/categories';
 import {
   getGetRecurringTransactionsQueryKey,
   usePostRecurringTransactions,
   usePutRecurringTransactionsId,
-} from "../(generated)/hooks/recurring-transactions/recurring-transactions";
+} from '../(generated)/hooks/recurring-transactions/recurring-transactions';
 import {
   UpsertTransactionRecurringDefaultValues,
   UpsertTransactionRecurringFormValues,
   UpsertTransactionRecurringSchema,
-} from "../(schemas)/transaction.schema";
+} from '../(schemas)/transaction.schema';
 
 const FREQUENCY_OPTIONS = [
-  { label: "Diária", value: "daily" },
-  { label: "Semanal", value: "weekly" },
-  { label: "Mensal", value: "monthly" },
-  { label: "Anual", value: "yearly" },
+  { label: 'Diária', value: 'daily' },
+  { label: 'Semanal', value: 'weekly' },
+  { label: 'Mensal', value: 'monthly' },
+  { label: 'Anual', value: 'yearly' },
 ];
 
 const DAY_OF_WEEK_OPTIONS = [
-  { label: "Domingo", value: "0" },
-  { label: "Segunda", value: "1" },
-  { label: "Terça", value: "2" },
-  { label: "Quarta", value: "3" },
-  { label: "Quinta", value: "4" },
-  { label: "Sexta", value: "5" },
-  { label: "Sábado", value: "6" },
+  { label: 'Domingo', value: '0' },
+  { label: 'Segunda', value: '1' },
+  { label: 'Terça', value: '2' },
+  { label: 'Quarta', value: '3' },
+  { label: 'Quinta', value: '4' },
+  { label: 'Sexta', value: '5' },
+  { label: 'Sábado', value: '6' },
 ];
 
-const FIELDS = ["title", "amount", "type", "categoryId", "frequency", "dayOfWeek", "dayOfMonth", "description", "totalInstallments", "startDate"] as const;
+const FIELDS = [
+  'title',
+  'amount',
+  'type',
+  'categoryId',
+  'frequency',
+  'dayOfWeek',
+  'dayOfMonth',
+  'description',
+  'totalInstallments',
+  'startDate',
+] as const;
 
 export const UpsertTransactionRecurringForm = ({
   recurringTransaction,
@@ -54,26 +65,33 @@ export const UpsertTransactionRecurringForm = ({
       schema: UpsertTransactionRecurringSchema,
       defaultValues: recurringTransaction
         ? {
-            type: recurringTransaction.type as "income" | "expense",
+            type: recurringTransaction.type as 'income' | 'expense',
             title: recurringTransaction.title,
             amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(recurringTransaction.amount),
             categoryId: recurringTransaction.categoryId,
-            frequency: recurringTransaction.frequency as "daily" | "weekly" | "monthly" | "yearly",
-            dayOfWeek: recurringTransaction.dayOfWeek != null ? String(recurringTransaction.dayOfWeek) : "",
-            dayOfMonth: recurringTransaction.dayOfMonth != null ? String(recurringTransaction.dayOfMonth) : "",
-            description: recurringTransaction.description ?? "",
-            totalInstallments: recurringTransaction.totalInstallments != null ? String(recurringTransaction.totalInstallments) : "",
+            frequency: recurringTransaction.frequency as 'daily' | 'weekly' | 'monthly' | 'yearly',
+            dayOfWeek:
+              recurringTransaction.dayOfWeek != null ? String(recurringTransaction.dayOfWeek) : '',
+            dayOfMonth:
+              recurringTransaction.dayOfMonth != null
+                ? String(recurringTransaction.dayOfMonth)
+                : '',
+            description: recurringTransaction.description ?? '',
+            totalInstallments:
+              recurringTransaction.totalInstallments != null
+                ? String(recurringTransaction.totalInstallments)
+                : '',
           }
         : UpsertTransactionRecurringDefaultValues,
       invalidateKeys: [getGetRecurringTransactionsQueryKey()],
       errorFields: [...FIELDS],
       successMessage: {
-        create: "Transação recorrente criada com sucesso",
-        update: "Transação recorrente atualizada com sucesso",
+        create: 'Transação recorrente criada com sucesso',
+        update: 'Transação recorrente atualizada com sucesso',
       },
     });
 
-  const frequency = form.watch("frequency");
+  const frequency = form.watch('frequency');
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
@@ -98,8 +116,8 @@ export const UpsertTransactionRecurringForm = ({
       categoryId: data.categoryId,
       frequency: data.frequency,
       description: data.description || undefined,
-      dayOfWeek: data.frequency === "weekly" ? Number(data.dayOfWeek) : undefined,
-      dayOfMonth: data.frequency === "monthly" ? Number(data.dayOfMonth) : undefined,
+      dayOfWeek: data.frequency === 'weekly' ? Number(data.dayOfWeek) : undefined,
+      dayOfMonth: data.frequency === 'monthly' ? Number(data.dayOfMonth) : undefined,
       totalInstallments: data.totalInstallments ? Number(data.totalInstallments) : undefined,
     };
 
@@ -120,14 +138,20 @@ export const UpsertTransactionRecurringForm = ({
     }
   };
 
-  const hasConditionalField = frequency === "weekly" || frequency === "monthly";
+  const hasConditionalField = frequency === 'weekly' || frequency === 'monthly';
 
   return (
     <>
       <DialogCloseHidden />
       <Form {...form}>
         <BaseForm onSubmit={form.handleSubmit(handleSubmit)}>
-          <BaseInput control={form.control} name="title" label="Título" placeholder="Ex: Pagamento de aluguel" autoFocus />
+          <BaseInput
+            control={form.control}
+            name="title"
+            label="Título"
+            placeholder="Ex: Pagamento de aluguel"
+            autoFocus
+          />
           <div className="grid grid-cols-2 gap-2">
             <Controller
               control={form.control}
@@ -137,21 +161,21 @@ export const UpsertTransactionRecurringForm = ({
                   <span className="text-sm font-medium">Tipo</span>
                   <div
                     className={cn(
-                      "relative grid grid-cols-2 rounded-lg border overflow-hidden h-11 p-0.5 gap-0.5 transition-colors duration-300",
-                      field.value === "income"
-                        ? "border-income/60 bg-income/5"
-                        : "border-expense/60 bg-expense/5",
-                      recurringTransaction && "opacity-60 pointer-events-none",
+                      'relative grid grid-cols-2 rounded-lg border overflow-hidden h-11 p-0.5 gap-0.5 transition-colors duration-300',
+                      field.value === 'income'
+                        ? 'border-income/60 bg-income/5'
+                        : 'border-expense/60 bg-expense/5',
+                      recurringTransaction && 'opacity-60 pointer-events-none'
                     )}
                   >
                     <button
                       type="button"
-                      onClick={() => field.onChange("income")}
+                      onClick={() => field.onChange('income')}
                       className={cn(
-                        "relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300",
-                        field.value === "income"
-                          ? "bg-income text-income-foreground shadow-sm shadow-income/40"
-                          : "text-muted-foreground hover:text-foreground hover:bg-income/10",
+                        'relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300',
+                        field.value === 'income'
+                          ? 'bg-income text-income-foreground shadow-sm shadow-income/40'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-income/10'
                       )}
                     >
                       <TrendingUp className="size-3.5 shrink-0" />
@@ -159,12 +183,12 @@ export const UpsertTransactionRecurringForm = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => field.onChange("expense")}
+                      onClick={() => field.onChange('expense')}
                       className={cn(
-                        "relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300",
-                        field.value === "expense"
-                          ? "bg-expense text-expense-foreground shadow-sm shadow-expense/40"
-                          : "text-muted-foreground hover:text-foreground hover:bg-expense/10",
+                        'relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300',
+                        field.value === 'expense'
+                          ? 'bg-expense text-expense-foreground shadow-sm shadow-expense/40'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-expense/10'
                       )}
                     >
                       <TrendingDown className="size-3.5 shrink-0" />
@@ -182,14 +206,20 @@ export const UpsertTransactionRecurringForm = ({
               emptyMessage="Nenhuma categoria. Crie em Categorias."
               options={
                 categories?.data?.map((category: Category) => ({
-                  label: category.name || "",
-                  value: category.id || "",
+                  label: category.name || '',
+                  value: category.id || '',
                 })) || []
               }
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <BaseInput control={form.control} name="amount" label="Valor" type="money" placeholder="0,00" />
+            <BaseInput
+              control={form.control}
+              name="amount"
+              label="Valor"
+              type="money"
+              placeholder="0,00"
+            />
             <BaseInput
               control={form.control}
               name="totalInstallments"
@@ -207,14 +237,14 @@ export const UpsertTransactionRecurringForm = ({
               description="Vazio = criar primeira parcela agora"
             />
           )}
-          <div className={cn("grid gap-2", hasConditionalField ? "grid-cols-2" : "grid-cols-1")}>
+          <div className={cn('grid gap-2', hasConditionalField ? 'grid-cols-2' : 'grid-cols-1')}>
             <BaseSelect
               control={form.control}
               name="frequency"
               label="Frequência"
               options={FREQUENCY_OPTIONS}
             />
-            {frequency === "weekly" && (
+            {frequency === 'weekly' && (
               <BaseSelect
                 control={form.control}
                 name="dayOfWeek"
@@ -222,7 +252,7 @@ export const UpsertTransactionRecurringForm = ({
                 options={DAY_OF_WEEK_OPTIONS}
               />
             )}
-            {frequency === "monthly" && (
+            {frequency === 'monthly' && (
               <BaseSelect
                 control={form.control}
                 name="dayOfMonth"
@@ -233,7 +263,7 @@ export const UpsertTransactionRecurringForm = ({
           </div>
 
           <DialogFormFooter
-            submitLabel={recurringTransaction ? "Atualizar" : "Criar"}
+            submitLabel={recurringTransaction ? 'Atualizar' : 'Criar'}
             isLoading={isCreating || isUpdating}
           />
         </BaseForm>

@@ -1,5 +1,5 @@
-"use client";
-import { Progress } from "./progress";
+'use client';
+import { Progress } from './progress';
 
 interface LinearProgressProps {
   value: number;
@@ -14,4 +14,4 @@ export const LinearProgress = ({ value, maxValue }: LinearProgressProps) => {
       <span className="text-sm text-muted-foreground">{percentage.toFixed(2)}%</span>
     </div>
   );
-}
+};

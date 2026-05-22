@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { createContext, useContext, useRef, useState } from "react";
+} from '@/components/ui/dialog';
+import { createContext, useContext, useRef, useState } from 'react';
 
 /** true = pode fechar; false = bloquear (pedir confirmação). */
 type CloseGuard = () => boolean;
@@ -47,7 +47,7 @@ export const BaseDialog = ({
       !next &&
       guardRef.current &&
       !guardRef.current() &&
-      !window.confirm("Descartar alterações não salvas?")
+      !window.confirm('Descartar alterações não salvas?')
     ) {
       return;
     }
@@ -57,7 +57,11 @@ export const BaseDialog = ({
 
   return (
     <DialogGuardContext.Provider
-      value={{ setGuard: (guard) => { guardRef.current = guard; } }}
+      value={{
+        setGuard: (guard) => {
+          guardRef.current = guard;
+        },
+      }}
     >
       <Dialog open={actualOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>

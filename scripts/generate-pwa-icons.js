@@ -13,8 +13,8 @@
  * modern browsers accept PNG-compressed ICO entries.
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
-const sharp = require("sharp");
-const path = require("path");
+const sharp = require('sharp');
+const path = require('path');
 
 const GRAD = `
   <defs>
@@ -46,13 +46,15 @@ const wrap = (body) =>
 const rounded = wrap(`<rect width="512" height="512" rx="88" ry="88" fill="url(#g)"/>${GLYPH}`);
 const maskable = wrap(`<rect width="512" height="512" fill="url(#g)"/>${GLYPH}`);
 const faviconBig = rounded;
-const faviconSmall = wrap(`<rect width="512" height="512" rx="88" ry="88" fill="url(#g)"/>${GLYPH_SMALL}`);
+const faviconSmall = wrap(
+  `<rect width="512" height="512" rx="88" ry="88" fill="url(#g)"/>${GLYPH_SMALL}`
+);
 
 const targets = [
-  { svg: rounded, size: 512, out: "../src/app/icon.png" },
-  { svg: rounded, size: 120, out: "../public/logo-moneyly.png" },
-  { svg: maskable, size: 192, out: "../public/icon-192x192.png" },
-  { svg: maskable, size: 512, out: "../public/icon-512x512.png" },
+  { svg: rounded, size: 512, out: '../src/app/icon.png' },
+  { svg: rounded, size: 120, out: '../public/logo-moneyly.png' },
+  { svg: maskable, size: 192, out: '../public/icon-192x192.png' },
+  { svg: maskable, size: 512, out: '../public/icon-512x512.png' },
 ];
 
 /** Assemble a multi-size .ico from PNG buffers (PNG-in-ICO). */
@@ -101,14 +103,14 @@ async function run() {
     const data = await sharp(Buffer.from(svg)).resize(size, size).png().toBuffer();
     frames.push({ size, data });
   }
-  const icoPath = path.join(__dirname, "../src/app/favicon.ico");
-  require("fs").writeFileSync(icoPath, buildIco(frames));
-  console.log("✅ ../src/app/favicon.ico (16/32/48)");
+  const icoPath = path.join(__dirname, '../src/app/favicon.ico');
+  require('fs').writeFileSync(icoPath, buildIco(frames));
+  console.log('✅ ../src/app/favicon.ico (16/32/48)');
 
-  console.log("🎉 Icon assets generated from design-system mark");
+  console.log('🎉 Icon assets generated from design-system mark');
 }
 
 run().catch((e) => {
-  console.error("❌", e);
+  console.error('❌', e);
   process.exit(1);
 });

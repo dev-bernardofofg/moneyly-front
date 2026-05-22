@@ -5,7 +5,7 @@
  * ARQUIVO GERADO por `pnpm openapi:gen` (zod-to-openapi). NÃO editar à mão. Ver moneyly/.specs/01-api-contract.md
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -19,7 +19,7 @@ import type {
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 import type {
   GetUserFinancialPeriods200,
@@ -44,9 +44,9 @@ import type {
   PutUserIncomeAndPeriod401,
   PutUserIncomeAndPeriodBody,
   PutUserIncomeBody,
-} from "../moneylyAPI.schemas";
+} from '../moneylyAPI.schemas';
 
-import { customInstance } from "../../../../(utils)/axios-instance";
+import { customInstance } from '../../../../(utils)/axios-instance';
 
 /**
  * @summary Perfil do usuário autenticado
@@ -54,7 +54,7 @@ import { customInstance } from "../../../../(utils)/axios-instance";
 export const getUserMe = (signal?: AbortSignal) => {
   return customInstance<GetUserMe200>({
     url: `/user/me`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -67,17 +67,14 @@ export const getGetUserMeQueryOptions = <
   TData = Awaited<ReturnType<typeof getUserMe>>,
   TError = GetUserMe400 | GetUserMe401,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>
-  >;
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetUserMeQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserMe>>> = ({
-    signal,
-  }) => getUserMe(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserMe>>> = ({ signal }) =>
+    getUserMe(signal);
 
   return {
     queryKey,
@@ -89,9 +86,7 @@ export const getGetUserMeQueryOptions = <
   };
 };
 
-export type GetUserMeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getUserMe>>
->;
+export type GetUserMeQueryResult = NonNullable<Awaited<ReturnType<typeof getUserMe>>>;
 export type GetUserMeQueryError = GetUserMe400 | GetUserMe401;
 
 export function useGetUserMe<
@@ -99,19 +94,17 @@ export function useGetUserMe<
   TError = GetUserMe400 | GetUserMe401,
 >(
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUserMe>>,
           TError,
           Awaited<ReturnType<typeof getUserMe>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -120,19 +113,17 @@ export function useGetUserMe<
   TError = GetUserMe400 | GetUserMe401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUserMe>>,
           TError,
           Awaited<ReturnType<typeof getUserMe>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -141,11 +132,9 @@ export function useGetUserMe<
   TError = GetUserMe400 | GetUserMe401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -158,20 +147,17 @@ export function useGetUserMe<
   TError = GetUserMe400 | GetUserMe401,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>>;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetUserMeQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -179,14 +165,11 @@ export function useGetUserMe<
 /**
  * @summary Atualizar renda mensal
  */
-export const putUserIncome = (
-  putUserIncomeBody: PutUserIncomeBody,
-  signal?: AbortSignal,
-) => {
+export const putUserIncome = (putUserIncomeBody: PutUserIncomeBody, signal?: AbortSignal) => {
   return customInstance<PutUserIncome200>({
     url: `/user/income`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putUserIncomeBody,
     signal,
   });
@@ -208,11 +191,9 @@ export const getPutUserIncomeMutationOptions = <
   { data: PutUserIncomeBody },
   TContext
 > => {
-  const mutationKey = ["putUserIncome"];
+  const mutationKey = ['putUserIncome'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -229,19 +210,14 @@ export const getPutUserIncomeMutationOptions = <
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutUserIncomeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putUserIncome>>
->;
+export type PutUserIncomeMutationResult = NonNullable<Awaited<ReturnType<typeof putUserIncome>>>;
 export type PutUserIncomeMutationBody = PutUserIncomeBody;
 export type PutUserIncomeMutationError = PutUserIncome400 | PutUserIncome401;
 
 /**
  * @summary Atualizar renda mensal
  */
-export const usePutUserIncome = <
-  TError = PutUserIncome400 | PutUserIncome401,
-  TContext = unknown,
->(
+export const usePutUserIncome = <TError = PutUserIncome400 | PutUserIncome401, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof putUserIncome>>,
@@ -250,7 +226,7 @@ export const usePutUserIncome = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putUserIncome>>,
   TError,
@@ -264,12 +240,12 @@ export const usePutUserIncome = <
  */
 export const putUserFinancialPeriod = (
   putUserFinancialPeriodBody: PutUserFinancialPeriodBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutUserFinancialPeriod200>({
     url: `/user/financial-period`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putUserFinancialPeriodBody,
     signal,
   });
@@ -291,11 +267,9 @@ export const getPutUserFinancialPeriodMutationOptions = <
   { data: PutUserFinancialPeriodBody },
   TContext
 > => {
-  const mutationKey = ["putUserFinancialPeriod"];
+  const mutationKey = ['putUserFinancialPeriod'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -335,29 +309,26 @@ export const usePutUserFinancialPeriod = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putUserFinancialPeriod>>,
   TError,
   { data: PutUserFinancialPeriodBody },
   TContext
 > => {
-  return useMutation(
-    getPutUserFinancialPeriodMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPutUserFinancialPeriodMutationOptions(options), queryClient);
 };
 /**
  * @summary Atualizar renda + período
  */
 export const putUserIncomeAndPeriod = (
   putUserIncomeAndPeriodBody: PutUserIncomeAndPeriodBody,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<PutUserIncomeAndPeriod200>({
     url: `/user/income-and-period`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     data: putUserIncomeAndPeriodBody,
     signal,
   });
@@ -379,11 +350,9 @@ export const getPutUserIncomeAndPeriodMutationOptions = <
   { data: PutUserIncomeAndPeriodBody },
   TContext
 > => {
-  const mutationKey = ["putUserIncomeAndPeriod"];
+  const mutationKey = ['putUserIncomeAndPeriod'];
   const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } };
@@ -423,17 +392,14 @@ export const usePutUserIncomeAndPeriod = <
       TContext
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof putUserIncomeAndPeriod>>,
   TError,
   { data: PutUserIncomeAndPeriodBody },
   TContext
 > => {
-  return useMutation(
-    getPutUserIncomeAndPeriodMutationOptions(options),
-    queryClient,
-  );
+  return useMutation(getPutUserIncomeAndPeriodMutationOptions(options), queryClient);
 };
 /**
  * @summary Listar períodos financeiros
@@ -441,7 +407,7 @@ export const usePutUserIncomeAndPeriod = <
 export const getUserFinancialPeriods = (signal?: AbortSignal) => {
   return customInstance<GetUserFinancialPeriods200>({
     url: `/user/financial-periods`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
@@ -455,32 +421,25 @@ export const getGetUserFinancialPeriodsQueryOptions = <
   TError = GetUserFinancialPeriods400 | GetUserFinancialPeriods401,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData>
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetUserFinancialPeriodsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetUserFinancialPeriodsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getUserFinancialPeriods>>
-  > = ({ signal }) => getUserFinancialPeriods(signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserFinancialPeriods>>> = ({
+    signal,
+  }) => getUserFinancialPeriods(signal);
 
   return {
     queryKey,
     queryFn,
     staleTime: 10000,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type GetUserFinancialPeriodsQueryResult = NonNullable<
@@ -496,11 +455,7 @@ export function useGetUserFinancialPeriods<
 >(
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -508,10 +463,10 @@ export function useGetUserFinancialPeriods<
           TError,
           Awaited<ReturnType<typeof getUserFinancialPeriods>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -521,11 +476,7 @@ export function useGetUserFinancialPeriods<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -533,10 +484,10 @@ export function useGetUserFinancialPeriods<
           TError,
           Awaited<ReturnType<typeof getUserFinancialPeriods>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -546,14 +497,10 @@ export function useGetUserFinancialPeriods<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -567,23 +514,18 @@ export function useGetUserFinancialPeriods<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriods>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetUserFinancialPeriodsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -591,20 +533,15 @@ export function useGetUserFinancialPeriods<
 /**
  * @summary Buscar período por ID
  */
-export const getUserFinancialPeriodsPeriodId = (
-  periodId: string,
-  signal?: AbortSignal,
-) => {
+export const getUserFinancialPeriodsPeriodId = (periodId: string, signal?: AbortSignal) => {
   return customInstance<GetUserFinancialPeriodsPeriodId200>({
     url: `/user/financial-periods/${periodId}`,
-    method: "GET",
+    method: 'GET',
     signal,
   });
 };
 
-export const getGetUserFinancialPeriodsPeriodIdQueryKey = (
-  periodId: string,
-) => {
+export const getGetUserFinancialPeriodsPeriodIdQueryKey = (periodId: string) => {
   return [`/user/financial-periods/${periodId}`] as const;
 };
 
@@ -618,23 +555,17 @@ export const getGetUserFinancialPeriodsPeriodIdQueryOptions = <
   periodId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>, TError, TData>
     >;
-  },
+  }
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ??
-    getGetUserFinancialPeriodsPeriodIdQueryKey(periodId);
+  const queryKey = queryOptions?.queryKey ?? getGetUserFinancialPeriodsPeriodIdQueryKey(periodId);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>
-  > = ({ signal }) => getUserFinancialPeriodsPeriodId(periodId, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>> = ({
+    signal,
+  }) => getUserFinancialPeriodsPeriodId(periodId, signal);
 
   return {
     queryKey,
@@ -667,11 +598,7 @@ export function useGetUserFinancialPeriodsPeriodId<
   periodId: string,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -679,10 +606,10 @@ export function useGetUserFinancialPeriodsPeriodId<
           TError,
           Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -696,11 +623,7 @@ export function useGetUserFinancialPeriodsPeriodId<
   periodId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -708,10 +631,10 @@ export function useGetUserFinancialPeriodsPeriodId<
           TError,
           Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>
         >,
-        "initialData"
+        'initialData'
       >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -725,14 +648,10 @@ export function useGetUserFinancialPeriodsPeriodId<
   periodId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
@@ -750,26 +669,18 @@ export function useGetUserFinancialPeriodsPeriodId<
   periodId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>, TError, TData>
     >;
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetUserFinancialPeriodsPeriodIdQueryOptions(
-    periodId,
-    options,
-  );
+  const queryOptions = getGetUserFinancialPeriodsPeriodIdQueryOptions(periodId, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }

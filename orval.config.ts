@@ -1,20 +1,20 @@
-import { defineConfig } from "orval";
+import { defineConfig } from 'orval';
 
 export default defineConfig({
   moneyly: {
     input: {
-      target: "../moneyly-back/openapi.json",
+      target: '../moneyly-back/openapi.json',
     },
     output: {
-      mode: "tags-split",
-      target: "./src/app/(resources)/(generated)/hooks",
-      client: "react-query",
+      mode: 'tags-split',
+      target: './src/app/(resources)/(generated)/hooks',
+      client: 'react-query',
       prettier: true,
-      httpClient: "axios",
+      httpClient: 'axios',
       override: {
         mutator: {
-          path: "./src/app/(utils)/axios-instance.ts",
-          name: "customInstance",
+          path: './src/app/(utils)/axios-instance.ts',
+          name: 'customInstance',
         },
         query: {
           useQuery: true,

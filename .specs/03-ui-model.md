@@ -6,17 +6,17 @@ Como o domínio do back vira tela. Fonte de tipos: `(resources)/(generated)`. In
 
 ## Rotas (UI)
 
-| Rota | Arquivo | Conteúdo | Endpoints (back) |
-|---|---|---|---|
-| `/auth` | `(routes)/(public)/auth/page.tsx` | sign-in / sign-up / Google | `POST /auth/sign-in`,`/sign-up`,`/google`,`/refresh` |
-| `/dashboard` | `(routes)/(private)/dashboard/page.tsx` | stats, recentes, gráfico mensal | `GET /overview/dashboard`, `/transactions/summary-by-month` |
-| `/insights` | `.../insights/page.tsx` (+ `comparison-section.tsx`, `subscriptions-section.tsx`) | F1 saldo projetado + insights + F4 comparativo + F3 assinaturas | `GET /overview/insights`, `/overview/forecast`, `/overview/insights/comparison`, `/transactions/subscriptions` |
-| _(global)_ | `(components)/(layout)/header.tsx` → `notification-bell.tsx` | sininho alertas (F2) em todas telas privadas | `GET /notifications`, `PATCH /notifications/:id/read`, `/read-all` |
-| `/transactions` | `.../transactions/page.tsx` + `transaction.table.tsx` + `export-csv-button.tsx` | lista paginada + CRUD + export CSV | `GET /transactions/`, `POST /transactions/create`, `PUT/DELETE /transactions/{id}`, `GET /transactions/export` |
-| `/recurring-transactions` | `.../recurring-transactions/page.tsx` + table + history dialog | CRUD recorrentes + histórico + (de)reativar | `*/recurring-transactions/*` |
-| `/categories` | `.../categories/page.tsx` + `category.table.tsx` | globais + custom | `GET /categories/`, `POST /categories/create`, `PUT/DELETE` |
-| `/planner` | `.../planner/page.tsx` (+ `add-value-to-goal.form.tsx`) | budgets + goals | `GET/POST /budgets/`, `PUT/DELETE /budgets/{id}`, `*/goals/*` |
-| `/profile` | `.../profile/page.tsx` + `profile-config-finance.form.tsx` | perfil, renda, período financeiro | `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`, `/income` |
+| Rota                      | Arquivo                                                                           | Conteúdo                                                        | Endpoints (back)                                                                                               |
+| ------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `/auth`                   | `(routes)/(public)/auth/page.tsx`                                                 | sign-in / sign-up / Google                                      | `POST /auth/sign-in`,`/sign-up`,`/google`,`/refresh`                                                           |
+| `/dashboard`              | `(routes)/(private)/dashboard/page.tsx`                                           | stats, recentes, gráfico mensal                                 | `GET /overview/dashboard`, `/transactions/summary-by-month`                                                    |
+| `/insights`               | `.../insights/page.tsx` (+ `comparison-section.tsx`, `subscriptions-section.tsx`) | F1 saldo projetado + insights + F4 comparativo + F3 assinaturas | `GET /overview/insights`, `/overview/forecast`, `/overview/insights/comparison`, `/transactions/subscriptions` |
+| _(global)_                | `(components)/(layout)/header.tsx` → `notification-bell.tsx`                      | sininho alertas (F2) em todas telas privadas                    | `GET /notifications`, `PATCH /notifications/:id/read`, `/read-all`                                             |
+| `/transactions`           | `.../transactions/page.tsx` + `transaction.table.tsx` + `export-csv-button.tsx`   | lista paginada + CRUD + export CSV                              | `GET /transactions/`, `POST /transactions/create`, `PUT/DELETE /transactions/{id}`, `GET /transactions/export` |
+| `/recurring-transactions` | `.../recurring-transactions/page.tsx` + table + history dialog                    | CRUD recorrentes + histórico + (de)reativar                     | `*/recurring-transactions/*`                                                                                   |
+| `/categories`             | `.../categories/page.tsx` + `category.table.tsx`                                  | globais + custom                                                | `GET /categories/`, `POST /categories/create`, `PUT/DELETE`                                                    |
+| `/planner`                | `.../planner/page.tsx` (+ `add-value-to-goal.form.tsx`)                           | budgets + goals                                                 | `GET/POST /budgets/`, `PUT/DELETE /budgets/{id}`, `*/goals/*`                                                  |
+| `/profile`                | `.../profile/page.tsx` + `profile-config-finance.form.tsx`                        | perfil, renda, período financeiro                               | `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`, `/income`                                  |
 
 Constantes de navegação em `(utils)/routes.ts` (`ROUTES`). Guarda: `middleware.ts`.
 
@@ -29,16 +29,16 @@ Constantes de navegação em `(utils)/routes.ts` (`ROUTES`). Guarda: `middleware
 
 ## Invariantes no front (espelham `02-shared-domain.md`)
 
-| Invariante | Aplicação no front | Onde |
-|---|---|---|
-| Dinheiro = string decimal | exibir BRL; parsear input mascarado; nunca somar string | `(helpers)/number.ts`, `(helpers)/string.ts` |
-| Datas ISO; negócio em America/Sao_Paulo | usar `FN_UTILS_DATE` (date-fns-tz); não assumir mês civil | `(helpers)/date.ts` |
-| Envelope `{data}` / `{success:false,error}` | `customInstance` entrega `.data`; erro → `getErrorMessage` | `(utils)/axios-instance.ts`, `(helpers)/errors.ts` |
-| Budget status `safe/attention/warning/exceeded` | cores/alertas só desses 4 | `(helpers)/budget-level.ts` |
-| `periodId` opcional | repassar quando filtrar período | `PeriodProvider`/`use-periods` |
-| Categoria global não editável | bloquear edit/delete quando `isGlobal` | `category.table.tsx` |
-| Auth Bearer + refresh em 401 | interceptor com fila anti-corrida | `axios-instance.ts` |
-| Transaction type / Recurring frequency | enums fechados (gerados) | tipos `(generated)` |
+| Invariante                                      | Aplicação no front                                         | Onde                                               |
+| ----------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- |
+| Dinheiro = string decimal                       | exibir BRL; parsear input mascarado; nunca somar string    | `(helpers)/number.ts`, `(helpers)/string.ts`       |
+| Datas ISO; negócio em America/Sao_Paulo         | usar `FN_UTILS_DATE` (date-fns-tz); não assumir mês civil  | `(helpers)/date.ts`                                |
+| Envelope `{data}` / `{success:false,error}`     | `customInstance` entrega `.data`; erro → `getErrorMessage` | `(utils)/axios-instance.ts`, `(helpers)/errors.ts` |
+| Budget status `safe/attention/warning/exceeded` | cores/alertas só desses 4                                  | `(helpers)/budget-level.ts`                        |
+| `periodId` opcional                             | repassar quando filtrar período                            | `PeriodProvider`/`use-periods`                     |
+| Categoria global não editável                   | bloquear edit/delete quando `isGlobal`                     | `category.table.tsx`                               |
+| Auth Bearer + refresh em 401                    | interceptor com fila anti-corrida                          | `axios-instance.ts`                                |
+| Transaction type / Recurring frequency          | enums fechados (gerados)                                   | tipos `(generated)`                                |
 
 ## Lacunas conhecidas (corrigir ao tocar)
 

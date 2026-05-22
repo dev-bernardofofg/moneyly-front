@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { RecurringTransaction } from "./RecurringTransaction.ts";
+import type { RecurringTransaction } from './RecurringTransaction.ts';
 
 export type PutRecurringTransactionsIdPathParams = {
   /**
@@ -93,10 +93,10 @@ export type PutRecurringTransactionsId404 = {
 };
 
 export const putRecurringTransactionsIdMutationRequestFrequencyEnum = {
-  daily: "daily",
-  weekly: "weekly",
-  monthly: "monthly",
-  yearly: "yearly",
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
 } as const;
 
 export type PutRecurringTransactionsIdMutationRequestFrequencyEnumKey =
@@ -150,8 +150,7 @@ export type PutRecurringTransactionsIdMutationRequest = {
   isActive?: boolean;
 };
 
-export type PutRecurringTransactionsIdMutationResponse =
-  PutRecurringTransactionsId200;
+export type PutRecurringTransactionsIdMutationResponse = PutRecurringTransactionsId200;
 
 export type PutRecurringTransactionsIdMutation = {
   Response: PutRecurringTransactionsId200;

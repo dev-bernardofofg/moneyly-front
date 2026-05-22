@@ -1,31 +1,27 @@
-"use client";
+'use client';
 
-import { PlannerAlert } from "@/app/(resources)/(generated)/types/PlannerAlert";
-import { Badge } from "@/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { AlertTriangle, Bell, CheckCircle, Info, XCircle } from "lucide-react";
-import { useState } from "react";
-
+import { PlannerAlert } from '@/app/(resources)/(generated)/types/PlannerAlert';
+import { Badge } from '@/components/ui/badge';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
+import { AlertTriangle, Bell, CheckCircle, Info, XCircle } from 'lucide-react';
+import { useState } from 'react';
 
 interface AlertsPopoverProps {
   alerts: PlannerAlert[];
   trigger: React.ReactNode;
 }
 
-export const AlertsPopover = ({
-  alerts,
-  trigger
-}: AlertsPopoverProps) => {
+export const AlertsPopover = ({ alerts, trigger }: AlertsPopoverProps) => {
   const [open, setOpen] = useState(false);
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case "info":
+      case 'info':
         return <Info className="size-4 text-info" />;
-      case "warning":
+      case 'warning':
         return <AlertTriangle className="size-4 text-warn" />;
-      case "error":
+      case 'error':
         return <XCircle className="size-4 text-expense" />;
       default:
         return <CheckCircle className="size-4 text-income" />;
@@ -34,34 +30,44 @@ export const AlertsPopover = ({
 
   const getAlertColor = (type: string) => {
     switch (type) {
-      case "info":
-        return "border-l-income bg-income/5";
-      case "warning":
-        return "border-l-warn bg-warn/5";
-      case "error":
-        return "border-l-expense bg-expense/5";
+      case 'info':
+        return 'border-l-income bg-income/5';
+      case 'warning':
+        return 'border-l-warn bg-warn/5';
+      case 'error':
+        return 'border-l-expense bg-expense/5';
       default:
-        return "border-l-info bg-info/5";
+        return 'border-l-info bg-info/5';
     }
   };
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
-      case "high":
-        return <Badge variant="destructive" className="text-xs text-expense">Alta</Badge>;
-      case "medium":
-        return <Badge variant="secondary" className="text-xs text-warn">Média</Badge>;
-      case "low":
-        return <Badge variant="secondary" className="text-xs text-income">Baixa</Badge>;
+      case 'high':
+        return (
+          <Badge variant="destructive" className="text-xs text-expense">
+            Alta
+          </Badge>
+        );
+      case 'medium':
+        return (
+          <Badge variant="secondary" className="text-xs text-warn">
+            Média
+          </Badge>
+        );
+      case 'low':
+        return (
+          <Badge variant="secondary" className="text-xs text-income">
+            Baixa
+          </Badge>
+        );
     }
   };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="relative cursor-pointer">
-          {trigger}
-        </div>
+        <div className="relative cursor-pointer">{trigger}</div>
       </PopoverTrigger>
       <PopoverContent className="w-80 max-h-96 overflow-hidden" align="end">
         <div className="flex items-center justify-between mb-3">
@@ -91,15 +97,11 @@ export const AlertsPopover = ({
                     {getAlertIcon(alert.type)}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <p className="text-sm font-medium text-foreground">
-                          {alert.message}
-                        </p>
+                        <p className="text-sm font-medium text-foreground">{alert.message}</p>
                         {getPriorityBadge(alert.priority)}
                       </div>
                       {alert.category && (
-                        <p className="text-xs text-muted-foreground">
-                          {alert.category}
-                        </p>
+                        <p className="text-xs text-muted-foreground">{alert.category}</p>
                       )}
                     </div>
                   </div>
@@ -111,4 +113,4 @@ export const AlertsPopover = ({
       </PopoverContent>
     </Popover>
   );
-}; 
+};

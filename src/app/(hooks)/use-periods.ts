@@ -1,15 +1,15 @@
-import { usePeriod } from "@/app/(contexts)/period-provider";
+import { usePeriod } from '@/app/(contexts)/period-provider';
 import {
   getUserFinancialPeriods,
   useGetUserFinancialPeriods,
-} from "@/app/(resources)/(generated)/hooks/user/user";
-import { FinancialPeriodSummary } from "@/app/(resources)/(generated)/types/FinancialPeriodSummary";
-import { useEffect } from "react";
-import { Period } from "../(types)/period.type";
+} from '@/app/(resources)/(generated)/hooks/user/user';
+import { FinancialPeriodSummary } from '@/app/(resources)/(generated)/types/FinancialPeriodSummary';
+import { useEffect } from 'react';
+import { Period } from '../(types)/period.type';
 
 const toPeriod = (fp: FinancialPeriodSummary): Period => ({
   id: fp.id,
-  label: fp.label ?? "",
+  label: fp.label ?? '',
   startDate: fp.startDate,
   endDate: fp.endDate,
   transactionCount: fp.transactionCount ?? 0,
@@ -17,21 +17,14 @@ const toPeriod = (fp: FinancialPeriodSummary): Period => ({
 });
 
 export const usePeriods = () => {
-  const {
-    selectedPeriodId,
-    setSelectedPeriodId,
-    periods,
-    setPeriods,
-    loading,
-    setLoading,
-  } = usePeriod();
+  const { selectedPeriodId, setSelectedPeriodId, periods, setPeriods, loading, setLoading } =
+    usePeriod();
 
-  const { data: periodsData, isLoading: periodsLoading } =
-    useGetUserFinancialPeriods({
-      query: {
-        queryKey: [getUserFinancialPeriods],
-      },
-    });
+  const { data: periodsData, isLoading: periodsLoading } = useGetUserFinancialPeriods({
+    query: {
+      queryKey: [getUserFinancialPeriods],
+    },
+  });
 
   useEffect(() => {
     if (periodsData?.data) {
