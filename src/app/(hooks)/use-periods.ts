@@ -28,9 +28,11 @@ export const usePeriods = () => {
 
   useEffect(() => {
     if (periodsData?.data) {
-      const sorted = [...periodsData.data].sort(
-        (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      );
+      const sorted = [...periodsData.data].sort((a, b) => {
+        if (a.isCurrent) return -1;
+        if (b.isCurrent) return 1;
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+      });
       setPeriods(sorted.map(toPeriod));
 
       if (!selectedPeriodId && sorted.length > 0) {
