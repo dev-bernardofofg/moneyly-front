@@ -7,6 +7,14 @@ import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertTransactionForm } from '@/app/(resources)/(forms)/upsert-transaction.form';
+import { GetTransactionsQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactions';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { TransactionTable } from '@/app/(routes)/(private)/transactions/transaction.table';
 import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from './transaction.action';
 import { ExportCsvButton } from './export-csv-button';
@@ -17,6 +25,8 @@ const TransactionsPage = () => {
     isLoading,
     paginationParams,
     setPaginationParams,
+    typeFilter,
+    setTypeFilter,
   } = useTransactionsAction();
 
   return (
@@ -24,6 +34,22 @@ const TransactionsPage = () => {
       <Header
         title="Transações"
         actions={[
+          <Select
+            key="type-filter"
+            value={typeFilter ?? 'all'}
+            onValueChange={(v) =>
+              setTypeFilter(v === 'all' ? undefined : (v as GetTransactionsQueryParamsTypeEnumKey))
+            }
+          >
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder="Tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value="income">Entradas</SelectItem>
+              <SelectItem value="expense">Saídas</SelectItem>
+            </SelectContent>
+          </Select>,
           <ExportCsvButton key="export-csv" />,
           <BaseDialog
             key="new-transaction-dialog"
