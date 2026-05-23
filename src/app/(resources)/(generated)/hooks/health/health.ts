@@ -26,11 +26,7 @@ import { customInstance } from '../../../../(utils)/axios-instance';
  * @summary Healthcheck
  */
 export const getHealth = (signal?: AbortSignal) => {
-  return customInstance<GetHealth200>({
-    url: `/health`,
-    method: 'GET',
-    signal,
-  });
+  return customInstance<GetHealth200>({ url: `/health`, method: 'GET', signal });
 };
 
 export const getGetHealthQueryKey = () => {
@@ -50,14 +46,11 @@ export const getGetHealthQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealth>>> = ({ signal }) =>
     getHealth(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getHealth>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getHealth>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetHealthQueryResult = NonNullable<Awaited<ReturnType<typeof getHealth>>>;
@@ -76,9 +69,7 @@ export function useGetHealth<TData = Awaited<ReturnType<typeof getHealth>>, TErr
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetHealth<TData = Awaited<ReturnType<typeof getHealth>>, TError = GetHealth400>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealth>>, TError, TData>> &
@@ -92,17 +83,13 @@ export function useGetHealth<TData = Awaited<ReturnType<typeof getHealth>>, TErr
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetHealth<TData = Awaited<ReturnType<typeof getHealth>>, TError = GetHealth400>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealth>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Healthcheck
  */
@@ -112,9 +99,7 @@ export function useGetHealth<TData = Awaited<ReturnType<typeof getHealth>>, TErr
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealth>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetHealthQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

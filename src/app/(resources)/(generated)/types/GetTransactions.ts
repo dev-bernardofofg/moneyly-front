@@ -6,6 +6,14 @@
 import type { Transaction } from './Transaction.ts';
 import type { TransactionListSummary } from './TransactionListSummary.ts';
 
+export const getTransactionsQueryParamsTypeEnum = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type GetTransactionsQueryParamsTypeEnumKey =
+  (typeof getTransactionsQueryParamsTypeEnum)[keyof typeof getTransactionsQueryParamsTypeEnum];
+
 export type GetTransactionsQueryParams = {
   /**
    * @type string | undefined
@@ -19,6 +27,14 @@ export type GetTransactionsQueryParams = {
    * @type string | undefined
    */
   endDate?: string;
+  /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+  /**
+   * @type string | undefined
+   */
+  type?: GetTransactionsQueryParamsTypeEnumKey;
   /**
    * @type integer | undefined
    */

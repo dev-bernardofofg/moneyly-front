@@ -69,14 +69,11 @@ export const getGetNotificationsQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotifications>>> = ({ signal }) =>
     getNotifications(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getNotifications>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotifications>>>;
@@ -99,9 +96,7 @@ export function useGetNotifications<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetNotifications<
   TData = Awaited<ReturnType<typeof getNotifications>>,
   TError = GetNotifications400 | GetNotifications401,
@@ -119,9 +114,7 @@ export function useGetNotifications<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetNotifications<
   TData = Awaited<ReturnType<typeof getNotifications>>,
   TError = GetNotifications400 | GetNotifications401,
@@ -131,9 +124,7 @@ export function useGetNotifications<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar notificações (paginado)
  */
@@ -147,9 +138,7 @@ export function useGetNotifications<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetNotificationsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

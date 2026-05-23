@@ -9,10 +9,7 @@
     "cadence": { "type": "string", "enum": ["weekly", "monthly", "yearly"] },
     "firstDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "lastDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
-    "nextEstimatedDate": {
-      "type": "string",
-      "example": "2026-05-17T00:00:00.000Z"
-    },
+    "nextEstimatedDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "monthlyCost": { "type": "number" }
   },
   "required": [

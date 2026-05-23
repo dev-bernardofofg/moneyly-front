@@ -148,14 +148,11 @@ export const getGetGoalsQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoals>>> = ({ signal }) =>
     getGoals(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getGoals>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetGoalsQueryResult = NonNullable<Awaited<ReturnType<typeof getGoals>>>;
@@ -177,9 +174,7 @@ export function useGetGoals<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetGoals<
   TData = Awaited<ReturnType<typeof getGoals>>,
   TError = GetGoals400 | GetGoals401,
@@ -196,9 +191,7 @@ export function useGetGoals<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetGoals<
   TData = Awaited<ReturnType<typeof getGoals>>,
   TError = GetGoals400 | GetGoals401,
@@ -207,9 +200,7 @@ export function useGetGoals<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar metas
  */
@@ -222,9 +213,7 @@ export function useGetGoals<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoals>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetGoalsQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -238,11 +227,7 @@ export function useGetGoals<
  * @summary Detalhe da meta
  */
 export const getGoalsId = (id: string, signal?: AbortSignal) => {
-  return customInstance<GetGoalsId200>({
-    url: `/goals/${id}`,
-    method: 'GET',
-    signal,
-  });
+  return customInstance<GetGoalsId200>({ url: `/goals/${id}`, method: 'GET', signal });
 };
 
 export const getGetGoalsIdQueryKey = (id: string) => {
@@ -265,15 +250,11 @@ export const getGetGoalsIdQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsId>>> = ({ signal }) =>
     getGoalsId(id, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, enabled: !!id, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getGoalsId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetGoalsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getGoalsId>>>;
@@ -296,9 +277,7 @@ export function useGetGoalsId<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetGoalsId<
   TData = Awaited<ReturnType<typeof getGoalsId>>,
   TError = GetGoalsId400 | GetGoalsId401 | GetGoalsId404,
@@ -316,9 +295,7 @@ export function useGetGoalsId<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetGoalsId<
   TData = Awaited<ReturnType<typeof getGoalsId>>,
   TError = GetGoalsId400 | GetGoalsId401 | GetGoalsId404,
@@ -328,9 +305,7 @@ export function useGetGoalsId<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Detalhe da meta
  */
@@ -344,9 +319,7 @@ export function useGetGoalsId<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsId>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetGoalsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -436,11 +409,7 @@ export const usePutGoalsId = <
  * @summary Deletar meta
  */
 export const deleteGoalsId = (id: string, signal?: AbortSignal) => {
-  return customInstance<DeleteGoalsId200>({
-    url: `/goals/${id}`,
-    method: 'DELETE',
-    signal,
-  });
+  return customInstance<DeleteGoalsId200>({ url: `/goals/${id}`, method: 'DELETE', signal });
 };
 
 export const getDeleteGoalsIdMutationOptions = <

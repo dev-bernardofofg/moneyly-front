@@ -12,19 +12,12 @@
     "description": { "type": "string", "nullable": true },
     "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "periodId": { "type": "string", "nullable": true, "format": "uuid" },
-    "recurringTransactionId": {
-      "type": "string",
-      "nullable": true,
-      "format": "uuid"
-    },
+    "recurringTransactionId": { "type": "string", "nullable": true, "format": "uuid" },
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "category": {
       "type": "object",
-      "properties": {
-        "id": { "type": "string", "format": "uuid" },
-        "name": { "type": "string" }
-      },
+      "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" } },
       "required": ["id", "name"],
       "x-readme-ref-name": "TransactionCategory"
     }

@@ -27,10 +27,7 @@
     "currentPeriod": {
       "type": "object",
       "properties": {
-        "startDate": {
-          "type": "string",
-          "example": "2026-05-17T00:00:00.000Z"
-        },
+        "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "description": { "type": "string" }
       },

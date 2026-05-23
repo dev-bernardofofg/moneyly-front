@@ -6,10 +6,7 @@
     "monthlyIncome": { "type": "number" },
     "balance": { "type": "number" },
     "percentUsed": { "type": "number", "nullable": true },
-    "byCategory": {
-      "type": "object",
-      "additionalProperties": { "type": "number" }
-    },
+    "byCategory": { "type": "object", "additionalProperties": { "type": "number" } },
     "alert": { "type": "string", "nullable": true }
   },
   "required": [

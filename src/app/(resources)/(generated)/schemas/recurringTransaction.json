@@ -11,23 +11,13 @@
       "example": "1234.50"
     },
     "categoryId": { "type": "string", "format": "uuid" },
-    "frequency": {
-      "type": "string",
-      "enum": ["daily", "weekly", "monthly", "yearly"]
-    },
+    "frequency": { "type": "string", "enum": ["daily", "weekly", "monthly", "yearly"] },
     "dayOfMonth": { "type": "integer", "nullable": true },
     "dayOfWeek": { "type": "integer", "nullable": true },
-    "startDate": {
-      "type": "string",
-      "nullable": true,
-      "example": "2026-05-17T00:00:00.000Z"
-    },
+    "startDate": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
     "totalInstallments": { "type": "integer", "nullable": true },
     "executedInstallments": { "type": "integer" },
-    "nextExecution": {
-      "type": "string",
-      "example": "2026-05-17T00:00:00.000Z"
-    },
+    "nextExecution": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "isActive": { "type": "boolean" },
     "description": { "type": "string", "nullable": true },
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },

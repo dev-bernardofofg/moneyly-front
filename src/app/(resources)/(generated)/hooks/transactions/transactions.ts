@@ -173,14 +173,11 @@ export const getGetTransactionsQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactions>>> = ({ signal }) =>
     getTransactions(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactions>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTransactionsQueryResult = NonNullable<Awaited<ReturnType<typeof getTransactions>>>;
@@ -203,9 +200,7 @@ export function useGetTransactions<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactions<
   TData = Awaited<ReturnType<typeof getTransactions>>,
   TError = GetTransactions400 | GetTransactions401,
@@ -223,9 +218,7 @@ export function useGetTransactions<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactions<
   TData = Awaited<ReturnType<typeof getTransactions>>,
   TError = GetTransactions400 | GetTransactions401,
@@ -235,9 +228,7 @@ export function useGetTransactions<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar transações (paginado)
  */
@@ -251,9 +242,7 @@ export function useGetTransactions<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransactions>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -457,14 +446,11 @@ export const getGetTransactionsSummaryQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsSummary>>> = ({ signal }) =>
     getTransactionsSummary(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummary>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactionsSummary>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTransactionsSummaryQueryResult = NonNullable<
@@ -492,9 +478,7 @@ export function useGetTransactionsSummary<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummary<
   TData = Awaited<ReturnType<typeof getTransactionsSummary>>,
   TError = GetTransactionsSummary400 | GetTransactionsSummary401,
@@ -513,9 +497,7 @@ export function useGetTransactionsSummary<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummary<
   TData = Awaited<ReturnType<typeof getTransactionsSummary>>,
   TError = GetTransactionsSummary400 | GetTransactionsSummary401,
@@ -526,9 +508,7 @@ export function useGetTransactionsSummary<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Resumo financeiro
  */
@@ -543,9 +523,7 @@ export function useGetTransactionsSummary<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsSummaryQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -586,14 +564,11 @@ export const getGetTransactionsSummaryByMonthQueryOptions = <
     signal,
   }) => getTransactionsSummaryByMonth(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTransactionsSummaryByMonthQueryResult = NonNullable<
@@ -621,9 +596,7 @@ export function useGetTransactionsSummaryByMonth<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummaryByMonth<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
   TError = GetTransactionsSummaryByMonth400 | GetTransactionsSummaryByMonth401,
@@ -642,9 +615,7 @@ export function useGetTransactionsSummaryByMonth<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummaryByMonth<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryByMonth>>,
   TError = GetTransactionsSummaryByMonth400 | GetTransactionsSummaryByMonth401,
@@ -655,9 +626,7 @@ export function useGetTransactionsSummaryByMonth<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Resumo agregado por mês
  */
@@ -672,9 +641,7 @@ export function useGetTransactionsSummaryByMonth<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsSummaryByMonthQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -715,12 +682,7 @@ export const getGetTransactionsSummaryCurrentPeriodQueryOptions = <
     signal,
   }) => getTransactionsSummaryCurrentPeriod(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
     TError,
     TData
@@ -756,9 +718,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
   TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
@@ -781,9 +741,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSummaryCurrentPeriod<
   TData = Awaited<ReturnType<typeof getTransactionsSummaryCurrentPeriod>>,
   TError = GetTransactionsSummaryCurrentPeriod400 | GetTransactionsSummaryCurrentPeriod401,
@@ -798,9 +756,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Resumo do período atual
  */
@@ -819,9 +775,7 @@ export function useGetTransactionsSummaryCurrentPeriod<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsSummaryCurrentPeriodQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -838,12 +792,7 @@ export const getTransactionsExport = (
   params?: GetTransactionsExportParams,
   signal?: AbortSignal
 ) => {
-  return customInstance<string>({
-    url: `/transactions/export`,
-    method: 'GET',
-    params,
-    signal,
-  });
+  return customInstance<string>({ url: `/transactions/export`, method: 'GET', params, signal });
 };
 
 export const getGetTransactionsExportQueryKey = (params?: GetTransactionsExportParams) => {
@@ -868,14 +817,11 @@ export const getGetTransactionsExportQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getTransactionsExport>>> = ({ signal }) =>
     getTransactionsExport(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsExport>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactionsExport>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTransactionsExportQueryResult = NonNullable<
@@ -902,9 +848,7 @@ export function useGetTransactionsExport<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsExport<
   TData = Awaited<ReturnType<typeof getTransactionsExport>>,
   TError = GetTransactionsExport400 | GetTransactionsExport401,
@@ -924,9 +868,7 @@ export function useGetTransactionsExport<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsExport<
   TData = Awaited<ReturnType<typeof getTransactionsExport>>,
   TError = GetTransactionsExport400 | GetTransactionsExport401,
@@ -938,9 +880,7 @@ export function useGetTransactionsExport<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Exportar transações em CSV
  */
@@ -956,9 +896,7 @@ export function useGetTransactionsExport<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsExportQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -999,14 +937,11 @@ export const getGetTransactionsSubscriptionsQueryOptions = <
     signal,
   }) => getTransactionsSubscriptions(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTransactionsSubscriptions>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetTransactionsSubscriptionsQueryResult = NonNullable<
@@ -1034,9 +969,7 @@ export function useGetTransactionsSubscriptions<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSubscriptions<
   TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
   TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
@@ -1055,9 +988,7 @@ export function useGetTransactionsSubscriptions<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetTransactionsSubscriptions<
   TData = Awaited<ReturnType<typeof getTransactionsSubscriptions>>,
   TError = GetTransactionsSubscriptions400 | GetTransactionsSubscriptions401,
@@ -1068,9 +999,7 @@ export function useGetTransactionsSubscriptions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Detectar assinaturas (heurística)
  */
@@ -1085,9 +1014,7 @@ export function useGetTransactionsSubscriptions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetTransactionsSubscriptionsQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

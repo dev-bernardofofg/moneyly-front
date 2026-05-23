@@ -224,6 +224,7 @@ export type {
   GetTransactions401SuccessEnumKey,
   GetTransactionsQuery,
   GetTransactionsQueryParams,
+  GetTransactionsQueryParamsTypeEnumKey,
   GetTransactionsQueryResponse,
 } from './types/GetTransactions.ts';
 export type {
@@ -234,6 +235,7 @@ export type {
   GetTransactionsExport401SuccessEnumKey,
   GetTransactionsExportQuery,
   GetTransactionsExportQueryParams,
+  GetTransactionsExportQueryParamsTypeEnumKey,
   GetTransactionsExportQueryResponse,
 } from './types/GetTransactionsExport.ts';
 export type {
@@ -637,8 +639,10 @@ export { getRecurringTransactionsIdTransactions404SuccessEnum } from './types/Ge
 export { getTransactions200SuccessEnum } from './types/GetTransactions.ts';
 export { getTransactions400SuccessEnum } from './types/GetTransactions.ts';
 export { getTransactions401SuccessEnum } from './types/GetTransactions.ts';
+export { getTransactionsQueryParamsTypeEnum } from './types/GetTransactions.ts';
 export { getTransactionsExport400SuccessEnum } from './types/GetTransactionsExport.ts';
 export { getTransactionsExport401SuccessEnum } from './types/GetTransactionsExport.ts';
+export { getTransactionsExportQueryParamsTypeEnum } from './types/GetTransactionsExport.ts';
 export { getTransactionsSubscriptions400SuccessEnum } from './types/GetTransactionsSubscriptions.ts';
 export { getTransactionsSubscriptions401SuccessEnum } from './types/GetTransactionsSubscriptions.ts';
 export { getTransactionsSummary400SuccessEnum } from './types/GetTransactionsSummary.ts';

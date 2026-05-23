@@ -10,20 +10,14 @@
     },
     "category": {
       "type": "object",
-      "properties": {
-        "id": { "type": "string", "format": "uuid" },
-        "name": { "type": "string" }
-      },
+      "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" } },
       "required": ["id", "name"],
       "x-readme-ref-name": "TransactionCategory"
     },
     "spent": { "type": "number" },
     "remaining": { "type": "number" },
     "percentage": { "type": "number" },
-    "status": {
-      "type": "string",
-      "description": "safe | attention | warning | exceeded"
-    }
+    "status": { "type": "string", "description": "safe | attention | warning | exceeded" }
   },
   "required": ["id", "monthlyLimit", "category", "spent", "remaining", "percentage", "status"],
   "x-readme-ref-name": "BudgetProgress"

@@ -52,11 +52,7 @@ import { customInstance } from '../../../../(utils)/axios-instance';
  * @summary Perfil do usuário autenticado
  */
 export const getUserMe = (signal?: AbortSignal) => {
-  return customInstance<GetUserMe200>({
-    url: `/user/me`,
-    method: 'GET',
-    signal,
-  });
+  return customInstance<GetUserMe200>({ url: `/user/me`, method: 'GET', signal });
 };
 
 export const getGetUserMeQueryKey = () => {
@@ -76,14 +72,11 @@ export const getGetUserMeQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserMe>>> = ({ signal }) =>
     getUserMe(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserMe>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserMeQueryResult = NonNullable<Awaited<ReturnType<typeof getUserMe>>>;
@@ -105,9 +98,7 @@ export function useGetUserMe<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserMe<
   TData = Awaited<ReturnType<typeof getUserMe>>,
   TError = GetUserMe400 | GetUserMe401,
@@ -124,9 +115,7 @@ export function useGetUserMe<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserMe<
   TData = Awaited<ReturnType<typeof getUserMe>>,
   TError = GetUserMe400 | GetUserMe401,
@@ -135,9 +124,7 @@ export function useGetUserMe<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Perfil do usuário autenticado
  */
@@ -150,9 +137,7 @@ export function useGetUserMe<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserMe>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetUserMeQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -432,14 +417,11 @@ export const getGetUserFinancialPeriodsQueryOptions = <
     signal,
   }) => getUserFinancialPeriods(signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getUserFinancialPeriods>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserFinancialPeriods>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserFinancialPeriodsQueryResult = NonNullable<
@@ -467,9 +449,7 @@ export function useGetUserFinancialPeriods<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserFinancialPeriods<
   TData = Awaited<ReturnType<typeof getUserFinancialPeriods>>,
   TError = GetUserFinancialPeriods400 | GetUserFinancialPeriods401,
@@ -488,9 +468,7 @@ export function useGetUserFinancialPeriods<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserFinancialPeriods<
   TData = Awaited<ReturnType<typeof getUserFinancialPeriods>>,
   TError = GetUserFinancialPeriods400 | GetUserFinancialPeriods401,
@@ -501,9 +479,7 @@ export function useGetUserFinancialPeriods<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar períodos financeiros
  */
@@ -518,9 +494,7 @@ export function useGetUserFinancialPeriods<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetUserFinancialPeriodsQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -610,9 +584,7 @@ export function useGetUserFinancialPeriodsPeriodId<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserFinancialPeriodsPeriodId<
   TData = Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
   TError =
@@ -635,9 +607,7 @@ export function useGetUserFinancialPeriodsPeriodId<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetUserFinancialPeriodsPeriodId<
   TData = Awaited<ReturnType<typeof getUserFinancialPeriodsPeriodId>>,
   TError =
@@ -652,9 +622,7 @@ export function useGetUserFinancialPeriodsPeriodId<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Buscar período por ID
  */
@@ -673,9 +641,7 @@ export function useGetUserFinancialPeriodsPeriodId<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetUserFinancialPeriodsPeriodIdQueryOptions(periodId, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

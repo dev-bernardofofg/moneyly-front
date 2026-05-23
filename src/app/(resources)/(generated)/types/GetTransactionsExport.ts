@@ -3,6 +3,14 @@
  * Do not edit manually.
  */
 
+export const getTransactionsExportQueryParamsTypeEnum = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type GetTransactionsExportQueryParamsTypeEnumKey =
+  (typeof getTransactionsExportQueryParamsTypeEnum)[keyof typeof getTransactionsExportQueryParamsTypeEnum];
+
 export type GetTransactionsExportQueryParams = {
   /**
    * @type string | undefined
@@ -12,6 +20,14 @@ export type GetTransactionsExportQueryParams = {
    * @type string | undefined
    */
   endDate?: string;
+  /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+  /**
+   * @type string | undefined
+   */
+  type?: GetTransactionsExportQueryParamsTypeEnumKey;
 };
 
 /**

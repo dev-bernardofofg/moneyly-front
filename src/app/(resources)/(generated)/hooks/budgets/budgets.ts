@@ -120,12 +120,7 @@ export const usePostBudgets = <TError = PostBudgets400 | PostBudgets401, TContex
  * @summary Listar orçamentos com progresso
  */
 export const getBudgets = (params?: GetBudgetsParams, signal?: AbortSignal) => {
-  return customInstance<GetBudgets200>({
-    url: `/budgets/`,
-    method: 'GET',
-    params,
-    signal,
-  });
+  return customInstance<GetBudgets200>({ url: `/budgets/`, method: 'GET', params, signal });
 };
 
 export const getGetBudgetsQueryKey = (params?: GetBudgetsParams) => {
@@ -148,14 +143,11 @@ export const getGetBudgetsQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getBudgets>>> = ({ signal }) =>
     getBudgets(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getBudgets>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetBudgetsQueryResult = NonNullable<Awaited<ReturnType<typeof getBudgets>>>;
@@ -178,9 +170,7 @@ export function useGetBudgets<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = GetBudgets400 | GetBudgets401,
@@ -198,9 +188,7 @@ export function useGetBudgets<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetBudgets<
   TData = Awaited<ReturnType<typeof getBudgets>>,
   TError = GetBudgets400 | GetBudgets401,
@@ -210,9 +198,7 @@ export function useGetBudgets<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar orçamentos com progresso
  */
@@ -226,9 +212,7 @@ export function useGetBudgets<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getBudgets>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetBudgetsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -322,11 +306,7 @@ export const usePutBudgetsId = <
  * @summary Deletar orçamento
  */
 export const deleteBudgetsId = (id: string, signal?: AbortSignal) => {
-  return customInstance<DeleteBudgetsId200>({
-    url: `/budgets/${id}`,
-    method: 'DELETE',
-    signal,
-  });
+  return customInstance<DeleteBudgetsId200>({ url: `/budgets/${id}`, method: 'DELETE', signal });
 };
 
 export const getDeleteBudgetsIdMutationOptions = <

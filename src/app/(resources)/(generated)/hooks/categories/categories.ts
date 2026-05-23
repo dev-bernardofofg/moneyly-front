@@ -128,12 +128,7 @@ export const usePostCategoriesCreate = <
  * @summary Listar categorias
  */
 export const getCategories = (params?: GetCategoriesParams, signal?: AbortSignal) => {
-  return customInstance<GetCategories200>({
-    url: `/categories/`,
-    method: 'GET',
-    params,
-    signal,
-  });
+  return customInstance<GetCategories200>({ url: `/categories/`, method: 'GET', params, signal });
 };
 
 export const getGetCategoriesQueryKey = (params?: GetCategoriesParams) => {
@@ -156,14 +151,11 @@ export const getGetCategoriesQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getCategories>>> = ({ signal }) =>
     getCategories(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCategories>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetCategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCategories>>>;
@@ -186,9 +178,7 @@ export function useGetCategories<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetCategories<
   TData = Awaited<ReturnType<typeof getCategories>>,
   TError = GetCategories400 | GetCategories401,
@@ -206,9 +196,7 @@ export function useGetCategories<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetCategories<
   TData = Awaited<ReturnType<typeof getCategories>>,
   TError = GetCategories400 | GetCategories401,
@@ -218,9 +206,7 @@ export function useGetCategories<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar categorias
  */
@@ -234,9 +220,7 @@ export function useGetCategories<
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCategories>>, TError, TData>>;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetCategoriesQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

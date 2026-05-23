@@ -9,9 +9,7 @@
         "email": { "type": "string", "format": "email" },
         "googleId": { "type": "string", "nullable": true },
         "avatar": { "type": "string", "nullable": true },
-        "monthlyIncome": {
-          "anyOf": [{ "type": "string" }, { "type": "number" }]
-        },
+        "monthlyIncome": { "anyOf": [{ "type": "string" }, { "type": "number" }] },
         "financialDayStart": { "type": "integer" },
         "financialDayEnd": { "type": "integer" },
         "firstAccess": { "type": "boolean", "nullable": true },

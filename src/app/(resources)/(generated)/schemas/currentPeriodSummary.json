@@ -4,10 +4,7 @@
     "currentPeriod": {
       "type": "object",
       "properties": {
-        "startDate": {
-          "type": "string",
-          "example": "2026-05-17T00:00:00.000Z"
-        },
+        "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "description": { "type": "string" }
       },
@@ -18,10 +15,7 @@
     "monthlyIncome": { "type": "number" },
     "balance": { "type": "number" },
     "percentUsed": { "type": "number", "nullable": true },
-    "byCategory": {
-      "type": "object",
-      "additionalProperties": { "type": "number" }
-    },
+    "byCategory": { "type": "object", "additionalProperties": { "type": "number" } },
     "alert": { "type": "string", "nullable": true },
     "transactionsCount": { "type": "integer" }
   },

@@ -176,14 +176,11 @@ export const getGetRecurringTransactionsQueryOptions = <
     signal,
   }) => getRecurringTransactions(params, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getRecurringTransactions>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRecurringTransactions>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetRecurringTransactionsQueryResult = NonNullable<
@@ -212,9 +209,7 @@ export function useGetRecurringTransactions<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetRecurringTransactions<
   TData = Awaited<ReturnType<typeof getRecurringTransactions>>,
   TError = GetRecurringTransactions400 | GetRecurringTransactions401,
@@ -234,9 +229,7 @@ export function useGetRecurringTransactions<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetRecurringTransactions<
   TData = Awaited<ReturnType<typeof getRecurringTransactions>>,
   TError = GetRecurringTransactions400 | GetRecurringTransactions401,
@@ -248,9 +241,7 @@ export function useGetRecurringTransactions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Listar recorrentes (paginado)
  */
@@ -266,9 +257,7 @@ export function useGetRecurringTransactions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetRecurringTransactionsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
@@ -495,13 +484,7 @@ export const getGetRecurringTransactionsIdTransactionsQueryOptions = <
     Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>
   > = ({ signal }) => getRecurringTransactionsIdTransactions(id, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseQueryOptions<
+  return { queryKey, queryFn, enabled: !!id, staleTime: 10000, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>,
     TError,
     TData
@@ -542,9 +525,7 @@ export function useGetRecurringTransactionsIdTransactions<
       >;
   },
   queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetRecurringTransactionsIdTransactions<
   TData = Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>,
   TError =
@@ -571,9 +552,7 @@ export function useGetRecurringTransactionsIdTransactions<
       >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetRecurringTransactionsIdTransactions<
   TData = Awaited<ReturnType<typeof getRecurringTransactionsIdTransactions>>,
   TError =
@@ -592,9 +571,7 @@ export function useGetRecurringTransactionsIdTransactions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Histórico de execuções
  */
@@ -617,9 +594,7 @@ export function useGetRecurringTransactionsIdTransactions<
     >;
   },
   queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetRecurringTransactionsIdTransactionsQueryOptions(id, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {

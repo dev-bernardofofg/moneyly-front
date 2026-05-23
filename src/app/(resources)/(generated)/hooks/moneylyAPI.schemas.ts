@@ -896,6 +896,8 @@ export type GetTransactionsParams = {
   category?: string;
   startDate?: string;
   endDate?: string;
+  periodId?: string;
+  type?: GetTransactionsType;
   /**
    * @exclusiveMinimum 0
    */
@@ -905,6 +907,13 @@ export type GetTransactionsParams = {
    */
   limit?: number;
 };
+
+export type GetTransactionsType = (typeof GetTransactionsType)[keyof typeof GetTransactionsType];
+
+export const GetTransactionsType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
 
 export type GetTransactions200Pagination = {
   page: number;
@@ -1059,7 +1068,17 @@ export type GetTransactionsSummaryCurrentPeriod401 = {
 export type GetTransactionsExportParams = {
   startDate?: string;
   endDate?: string;
+  periodId?: string;
+  type?: GetTransactionsExportType;
 };
+
+export type GetTransactionsExportType =
+  (typeof GetTransactionsExportType)[keyof typeof GetTransactionsExportType];
+
+export const GetTransactionsExportType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
 
 export type GetTransactionsExport400 = {
   success: boolean;

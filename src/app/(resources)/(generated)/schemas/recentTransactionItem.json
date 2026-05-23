@@ -4,11 +4,7 @@
     "id": { "type": "string", "format": "uuid" },
     "type": { "type": "string", "enum": ["income", "expense"] },
     "amount": { "type": "number" },
-    "date": {
-      "type": "string",
-      "description": "dd/MM/yyyy",
-      "example": "17/05/2026"
-    },
+    "date": { "type": "string", "description": "dd/MM/yyyy", "example": "17/05/2026" },
     "category": { "type": "string" },
     "description": { "type": "string" }
   },
