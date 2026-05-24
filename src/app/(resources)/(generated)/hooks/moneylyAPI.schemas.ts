@@ -624,8 +624,8 @@ export interface OvertimeRecord {
   hourlyRateSnapshot: string;
   /** Valor decimal como string */
   amount: string;
-  /** @nullable */
-  periodId: string | null;
+  month: number;
+  year: number;
   /** @nullable */
   transactionId: string | null;
   createdAt: string;
@@ -641,7 +641,8 @@ export type OvertimeSummaryByCompanyItem = {
 };
 
 export interface OvertimeSummary {
-  periodId: string;
+  month: number;
+  year: number;
   totalHours: number;
   totalAmount: number;
   byCompany: OvertimeSummaryByCompanyItem[];
@@ -2103,7 +2104,15 @@ export type PostOvertime401 = {
 };
 
 export type GetOvertimeParams = {
-  periodId?: string;
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month?: number;
+  /**
+   * @minimum 2000
+   */
+  year?: number;
   companyId?: string;
 };
 
@@ -2125,7 +2134,15 @@ export type GetOvertime401 = {
 };
 
 export type GetOvertimeSummaryParams = {
-  periodId: string;
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month: number;
+  /**
+   * @minimum 2000
+   */
+  year: number;
 };
 
 export type GetOvertimeSummary200 = {

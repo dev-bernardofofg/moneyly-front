@@ -5,9 +5,13 @@
 
 export type OvertimeSummary = {
   /**
-   * @type string, uuid
+   * @type integer
    */
-  periodId: string;
+  month: number;
+  /**
+   * @type integer
+   */
+  year: number;
   /**
    * @type number
    */

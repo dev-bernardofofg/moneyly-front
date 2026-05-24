@@ -1,7 +1,8 @@
 {
   "type": "object",
   "properties": {
-    "periodId": { "type": "string", "format": "uuid" },
+    "month": { "type": "integer" },
+    "year": { "type": "integer" },
     "totalHours": { "type": "number" },
     "totalAmount": { "type": "number" },
     "byCompany": {
@@ -18,6 +19,6 @@
       }
     }
   },
-  "required": ["periodId", "totalHours", "totalAmount", "byCompany"],
+  "required": ["month", "year", "totalHours", "totalAmount", "byCompany"],
   "x-readme-ref-name": "OvertimeSummary"
 }

@@ -121,7 +121,7 @@ export const usePostOvertime = <TError = PostOvertime400 | PostOvertime401, TCon
   return useMutation(getPostOvertimeMutationOptions(options), queryClient);
 };
 /**
- * @summary Listar registros de hora extra
+ * @summary Listar registros de hora extra (filtros: month, year, companyId)
  */
 export const getOvertime = (params?: GetOvertimeParams, signal?: AbortSignal) => {
   return customInstance<GetOvertime200>({ url: `/overtime/`, method: 'GET', params, signal });
@@ -204,7 +204,7 @@ export function useGetOvertime<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Listar registros de hora extra
+ * @summary Listar registros de hora extra (filtros: month, year, companyId)
  */
 
 export function useGetOvertime<
@@ -227,7 +227,7 @@ export function useGetOvertime<
 }
 
 /**
- * @summary Resumo de horas extras por período
+ * @summary Resumo de horas extras por mês civil
  */
 export const getOvertimeSummary = (params: GetOvertimeSummaryParams, signal?: AbortSignal) => {
   return customInstance<GetOvertimeSummary200>({
@@ -319,7 +319,7 @@ export function useGetOvertimeSummary<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Resumo de horas extras por período
+ * @summary Resumo de horas extras por mês civil
  */
 
 export function useGetOvertimeSummary<

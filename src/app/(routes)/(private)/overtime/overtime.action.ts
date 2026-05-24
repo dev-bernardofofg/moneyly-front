@@ -6,17 +6,26 @@ import {
   useGetOvertimeSummary,
 } from '@/app/(resources)/(generated)/hooks/overtime/overtime';
 
-export const useOvertimeAction = (companyId?: string) => {
-  const { selectedPeriodId } = usePeriod();
+const getMonthYear = (startDate: string) => {
+  const d = new Date(startDate);
+  return { month: d.getMonth() + 1, year: d.getFullYear() };
+};
 
-  const { data: overtimeData, isLoading: isLoadingRecords } = useGetOvertime({
-    periodId: selectedPeriodId ?? undefined,
-    companyId: companyId || undefined,
-  });
+export const useOvertimeAction = (companyId?: string) => {
+  const { selectedPeriodId, periods } = usePeriod();
+  const selectedPeriod = periods.find((p) => p.id === selectedPeriodId);
+  const monthYear = selectedPeriod ? getMonthYear(selectedPeriod.startDate) : null;
+
+  const { data: overtimeData, isLoading: isLoadingRecords } = useGetOvertime(
+    monthYear
+      ? { month: monthYear.month, year: monthYear.year, companyId: companyId || undefined }
+      : {},
+    { query: { enabled: !!monthYear } }
+  );
 
   const { data: summaryData, isLoading: isLoadingSummary } = useGetOvertimeSummary(
-    { periodId: selectedPeriodId ?? '' },
-    { query: { enabled: !!selectedPeriodId } }
+    monthYear ?? { month: 0, year: 0 },
+    { query: { enabled: !!monthYear } }
   );
 
   return {

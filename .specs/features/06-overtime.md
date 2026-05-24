@@ -12,9 +12,16 @@
 
 ## Período
 
-Overtime filtra por **`periodId` financeiro** (mesmo `PeriodProvider` global) — alinhado com o restante do front.
-O back armazena `month`/`year` derivados de `startTime` em `overtime_records` (mês civil de competência). Esses campos estarão disponíveis em `OvertimeRecord` após próxima regeneração do openapi.
-A transaction gerada internamente recebe `periodId` normalmente — transparente pro front.
+Overtime filtra por **mês civil** (`month`/`year`) derivado de `startTime`, não por `periodId` financeiro.
+O front extrai `month`/`year` do `startDate` do período selecionado no `PeriodProvider`:
+
+```ts
+const d = new Date(selectedPeriod.startDate);
+month = d.getMonth() + 1;
+year = d.getFullYear();
+```
+
+A transaction gerada internamente pelo back recebe `periodId` financeiro normalmente — transparente pro front.
 
 ---
 
@@ -75,17 +82,17 @@ A transaction gerada internamente recebe `periodId` normalmente — transparente
 
 ## Hooks gerados
 
-| Hook                    | Endpoint                | Params                      |
-| ----------------------- | ----------------------- | --------------------------- |
-| `useGetOvertime`        | `GET /overtime/`        | `{ periodId?, companyId? }` |
-| `useGetOvertimeSummary` | `GET /overtime/summary` | `{ periodId }`              |
-| `usePostOvertime`       | `POST /overtime/`       | body: `PostOvertimeBody`    |
-| `usePutOvertimeId`      | `PUT /overtime/:id`     | body: `PutOvertimeIdBody`   |
-| `useDeleteOvertimeId`   | `DELETE /overtime/:id`  | —                           |
-| `useGetCompanies`       | `GET /companies/`       | —                           |
-| `usePostCompanies`      | `POST /companies/`      | body: `PostCompaniesBody`   |
-| `usePutCompaniesId`     | `PUT /companies/:id`    | body: `PutCompaniesIdBody`  |
-| `useDeleteCompaniesId`  | `DELETE /companies/:id` | —                           |
+| Hook                    | Endpoint                | Params                           |
+| ----------------------- | ----------------------- | -------------------------------- |
+| `useGetOvertime`        | `GET /overtime/`        | `{ month?, year?, companyId? }`  |
+| `useGetOvertimeSummary` | `GET /overtime/summary` | `{ month, year }` (obrigatórios) |
+| `usePostOvertime`       | `POST /overtime/`       | body: `PostOvertimeBody`         |
+| `usePutOvertimeId`      | `PUT /overtime/:id`     | body: `PutOvertimeIdBody`        |
+| `useDeleteOvertimeId`   | `DELETE /overtime/:id`  | —                                |
+| `useGetCompanies`       | `GET /companies/`       | —                                |
+| `usePostCompanies`      | `POST /companies/`      | body: `PostCompaniesBody`        |
+| `usePutCompaniesId`     | `PUT /companies/:id`    | body: `PutCompaniesIdBody`       |
+| `useDeleteCompaniesId`  | `DELETE /companies/:id` | —                                |
 
 ---
 

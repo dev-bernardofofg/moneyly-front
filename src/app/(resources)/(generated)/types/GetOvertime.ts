@@ -7,9 +7,16 @@ import type { OvertimeRecord } from './OvertimeRecord.ts';
 
 export type GetOvertimeQueryParams = {
   /**
-   * @type string | undefined, uuid
+   * @minLength 1
+   * @maxLength 12
+   * @type integer | undefined
    */
-  periodId?: string;
+  month?: number;
+  /**
+   * @minLength 2000
+   * @type integer | undefined
+   */
+  year?: number;
   /**
    * @type string | undefined, uuid
    */

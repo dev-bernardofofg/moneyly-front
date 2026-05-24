@@ -7,9 +7,16 @@ import type { OvertimeSummary } from './OvertimeSummary.ts';
 
 export type GetOvertimeSummaryQueryParams = {
   /**
-   * @type string, uuid
+   * @minLength 1
+   * @maxLength 12
+   * @type integer
    */
-  periodId: string;
+  month: number;
+  /**
+   * @minLength 2000
+   * @type integer
+   */
+  year: number;
 };
 
 /**

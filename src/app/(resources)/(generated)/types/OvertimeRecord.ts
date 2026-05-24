@@ -44,9 +44,13 @@ export type OvertimeRecord = {
    */
   amount: string;
   /**
-   * @type string, uuid
+   * @type integer
    */
-  periodId: string | null;
+  month: number;
+  /**
+   * @type integer
+   */
+  year: number;
   /**
    * @type string, uuid
    */
