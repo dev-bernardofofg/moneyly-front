@@ -6,6 +6,7 @@ import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form';
+import { Tag } from 'lucide-react';
 import { CategoryTable } from './category.table';
 import { useCategoryAction } from './category.action';
 
@@ -25,6 +26,15 @@ const CategoriesPage = () => {
           >
             <UpsertCategoryForm />
           </BaseDialog>,
+        ]}
+        fabActions={[
+          {
+            icon: Tag,
+            label: 'Nova categoria',
+            dialogTitle: 'Nova categoria',
+            dialogDescription: 'Adicione uma nova categoria',
+            children: <UpsertCategoryForm />,
+          },
         ]}
       />
       <StaggeredFade variant="page" className="grid grid-rows-[auto]">

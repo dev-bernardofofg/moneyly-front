@@ -12,7 +12,7 @@ import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form';
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form';
-import { Target } from 'lucide-react';
+import { Target, Wallet } from 'lucide-react';
 import { usePlannerAction } from './planner.action';
 
 const PlannerPage = () => {
@@ -39,6 +39,22 @@ const PlannerPage = () => {
           >
             <UpsertGoalForm />
           </BaseDialog>,
+        ]}
+        fabActions={[
+          {
+            icon: Wallet,
+            label: 'Novo orçamento',
+            dialogTitle: 'Novo Orçamento',
+            dialogDescription: 'Adicione um novo orçamento',
+            children: <UpsertBudgetForm />,
+          },
+          {
+            icon: Target,
+            label: 'Novo objetivo',
+            dialogTitle: 'Novo Objetivo de Poupança',
+            dialogDescription: 'Adicione um novo objetivo de poupança',
+            children: <UpsertGoalForm />,
+          },
         ]}
       />
       <StaggeredFade

@@ -18,7 +18,7 @@ import { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardSta
 import { MonthlyHistoryChart } from '@/app/(components)/(bases)/(charts)/monthly-history-chart';
 import { ROUTES } from '@/app/(utils)/routes';
 import { useRouter } from 'next/navigation';
-import { Loader2, PiggyBank, Receipt, RefreshCcw, Scale } from 'lucide-react';
+import { Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { DASHBOARD_STATS_INTERATOR, useDashboardAction } from './dashboard.action';
 import { RecentTransactionItem } from '@/app/(resources)/(generated)';
 import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs';
@@ -46,6 +46,15 @@ const DashboardPage = () => {
           >
             <TransactionTabs />
           </BaseDialog>,
+        ]}
+        fabActions={[
+          {
+            icon: Plus,
+            label: 'Nova transação',
+            dialogTitle: 'Nova transação',
+            dialogDescription: 'Adicione uma nova transação',
+            children: <TransactionTabs />,
+          },
         ]}
       />
 

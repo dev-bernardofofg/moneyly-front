@@ -6,6 +6,7 @@ import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertTransactionRecurringForm } from '@/app/(resources)/(forms)/upsert-transaction-recurring.form';
+import { RefreshCcw } from 'lucide-react';
 import { RecurringTransactionTable } from './recurring-transaction.table';
 import { useRecurringTransactionsAction } from './recurring-transaction.action';
 
@@ -30,6 +31,15 @@ const RecurringTransactionsPage = () => {
           >
             <UpsertTransactionRecurringForm />
           </BaseDialog>,
+        ]}
+        fabActions={[
+          {
+            icon: RefreshCcw,
+            label: 'Nova recorrente',
+            dialogTitle: 'Nova recorrente',
+            dialogDescription: 'Adicione uma nova transação recorrente',
+            children: <UpsertTransactionRecurringForm />,
+          },
         ]}
       />
       <StaggeredFade
