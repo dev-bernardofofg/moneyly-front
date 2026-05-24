@@ -12,13 +12,22 @@ import { UpsertOvertimeForm } from '@/app/(resources)/(forms)/upsert-overtime.fo
 import { useGetCompanies } from '@/app/(resources)/(generated)/hooks/companies/companies';
 import { queryClient } from '@/app/(contexts)';
 import { getErrorMessage } from '@/app/(helpers)/errors';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { CustomAxiosError } from '@/app/(types)/error.type';
 import {
   getGetCompaniesQueryKey,
   useDeleteCompaniesId,
 } from '@/app/(resources)/(generated)/hooks/companies/companies';
 import { Company } from '@/app/(resources)/(generated)';
-import { Briefcase, Building2, Clock, PencilIcon, Plus, Trash2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Briefcase, Building2, Clock, Download, PencilIcon, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
 import { OvertimeTable } from './overtime.table';
@@ -112,13 +121,62 @@ const CompaniesManager = () => {
 };
 
 const OvertimePage = () => {
-  const { records, summary, isLoading } = useOvertimeAction();
+  const [companyFilter, setCompanyFilter] = useState<string>('all');
+  const { data: companiesData } = useGetCompanies();
+  const companies = companiesData?.data ?? [];
+
+  const { records, summary, isLoading } = useOvertimeAction(
+    companyFilter === 'all' ? undefined : companyFilter
+  );
+
+  const handleExportCsv = () => {
+    if (!records.length) {
+      toast.error('Nenhum registro para exportar');
+      return;
+    }
+
+    const header = ['Empresa', 'Data', 'Início', 'Fim', 'Horas', 'Valor (R$)'];
+    const rows = records.map((r) => {
+      const date = new Date(r.startTime);
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const fmt = (iso: string) => {
+        const d = new Date(iso);
+        return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      };
+      return [
+        r.company.name,
+        `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}`,
+        fmt(r.startTime),
+        fmt(r.endTime),
+        parseFloat(r.hoursWorked).toFixed(2).replace('.', ','),
+        parseFloat(r.amount).toFixed(2).replace('.', ','),
+      ];
+    });
+
+    const csv = [header, ...rows].map((row) => row.join(';')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `horas-extras-${FN_UTILS_DATE.today()}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    toast.success('CSV exportado com sucesso');
+  };
+
+  const byCompany = summary?.byCompany ?? [];
 
   return (
     <Fade>
       <Header
         title="Horas Extras"
         actions={[
+          <BaseButton key="export-csv" variant="outline" onClick={handleExportCsv}>
+            <Download className="size-4 mr-1" />
+            Exportar CSV
+          </BaseButton>,
           <BaseDialog
             key="manage-companies"
             title="Gerenciar empresas"
@@ -143,6 +201,23 @@ const OvertimePage = () => {
         ]}
         fabActions={[
           {
+            icon: Download,
+            label: 'Exportar CSV',
+            dialogTitle: 'Exportar CSV',
+            dialogDescription: 'Exportar horas extras do período atual',
+            children: (
+              <div className="flex flex-col gap-3 pt-2">
+                <p className="text-sm text-muted-foreground">
+                  Exporta os registros do período atual em formato CSV.
+                </p>
+                <BaseButton onClick={handleExportCsv}>
+                  <Download className="size-4" />
+                  Exportar
+                </BaseButton>
+              </div>
+            ),
+          },
+          {
             icon: Building2,
             label: 'Empresas',
             dialogTitle: 'Gerenciar empresas',
@@ -160,10 +235,11 @@ const OvertimePage = () => {
       />
       <StaggeredFade
         variant="page"
-        className="grid grid-rows-[auto_auto_1fr]"
-        itemClassNames={[undefined, undefined, 'overflow-y-hidden size-full']}
+        className="grid grid-rows-[auto_auto_auto_1fr]"
+        itemClassNames={[undefined, undefined, undefined, 'overflow-y-hidden size-full']}
       >
         <PeriodNavigatorWrapper />
+
         <StaggeredFade className="grid grid-cols-2 gap-2">
           <BaseStats
             name="Total Horas"
@@ -180,7 +256,52 @@ const OvertimePage = () => {
             loading={isLoading}
           />
         </StaggeredFade>
-        <OvertimeTable records={records} isLoading={isLoading} />
+
+        {byCompany.length > 1 && (
+          <div className="flex flex-col gap-1.5 rounded-md border border-border p-3">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Por empresa
+            </span>
+            {byCompany.map((item) => (
+              <div key={item.companyId} className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">{item.companyName}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-muted-foreground">
+                    {item.hours.toFixed(2).replace('.', ',')} h
+                  </span>
+                  <span className="font-medium">
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(item.amount)}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 overflow-y-hidden size-full">
+          {companies.length > 1 && (
+            <div className="flex items-center gap-2 px-0.5">
+              <span className="text-sm text-muted-foreground shrink-0">Empresa</span>
+              <Select value={companyFilter} onValueChange={setCompanyFilter}>
+                <SelectTrigger className="h-8 w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas</SelectItem>
+                  {companies.map((c: Company) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <OvertimeTable records={records} isLoading={isLoading} />
+        </div>
       </StaggeredFade>
     </Fade>
   );

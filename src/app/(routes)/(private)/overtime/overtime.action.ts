@@ -6,11 +6,12 @@ import {
   useGetOvertimeSummary,
 } from '@/app/(resources)/(generated)/hooks/overtime/overtime';
 
-export const useOvertimeAction = () => {
+export const useOvertimeAction = (companyId?: string) => {
   const { selectedPeriodId } = usePeriod();
 
   const { data: overtimeData, isLoading: isLoadingRecords } = useGetOvertime({
     periodId: selectedPeriodId ?? undefined,
+    companyId: companyId || undefined,
   });
 
   const { data: summaryData, isLoading: isLoadingSummary } = useGetOvertimeSummary(

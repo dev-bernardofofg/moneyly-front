@@ -3,6 +3,7 @@
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { cva } from 'class-variance-authority';
 import { LucideIcon } from 'lucide-react';
 
 interface SectionProps {
@@ -11,7 +12,20 @@ interface SectionProps {
   children: React.ReactNode;
   className?: string;
   classNameHeader?: string;
+  variant?: 'default' | 'secondary';
 }
+
+const headerVariants = cva(
+  'bg-slate-100 dark:bg-slate-800 rounded-lg dark:border-slate-700 border border-slate-200',
+  {
+    variants: {
+      variant: {
+        default: 'border-b border-slate-200 dark:border-slate-700',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      },
+    },
+  }
+);
 
 export const Section = ({ Icon, title, children, className, classNameHeader }: SectionProps) => {
   return (
