@@ -3,6 +3,7 @@ export type { AuthSession } from './types/AuthSession.ts';
 export type { Budget } from './types/Budget.ts';
 export type { BudgetProgress } from './types/BudgetProgress.ts';
 export type { Category } from './types/Category.ts';
+export type { Company } from './types/Company.ts';
 export type {
   ByCategorySignalEnumKey,
   ComparativeInsights,
@@ -36,6 +37,18 @@ export type {
   DeleteCategoriesDeleteIdPathParams,
 } from './types/DeleteCategoriesDeleteId.ts';
 export type {
+  DeleteCompaniesId200,
+  DeleteCompaniesId400,
+  DeleteCompaniesId400SuccessEnumKey,
+  DeleteCompaniesId401,
+  DeleteCompaniesId401SuccessEnumKey,
+  DeleteCompaniesId404,
+  DeleteCompaniesId404SuccessEnumKey,
+  DeleteCompaniesIdMutation,
+  DeleteCompaniesIdMutationResponse,
+  DeleteCompaniesIdPathParams,
+} from './types/DeleteCompaniesId.ts';
+export type {
   DeleteGoalsId200,
   DeleteGoalsId400,
   DeleteGoalsId400SuccessEnumKey,
@@ -47,6 +60,18 @@ export type {
   DeleteGoalsIdMutationResponse,
   DeleteGoalsIdPathParams,
 } from './types/DeleteGoalsId.ts';
+export type {
+  DeleteOvertimeId200,
+  DeleteOvertimeId400,
+  DeleteOvertimeId400SuccessEnumKey,
+  DeleteOvertimeId401,
+  DeleteOvertimeId401SuccessEnumKey,
+  DeleteOvertimeId404,
+  DeleteOvertimeId404SuccessEnumKey,
+  DeleteOvertimeIdMutation,
+  DeleteOvertimeIdMutationResponse,
+  DeleteOvertimeIdPathParams,
+} from './types/DeleteOvertimeId.ts';
 export type {
   DeleteRecurringTransactionsId200,
   DeleteRecurringTransactionsId400,
@@ -97,6 +122,15 @@ export type {
   GetCategoriesQueryResponse,
 } from './types/GetCategories.ts';
 export type {
+  GetCompanies200,
+  GetCompanies400,
+  GetCompanies400SuccessEnumKey,
+  GetCompanies401,
+  GetCompanies401SuccessEnumKey,
+  GetCompaniesQuery,
+  GetCompaniesQueryResponse,
+} from './types/GetCompanies.ts';
+export type {
   GetGoals200,
   GetGoals400,
   GetGoals400SuccessEnumKey,
@@ -135,6 +169,26 @@ export type {
   GetNotificationsQueryParams,
   GetNotificationsQueryResponse,
 } from './types/GetNotifications.ts';
+export type {
+  GetOvertime200,
+  GetOvertime400,
+  GetOvertime400SuccessEnumKey,
+  GetOvertime401,
+  GetOvertime401SuccessEnumKey,
+  GetOvertimeQuery,
+  GetOvertimeQueryParams,
+  GetOvertimeQueryResponse,
+} from './types/GetOvertime.ts';
+export type {
+  GetOvertimeSummary200,
+  GetOvertimeSummary400,
+  GetOvertimeSummary400SuccessEnumKey,
+  GetOvertimeSummary401,
+  GetOvertimeSummary401SuccessEnumKey,
+  GetOvertimeSummaryQuery,
+  GetOvertimeSummaryQueryParams,
+  GetOvertimeSummaryQueryResponse,
+} from './types/GetOvertimeSummary.ts';
 export type {
   GetOverviewDashboard200,
   GetOverviewDashboard400,
@@ -313,6 +367,8 @@ export type {
   NotificationSeverityEnumKey,
   NotificationTypeEnumKey,
 } from './types/Notification.ts';
+export type { OvertimeRecord } from './types/OvertimeRecord.ts';
+export type { OvertimeSummary } from './types/OvertimeSummary.ts';
 export type {
   PatchNotificationsIdRead200,
   PatchNotificationsIdRead400,
@@ -426,6 +482,16 @@ export type {
   PostCategoriesCreateMutationResponse,
 } from './types/PostCategoriesCreate.ts';
 export type {
+  PostCompanies200,
+  PostCompanies400,
+  PostCompanies400SuccessEnumKey,
+  PostCompanies401,
+  PostCompanies401SuccessEnumKey,
+  PostCompaniesMutation,
+  PostCompaniesMutationRequest,
+  PostCompaniesMutationResponse,
+} from './types/PostCompanies.ts';
+export type {
   PostGoals201,
   PostGoals400,
   PostGoals400SuccessEnumKey,
@@ -448,6 +514,16 @@ export type {
   PostGoalsIdAddAmountMutationResponse,
   PostGoalsIdAddAmountPathParams,
 } from './types/PostGoalsIdAddAmount.ts';
+export type {
+  PostOvertime200,
+  PostOvertime400,
+  PostOvertime400SuccessEnumKey,
+  PostOvertime401,
+  PostOvertime401SuccessEnumKey,
+  PostOvertimeMutation,
+  PostOvertimeMutationRequest,
+  PostOvertimeMutationResponse,
+} from './types/PostOvertime.ts';
 export type {
   PostRecurringTransactions201,
   PostRecurringTransactions400,
@@ -498,6 +574,19 @@ export type {
   PutCategoriesUpdateIdPathParams,
 } from './types/PutCategoriesUpdateId.ts';
 export type {
+  PutCompaniesId200,
+  PutCompaniesId400,
+  PutCompaniesId400SuccessEnumKey,
+  PutCompaniesId401,
+  PutCompaniesId401SuccessEnumKey,
+  PutCompaniesId404,
+  PutCompaniesId404SuccessEnumKey,
+  PutCompaniesIdMutation,
+  PutCompaniesIdMutationRequest,
+  PutCompaniesIdMutationResponse,
+  PutCompaniesIdPathParams,
+} from './types/PutCompaniesId.ts';
+export type {
   PutGoalsId200,
   PutGoalsId400,
   PutGoalsId400SuccessEnumKey,
@@ -510,6 +599,19 @@ export type {
   PutGoalsIdMutationResponse,
   PutGoalsIdPathParams,
 } from './types/PutGoalsId.ts';
+export type {
+  PutOvertimeId200,
+  PutOvertimeId400,
+  PutOvertimeId400SuccessEnumKey,
+  PutOvertimeId401,
+  PutOvertimeId401SuccessEnumKey,
+  PutOvertimeId404,
+  PutOvertimeId404SuccessEnumKey,
+  PutOvertimeIdMutation,
+  PutOvertimeIdMutationRequest,
+  PutOvertimeIdMutationResponse,
+  PutOvertimeIdPathParams,
+} from './types/PutOvertimeId.ts';
 export type {
   PutRecurringTransactionsId200,
   PutRecurringTransactionsId400,
@@ -595,9 +697,15 @@ export { deleteBudgetsId404SuccessEnum } from './types/DeleteBudgetsId.ts';
 export { deleteCategoriesDeleteId400SuccessEnum } from './types/DeleteCategoriesDeleteId.ts';
 export { deleteCategoriesDeleteId401SuccessEnum } from './types/DeleteCategoriesDeleteId.ts';
 export { deleteCategoriesDeleteId404SuccessEnum } from './types/DeleteCategoriesDeleteId.ts';
+export { deleteCompaniesId400SuccessEnum } from './types/DeleteCompaniesId.ts';
+export { deleteCompaniesId401SuccessEnum } from './types/DeleteCompaniesId.ts';
+export { deleteCompaniesId404SuccessEnum } from './types/DeleteCompaniesId.ts';
 export { deleteGoalsId400SuccessEnum } from './types/DeleteGoalsId.ts';
 export { deleteGoalsId401SuccessEnum } from './types/DeleteGoalsId.ts';
 export { deleteGoalsId404SuccessEnum } from './types/DeleteGoalsId.ts';
+export { deleteOvertimeId400SuccessEnum } from './types/DeleteOvertimeId.ts';
+export { deleteOvertimeId401SuccessEnum } from './types/DeleteOvertimeId.ts';
+export { deleteOvertimeId404SuccessEnum } from './types/DeleteOvertimeId.ts';
 export { deleteRecurringTransactionsId400SuccessEnum } from './types/DeleteRecurringTransactionsId.ts';
 export { deleteRecurringTransactionsId401SuccessEnum } from './types/DeleteRecurringTransactionsId.ts';
 export { deleteRecurringTransactionsId404SuccessEnum } from './types/DeleteRecurringTransactionsId.ts';
@@ -609,6 +717,8 @@ export { getBudgets400SuccessEnum } from './types/GetBudgets.ts';
 export { getBudgets401SuccessEnum } from './types/GetBudgets.ts';
 export { getCategories400SuccessEnum } from './types/GetCategories.ts';
 export { getCategories401SuccessEnum } from './types/GetCategories.ts';
+export { getCompanies400SuccessEnum } from './types/GetCompanies.ts';
+export { getCompanies401SuccessEnum } from './types/GetCompanies.ts';
 export { getGoals400SuccessEnum } from './types/GetGoals.ts';
 export { getGoals401SuccessEnum } from './types/GetGoals.ts';
 export { getGoalsId400SuccessEnum } from './types/GetGoalsId.ts';
@@ -618,6 +728,10 @@ export { getHealth400SuccessEnum } from './types/GetHealth.ts';
 export { getNotifications200SuccessEnum } from './types/GetNotifications.ts';
 export { getNotifications400SuccessEnum } from './types/GetNotifications.ts';
 export { getNotifications401SuccessEnum } from './types/GetNotifications.ts';
+export { getOvertime400SuccessEnum } from './types/GetOvertime.ts';
+export { getOvertime401SuccessEnum } from './types/GetOvertime.ts';
+export { getOvertimeSummary400SuccessEnum } from './types/GetOvertimeSummary.ts';
+export { getOvertimeSummary401SuccessEnum } from './types/GetOvertimeSummary.ts';
 export { getOverviewDashboard400SuccessEnum } from './types/GetOverviewDashboard.ts';
 export { getOverviewDashboard401SuccessEnum } from './types/GetOverviewDashboard.ts';
 export { getOverviewForecast400SuccessEnum } from './types/GetOverviewForecast.ts';
@@ -683,11 +797,15 @@ export { postBudgets400SuccessEnum } from './types/PostBudgets.ts';
 export { postBudgets401SuccessEnum } from './types/PostBudgets.ts';
 export { postCategoriesCreate400SuccessEnum } from './types/PostCategoriesCreate.ts';
 export { postCategoriesCreate401SuccessEnum } from './types/PostCategoriesCreate.ts';
+export { postCompanies400SuccessEnum } from './types/PostCompanies.ts';
+export { postCompanies401SuccessEnum } from './types/PostCompanies.ts';
 export { postGoals400SuccessEnum } from './types/PostGoals.ts';
 export { postGoals401SuccessEnum } from './types/PostGoals.ts';
 export { postGoalsIdAddAmount400SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
 export { postGoalsIdAddAmount401SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
 export { postGoalsIdAddAmount404SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
+export { postOvertime400SuccessEnum } from './types/PostOvertime.ts';
+export { postOvertime401SuccessEnum } from './types/PostOvertime.ts';
 export { postRecurringTransactions400SuccessEnum } from './types/PostRecurringTransactions.ts';
 export { postRecurringTransactions401SuccessEnum } from './types/PostRecurringTransactions.ts';
 export { postRecurringTransactionsMutationRequestFrequencyEnum } from './types/PostRecurringTransactions.ts';
@@ -701,9 +819,15 @@ export { putBudgetsId404SuccessEnum } from './types/PutBudgetsId.ts';
 export { putCategoriesUpdateId400SuccessEnum } from './types/PutCategoriesUpdateId.ts';
 export { putCategoriesUpdateId401SuccessEnum } from './types/PutCategoriesUpdateId.ts';
 export { putCategoriesUpdateId404SuccessEnum } from './types/PutCategoriesUpdateId.ts';
+export { putCompaniesId400SuccessEnum } from './types/PutCompaniesId.ts';
+export { putCompaniesId401SuccessEnum } from './types/PutCompaniesId.ts';
+export { putCompaniesId404SuccessEnum } from './types/PutCompaniesId.ts';
 export { putGoalsId400SuccessEnum } from './types/PutGoalsId.ts';
 export { putGoalsId401SuccessEnum } from './types/PutGoalsId.ts';
 export { putGoalsId404SuccessEnum } from './types/PutGoalsId.ts';
+export { putOvertimeId400SuccessEnum } from './types/PutOvertimeId.ts';
+export { putOvertimeId401SuccessEnum } from './types/PutOvertimeId.ts';
+export { putOvertimeId404SuccessEnum } from './types/PutOvertimeId.ts';
 export { putRecurringTransactionsId400SuccessEnum } from './types/PutRecurringTransactionsId.ts';
 export { putRecurringTransactionsId401SuccessEnum } from './types/PutRecurringTransactionsId.ts';
 export { putRecurringTransactionsId404SuccessEnum } from './types/PutRecurringTransactionsId.ts';

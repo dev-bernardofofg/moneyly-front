@@ -594,6 +594,59 @@ export interface TransactionListSummary {
   alert: string | null;
 }
 
+export interface Company {
+  id: string;
+  userId: string;
+  name: string;
+  /** Valor decimal como string */
+  hourlyRate: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type OvertimeRecordCompany = {
+  id: string;
+  name: string;
+};
+
+export interface OvertimeRecord {
+  id: string;
+  userId: string;
+  companyId: string;
+  /** @nullable */
+  description: string | null;
+  startTime: string;
+  endTime: string;
+  /** Valor decimal como string */
+  hoursWorked: string;
+  /** Valor decimal como string */
+  hourlyRateSnapshot: string;
+  /** Valor decimal como string */
+  amount: string;
+  /** @nullable */
+  periodId: string | null;
+  /** @nullable */
+  transactionId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  company: OvertimeRecordCompany;
+}
+
+export type OvertimeSummaryByCompanyItem = {
+  companyId: string;
+  companyName: string;
+  hours: number;
+  amount: number;
+};
+
+export interface OvertimeSummary {
+  periodId: string;
+  totalHours: number;
+  totalAmount: number;
+  byCompany: OvertimeSummaryByCompanyItem[];
+}
+
 export type GetHealth200 = {
   status: string;
   message: string;
@@ -1918,6 +1971,230 @@ export type PatchNotificationsIdRead401 = {
 };
 
 export type PatchNotificationsIdRead404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostCompaniesBody = {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name: string;
+  /** @exclusiveMinimum 0 */
+  hourlyRate: number;
+};
+
+export type PostCompanies200 = {
+  data: Company;
+  message?: string;
+};
+
+export type PostCompanies400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostCompanies401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetCompanies200 = {
+  data: Company[];
+  message?: string;
+};
+
+export type GetCompanies400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetCompanies401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesIdBody = {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name?: string;
+  /** @exclusiveMinimum 0 */
+  hourlyRate?: number;
+};
+
+export type PutCompaniesId200 = {
+  data: Company;
+  message?: string;
+};
+
+export type PutCompaniesId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCompaniesId200 = {
+  data: unknown | null;
+  message?: string;
+};
+
+export type DeleteCompaniesId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCompaniesId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCompaniesId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostOvertimeBody = {
+  companyId: string;
+  categoryId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type PostOvertime200 = {
+  data: OvertimeRecord;
+  message?: string;
+};
+
+export type PostOvertime400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostOvertime401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOvertimeParams = {
+  periodId?: string;
+  companyId?: string;
+};
+
+export type GetOvertime200 = {
+  data: OvertimeRecord[];
+  message?: string;
+};
+
+export type GetOvertime400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOvertime401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOvertimeSummaryParams = {
+  periodId: string;
+};
+
+export type GetOvertimeSummary200 = {
+  data: OvertimeSummary;
+  message?: string;
+};
+
+export type GetOvertimeSummary400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOvertimeSummary401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeIdBody = {
+  companyId?: string;
+  categoryId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  startTime?: string;
+  endTime?: string;
+};
+
+export type PutOvertimeId200 = {
+  data: OvertimeRecord;
+  message?: string;
+};
+
+export type PutOvertimeId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteOvertimeId200 = {
+  data: unknown | null;
+  message?: string;
+};
+
+export type DeleteOvertimeId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteOvertimeId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteOvertimeId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;

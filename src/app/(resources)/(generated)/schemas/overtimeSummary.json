@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "periodId": { "type": "string", "format": "uuid" },
+    "totalHours": { "type": "number" },
+    "totalAmount": { "type": "number" },
+    "byCompany": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "companyId": { "type": "string", "format": "uuid" },
+          "companyName": { "type": "string" },
+          "hours": { "type": "number" },
+          "amount": { "type": "number" }
+        },
+        "required": ["companyId", "companyName", "hours", "amount"]
+      }
+    }
+  },
+  "required": ["periodId", "totalHours", "totalAmount", "byCompany"],
+  "x-readme-ref-name": "OvertimeSummary"
+}

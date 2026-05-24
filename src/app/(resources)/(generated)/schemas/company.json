@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "hourlyRate": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "isActive": { "type": "boolean" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": ["id", "userId", "name", "hourlyRate", "isActive", "createdAt", "updatedAt"],
+  "x-readme-ref-name": "Company"
+}

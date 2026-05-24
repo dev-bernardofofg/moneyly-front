@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "companyId": { "type": "string", "format": "uuid" },
+    "description": { "type": "string", "nullable": true },
+    "startTime": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "endTime": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "hoursWorked": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "hourlyRateSnapshot": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "amount": {
+      "type": "string",
+      "description": "Valor decimal como string",
+      "example": "1234.50"
+    },
+    "periodId": { "type": "string", "nullable": true, "format": "uuid" },
+    "transactionId": { "type": "string", "nullable": true, "format": "uuid" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "company": {
+      "type": "object",
+      "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" } },
+      "required": ["id", "name"]
+    }
+  },
+  "required": [
+    "id",
+    "userId",
+    "companyId",
+    "description",
+    "startTime",
+    "endTime",
+    "hoursWorked",
+    "hourlyRateSnapshot",
+    "amount",
+    "periodId",
+    "transactionId",
+    "createdAt",
+    "updatedAt",
+    "company"
+  ],
+  "x-readme-ref-name": "OvertimeRecord"
+}
