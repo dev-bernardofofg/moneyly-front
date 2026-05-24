@@ -28,7 +28,9 @@ const formatDate = (iso: string) => format(new Date(iso), 'dd/MM/yyyy');
 
 const formatHours = (hours: string) => {
   const n = parseFloat(hours);
-  return `${n.toFixed(2).replace('.', ',')} h`;
+  const h = Math.floor(n);
+  const min = Math.round((n - h) * 60);
+  return min > 0 ? `${h}h ${min}min` : `${h}h`;
 };
 
 const formatAmount = (amount: string) => {

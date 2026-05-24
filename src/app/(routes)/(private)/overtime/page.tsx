@@ -1,5 +1,11 @@
 'use client';
 
+const fmtHours = (n: number) => {
+  const h = Math.floor(n);
+  const min = Math.round((n - h) * 60);
+  return min > 0 ? `${h}h ${min}min` : `${h}h`;
+};
+
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
 import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
@@ -243,7 +249,7 @@ const OvertimePage = () => {
         <StaggeredFade className="grid grid-cols-2 gap-2">
           <BaseStats
             name="Total Horas"
-            value={summary ? `${summary.totalHours.toFixed(2).replace('.', ',')} h` : '0,00 h'}
+            value={summary ? fmtHours(summary.totalHours) : '0h'}
             Icon={Clock}
             variant="secondary"
             loading={isLoading}
@@ -266,9 +272,7 @@ const OvertimePage = () => {
               <div key={item.companyId} className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">{item.companyName}</span>
                 <div className="flex items-center gap-3">
-                  <span className="text-muted-foreground">
-                    {item.hours.toFixed(2).replace('.', ',')} h
-                  </span>
+                  <span className="text-muted-foreground">{fmtHours(item.hours)}</span>
                   <span className="font-medium">
                     {new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
