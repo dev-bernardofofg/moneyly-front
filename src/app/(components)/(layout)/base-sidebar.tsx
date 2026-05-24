@@ -27,6 +27,7 @@ import { IconType } from '@/lib/utils';
 import {
   ArrowRightLeft,
   ChevronUp,
+  Clock,
   Goal,
   Home,
   Lightbulb,
@@ -117,6 +118,7 @@ export const BaseSidebar = () => {
         <SidebarGroupCustom label="Gestão">
           <SidebarItem Icon={ArrowRightLeft} href="/transactions" title="Transações" />
           <SidebarItem Icon={RefreshCcw} href="/recurring-transactions" title="Recorrentes" />
+          <SidebarItem Icon={Clock} href="/overtime" title="Horas Extras" />
           <SidebarItem Icon={Goal} href="/planner" title="Planejamento" />
           <SidebarItem Icon={TableProperties} href="/categories" title="Categorias" />
         </SidebarGroupCustom>

@@ -8,4 +8,5 @@ export const ROUTES = {
   SETTINGS: '/settings',
   PROFILE: '/profile',
   AUTH: '/auth',
+  OVERTIME: '/overtime',
 };
