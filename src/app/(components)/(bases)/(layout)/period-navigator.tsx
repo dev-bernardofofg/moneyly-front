@@ -46,7 +46,7 @@ export const PeriodNavigator = ({
   const canGoNext = currentIndex < chronological.length - 1;
 
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex w-full items-center gap-1.5">
       <Button
         variant="outline"
         size="icon"
@@ -59,7 +59,7 @@ export const PeriodNavigator = ({
       </Button>
 
       <Select value={selectedPeriodId} onValueChange={onPeriodSelect}>
-        <SelectTrigger className="w-52">
+        <SelectTrigger className="w-full justify-center gap-4">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

@@ -125,7 +125,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IBaseInput<any>>(
                         readOnly={readOnly}
                         autoFocus={autoFocus}
                         onChange={handleChange}
-                        className="h-10 w-full bg-transparent dark:bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                        className="h-10 w-full bg-transparent dark:bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-sm"
                         {...rest}
                       />
                       {displayIcon &&

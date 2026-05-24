@@ -1,5 +1,6 @@
 'use client';
 
+import { useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -21,6 +22,8 @@ export const Fade = ({
   distance = 50,
   className,
 }: FadeProps) => {
+  const { open } = useSidebar();
+
   const getDirectionalAnimation = () => {
     if (!direction) return {};
 
@@ -56,6 +59,7 @@ export const Fade = ({
       }}
       className={cn(
         'w-full h-screen bg-white dark:bg-slate-900 base:w-auto md:max-w-[calc(100vw-16rem)] grid grid-rows-[auto_1fr]',
+        !open && 'md:max-w-[100vw]',
         className
       )}
     >

@@ -261,7 +261,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon className="size-5" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
@@ -323,7 +323,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {
       data-slot="sidebar-header"
       data-sidebar="header"
       className={cn(
-        'flex flex-col gap-2 h-20 items-center justify-center border-b border-slate-200 dark:border-slate-700',
+        'flex flex-col gap-2 h-16 items-center justify-center border-b border-slate-200 dark:border-slate-700',
         className
       )}
       {...props}

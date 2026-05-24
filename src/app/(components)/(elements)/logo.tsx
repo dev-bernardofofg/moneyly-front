@@ -6,17 +6,14 @@ type LogoLockup = 'horizontal' | 'stacked' | 'mark';
 
 interface LogoProps {
   className?: string;
-  /** Show the "Moneyly" wordmark (back-compat alias of lockup !== 'mark'). */
   fullName?: boolean;
   href?: boolean;
   animate?: boolean;
-  /** Mark size in px (box side). Default 48. */
   size?: number;
   variant?: LogoVariant;
   lockup?: LogoLockup;
 }
 
-/** Canonical mark — design system §02. 24-unit glyph, 55% occupancy. */
 const MARK_BG: Record<LogoVariant, string> = {
   gradient: 'bg-[linear-gradient(135deg,hsl(127_44%_68%),hsl(127_44%_56%))]',
   solid: 'bg-primary',
@@ -25,7 +22,6 @@ const MARK_BG: Record<LogoVariant, string> = {
   reverse: 'bg-primary',
 };
 
-/** Glyph stroke colour per variant. */
 const MARK_STROKE: Record<LogoVariant, string> = {
   gradient: '#ffffff',
   solid: '#ffffff',
@@ -72,7 +68,7 @@ export const Logo = ({
   fullName = false,
   href = false,
   animate = true,
-  size = 48,
+  size = 36,
   variant = 'gradient',
   lockup,
 }: LogoProps) => {
