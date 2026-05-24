@@ -27,20 +27,19 @@ export const usePeriods = () => {
   });
 
   useEffect(() => {
-    if (periodsData?.data) {
-      const sorted = [...periodsData.data].sort((a, b) => {
-        if (a.isCurrent) return -1;
-        if (b.isCurrent) return 1;
-        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      });
-      setPeriods(sorted.map(toPeriod));
+    if (!periodsData?.data) return;
+    const sorted = [...periodsData.data]
+      .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+      .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    setPeriods(sorted.map(toPeriod));
+  }, [periodsData, setPeriods]);
 
-      if (!selectedPeriodId && sorted.length > 0) {
-        const current = sorted.find((p) => p.isCurrent);
-        setSelectedPeriodId((current ?? sorted[0]).id);
-      }
+  useEffect(() => {
+    if (!selectedPeriodId && periods.length > 0) {
+      const current = periods.find((p) => p.isCurrent);
+      setSelectedPeriodId((current ?? periods[0]).id);
     }
-  }, [periodsData, selectedPeriodId, setPeriods, setSelectedPeriodId]);
+  }, [selectedPeriodId, periods, setSelectedPeriodId]);
 
   useEffect(() => {
     setLoading(periodsLoading);
