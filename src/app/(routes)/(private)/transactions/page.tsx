@@ -18,6 +18,8 @@ import {
 import { TransactionTable } from '@/app/(routes)/(private)/transactions/transaction.table';
 import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from './transaction.action';
 import { ExportCsvButton } from './export-csv-button';
+import { ExportCsvForm } from './export-csv-form';
+import { Download, Plus } from 'lucide-react';
 
 const TransactionsPage = () => {
   const {
@@ -59,6 +61,40 @@ const TransactionsPage = () => {
           >
             <UpsertTransactionForm />
           </BaseDialog>,
+        ]}
+        mobileHeaderActions={[
+          <Select
+            key="type-filter-mobile"
+            value={typeFilter ?? 'all'}
+            onValueChange={(v) =>
+              setTypeFilter(v === 'all' ? undefined : (v as GetTransactionsQueryParamsTypeEnumKey))
+            }
+          >
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value="income">Entradas</SelectItem>
+              <SelectItem value="expense">Saídas</SelectItem>
+            </SelectContent>
+          </Select>,
+        ]}
+        fabActions={[
+          {
+            icon: Download,
+            label: 'Exportar CSV',
+            dialogTitle: 'Exportar transações',
+            dialogDescription: 'Escolha o período e o tipo de transação para exportar.',
+            children: <ExportCsvForm />,
+          },
+          {
+            icon: Plus,
+            label: 'Nova transação',
+            dialogTitle: 'Nova transação',
+            dialogDescription: 'Adicione uma nova transação',
+            children: <UpsertTransactionForm />,
+          },
         ]}
       />
       <StaggeredFade
