@@ -41,7 +41,11 @@ const CategoriesPage = () => {
         <CategoryTable
           categories={data?.data || []}
           tableOptions={{
-            pagination: paginationParams,
+            pagination: {
+              ...paginationParams,
+              total: data?.pagination?.total ?? 0,
+              totalPages: data?.pagination?.totalPages ?? 0,
+            },
           }}
           onPaginationChange={setPaginationParams}
           isLoading={isLoading}

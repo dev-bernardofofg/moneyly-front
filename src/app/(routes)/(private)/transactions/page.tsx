@@ -119,7 +119,13 @@ const TransactionsPage = () => {
         <TransactionTable
           isLoading={isLoading}
           transactions={transactions?.data ?? []}
-          tableOptions={{ pagination: paginationParams }}
+          tableOptions={{
+            pagination: {
+              ...paginationParams,
+              total: transactions?.pagination?.total ?? 0,
+              totalPages: transactions?.pagination?.totalPages ?? 0,
+            },
+          }}
           onPaginationChange={setPaginationParams}
         />
       </StaggeredFade>

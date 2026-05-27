@@ -2,6 +2,7 @@ import { usePeriod } from '@/app/(contexts)/period-provider';
 import { useGetTransactions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
 import { GetTransactionsQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactions';
 import { usePagination } from '@/hooks/use-pagination';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useState } from 'react';
 import { DollarSign, TrendingDown, TrendingUp } from 'lucide-react';
 
@@ -42,12 +43,22 @@ export const useTransactionsAction = () => {
     undefined
   );
 
-  const { data, isLoading } = useGetTransactions({
-    page: paginationParams.page,
-    limit: paginationParams.limit,
-    periodId: selectedPeriodId ?? undefined,
-    type: typeFilter,
-  });
+  const { data, isLoading, isFetching } = useGetTransactions(
+    {
+      page: paginationParams.page,
+      limit: paginationParams.limit,
+      periodId: selectedPeriodId ?? undefined,
+      type: typeFilter,
+    },
+    { query: { placeholderData: keepPreviousData } }
+  );
 
-  return { data, isLoading, paginationParams, setPaginationParams, typeFilter, setTypeFilter };
+  return {
+    data,
+    isLoading: isLoading || isFetching,
+    paginationParams,
+    setPaginationParams,
+    typeFilter,
+    setTypeFilter,
+  };
 };

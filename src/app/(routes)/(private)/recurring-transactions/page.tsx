@@ -50,7 +50,13 @@ const RecurringTransactionsPage = () => {
         <RecurringTransactionTable
           isLoading={isLoading}
           recurringTransactions={recurringTransactions?.data ?? []}
-          tableOptions={{ pagination: paginationParams }}
+          tableOptions={{
+            pagination: {
+              ...paginationParams,
+              total: recurringTransactions?.pagination?.total ?? 0,
+              totalPages: recurringTransactions?.pagination?.totalPages ?? 0,
+            },
+          }}
           onPaginationChange={setPaginationParams}
         />
       </StaggeredFade>

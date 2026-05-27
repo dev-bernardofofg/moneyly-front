@@ -7,14 +7,18 @@ import {
 } from '@/app/(resources)/(generated)/hooks/categories/categories';
 import { CustomAxiosError } from '@/app/(types)/error.type';
 import { usePagination } from '@/hooks/use-pagination';
+import { keepPreviousData } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 export const useCategoryAction = () => {
   const { paginationParams, setPaginationParams } = usePagination();
-  const { data, isLoading } = useGetCategories({
-    page: paginationParams.page,
-    limit: paginationParams.limit,
-  });
+  const { data, isLoading, isFetching } = useGetCategories(
+    {
+      page: paginationParams.page,
+      limit: paginationParams.limit,
+    },
+    { query: { placeholderData: keepPreviousData } }
+  );
 
   const { mutate: deleteCategory, isPending: isDeletingCategory } = useDeleteCategoriesDeleteId({
     mutation: {
@@ -31,7 +35,7 @@ export const useCategoryAction = () => {
 
   return {
     data,
-    isLoading,
+    isLoading: isLoading || isFetching,
     paginationParams,
     setPaginationParams,
 
