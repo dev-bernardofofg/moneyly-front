@@ -131,9 +131,8 @@ const OvertimePage = () => {
   const { data: companiesData } = useGetCompanies();
   const companies = companiesData?.data ?? [];
 
-  const { records, summary, isLoading } = useOvertimeAction(
-    companyFilter === 'all' ? undefined : companyFilter
-  );
+  const { records, summary, isLoading, pagination, paginationParams, setPaginationParams } =
+    useOvertimeAction(companyFilter === 'all' ? undefined : companyFilter);
 
   const handleExportCsv = () => {
     if (!records.length) {
@@ -304,7 +303,18 @@ const OvertimePage = () => {
               </Select>
             </div>
           )}
-          <OvertimeTable records={records} isLoading={isLoading} />
+          <OvertimeTable
+            records={records}
+            isLoading={isLoading}
+            tableOptions={{
+              pagination: {
+                ...paginationParams,
+                total: pagination?.total ?? 0,
+                totalPages: pagination?.totalPages ?? 0,
+              },
+            }}
+            onPaginationChange={setPaginationParams}
+          />
         </div>
       </StaggeredFade>
     </Fade>

@@ -82,17 +82,17 @@ A transaction gerada internamente pelo back recebe `periodId` financeiro normalm
 
 ## Hooks gerados
 
-| Hook                    | Endpoint                | Params                           |
-| ----------------------- | ----------------------- | -------------------------------- |
-| `useGetOvertime`        | `GET /overtime/`        | `{ month?, year?, companyId? }`  |
-| `useGetOvertimeSummary` | `GET /overtime/summary` | `{ month, year }` (obrigatórios) |
-| `usePostOvertime`       | `POST /overtime/`       | body: `PostOvertimeBody`         |
-| `usePutOvertimeId`      | `PUT /overtime/:id`     | body: `PutOvertimeIdBody`        |
-| `useDeleteOvertimeId`   | `DELETE /overtime/:id`  | —                                |
-| `useGetCompanies`       | `GET /companies/`       | —                                |
-| `usePostCompanies`      | `POST /companies/`      | body: `PostCompaniesBody`        |
-| `usePutCompaniesId`     | `PUT /companies/:id`    | body: `PutCompaniesIdBody`       |
-| `useDeleteCompaniesId`  | `DELETE /companies/:id` | —                                |
+| Hook                    | Endpoint                | Params                                                    |
+| ----------------------- | ----------------------- | --------------------------------------------------------- |
+| `useGetOvertime`        | `GET /overtime/`        | `{ month?, year?, companyId?, page?, limit? }` — paginado |
+| `useGetOvertimeSummary` | `GET /overtime/summary` | `{ month, year }` (obrigatórios)                          |
+| `usePostOvertime`       | `POST /overtime/`       | body: `PostOvertimeBody`                                  |
+| `usePutOvertimeId`      | `PUT /overtime/:id`     | body: `PutOvertimeIdBody`                                 |
+| `useDeleteOvertimeId`   | `DELETE /overtime/:id`  | —                                                         |
+| `useGetCompanies`       | `GET /companies/`       | —                                                         |
+| `usePostCompanies`      | `POST /companies/`      | body: `PostCompaniesBody`                                 |
+| `usePutCompaniesId`     | `PUT /companies/:id`    | body: `PutCompaniesIdBody`                                |
+| `useDeleteCompaniesId`  | `DELETE /companies/:id` | —                                                         |
 
 ---
 

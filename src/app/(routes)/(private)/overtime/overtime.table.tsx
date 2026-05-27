@@ -2,7 +2,7 @@
 
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseTable } from '@/app/(components)/(bases)/(tables)/base-table';
+import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
 import { queryClient } from '@/app/(contexts)';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { CustomAxiosError } from '@/app/(types)/error.type';
@@ -18,7 +18,7 @@ import {
   useDeleteOvertimeId,
 } from '../../../(resources)/(generated)/hooks/overtime/overtime';
 
-interface OvertimeTableProps {
+interface OvertimeTableProps extends BaseTableOptions {
   records: OvertimeRecord[];
   isLoading: boolean;
 }
@@ -40,7 +40,12 @@ const formatAmount = (amount: string) => {
   }).format(parseFloat(amount));
 };
 
-export const OvertimeTable = ({ records, isLoading }: OvertimeTableProps) => {
+export const OvertimeTable = ({
+  records,
+  isLoading,
+  tableOptions,
+  onPaginationChange,
+}: OvertimeTableProps) => {
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getGetOvertimeQueryKey() });
     queryClient.invalidateQueries({ queryKey: getGetOvertimeSummaryQueryKey() });
@@ -64,6 +69,8 @@ export const OvertimeTable = ({ records, isLoading }: OvertimeTableProps) => {
       title="Horas Extras"
       emptyMessage="Nenhuma hora extra registrada"
       loading={isLoading}
+      pagination={tableOptions?.pagination}
+      onPaginationChange={onPaginationChange}
       keyExtractor={(item) => item.id}
       actions={(item) => (
         <div className="flex items-center gap-2">
