@@ -16,14 +16,54 @@ export type GetCategoriesQueryParams = {
   limit?: number;
 };
 
+export const getCategories200SuccessEnum = {
+  true: true,
+} as const;
+
+export type GetCategories200SuccessEnumKey =
+  (typeof getCategories200SuccessEnum)[keyof typeof getCategories200SuccessEnum];
+
 /**
  * @description Sucesso
  */
 export type GetCategories200 = {
   /**
+   * @type boolean
+   */
+  success: GetCategories200SuccessEnumKey;
+  /**
    * @type array
    */
   data: Category[];
+  /**
+   * @type object
+   */
+  pagination: {
+    /**
+     * @type number
+     */
+    page: number;
+    /**
+     * @type number
+     */
+    limit: number;
+    /**
+     * @type number
+     */
+    total: number;
+    /**
+     * @type number
+     */
+    totalPages: number;
+    /**
+     * @type boolean
+     */
+    hasNext: boolean;
+    /**
+     * @type boolean
+     */
+    hasPrev: boolean;
+  };
   /**
    * @type string | undefined
    */

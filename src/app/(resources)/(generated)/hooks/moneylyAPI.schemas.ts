@@ -1196,8 +1196,19 @@ export type GetCategoriesParams = {
   limit?: number;
 };
 
+export type GetCategories200Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+};
+
 export type GetCategories200 = {
+  success: boolean;
   data: Category[];
+  pagination: GetCategories200Pagination;
   message?: string;
 };
 
@@ -2114,10 +2125,30 @@ export type GetOvertimeParams = {
    */
   year?: number;
   companyId?: string;
+  /**
+   * @exclusiveMinimum 0
+   */
+  page?: number;
+  /**
+   * @maximum 100
+   * @exclusiveMinimum 0
+   */
+  limit?: number;
+};
+
+export type GetOvertime200Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
 };
 
 export type GetOvertime200 = {
+  success: boolean;
   data: OvertimeRecord[];
+  pagination: GetOvertime200Pagination;
   message?: string;
 };
 

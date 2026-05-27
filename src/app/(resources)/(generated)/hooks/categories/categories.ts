@@ -125,7 +125,7 @@ export const usePostCategoriesCreate = <
   return useMutation(getPostCategoriesCreateMutationOptions(options), queryClient);
 };
 /**
- * @summary Listar categorias
+ * @summary Listar categorias paginadas (params: page, limit)
  */
 export const getCategories = (params?: GetCategoriesParams, signal?: AbortSignal) => {
   return customInstance<GetCategories200>({ url: `/categories/`, method: 'GET', params, signal });
@@ -208,7 +208,7 @@ export function useGetCategories<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Listar categorias
+ * @summary Listar categorias paginadas (params: page, limit)
  */
 
 export function useGetCategories<

@@ -21,16 +21,65 @@ export type GetOvertimeQueryParams = {
    * @type string | undefined, uuid
    */
   companyId?: string;
+  /**
+   * @type integer | undefined
+   */
+  page?: number;
+  /**
+   * @maxLength 100
+   * @type integer | undefined
+   */
+  limit?: number;
 };
+
+export const getOvertime200SuccessEnum = {
+  true: true,
+} as const;
+
+export type GetOvertime200SuccessEnumKey =
+  (typeof getOvertime200SuccessEnum)[keyof typeof getOvertime200SuccessEnum];
 
 /**
  * @description Sucesso
  */
 export type GetOvertime200 = {
   /**
+   * @type boolean
+   */
+  success: GetOvertime200SuccessEnumKey;
+  /**
    * @type array
    */
   data: OvertimeRecord[];
+  /**
+   * @type object
+   */
+  pagination: {
+    /**
+     * @type number
+     */
+    page: number;
+    /**
+     * @type number
+     */
+    limit: number;
+    /**
+     * @type number
+     */
+    total: number;
+    /**
+     * @type number
+     */
+    totalPages: number;
+    /**
+     * @type boolean
+     */
+    hasNext: boolean;
+    /**
+     * @type boolean
+     */
+    hasPrev: boolean;
+  };
   /**
    * @type string | undefined
    */

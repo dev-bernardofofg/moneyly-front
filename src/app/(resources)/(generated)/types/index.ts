@@ -113,6 +113,7 @@ export type {
 } from './GetBudgets.ts';
 export type {
   GetCategories200,
+  GetCategories200SuccessEnumKey,
   GetCategories400,
   GetCategories400SuccessEnumKey,
   GetCategories401,
@@ -171,6 +172,7 @@ export type {
 } from './GetNotifications.ts';
 export type {
   GetOvertime200,
+  GetOvertime200SuccessEnumKey,
   GetOvertime400,
   GetOvertime400SuccessEnumKey,
   GetOvertime401,
@@ -715,6 +717,7 @@ export { deleteTransactionsId404SuccessEnum } from './DeleteTransactionsId.ts';
 export { occurrencesTypeEnum } from './ForecastResponse.ts';
 export { getBudgets400SuccessEnum } from './GetBudgets.ts';
 export { getBudgets401SuccessEnum } from './GetBudgets.ts';
+export { getCategories200SuccessEnum } from './GetCategories.ts';
 export { getCategories400SuccessEnum } from './GetCategories.ts';
 export { getCategories401SuccessEnum } from './GetCategories.ts';
 export { getCompanies400SuccessEnum } from './GetCompanies.ts';
@@ -728,6 +731,7 @@ export { getHealth400SuccessEnum } from './GetHealth.ts';
 export { getNotifications200SuccessEnum } from './GetNotifications.ts';
 export { getNotifications400SuccessEnum } from './GetNotifications.ts';
 export { getNotifications401SuccessEnum } from './GetNotifications.ts';
+export { getOvertime200SuccessEnum } from './GetOvertime.ts';
 export { getOvertime400SuccessEnum } from './GetOvertime.ts';
 export { getOvertime401SuccessEnum } from './GetOvertime.ts';
 export { getOvertimeSummary400SuccessEnum } from './GetOvertimeSummary.ts';
