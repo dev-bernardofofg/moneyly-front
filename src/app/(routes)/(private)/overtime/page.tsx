@@ -16,6 +16,7 @@ import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertCompanyForm } from '@/app/(resources)/(forms)/upsert-company.form';
 import { UpsertOvertimeForm } from '@/app/(resources)/(forms)/upsert-overtime.form';
 import { useGetCompanies } from '@/app/(resources)/(generated)/hooks/companies/companies';
+import { getOvertimeExport } from '@/app/(resources)/(generated)/hooks/overtime/overtime';
 import { queryClient } from '@/app/(contexts)';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
@@ -131,44 +132,40 @@ const OvertimePage = () => {
   const { data: companiesData } = useGetCompanies();
   const companies = companiesData?.data ?? [];
 
-  const { records, summary, isLoading, pagination, paginationParams, setPaginationParams } =
-    useOvertimeAction(companyFilter === 'all' ? undefined : companyFilter);
+  const {
+    records,
+    summary,
+    isLoading,
+    pagination,
+    paginationParams,
+    setPaginationParams,
+    monthYear,
+  } = useOvertimeAction(companyFilter === 'all' ? undefined : companyFilter);
 
-  const handleExportCsv = () => {
-    if (!records.length) {
-      toast.error('Nenhum registro para exportar');
+  const handleExportCsv = async () => {
+    if (!monthYear) {
+      toast.error('Selecione um período');
       return;
     }
-
-    const header = ['Empresa', 'Data', 'Início', 'Fim', 'Horas', 'Valor (R$)'];
-    const rows = records.map((r) => {
-      const date = new Date(r.startTime);
-      const pad = (n: number) => String(n).padStart(2, '0');
-      const fmt = (iso: string) => {
-        const d = new Date(iso);
-        return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      };
-      return [
-        r.company.name,
-        `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}`,
-        fmt(r.startTime),
-        fmt(r.endTime),
-        parseFloat(r.hoursWorked).toFixed(2).replace('.', ','),
-        parseFloat(r.amount).toFixed(2).replace('.', ','),
-      ];
-    });
-
-    const csv = [header, ...rows].map((row) => row.join(';')).join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `horas-extras-${FN_UTILS_DATE.today()}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    toast.success('CSV exportado com sucesso');
+    try {
+      const csv = await getOvertimeExport({
+        month: monthYear.month,
+        year: monthYear.year,
+        companyId: companyFilter === 'all' ? undefined : companyFilter,
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `horas-extras-${FN_UTILS_DATE.today()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      toast.success('CSV exportado com sucesso');
+    } catch {
+      toast.error('Falha ao exportar CSV');
+    }
   };
 
   const byCompany = summary?.byCompany ?? [];

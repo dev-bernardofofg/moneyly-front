@@ -48,5 +48,6 @@ export const useOvertimeAction = (companyId?: string) => {
     isLoading: isLoadingRecords || isFetchingRecords || isLoadingSummary,
     paginationParams,
     setPaginationParams,
+    monthYear,
   };
 };
