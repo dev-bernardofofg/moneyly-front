@@ -2193,6 +2193,31 @@ export type GetOvertimeSummary401 = {
   details?: unknown | null;
 };
 
+export type GetOvertimeExportParams = {
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month?: number;
+  /**
+   * @minimum 2000
+   */
+  year?: number;
+  companyId?: string;
+};
+
+export type GetOvertimeExport400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOvertimeExport401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
 export type PutOvertimeIdBody = {
   companyId?: string;
   categoryId?: string;

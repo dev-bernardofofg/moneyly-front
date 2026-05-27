@@ -29,6 +29,9 @@ import type {
   GetOvertime200,
   GetOvertime400,
   GetOvertime401,
+  GetOvertimeExport400,
+  GetOvertimeExport401,
+  GetOvertimeExportParams,
   GetOvertimeParams,
   GetOvertimeSummary200,
   GetOvertimeSummary400,
@@ -333,6 +336,114 @@ export function useGetOvertimeSummary<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetOvertimeSummaryQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Exportar horas extras em CSV
+ */
+export const getOvertimeExport = (params?: GetOvertimeExportParams, signal?: AbortSignal) => {
+  return customInstance<string>({ url: `/overtime/export`, method: 'GET', params, signal });
+};
+
+export const getGetOvertimeExportQueryKey = (params?: GetOvertimeExportParams) => {
+  return [`/overtime/export`, ...(params ? [params] : [])] as const;
+};
+
+export const getGetOvertimeExportQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOvertimeExport>>,
+  TError = GetOvertimeExport400 | GetOvertimeExport401,
+>(
+  params?: GetOvertimeExportParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOvertimeExport>>, TError, TData>>;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetOvertimeExportQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOvertimeExport>>> = ({ signal }) =>
+    getOvertimeExport(params, signal);
+
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOvertimeExport>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetOvertimeExportQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOvertimeExport>>
+>;
+export type GetOvertimeExportQueryError = GetOvertimeExport400 | GetOvertimeExport401;
+
+export function useGetOvertimeExport<
+  TData = Awaited<ReturnType<typeof getOvertimeExport>>,
+  TError = GetOvertimeExport400 | GetOvertimeExport401,
+>(
+  params: undefined | GetOvertimeExportParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOvertimeExport>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOvertimeExport>>,
+          TError,
+          Awaited<ReturnType<typeof getOvertimeExport>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetOvertimeExport<
+  TData = Awaited<ReturnType<typeof getOvertimeExport>>,
+  TError = GetOvertimeExport400 | GetOvertimeExport401,
+>(
+  params?: GetOvertimeExportParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOvertimeExport>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOvertimeExport>>,
+          TError,
+          Awaited<ReturnType<typeof getOvertimeExport>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetOvertimeExport<
+  TData = Awaited<ReturnType<typeof getOvertimeExport>>,
+  TError = GetOvertimeExport400 | GetOvertimeExport401,
+>(
+  params?: GetOvertimeExportParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOvertimeExport>>, TError, TData>>;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Exportar horas extras em CSV
+ */
+
+export function useGetOvertimeExport<
+  TData = Awaited<ReturnType<typeof getOvertimeExport>>,
+  TError = GetOvertimeExport400 | GetOvertimeExport401,
+>(
+  params?: GetOvertimeExportParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOvertimeExport>>, TError, TData>>;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetOvertimeExportQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;

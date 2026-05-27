@@ -182,6 +182,16 @@ export type {
   GetOvertimeQueryResponse,
 } from './types/GetOvertime.ts';
 export type {
+  GetOvertimeExport200,
+  GetOvertimeExport400,
+  GetOvertimeExport400SuccessEnumKey,
+  GetOvertimeExport401,
+  GetOvertimeExport401SuccessEnumKey,
+  GetOvertimeExportQuery,
+  GetOvertimeExportQueryParams,
+  GetOvertimeExportQueryResponse,
+} from './types/GetOvertimeExport.ts';
+export type {
   GetOvertimeSummary200,
   GetOvertimeSummary400,
   GetOvertimeSummary400SuccessEnumKey,
@@ -734,6 +744,8 @@ export { getNotifications401SuccessEnum } from './types/GetNotifications.ts';
 export { getOvertime200SuccessEnum } from './types/GetOvertime.ts';
 export { getOvertime400SuccessEnum } from './types/GetOvertime.ts';
 export { getOvertime401SuccessEnum } from './types/GetOvertime.ts';
+export { getOvertimeExport400SuccessEnum } from './types/GetOvertimeExport.ts';
+export { getOvertimeExport401SuccessEnum } from './types/GetOvertimeExport.ts';
 export { getOvertimeSummary400SuccessEnum } from './types/GetOvertimeSummary.ts';
 export { getOvertimeSummary401SuccessEnum } from './types/GetOvertimeSummary.ts';
 export { getOverviewDashboard400SuccessEnum } from './types/GetOverviewDashboard.ts';
