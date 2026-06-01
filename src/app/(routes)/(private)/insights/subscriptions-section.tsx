@@ -3,11 +3,30 @@
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { Section } from '@/app/(components)/(bases)/(cards)/section';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import { UpsertTransactionRecurringForm } from '@/app/(resources)/(forms)/upsert-transaction-recurring.form';
+import {
+  RecurringSeed,
+  UpsertTransactionRecurringForm,
+} from '@/app/(resources)/(forms)/upsert-transaction-recurring.form';
 import { useGetTransactionsSubscriptions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
 import type { SubscriptionCandidate } from '@/app/(resources)/(generated)/types/SubscriptionCandidate';
 import { RefreshCcw, Repeat } from 'lucide-react';
+
+const seedFromCandidate = (c: SubscriptionCandidate): RecurringSeed => {
+  const dayOfMonth =
+    c.cadence === 'monthly' && c.firstDate
+      ? Number(FN_UTILS_DATE.formatInBusinessTZ(c.firstDate, 'd'))
+      : undefined;
+  return {
+    type: 'expense',
+    title: c.title,
+    amount: c.averageAmount,
+    categoryId: c.categoryId,
+    frequency: c.cadence,
+    dayOfMonth,
+  };
+};
 
 const CADENCE_LABEL: Record<SubscriptionCandidate['cadence'], string> = {
   weekly: 'Semanal',
@@ -58,7 +77,7 @@ export const SubscriptionsSection = () => {
                     </BaseButton>
                   }
                 >
-                  <UpsertTransactionRecurringForm />
+                  <UpsertTransactionRecurringForm seed={seedFromCandidate(candidate)} />
                 </BaseDialog>
               </div>
             </li>
