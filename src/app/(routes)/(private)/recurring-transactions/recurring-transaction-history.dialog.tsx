@@ -2,6 +2,7 @@
 
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { useGetRecurringTransactionsIdTransactions } from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { format } from 'date-fns';
 import { History, Loader2, TrendingDown, TrendingUp } from 'lucide-react';
 
 interface RecurringTransactionHistoryDialogProps {
@@ -84,7 +84,7 @@ const HistoryContent = ({ recurringTransactionId }: { recurringTransactionId: st
                 </Badge>
               </TableCell>
               <TableCell className="text-sm text-muted-foreground">
-                {tx.date ? format(tx.date, 'dd/MM/yyyy') : '—'}
+                {tx.date ? FN_UTILS_DATE.formatInBusinessTZ(tx.date, 'dd/MM/yyyy') : '—'}
               </TableCell>
               <TableCell className="text-sm font-medium text-muted-foreground">
                 {FN_UTILS_STRING.formatNumberToCurrency(tx.amount?.toString() || '0')}

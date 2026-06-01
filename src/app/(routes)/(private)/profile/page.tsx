@@ -4,10 +4,10 @@ import { Section } from '@/app/(components)/(bases)/(cards)/section';
 import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { ProfileConfigFinanceForm } from '@/app/(routes)/(private)/profile/profile-config-finance.form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Settings, User } from 'lucide-react';
 import { useProfileAction } from './profile.action';
@@ -38,7 +38,11 @@ export default function ProfilePage() {
                 {user?.createdAt && (
                   <Input
                     placeholder="Membro desde"
-                    value={format(user?.createdAt, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                    value={FN_UTILS_DATE.formatInBusinessTZ(
+                      user.createdAt,
+                      "dd 'de' MMMM 'de' yyyy",
+                      ptBR
+                    )}
                     readOnly
                   />
                 )}

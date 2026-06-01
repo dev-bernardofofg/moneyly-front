@@ -4,12 +4,12 @@ import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
 import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
 import { queryClient } from '@/app/(contexts)';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { CustomAxiosError } from '@/app/(types)/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { format } from 'date-fns';
 import { Info, PencilIcon, Trash2, TrendingDown, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
@@ -152,10 +152,11 @@ export const TransactionTable = ({
           header: 'Criado em',
           accessorKey: 'createdAt',
           cell: (_, item) => {
+            if (!item.createdAt) return null;
             return (
               <div className="flex flex-col text-sm font-medium text-muted-foreground">
-                <span>{format(item.createdAt || '', 'dd/MM/yyyy')}</span>
-                <span>{format(item.createdAt || '', 'HH:mm')}</span>
+                <span>{FN_UTILS_DATE.formatInBusinessTZ(item.createdAt, 'dd/MM/yyyy')}</span>
+                <span>{FN_UTILS_DATE.formatInBusinessTZ(item.createdAt, 'HH:mm')}</span>
               </div>
             );
           },
@@ -164,10 +165,11 @@ export const TransactionTable = ({
           header: 'Atualizado em',
           accessorKey: 'updatedAt',
           cell: (_, item) => {
+            if (!item.updatedAt) return null;
             return (
               <div className="flex flex-col text-sm font-medium text-muted-foreground">
-                <span>{format(item.updatedAt || '', 'dd/MM/yyyy')}</span>
-                <span>{format(item.updatedAt || '', 'HH:mm')}</span>
+                <span>{FN_UTILS_DATE.formatInBusinessTZ(item.updatedAt, 'dd/MM/yyyy')}</span>
+                <span>{FN_UTILS_DATE.formatInBusinessTZ(item.updatedAt, 'HH:mm')}</span>
               </div>
             );
           },

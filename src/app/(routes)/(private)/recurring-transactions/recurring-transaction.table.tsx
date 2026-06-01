@@ -4,13 +4,13 @@ import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
 import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
 import { queryClient } from '@/app/(contexts)';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { CustomAxiosError } from '@/app/(types)/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { format } from 'date-fns';
 import {
   Info,
   PencilIcon,
@@ -205,7 +205,9 @@ export const RecurringTransactionTable = ({
           accessorKey: 'nextExecution',
           cell: (_, item) => (
             <span className="text-sm font-medium text-muted-foreground">
-              {item.nextExecution ? format(item.nextExecution, 'dd/MM/yyyy') : '—'}
+              {item.nextExecution
+                ? FN_UTILS_DATE.formatInBusinessTZ(item.nextExecution, 'dd/MM/yyyy')
+                : '—'}
             </span>
           ),
         },
