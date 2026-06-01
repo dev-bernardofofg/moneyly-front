@@ -1,8 +1,5 @@
 import { usePeriod } from '@/app/(contexts)/period-provider';
-import {
-  getUserFinancialPeriods,
-  useGetUserFinancialPeriods,
-} from '@/app/(resources)/(generated)/hooks/user/user';
+import { useGetUserFinancialPeriods } from '@/app/(resources)/(generated)/hooks/user/user';
 import { FinancialPeriodSummary } from '@/app/(resources)/(generated)/types/FinancialPeriodSummary';
 import { useEffect } from 'react';
 import { Period } from '../(types)/period.type';
@@ -20,11 +17,7 @@ export const usePeriods = () => {
   const { selectedPeriodId, setSelectedPeriodId, periods, setPeriods, loading, setLoading } =
     usePeriod();
 
-  const { data: periodsData, isLoading: periodsLoading } = useGetUserFinancialPeriods({
-    query: {
-      queryKey: [getUserFinancialPeriods],
-    },
-  });
+  const { data: periodsData, isLoading: periodsLoading } = useGetUserFinancialPeriods();
 
   useEffect(() => {
     if (!periodsData?.data) return;

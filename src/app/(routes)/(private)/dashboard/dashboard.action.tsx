@@ -48,14 +48,9 @@ export const useDashboardAction = () => {
     periodId: selectedPeriodId || undefined,
   });
 
-  const { data: forecastData, isLoading: forecastLoading } = useGetOverviewForecast(
-    { periodId: selectedPeriodId || undefined },
-    {
-      query: {
-        queryKey: ['/overview/forecast', selectedPeriodId || undefined],
-      },
-    }
-  );
+  const { data: forecastData, isLoading: forecastLoading } = useGetOverviewForecast({
+    periodId: selectedPeriodId || undefined,
+  });
 
   const forecast = forecastData?.data;
   const previews = overviewData?.data?.previews;
