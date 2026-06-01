@@ -10,12 +10,17 @@ export const FN_UTILS_STRING = {
       .slice(0, 2);
   },
 
-  formatNumberToCurrency: (value: string) => {
-    return `R$ ${value.replace('.', ',')}`;
+  formatNumberToCurrency: (value: string | number) => {
+    const num = typeof value === 'number' ? value : Number(value);
+    if (!Number.isFinite(num)) return 'R$ 0,00';
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(num);
   },
 
   formatCurrencyToNumber: (value: string) => {
-    return Number(value.replace('R$', '').replace('.', '').replace(',', '.'));
+    return Number(value.replace('R$', '').replace(/\./g, '').replace(',', '.'));
   },
 
   formatCurrencyToCents: (value: string) => {
@@ -23,7 +28,10 @@ export const FN_UTILS_STRING = {
   },
 
   formatCentsToCurrency: (value: number) => {
-    return `R$ ${value / 100}`;
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value / 100);
   },
 
   formatCommaToDot: (value: string) => {
