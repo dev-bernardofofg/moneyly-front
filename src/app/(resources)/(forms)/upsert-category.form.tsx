@@ -27,9 +27,7 @@ export const UpsertCategoryForm = ({ category }: UpsertCategoryFormProps) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<CreateCategoryFormValues>({
       schema: CreateCategorySchema,
-      defaultValues: isUpdate
-        ? (category as CreateCategoryFormValues)
-        : CreateCategoryDefaultValues,
+      defaultValues: category ? { name: category.name } : CreateCategoryDefaultValues,
       invalidateKeys: [getGetCategoriesQueryKey()],
       errorFields: ['name'],
       successMessage: {
