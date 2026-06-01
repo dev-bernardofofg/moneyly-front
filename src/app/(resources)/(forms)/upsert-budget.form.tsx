@@ -64,18 +64,12 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
   const { data: categories } = useGetCategories({ limit: 500 });
 
   const handleForm = (data: CreateBudgetFormValues) => {
+    const monthlyLimit = FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit);
     if (budget) {
-      updateMutation.mutate({
-        id: budget.id || '',
-        data: { monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit) },
-      });
+      if (!budget.id) return;
+      updateMutation.mutate({ id: budget.id, data: { monthlyLimit } });
     } else {
-      createMutation.mutate({
-        data: {
-          categoryId: data.categoryId || '',
-          monthlyLimit: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit),
-        },
-      });
+      createMutation.mutate({ data: { categoryId: data.categoryId, monthlyLimit } });
     }
   };
 
