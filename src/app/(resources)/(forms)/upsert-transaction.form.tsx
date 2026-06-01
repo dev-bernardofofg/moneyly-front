@@ -4,11 +4,12 @@ import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
 import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
 import { BaseTextarea } from '@/app/(components)/(bases)/(forms)/base-textarea';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { Form } from '@/components/ui/form';
 import { ChevronDown, ChevronUp, TrendingDown, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { Category, Transaction } from '../(generated)';
@@ -29,20 +30,21 @@ import {
   UpsertTransactionSchema,
 } from '../(schemas)/transaction.schema';
 
+const transactionToFormValues = (transaction: Transaction): UpsertTransactionFormValues => ({
+  title: transaction.title,
+  type: transaction.type as 'income' | 'expense',
+  amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount),
+  category: transaction.category?.id ?? '',
+  description: transaction.description ?? '',
+  date: FN_UTILS_DATE.formatInBusinessTZ(transaction.date, 'yyyy-MM-dd'),
+});
+
 export const UpsertTransactionForm = ({ transaction }: { transaction?: Transaction }) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<UpsertTransactionFormValues>({
       schema: UpsertTransactionSchema,
       defaultValues: transaction
-        ? {
-            ...transaction,
-            amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount as string),
-            date: transaction.date as string,
-            category: transaction.category?.id,
-            description: transaction.description as string,
-            title: transaction.title as string,
-            type: transaction.type as 'income' | 'expense',
-          }
+        ? transactionToFormValues(transaction)
         : UpsertTransactionDefaultValues,
       invalidateKeys: [
         getGetOverviewDashboardQueryKey(),
@@ -68,26 +70,29 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
   });
 
   const handleUpsertTransaction = (data: UpsertTransactionFormValues) => {
+    const payload = {
+      title: data.title,
+      type: data.type,
+      amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+      category: data.category,
+      description: data.description || undefined,
+      date: data.date,
+    };
     if (transaction) {
-      updateTransaction({
-        id: transaction.id as string,
-        data: {
-          ...data,
-          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
-        },
-      });
+      updateTransaction({ id: transaction.id, data: payload });
     } else {
-      createTransaction({
-        data: {
-          ...data,
-          amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
-          category: data.category || '',
-        },
-      });
+      createTransaction({ data: payload });
     }
   };
 
   const [showMore, setShowMore] = useState(!!transaction);
+
+  useEffect(() => {
+    if (transaction) {
+      form.reset(transactionToFormValues(transaction));
+      setShowMore(true);
+    }
+  }, [transaction, form]);
 
   return (
     <>

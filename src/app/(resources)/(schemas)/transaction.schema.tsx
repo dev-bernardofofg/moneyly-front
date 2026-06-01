@@ -11,7 +11,7 @@ export const UpsertTransactionSchema = z.object({
       const num = parseFloat(v.replace(/\./g, '').replace(',', '.'));
       return !isNaN(num) && num > 0;
     }, 'Valor deve ser maior que zero'),
-  category: z.string().optional(),
+  category: z.string().min(1, 'Categoria é obrigatória'),
   description: z.string().optional(),
   date: z.string().min(1, 'Data é obrigatória'),
 });
