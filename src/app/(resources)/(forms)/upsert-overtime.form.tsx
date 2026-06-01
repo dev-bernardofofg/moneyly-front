@@ -5,6 +5,7 @@ import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
 import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
 import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
 import { Form } from '@/components/ui/form';
 import { Category, OvertimeRecord } from '../(generated)';
@@ -24,14 +25,6 @@ import {
 
 const FIELDS = ['companyId', 'categoryId', 'description', 'startTime', 'endTime'] as const;
 
-const toDatetimeLocal = (iso: string): string => {
-  return iso.slice(0, 16);
-};
-
-const toISO = (datetimeLocal: string): string => {
-  return new Date(datetimeLocal).toISOString();
-};
-
 const calcHours = (start: string, end: string): number | null => {
   if (!start || !end) return null;
   const diff = new Date(end).getTime() - new Date(start).getTime();
@@ -48,8 +41,8 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
             companyId: overtimeRecord.companyId,
             categoryId: '',
             description: overtimeRecord.description ?? '',
-            startTime: toDatetimeLocal(overtimeRecord.startTime),
-            endTime: toDatetimeLocal(overtimeRecord.endTime),
+            startTime: FN_UTILS_DATE.toBusinessDatetimeLocal(overtimeRecord.startTime),
+            endTime: FN_UTILS_DATE.toBusinessDatetimeLocal(overtimeRecord.endTime),
           }
         : UpsertOvertimeDefaultValues,
       invalidateKeys: [getGetOvertimeQueryKey(), getGetOvertimeSummaryQueryKey()],
@@ -65,7 +58,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
   const companyId = form.watch('companyId');
 
   const { data: companies, isLoading: isLoadingCompanies } = useGetCompanies();
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories({ limit: 500 });
 
   const selectedCompany = companies?.data?.find((c) => c.id === companyId);
   const hours = calcHours(startTime, endTime);
@@ -91,8 +84,8 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
       companyId: data.companyId,
       categoryId: data.categoryId || undefined,
       description: data.description || undefined,
-      startTime: toISO(data.startTime),
-      endTime: toISO(data.endTime),
+      startTime: FN_UTILS_DATE.fromBusinessDatetimeLocal(data.startTime),
+      endTime: FN_UTILS_DATE.fromBusinessDatetimeLocal(data.endTime),
     };
 
     if (overtimeRecord) {
