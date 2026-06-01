@@ -5,6 +5,7 @@ import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
 import { BaseTextarea } from '@/app/(components)/(bases)/(forms)/base-textarea';
 import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { Form } from '@/components/ui/form';
@@ -26,7 +27,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
             title: goal.title || '',
             description: goal.description || '',
             targetAmount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(goal.targetAmount),
-            targetDate: goal.targetDate,
+            targetDate: FN_UTILS_DATE.formatInBusinessTZ(goal.targetDate, 'yyyy-MM-dd'),
           }
         : GoalDefaultValues,
       invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
