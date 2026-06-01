@@ -1,3 +1,4 @@
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { z } from 'zod';
 
 export const GoalSchema = z.object({
@@ -13,7 +14,7 @@ export const GoalSchema = z.object({
   targetDate: z
     .string()
     .min(1, 'Data alvo é obrigatória')
-    .refine((v) => new Date(v) > new Date(), 'Data alvo deve ser no futuro'),
+    .refine((v) => v > FN_UTILS_DATE.today(), 'Data alvo deve ser no futuro'),
 });
 
 export const GoalDefaultValues = {
