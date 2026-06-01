@@ -57,7 +57,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       },
     });
 
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories({ limit: 500 });
 
   const { mutate: createTransaction, isPending } = usePostTransactionsCreate({
     mutation: { onSuccess: onCreated, onError },

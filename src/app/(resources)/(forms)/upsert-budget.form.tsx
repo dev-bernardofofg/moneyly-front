@@ -61,7 +61,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     mutation: { onSuccess: onUpdated, onError },
   });
 
-  const { data: categories } = useGetCategories();
+  const { data: categories } = useGetCategories({ limit: 500 });
 
   const handleForm = (data: CreateBudgetFormValues) => {
     if (budget) {
