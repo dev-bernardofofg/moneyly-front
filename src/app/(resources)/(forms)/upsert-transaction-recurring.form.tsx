@@ -154,7 +154,7 @@ export const UpsertTransactionRecurringForm = ({
           startDate: (() => {
             if (!data.startDate) return undefined;
             if (data.startDate <= FN_UTILS_DATE.today()) return undefined;
-            return `${data.startDate}T12:00:00.000Z`;
+            return FN_UTILS_DATE.fromBusinessDatetimeLocal(`${data.startDate}T12:00`);
           })(),
         },
       });
