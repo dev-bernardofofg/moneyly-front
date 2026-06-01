@@ -11,7 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { usePutUserIncomeAndPeriod } from '../../../(resources)/(generated)/hooks/user/user';
+import {
+  getGetUserFinancialPeriodsQueryKey,
+  getGetUserMeQueryKey,
+  usePutUserIncomeAndPeriod,
+} from '../../../(resources)/(generated)/hooks/user/user';
 import {
   ProfileConfigFinanceFormValues,
   profileConfigFinanceFormSchema,
@@ -30,16 +34,26 @@ export const ProfileConfigFinanceForm = ({
     defaultValues: {
       financialDayStart: defaultValues.financialDayStart!,
       financialDayEnd: defaultValues.financialDayEnd!,
-      monthlyIncome: FN_UTILS_STRING.formatCurrencyToCents(defaultValues.monthlyIncome),
+      monthlyIncome: FN_UTILS_STRING.formatReaisToMoneyInputDigits(defaultValues.monthlyIncome),
     },
   });
 
   const { mutate: updateProfile } = usePutUserIncomeAndPeriod({
     mutation: {
-      onSuccess: () => {
+      onSuccess: (_, variables) => {
         toast.success('Configurações atualizadas com sucesso');
+        const next = variables.data;
+        if (user) {
+          updateUser({
+            ...user,
+            financialDayEnd: Number(next.financialDayEnd),
+            financialDayStart: Number(next.financialDayStart),
+            monthlyIncome: Number(next.monthlyIncome).toString(),
+          });
+        }
         form.reset(form.getValues());
-        queryClient.clear();
+        queryClient.invalidateQueries({ queryKey: getGetUserMeQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetUserFinancialPeriodsQueryKey() });
       },
       onError: () => {
         toast.error('Erro ao atualizar configurações');
@@ -48,26 +62,17 @@ export const ProfileConfigFinanceForm = ({
   });
 
   const onSubmit = (data: ProfileConfigFinanceFormValues) => {
-    if (form.formState.isDirty) {
-      updateProfile({
-        data: {
-          monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
-          financialDayStart: Number(data.financialDayStart),
-          financialDayEnd: Number(data.financialDayEnd),
-        },
-      });
-
-      if (user) {
-        updateUser({
-          ...user,
-          financialDayEnd: Number(data.financialDayEnd),
-          financialDayStart: Number(data.financialDayStart),
-          monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome).toString(),
-        });
-      }
-    } else {
+    if (!form.formState.isDirty) {
       toast.info('Nenhuma alteração foi feita');
+      return;
     }
+    updateProfile({
+      data: {
+        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
+        financialDayStart: Number(data.financialDayStart),
+        financialDayEnd: Number(data.financialDayEnd),
+      },
+    });
   };
 
   return (
