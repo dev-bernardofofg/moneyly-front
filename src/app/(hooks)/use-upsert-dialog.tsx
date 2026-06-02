@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import type { ZodType } from 'zod';
+import type { ZodType, ZodTypeDef } from 'zod';
 
 interface UseUpsertDialogOptions<TForm extends FieldValues> {
   schema: ZodType<TForm>;
@@ -37,7 +37,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
   const queryClient = useQueryClient();
 
   const form = useForm<TForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as ZodType<TForm, ZodTypeDef & { typeName: string }, TForm>),
     defaultValues,
   });
 

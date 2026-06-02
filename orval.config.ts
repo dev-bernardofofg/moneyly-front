@@ -9,7 +9,6 @@ export default defineConfig({
       mode: 'tags-split',
       target: './src/app/(resources)/(generated)/hooks',
       client: 'react-query',
-      prettier: true,
       httpClient: 'axios',
       override: {
         mutator: {
