@@ -22,6 +22,7 @@ import {
   getGetUserMeQueryKey,
   getUserMe,
   usePutUserIncomeAndPeriod,
+  getGetUserFinancialPeriodsQueryKey,
 } from '../(generated)/hooks/user/user';
 
 interface InitialConfigFormProps {
@@ -41,15 +42,15 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
     mutation: {
       onSuccess: async () => {
         toast.success('Configurações salvas com sucesso!');
-        queryClient.invalidateQueries({ queryKey: getGetUserMeQueryKey() });
 
         const response = await getUserMe();
         const userData = response.data;
         if (userData) {
-          // getUserMe já retorna o User atualizado (fonte de verdade pós-update).
           updateUser(userData);
-          queryClient.clear();
         }
+
+        queryClient.invalidateQueries({ queryKey: getGetUserMeQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetUserFinancialPeriodsQueryKey() });
 
         onSuccess();
       },
