@@ -1,12 +1,12 @@
 'use client';
 
-import { motion, useMotionValue, useMotionValueEvent, useSpring, useTransform } from 'motion/react';
-import { ResponsiveContainer, AreaChart, Area, LineChart, Line, BarChart, Bar } from 'recharts';
 import { ChartStyle, getColorsCount, type ChartConfig } from '@/components/evilcharts/ui/chart';
-import type { MotionValue } from 'motion/react';
-import { useCallback, useEffect, type ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
+import type { MotionValue } from 'motion/react';
+import { motion, useMotionValue, useMotionValueEvent, useSpring, useTransform } from 'motion/react';
 import * as React from 'react';
+import { useCallback, useEffect, type ComponentProps } from 'react';
+import { Area, AreaChart, Bar, BarChart, Line, LineChart, ResponsiveContainer } from 'recharts';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 

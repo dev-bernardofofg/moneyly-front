@@ -2,8 +2,6 @@
 
 import { BudgetCard } from '@/app/(components)/(bases)/(cards)/budget-card';
 import { BudgetProgress } from '@/app/(resources)/(generated)';
-import { Skeleton } from '@/components/ui/skeleton';
-import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { CardSkeleton } from './card-skeleton';
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { BaseCard } from '@/app/(components)/(bases)/(cards)/base-card';
+import { MonthlyHistoryChart } from '@/app/(components)/(bases)/(charts)/monthly-history-chart';
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
 import { TransactionItem } from '@/app/(components)/(bases)/(list)/transaction-item';
@@ -9,19 +10,13 @@ import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
 import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { usePeriod } from '@/app/(contexts)/period-provider';
-import {
-  useGetOverviewDashboard,
-  useGetOverviewForecast,
-} from '@/app/(resources)/(generated)/hooks/overview/overview';
-import { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardStats';
-import { MonthlyHistoryChart } from '@/app/(components)/(bases)/(charts)/monthly-history-chart';
-import { ROUTES } from '@/app/(utils)/routes';
-import { useRouter } from 'next/navigation';
-import { Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
-import { DASHBOARD_STATS_INTERATOR, useDashboardAction } from './dashboard.action';
-import { RecentTransactionItem } from '@/app/(resources)/(generated)';
 import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs';
+import { RecentTransactionItem } from '@/app/(resources)/(generated)';
+import { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardStats';
+import { ROUTES } from '@/app/(utils)/routes';
+import { Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { DASHBOARD_STATS_INTERATOR, useDashboardAction } from './dashboard.action';
 
 const DashboardPage = () => {
   const { push } = useRouter();

@@ -22,6 +22,7 @@ export const InitialConfigGuard = ({ children }: InitialConfigGuardProps) => {
   useEffect(() => {
     // Se não há usuário autenticado, não faz nada (será redirecionado pelo auth guard)
     if (!user || !token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsChecking(false);
       return;
     }

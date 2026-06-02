@@ -1,5 +1,4 @@
 import { Goal } from '@/app/(resources)/(generated)';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { GoalCard } from '../(cards)/goal-card';
 import { CardSkeleton } from './card-skeleton';

@@ -4,14 +4,13 @@ import { WifiOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function OfflineIndicator() {
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(() =>
+    typeof window !== 'undefined' ? !navigator.onLine : false
+  );
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
-
-    // Verificar estado inicial
-    setIsOffline(!navigator.onLine);
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);

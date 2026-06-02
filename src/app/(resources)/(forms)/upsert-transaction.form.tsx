@@ -90,6 +90,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
   useEffect(() => {
     if (transaction) {
       form.reset(transactionToFormValues(transaction));
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowMore(true);
     }
   }, [transaction, form]);

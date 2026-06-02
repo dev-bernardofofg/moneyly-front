@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth } from '@/app/(contexts)/auth-provider';
-import { useEffect, useState } from 'react';
 import { LoadingScreen } from './loading-screen';
 
 interface AuthGuardProps {
@@ -10,13 +9,7 @@ interface AuthGuardProps {
 
 export const AuthGuard = ({ children }: AuthGuardProps) => {
   const { user, token } = useAuth();
-  const [isChecking, setIsChecking] = useState(true);
-
-  useEffect(() => {
-    if (user !== null || token !== null) {
-      setIsChecking(false);
-    }
-  }, [user, token]);
+  const isChecking = user === null && token === null;
 
   if (isChecking) {
     return <LoadingScreen />;

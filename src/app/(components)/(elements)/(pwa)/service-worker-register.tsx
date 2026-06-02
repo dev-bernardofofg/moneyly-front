@@ -8,12 +8,8 @@ export function ServiceWorkerRegister() {
       window.addEventListener('load', () => {
         navigator.serviceWorker
           .register('/sw.js')
-          .then(() => {
-            // Service Worker registrado com sucesso
-          })
-          .catch(() => {
-            // Falha silenciosa — SW não é crítico para o funcionamento
-          });
+          .then(() => {})
+          .catch(() => {});
       });
     }
   }, []);

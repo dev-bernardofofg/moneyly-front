@@ -21,6 +21,7 @@ export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stored) setSelectedPeriodIdState(stored);
   }, []);
   const [periods, setPeriods] = useState<Period[]>([]);

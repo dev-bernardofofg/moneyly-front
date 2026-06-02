@@ -1,6 +1,6 @@
 import { PaginationType } from '@/app/(types)/pagination.type';
 import { parseAsInteger, useQueryStates } from 'nuqs';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface UsePaginationProps {
   initialPage?: number;
@@ -28,21 +28,24 @@ export const usePagination = ({
         limit: Math.min(Math.max(1, serverPagination.limit as number), maxLimit),
       });
     }
-  }, [serverPagination, maxLimit]);
+  }, [serverPagination, maxLimit, setPaginationParams]);
 
   const resetPagination = useCallback(() => {
     setPaginationParams({
       page: Math.max(1, paginationParams.page),
       limit: Math.min(Math.max(1, paginationParams.limit), maxLimit),
     });
-  }, [paginationParams, maxLimit]);
+  }, [paginationParams, maxLimit, setPaginationParams]);
 
-  const goToPage = useCallback((page: number) => {
-    setPaginationParams({
-      page: Math.max(1, page),
-      limit: Math.min(Math.max(1, paginationParams.limit), maxLimit),
-    });
-  }, []);
+  const goToPage = useCallback(
+    (page: number) => {
+      setPaginationParams({
+        page: Math.max(1, page),
+        limit: Math.min(Math.max(1, paginationParams.limit), maxLimit),
+      });
+    },
+    [paginationParams.limit, maxLimit, setPaginationParams]
+  );
 
   const changeLimit = useCallback(
     (limit: number) => {
@@ -51,7 +54,7 @@ export const usePagination = ({
         page: 1,
       });
     },
-    [maxLimit]
+    [maxLimit, setPaginationParams]
   );
 
   const nextPage = useCallback(() => {
@@ -59,14 +62,14 @@ export const usePagination = ({
       page: Math.max(1, paginationParams.page + 1),
       limit: Math.min(Math.max(1, paginationParams.limit), maxLimit),
     });
-  }, []);
+  }, [paginationParams.page, paginationParams.limit, maxLimit, setPaginationParams]);
 
   const previousPage = useCallback(() => {
     setPaginationParams({
       page: Math.max(1, paginationParams.page - 1),
       limit: Math.min(Math.max(1, paginationParams.limit), maxLimit),
     });
-  }, []);
+  }, [paginationParams.page, paginationParams.limit, maxLimit, setPaginationParams]);
 
   return {
     paginationParams,

@@ -12,10 +12,10 @@ export function PWAInstallPrompt() {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
-    // Check if user has previously dismissed the prompt
     const hasDismissed = localStorage.getItem(PWA_DISMISSED_KEY);
     if (hasDismissed || !isInstallable) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShowInstallPrompt(true);
   }, [isInstallable]);
 
@@ -25,7 +25,6 @@ export function PWAInstallPrompt() {
   };
 
   const handleDismiss = () => {
-    // Save to localStorage that user dismissed the prompt
     localStorage.setItem(PWA_DISMISSED_KEY, 'true');
     setShowInstallPrompt(false);
   };
