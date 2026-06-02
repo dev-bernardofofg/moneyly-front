@@ -50,7 +50,7 @@ export const SubscriptionsSection = () => {
         <ul className="divide-y divide-slate-200 dark:divide-slate-700">
           {candidates.map((candidate) => (
             <li
-              key={`${candidate.title}-${candidate.categoryId}`}
+              key={`${candidate.title}-${candidate.categoryId}-${candidate.firstDate}`}
               className="flex items-center justify-between gap-3 py-3"
             >
               <div className="min-w-0">
