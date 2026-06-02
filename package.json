@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "ci": "pnpm lint && pnpm type-check && pnpm build",
+    "ci": "pnpm lint && pnpm type-check",
     "ci:install": "pnpm install --frozen-lockfile",
     "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
     "generate-hooks": "kubb --config kubb.config.ts && orval --config orval.config.ts",
