@@ -50,7 +50,7 @@
     "recharts": "^3.8.1",
     "sonner": "^2.0.5",
     "swiper": "^11.2.10",
-    "tailwind-merge": "^3.3.0",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.25.21"
   },
