@@ -17,10 +17,12 @@ const PeriodContext = createContext<PeriodContextType | undefined>(undefined);
 const STORAGE_KEY = 'moneyly_selected_period';
 
 export const PeriodProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedPeriodId, setSelectedPeriodIdState] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem(STORAGE_KEY);
-  });
+  const [selectedPeriodId, setSelectedPeriodIdState] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) setSelectedPeriodIdState(stored);
+  }, []);
   const [periods, setPeriods] = useState<Period[]>([]);
   const [loading, setLoading] = useState(false);
 
