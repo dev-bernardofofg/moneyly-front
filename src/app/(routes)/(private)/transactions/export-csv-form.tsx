@@ -4,6 +4,7 @@ import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { usePeriods } from '@/app/(hooks)/use-periods';
 import { Period } from '@/app/(types)/period.type';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
+import { getErrorMessage } from '@/app/(helpers)/errors';
 import { getTransactionsExport } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
 import { GetTransactionsExportQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactionsExport';
 import { Label } from '@/components/ui/label';
@@ -41,8 +42,9 @@ export const ExportCsvForm = () => {
       link.remove();
       URL.revokeObjectURL(url);
       toast.success('CSV exportado com sucesso');
-    } catch {
-      toast.error('Falha ao exportar CSV');
+    } catch (err) {
+      console.error('[ExportCsv]', err);
+      toast.error(getErrorMessage(err as any) || 'Falha ao exportar CSV');
     } finally {
       setLoading(false);
     }
