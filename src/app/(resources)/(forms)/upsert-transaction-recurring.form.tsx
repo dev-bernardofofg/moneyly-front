@@ -116,7 +116,7 @@ export const UpsertTransactionRecurringForm = ({
 
   const frequency = form.watch('frequency');
 
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategories({ limit: 500 });
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
   const { mutate: createRecurring, isPending: isCreating } = usePostRecurringTransactions({
     mutation: {

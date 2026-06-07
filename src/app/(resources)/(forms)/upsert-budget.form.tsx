@@ -61,7 +61,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
     mutation: { onSuccess: onUpdated, onError },
   });
 
-  const { data: categories } = useGetCategories({ limit: 500 });
+  const { data: categories } = useGetCategories();
 
   const handleForm = (data: CreateBudgetFormValues) => {
     const monthlyLimit = FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit);

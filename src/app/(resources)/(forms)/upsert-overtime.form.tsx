@@ -58,7 +58,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
   const companyId = form.watch('companyId');
 
   const { data: companies, isLoading: isLoadingCompanies } = useGetCompanies();
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategories({ limit: 500 });
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
 
   const selectedCompany = companies?.data?.find((c) => c.id === companyId);
   const hours = calcHours(startTime, endTime);
