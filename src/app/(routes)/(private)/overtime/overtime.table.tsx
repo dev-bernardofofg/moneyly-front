@@ -6,7 +6,7 @@ import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)
 import { queryClient } from '@/app/(contexts)';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { CustomAxiosError } from '@/app/(types)/error.type';
-import { format } from 'date-fns';
+import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { PencilIcon, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
@@ -23,8 +23,8 @@ interface OvertimeTableProps extends BaseTableOptions {
   isLoading: boolean;
 }
 
-const formatTime = (iso: string) => format(new Date(iso), 'HH:mm');
-const formatDate = (iso: string) => format(new Date(iso), 'dd/MM/yyyy');
+const formatTime = (iso: string) => FN_UTILS_DATE.formatInBusinessTZ(iso, 'HH:mm');
+const formatDate = (iso: string) => FN_UTILS_DATE.formatInBusinessTZ(iso, 'dd/MM/yyyy');
 
 const formatHours = (hours: string) => {
   const n = parseFloat(hours);
