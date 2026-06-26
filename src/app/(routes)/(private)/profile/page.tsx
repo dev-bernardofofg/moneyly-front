@@ -19,7 +19,7 @@ export default function ProfilePage() {
     <Fade>
       <Header title="Perfil" />
 
-      <StaggeredFade variant="page">
+      <StaggeredFade variant="page" className="grid grid-rows-[auto_1fr] h-full">
         <Section Icon={User} title="Informações Pessoais">
           <StaggeredFade className="flex flex-col gap-2">
             <div className="flex items-center gap-2 w-full">
@@ -51,7 +51,7 @@ export default function ProfilePage() {
           </StaggeredFade>
         </Section>
 
-        <Section Icon={Settings} title="Configurações Financeiras">
+        <Section Icon={Settings} title="Configurações Financeiras" className="size-full">
           {user && <ProfileConfigFinanceForm defaultValues={financeDefaultValues} />}
         </Section>
       </StaggeredFade>

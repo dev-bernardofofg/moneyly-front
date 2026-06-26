@@ -79,7 +79,7 @@ export const ProfileConfigFinanceForm = ({
     <Form {...form}>
       <BaseForm
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-0 grid grid-cols-3 gap-3 w-full"
+        className="space-y-0 grid grid-cols-3 gap-3 size-full"
       >
         <BaseInput
           control={form.control}

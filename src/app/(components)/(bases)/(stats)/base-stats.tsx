@@ -20,21 +20,19 @@ interface BaseStatsProps {
 }
 
 const variantsStats = cva(
-  'rounded-lg bg-white/95 dark:bg-slate-800 dark:border-slate-700 border border-slate-200 h-full',
+  'rounded-lg bg-white/95 dark:bg-slate-800 dark:border-slate-700 border border-slate-200 h-full transition-all duration-300',
   {
     variants: {
       variant: {
-        default:
-          'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive:
-          'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs duration-300 transition-colors',
+        default: 'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs',
+        secondary: 'bg-secondary text-secondary-foreground',
+        destructive: 'dark:text-white text-card-foreground shadow-xs backdrop-blur-xs',
       },
     },
   }
 );
 
-const variantsText = cva('text-2xl font-bold', {
+const variantsText = cva('text-2xl font-bold tabular-nums leading-none', {
   variants: {
     variant: {
       default: 'text-income',
@@ -44,12 +42,12 @@ const variantsText = cva('text-2xl font-bold', {
   },
 });
 
-const variantsIcon = cva('size-4', {
+const variantsIconWrap = cva('flex size-9 shrink-0 items-center justify-center rounded-lg', {
   variants: {
     variant: {
-      default: 'text-income',
-      secondary: 'text-info',
-      destructive: 'text-expense',
+      default: 'bg-income/10 text-income',
+      secondary: 'bg-info/10 text-info',
+      destructive: 'bg-expense/10 text-expense',
     },
   },
 });
@@ -66,14 +64,13 @@ export const BaseStats = ({
   onClick,
   clickable = false,
 }: BaseStatsProps) => {
-  const baseClasses = variantsStats({ variant });
   const clickableClasses = clickable
-    ? 'cursor-pointer hover:shadow-md hover:opacity-70 transition-all'
+    ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
     : '';
 
   return (
     <div
-      className={`${baseClasses} ${clickableClasses}`}
+      className={cn(variantsStats({ variant }), clickableClasses)}
       onClick={clickable ? onClick : undefined}
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
@@ -89,11 +86,13 @@ export const BaseStats = ({
       }
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-0">
-        <CardTitle className="text-sm font-medium">{name}</CardTitle>
-        <Icon className={variantsIcon({ variant })} />
+        <CardTitle className="text-sm font-medium text-muted-foreground">{name}</CardTitle>
+        <span className={variantsIconWrap({ variant })}>
+          <Icon className="size-4" />
+        </span>
       </CardHeader>
-      <CardContent className="p-3 pt-0">
-        <div className={`${variantsText({ variant })} min-h-[1.5rem] flex items-center`}>
+      <CardContent className="p-3 pt-2">
+        <div className={cn(variantsText({ variant }), 'flex min-h-7 items-center')}>
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div
@@ -103,7 +102,7 @@ export const BaseStats = ({
                 exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
-                <Skeleton className="w-12 h-6 bg-slate-200 dark:bg-slate-700" />
+                <Skeleton className="h-7 w-20 bg-slate-200 dark:bg-slate-700" />
               </motion.div>
             ) : (
               <motion.span
@@ -111,7 +110,7 @@ export const BaseStats = ({
                 initial={{ opacity: 0, y: 5, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -5, scale: 0.98 }}
-                className={cn('', !isMonetary && 'capitalize')}
+                className={cn('min-w-0 truncate', !isMonetary && 'capitalize')}
                 transition={{
                   duration: 0.25,
                   ease: 'easeOut',
@@ -122,7 +121,9 @@ export const BaseStats = ({
             )}
           </AnimatePresence>
         </div>
-        {description && <p className="text-xs text-muted-foreground">{description}</p>}
+        {description && (
+          <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{description}</p>
+        )}
       </CardContent>
       {children}
     </div>
