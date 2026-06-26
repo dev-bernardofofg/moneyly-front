@@ -12,16 +12,15 @@ import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs';
 import { RecentTransactionItem } from '@/app/(resources)/(generated)';
-import { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardStats';
 import { ROUTES } from '@/app/(utils)/routes';
-import { Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
+import { List, Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { DASHBOARD_STATS_INTERATOR, useDashboardAction } from './dashboard.action';
+import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
 
 const DashboardPage = () => {
   const { push } = useRouter();
   const { data, loading } = useDashboardAction();
-  const { forecast, subs, cmp, recentTransactions, chartSeries, stats } = data;
+  const { forecast, subs, cmp, recentTransactions, chartSeries, stats, transactionsCount } = data;
   const { isPostingOverview, forecastLoading } = loading;
 
   return (
@@ -60,21 +59,26 @@ const DashboardPage = () => {
       >
         <PeriodNavigatorWrapper />
         <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
-          {DASHBOARD_STATS_INTERATOR.map((stat) => (
+          {DASHBOARD_STATS_CONFIG.map((stat) => (
             <BaseStats
               key={stat.indicator}
               name={stat.name}
-              value={
-                ((stats as DashboardStats | undefined)?.[stat.indicator as keyof DashboardStats] ??
-                  0) as number
-              }
+              value={stats?.[stat.indicator] ?? 0}
               Icon={stat.icon}
               description={stat.description}
               isMonetary={stat.isMonetary}
-              variant={stat.variant as 'default' | 'destructive' | 'secondary'}
+              variant={stat.variant}
               loading={isPostingOverview}
             />
           ))}
+
+          <BaseStats
+            name="Transações"
+            value={transactionsCount}
+            Icon={List}
+            description="Total de transações"
+            loading={isPostingOverview}
+          />
 
           <BaseStats
             name="Saldo projetado"
@@ -121,7 +125,7 @@ const DashboardPage = () => {
           />
         </StaggeredFade>
         <StaggeredFade
-          className="grid grid-cols-1 md:grid-cols-3 grid-rows-[1fr] gap-2 size-full min-h-0"
+          className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-2 w-full md:h-full min-h-0"
           itemClassNames={['min-h-0', 'md:col-span-2 min-h-0']}
         >
           <BaseCard
@@ -139,7 +143,7 @@ const DashboardPage = () => {
               </BaseButton>
             }
           >
-            <StaggeredFade className="space-y-2">
+            <StaggeredFade className="space-y-1">
               {isPostingOverview ? (
                 <div className="flex min-h-[140px] flex-col items-center justify-center py-6 text-center">
                   <Loader2
@@ -163,7 +167,7 @@ const DashboardPage = () => {
           <BaseCard
             title="Histórico Mensal"
             description="Receitas e despesas ao longo dos meses"
-            className="size-full"
+            className="size-full min-h-80 md:min-h-0"
             contentClassName="size-full"
           >
             <MonthlyHistoryChart data={chartSeries} isLoading={isPostingOverview} />
