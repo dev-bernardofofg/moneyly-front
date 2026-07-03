@@ -55,33 +55,10 @@ const FIELDS = [
   'startDate',
 ] as const;
 
-export type RecurringSeed = {
-  title?: string;
-  amount?: number;
-  categoryId?: string;
-  frequency?: 'daily' | 'weekly' | 'monthly' | 'yearly';
-  dayOfMonth?: number;
-  type?: 'income' | 'expense';
-};
-
-const seedDefaults = (seed?: RecurringSeed) => ({
-  ...UpsertTransactionRecurringDefaultValues,
-  ...(seed?.type ? { type: seed.type } : {}),
-  ...(seed?.title ? { title: seed.title } : {}),
-  ...(seed?.amount != null
-    ? { amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(seed.amount) }
-    : {}),
-  ...(seed?.categoryId ? { categoryId: seed.categoryId } : {}),
-  ...(seed?.frequency ? { frequency: seed.frequency } : {}),
-  ...(seed?.dayOfMonth != null ? { dayOfMonth: String(seed.dayOfMonth) } : {}),
-});
-
 export const UpsertTransactionRecurringForm = ({
   recurringTransaction,
-  seed,
 }: {
   recurringTransaction?: RecurringTransaction;
-  seed?: RecurringSeed;
 }) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<UpsertTransactionRecurringFormValues>({
@@ -105,7 +82,7 @@ export const UpsertTransactionRecurringForm = ({
                 ? String(recurringTransaction.totalInstallments)
                 : '',
           }
-        : seedDefaults(seed),
+        : UpsertTransactionRecurringDefaultValues,
       invalidateKeys: [getGetRecurringTransactionsQueryKey()],
       errorFields: [...FIELDS],
       successMessage: {
