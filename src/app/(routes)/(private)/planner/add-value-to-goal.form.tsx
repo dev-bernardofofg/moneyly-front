@@ -14,6 +14,7 @@ import {
   AddValueToGoalSchema,
 } from '../../../(resources)/(schemas)/goal.schema';
 import { getGetOverviewPlannerQueryKey } from '@/app/(resources)/(generated)/hooks/overview/overview';
+import { getGetNotificationsQueryKey } from '@/app/(resources)/(generated)/hooks/notifications/notifications';
 
 interface AddValueToGoalFormProps {
   goalId: string;
@@ -24,7 +25,12 @@ export const AddValueToGoalForm = ({ goalId }: AddValueToGoalFormProps) => {
     {
       schema: AddValueToGoalSchema,
       defaultValues: AddValueToGoalDefaultValues,
-      invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
+      invalidateKeys: [
+        getGetGoalsQueryKey(),
+        getGetOverviewPlannerQueryKey(),
+        // F9: o marco (goal_milestone) já existe quando a resposta chega — refresca o sino.
+        getGetNotificationsQueryKey(),
+      ],
       errorFields: ['amount'],
       successMessage: {
         create: 'Valor adicionado com sucesso',

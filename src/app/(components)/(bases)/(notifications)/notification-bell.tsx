@@ -11,7 +11,15 @@ import {
 } from '@/app/(resources)/(generated)/hooks/notifications/notifications';
 import { Notification } from '@/app/(resources)/(generated)/types/Notification';
 import { useQueryClient } from '@tanstack/react-query';
-import { AlertTriangle, Bell, Check, Info, XCircle } from 'lucide-react';
+import {
+  AlertTriangle,
+  Bell,
+  CalendarClock,
+  Check,
+  Info,
+  PartyPopper,
+  XCircle,
+} from 'lucide-react';
 import { useState } from 'react';
 
 const severityIcon = (severity: Notification['severity']) => {
@@ -33,6 +41,30 @@ const severityColor = (severity: Notification['severity']) => {
       return 'border-l-warn bg-warn/5';
     default:
       return 'border-l-info bg-info/5';
+  }
+};
+
+// bill_reminder/goal_milestone chegam sempre com severity "info"; diferenciamos
+// o visual pelo type. budget_alert mantém a cor/ícone por severidade.
+const notificationIcon = (n: Pick<Notification, 'type' | 'severity'>) => {
+  switch (n.type) {
+    case 'bill_reminder':
+      return <CalendarClock className="size-4 text-warn" />;
+    case 'goal_milestone':
+      return <PartyPopper className="size-4 text-income" />;
+    default:
+      return severityIcon(n.severity);
+  }
+};
+
+const notificationColor = (n: Pick<Notification, 'type' | 'severity'>) => {
+  switch (n.type) {
+    case 'bill_reminder':
+      return 'border-l-warn bg-warn/5';
+    case 'goal_milestone':
+      return 'border-l-income bg-income/5';
+    default:
+      return severityColor(n.severity);
   }
 };
 
@@ -104,12 +136,12 @@ export const NotificationBell = () => {
               <div
                 key={n.id}
                 className={`rounded-lg border-l-4 p-3 transition-colors ${
-                  n.isRead ? 'opacity-60' : severityColor(n.severity)
+                  n.isRead ? 'opacity-60' : notificationColor(n)
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-1 items-start gap-2">
-                    {severityIcon(n.severity)}
+                    {notificationIcon(n)}
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-foreground">{n.title}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{n.message}</p>
