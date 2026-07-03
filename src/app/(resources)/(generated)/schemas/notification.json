@@ -3,7 +3,7 @@
   "properties": {
     "id": { "type": "string", "format": "uuid" },
     "userId": { "type": "string", "format": "uuid" },
-    "type": { "type": "string", "enum": ["budget_alert"] },
+    "type": { "type": "string", "enum": ["budget_alert", "bill_reminder", "goal_milestone"] },
     "severity": { "type": "string", "enum": ["info", "warning", "danger"] },
     "title": { "type": "string" },
     "message": { "type": "string" },

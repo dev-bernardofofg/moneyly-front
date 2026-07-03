@@ -549,6 +549,17 @@ export type {
   PostRecurringTransactionsMutationResponse,
 } from './types/PostRecurringTransactions.ts';
 export type {
+  PostRecurringTransactionsFromSubscription201,
+  PostRecurringTransactionsFromSubscription400,
+  PostRecurringTransactionsFromSubscription400SuccessEnumKey,
+  PostRecurringTransactionsFromSubscription401,
+  PostRecurringTransactionsFromSubscription401SuccessEnumKey,
+  PostRecurringTransactionsFromSubscriptionMutation,
+  PostRecurringTransactionsFromSubscriptionMutationRequest,
+  PostRecurringTransactionsFromSubscriptionMutationRequestCadenceEnumKey,
+  PostRecurringTransactionsFromSubscriptionMutationResponse,
+} from './types/PostRecurringTransactionsFromSubscription.ts';
+export type {
   PostTransactionsCreate201,
   PostTransactionsCreate400,
   PostTransactionsCreate400SuccessEnumKey,
@@ -826,6 +837,9 @@ export { postRecurringTransactions400SuccessEnum } from './types/PostRecurringTr
 export { postRecurringTransactions401SuccessEnum } from './types/PostRecurringTransactions.ts';
 export { postRecurringTransactionsMutationRequestFrequencyEnum } from './types/PostRecurringTransactions.ts';
 export { postRecurringTransactionsMutationRequestTypeEnum } from './types/PostRecurringTransactions.ts';
+export { postRecurringTransactionsFromSubscription400SuccessEnum } from './types/PostRecurringTransactionsFromSubscription.ts';
+export { postRecurringTransactionsFromSubscription401SuccessEnum } from './types/PostRecurringTransactionsFromSubscription.ts';
+export { postRecurringTransactionsFromSubscriptionMutationRequestCadenceEnum } from './types/PostRecurringTransactionsFromSubscription.ts';
 export { postTransactionsCreate400SuccessEnum } from './types/PostTransactionsCreate.ts';
 export { postTransactionsCreate401SuccessEnum } from './types/PostTransactionsCreate.ts';
 export { postTransactionsCreateMutationRequestTypeEnum } from './types/PostTransactionsCreate.ts';

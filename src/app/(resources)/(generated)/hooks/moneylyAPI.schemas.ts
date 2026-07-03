@@ -479,6 +479,8 @@ export type NotificationType = (typeof NotificationType)[keyof typeof Notificati
 
 export const NotificationType = {
   budget_alert: 'budget_alert',
+  bill_reminder: 'bill_reminder',
+  goal_milestone: 'goal_milestone',
 } as const;
 
 export type NotificationSeverity = (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
@@ -1744,6 +1746,46 @@ export type GetRecurringTransactions400 = {
 };
 
 export type GetRecurringTransactions401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostRecurringTransactionsFromSubscriptionBodyCadence =
+  (typeof PostRecurringTransactionsFromSubscriptionBodyCadence)[keyof typeof PostRecurringTransactionsFromSubscriptionBodyCadence];
+
+export const PostRecurringTransactionsFromSubscriptionBodyCadence = {
+  weekly: 'weekly',
+  monthly: 'monthly',
+  yearly: 'yearly',
+} as const;
+
+export type PostRecurringTransactionsFromSubscriptionBody = {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  title: string;
+  amount: string | number;
+  categoryId: string;
+  cadence: PostRecurringTransactionsFromSubscriptionBodyCadence;
+  nextEstimatedDate: string;
+  /** @maxLength 500 */
+  description?: string;
+};
+
+export type PostRecurringTransactionsFromSubscription201 = {
+  data: RecurringTransaction;
+  message?: string;
+};
+
+export type PostRecurringTransactionsFromSubscription400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostRecurringTransactionsFromSubscription401 = {
   success: boolean;
   error: string;
   details?: unknown | null;

@@ -46,6 +46,10 @@ import type {
   PostRecurringTransactions400,
   PostRecurringTransactions401,
   PostRecurringTransactionsBody,
+  PostRecurringTransactionsFromSubscription201,
+  PostRecurringTransactionsFromSubscription400,
+  PostRecurringTransactionsFromSubscription401,
+  PostRecurringTransactionsFromSubscriptionBody,
   PutRecurringTransactionsId200,
   PutRecurringTransactionsId400,
   PutRecurringTransactionsId401,
@@ -267,6 +271,97 @@ export function useGetRecurringTransactions<
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+/**
+ * @summary Converter assinatura detectada em recorrente (F10)
+ */
+export const postRecurringTransactionsFromSubscription = (
+  postRecurringTransactionsFromSubscriptionBody: PostRecurringTransactionsFromSubscriptionBody,
+  signal?: AbortSignal
+) => {
+  return customInstance<PostRecurringTransactionsFromSubscription201>({
+    url: `/recurring-transactions/from-subscription`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: postRecurringTransactionsFromSubscriptionBody,
+    signal,
+  });
+};
+
+export const getPostRecurringTransactionsFromSubscriptionMutationOptions = <
+  TError =
+    | PostRecurringTransactionsFromSubscription400
+    | PostRecurringTransactionsFromSubscription401,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>,
+    TError,
+    { data: PostRecurringTransactionsFromSubscriptionBody },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>,
+  TError,
+  { data: PostRecurringTransactionsFromSubscriptionBody },
+  TContext
+> => {
+  const mutationKey = ['postRecurringTransactionsFromSubscription'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>,
+    { data: PostRecurringTransactionsFromSubscriptionBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postRecurringTransactionsFromSubscription(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostRecurringTransactionsFromSubscriptionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>
+>;
+export type PostRecurringTransactionsFromSubscriptionMutationBody =
+  PostRecurringTransactionsFromSubscriptionBody;
+export type PostRecurringTransactionsFromSubscriptionMutationError =
+  | PostRecurringTransactionsFromSubscription400
+  | PostRecurringTransactionsFromSubscription401;
+
+/**
+ * @summary Converter assinatura detectada em recorrente (F10)
+ */
+export const usePostRecurringTransactionsFromSubscription = <
+  TError =
+    | PostRecurringTransactionsFromSubscription400
+    | PostRecurringTransactionsFromSubscription401,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>,
+      TError,
+      { data: PostRecurringTransactionsFromSubscriptionBody },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof postRecurringTransactionsFromSubscription>>,
+  TError,
+  { data: PostRecurringTransactionsFromSubscriptionBody },
+  TContext
+> => {
+  return useMutation(
+    getPostRecurringTransactionsFromSubscriptionMutationOptions(options),
+    queryClient
+  );
+};
 /**
  * @summary Atualizar recorrente
  */
