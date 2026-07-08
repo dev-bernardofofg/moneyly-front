@@ -91,49 +91,67 @@ export const RecurringTransactionTable = ({
       loading={isLoading}
       pagination={tableOptions.pagination}
       onPaginationChange={onPaginationChange}
-      actions={(item) => (
-        <div className="flex items-center gap-2">
-          <RecurringTransactionHistoryDialog recurringTransactionId={item.id} title={item.title} />
-          <BaseDialog
-            title="Editar recorrente"
-            description="Editar transação recorrente"
-            trigger={
-              <BaseButton className="w-fit">
-                <PencilIcon className="size-4" />
-              </BaseButton>
-            }
-          >
-            <UpsertTransactionRecurringForm recurringTransaction={item} />
-          </BaseDialog>
-          <ConfirmActionForm
-            variant={!item.isActive ? 'active' : 'default'}
-            onConfirm={() =>
-              item.isActive ? deactivate({ id: item.id }) : activate({ id: item.id })
-            }
-            title={item.isActive ? 'Desativar recorrente' : 'Ativar recorrente'}
-            description={
-              item.isActive
-                ? 'Desativar esta transação recorrente? Nenhuma nova execução será gerada.'
-                : 'Ativar esta transação recorrente? Nova execução será gerada.'
-            }
-            trigger={
-              <BaseButton variant="outline" className="w-fit">
-                {item.isActive ? <PowerOff className="size-4" /> : <PowerIcon className="size-4" />}
-              </BaseButton>
-            }
-          />
-          <ConfirmActionForm
-            onConfirm={() => remove({ id: item.id })}
-            title="Remover recorrente"
-            description="Tem certeza que deseja remover esta transação recorrente?"
-            trigger={
-              <BaseButton variant="destructive" className="w-fit">
-                <Trash2 className="size-4" />
-              </BaseButton>
-            }
-          />
-        </div>
-      )}
+      actions={(item) => {
+        // Parcelada concluída: transações já materializadas — o back rejeita
+        // editar/reativar (409), então nem oferecemos as ações.
+        const isCompletedInstallment =
+          item.totalInstallments != null && item.executedInstallments >= item.totalInstallments;
+
+        return (
+          <div className="flex items-center gap-2">
+            <RecurringTransactionHistoryDialog
+              recurringTransactionId={item.id}
+              title={item.title}
+            />
+            {!isCompletedInstallment && (
+              <BaseDialog
+                title="Editar recorrente"
+                description="Editar transação recorrente"
+                trigger={
+                  <BaseButton className="w-fit">
+                    <PencilIcon className="size-4" />
+                  </BaseButton>
+                }
+              >
+                <UpsertTransactionRecurringForm recurringTransaction={item} />
+              </BaseDialog>
+            )}
+            {!isCompletedInstallment && (
+              <ConfirmActionForm
+                variant={!item.isActive ? 'active' : 'default'}
+                onConfirm={() =>
+                  item.isActive ? deactivate({ id: item.id }) : activate({ id: item.id })
+                }
+                title={item.isActive ? 'Desativar recorrente' : 'Ativar recorrente'}
+                description={
+                  item.isActive
+                    ? 'Desativar esta transação recorrente? Nenhuma nova execução será gerada.'
+                    : 'Ativar esta transação recorrente? Nova execução será gerada.'
+                }
+                trigger={
+                  <BaseButton variant="outline" className="w-fit">
+                    {item.isActive ? (
+                      <PowerOff className="size-4" />
+                    ) : (
+                      <PowerIcon className="size-4" />
+                    )}
+                  </BaseButton>
+                }
+              />
+            )}
+            <ConfirmActionForm
+              onConfirm={() => remove({ id: item.id })}
+              title="Remover recorrente"
+              description="Tem certeza que deseja remover esta transação recorrente?"
+              trigger={
+                <BaseButton variant="destructive" className="w-fit">
+                  <Trash2 className="size-4" />
+                </BaseButton>
+              }
+            />
+          </div>
+        );
+      }}
       columns={[
         {
           header: 'Tipo',
