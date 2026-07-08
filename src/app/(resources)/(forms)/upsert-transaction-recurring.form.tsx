@@ -151,11 +151,9 @@ export const UpsertTransactionRecurringForm = ({
         data: {
           ...sharedPayload,
           type: data.type,
-          startDate: (() => {
-            if (!data.startDate) return undefined;
-            if (data.startDate <= FN_UTILS_DATE.today()) return undefined;
-            return FN_UTILS_DATE.fromBusinessDatetimeLocal(`${data.startDate}T12:00`);
-          })(),
+          // Back canoniza dia-semântica (meia-noite SP) — manda o dia puro.
+          startDate:
+            data.startDate && data.startDate > FN_UTILS_DATE.today() ? data.startDate : undefined,
         },
       });
     }
