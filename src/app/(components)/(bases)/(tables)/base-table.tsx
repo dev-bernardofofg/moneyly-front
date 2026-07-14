@@ -97,7 +97,7 @@ export function BaseTable<T>({
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1],
             }}
-            className="size-full overflow-y-auto pb-4"
+            className="size-full overflow-auto pb-4"
           >
             <Table>
               <TableHeader>
@@ -153,7 +153,7 @@ export function BaseTable<T>({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           className={cn(
-            'sticky bottom-4 right-1/2 rounded-xl',
+            'sticky bottom-4 mx-auto w-fit max-w-full rounded-xl',
             'border border-border/50 shadow-lg shadow-black/5 dark:shadow-black/40',
             'bg-background/50 dark:bg-background/40',
             'backdrop-blur-xl backdrop-saturate-150',

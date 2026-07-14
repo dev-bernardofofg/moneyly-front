@@ -3,9 +3,21 @@ import {
   useGetOverviewDashboard,
   useGetOverviewForecast,
 } from '@/app/(resources)/(generated)/hooks/overview/overview';
-import { DollarSign, List, TrendingDown, TrendingUp } from 'lucide-react';
+import type { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardStats';
+import { DollarSign, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
 
-export const DASHBOARD_STATS_INTERATOR = [
+type StatVariant = 'default' | 'secondary' | 'destructive';
+
+interface StatConfig {
+  name: string;
+  indicator: keyof DashboardStats;
+  icon: LucideIcon;
+  description: string;
+  isMonetary?: boolean;
+  variant: StatVariant;
+}
+
+export const DASHBOARD_STATS_CONFIG: StatConfig[] = [
   {
     name: 'Saldo',
     indicator: 'balance',
@@ -13,7 +25,6 @@ export const DASHBOARD_STATS_INTERATOR = [
     description: 'Saldo Disponível',
     isMonetary: true,
     variant: 'default',
-    loading: false,
   },
   {
     name: 'Entradas',
@@ -22,7 +33,6 @@ export const DASHBOARD_STATS_INTERATOR = [
     description: 'Entradas totais',
     isMonetary: true,
     variant: 'default',
-    loading: false,
   },
   {
     name: 'Saídas',
@@ -31,14 +41,6 @@ export const DASHBOARD_STATS_INTERATOR = [
     description: 'Gastos totais',
     isMonetary: true,
     variant: 'destructive',
-    loading: false,
-  },
-  {
-    name: 'Transações',
-    indicator: 'transactionsCount',
-    icon: List,
-    description: 'Total de transações',
-    loading: false,
   },
 ];
 
@@ -58,7 +60,8 @@ export const useDashboardAction = () => {
   const cmp = previews?.comparison;
   const recentTransactions = overviewData?.data?.recentTransactions ?? [];
   const chartSeries = overviewData?.data?.chart?.data ?? [];
-  const stats = overviewData?.data?.stats ?? {};
+  const stats = overviewData?.data?.stats;
+  const transactionsCount = overviewData?.data?.transactionsCount ?? 0;
 
   return {
     data: {
@@ -68,6 +71,7 @@ export const useDashboardAction = () => {
       recentTransactions,
       chartSeries,
       stats,
+      transactionsCount,
     },
     loading: {
       isPostingOverview,

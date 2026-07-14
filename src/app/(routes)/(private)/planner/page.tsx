@@ -60,7 +60,7 @@ const PlannerPage = () => {
       <StaggeredFade
         variant="page"
         className="grid grid-rows-[auto_auto_1fr_1fr] size-full"
-        itemClassNames={['min-w-0', undefined, undefined, undefined]}
+        itemClassNames={['min-w-0', undefined, 'min-w-0', 'min-w-0']}
       >
         <PeriodNavigatorWrapper />
         <PlannerStats
@@ -74,13 +74,20 @@ const PlannerPage = () => {
         <Section
           Icon={Target}
           title="Orçamentos por Categoria"
-          className="p-2"
+          className="p-2 size-full"
           classNameHeader="p-3"
+          classNameContent="grid grid-rows-[auto_1fr] grid-cols-1"
         >
           <BudgetSwiper budgets={data.budgets} loading={loading.isFetchingBudgets} />
         </Section>
 
-        <Section Icon={Target} title="Objetivos de Poupança" className="p-2" classNameHeader="p-3">
+        <Section
+          Icon={Target}
+          title="Objetivos de Poupança"
+          className="p-2"
+          classNameHeader="p-3"
+          classNameContent="grid grid-rows-[auto_1fr] grid-cols-1"
+        >
           <GoalSwiper goals={data.goals} loading={loading.isFetchingGoals} />
         </Section>
       </StaggeredFade>

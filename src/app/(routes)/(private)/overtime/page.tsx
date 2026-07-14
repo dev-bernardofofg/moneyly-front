@@ -237,8 +237,8 @@ const OvertimePage = () => {
       />
       <StaggeredFade
         variant="page"
-        className="grid grid-rows-[auto_auto_auto_1fr]"
-        itemClassNames={[undefined, undefined, undefined, 'overflow-y-hidden size-full']}
+        className="grid grid-rows-[auto_auto_1fr]"
+        itemClassNames={[undefined, undefined, 'overflow-y-hidden size-full']}
       >
         <PeriodNavigatorWrapper />
 
