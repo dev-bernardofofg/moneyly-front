@@ -2,7 +2,7 @@
 
 Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adicionar/alterar tela.
 
-> **Âncora:** sincronizado em commit `153b8aa`.
+> **Âncora:** sincronizado em commit `6a6edc3`.
 > **Fonte de verdade de endpoints/payloads: `moneyly-back/openapi.json`.** Hooks: `(resources)/(generated)/hooks/<tag>`. Em divergência, vale o openapi → regerar.
 
 ## Auth — `/auth`
@@ -34,6 +34,11 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 - `page.tsx` + `add-value-to-goal.form.tsx`; forms `(forms)/upsert-budget.form.tsx`, `upsert-goal.form.tsx`; swipers `(bases)/(swipers)`.
 - Hooks `budgets/budgets.ts` (+`{id}`) e `goals/goals.ts` (+`{id}`, `add-amount`). Budget progress vem calculado do back; status `safe/attention/warning/exceeded` → cores via `(helpers)/budget-level.ts`. 1 budget/categoria (back 409 se duplicado). Repassar `periodId`.
+
+## Overtime — `/overtime`
+
+- `page.tsx` + `overtime.table.tsx`; forms `(forms)/upsert-overtime.form.tsx`, `upsert-company.form.tsx`; schema `(schemas)/overtime.schema.tsx`; `(bases)/(forms)/base-date-time-picker.tsx`.
+- Hooks `overtime/overtime.ts` (list paginado por `month`/`year` civil, summary, CRUD) + `companies/companies.ts` (CRUD). Filtra por **mês civil** derivado do `startDate` do período selecionado, não por `periodId`. Valores decimais como string → `parseFloat`. Detalhe: `.specs/features/06-overtime.md`.
 
 ## Profile — `/profile`
 
@@ -71,6 +76,19 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 - **F5 Prévias dashboard**: `dashboard/page.tsx` 3 mini-cards (F1 forecast + `previews.subscriptions`/`comparison` do `useGetOverviewDashboard`), clicáveis → `/insights`. Detalhe: `.specs/features/05-dashboard-previews.md`.
 
+## F7 — Done
+
+- **F7 Overtime**: rota `/overtime` (ver seção acima). Detalhe: `.specs/features/06-overtime.md`.
+
+## F8 / F9 / F10 — Done (handoff `moneyly-back/.specs/front-handoff-f8-f10.md`)
+
+Regen de tipos no commit `5620216` (`Notification.type` virou union com `bill_reminder`/`goal_milestone`; endpoint `from-subscription`).
+
+- **F8 Lembrete de contas**: só render — `notification-bell.tsx` diferencia `bill_reminder` pelo `type` (`CalendarClock`/warn). Detalhe: `.specs/features/07-bill-reminders.md`.
+- **F9 Milestone de meta**: render `goal_milestone` (`PartyPopper`/income) + `add-value-to-goal.form.tsx` invalida notifications pós add-amount (notificação é síncrona no back). Detalhe: `.specs/features/08-goal-milestone-alerts.md`.
+- **F10 Converter assinatura**: botão em `insights/subscriptions-section.tsx` → `usePostRecurringTransactionsFromSubscription`; toast com `nextExecution`; 409/400 via `getErrorMessage`; invalida recorrentes+assinaturas. Detalhe: `.specs/features/09-subscription-to-recurring.md`.
+
 ## Não implementado / parcial
 
-- Roadmap R/F atual (R1–R5, F1–F5) todo Done no front. Próximos: aguardar novas features no contrato back.
+- Roadmap R/F atual (R1–R5, F1–F10) todo Done no front.
+- Pendências opcionais (spec "Não feito (v1)" de cada feature): toast/celebração de milestone pós add-amount (F9); esconder candidato residual cujo título bate com recorrente ativa (F10).

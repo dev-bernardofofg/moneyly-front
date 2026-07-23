@@ -12,7 +12,7 @@ SOLID + Clean Code + WCAG. Código/identificadores em inglês; textos de UI e sp
 - **Mutação sem `invalidateQueries`** das queries afetadas → cache fica velho.
 - **Somar/comparar dinheiro como string ou como float do input** → API manda **string decimal**; converter com helper (`FN_UTILS_STRING.formatCurrentStringToNumber`) só na borda; nunca `"1.50" + "2"`.
 - **`new Date()` / `.toISOString()` cru para data de negócio** → usar `FN_UTILS_DATE` (`(helpers)/date.ts`, BUSINESS_TZ=America/Sao_Paulo); não assumir mês civil 1–31, usar `periodId`/período do `PeriodProvider`.
-- **Assumir mês civil** em filtros/labels de período → período financeiro ≠ mês (ver `../../.specs/02-shared-domain.md`).
+- **Assumir mês civil** em filtros/labels de período → período financeiro ≠ mês (ver `../../moneyly-back/.specs/03-domain-model.md`).
 - **Ler `response` sem respeitar o envelope** → sucesso vem em `data`; erro em `error`/`details`. `customInstance` já entrega `.data`; não reembrulhar.
 - **Schema Zod de formulário usado como tipo de API** → `(resources)/(schemas)` valida **input do form**; ao submeter, mapear para o tipo gerado.
 - **Editar/deletar categoria global no UI** (`isGlobal=true`/`userId=null`) → bloquear ação.

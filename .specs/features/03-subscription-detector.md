@@ -9,7 +9,7 @@ Contrato: `GET /transactions/subscriptions` → `SubscriptionCandidate[]`.
 - Section "Possíveis assinaturas" em `/insights` (após Top categorias).
 - Hook gerado: `useGetTransactionsSubscriptions()`.
 - Lista: título, `categoryName`, `cadence` (Semanal/Mensal/Anual), `occurrences`, `monthlyCost`/mês, `averageAmount`.
-- CTA "Virar recorrente" → `BaseDialog` + `UpsertTransactionRecurringForm`.
+- CTA "Converter em recorrente" → conversão direta via `POST /recurring-transactions/from-subscription` (F10). Detalhe: `09-subscription-to-recurring.md`.
 
 ## Contrato consumido (gerado)
 
@@ -17,4 +17,5 @@ Contrato: `GET /transactions/subscriptions` → `SubscriptionCandidate[]`.
 
 ## Não feito (v1)
 
-- CTA abre o form de recorrente **em branco** — sem pré-preencher do candidato. `UpsertTransactionRecurringForm` só aceita `recurringTransaction?` (modo edição); pré-seed exigiria estender form/schema. Reavaliar se pedirem.
+- ~~CTA abre o form de recorrente em branco — sem pré-preencher do candidato.~~ Resolvido pelo
+  F10: o CTA agora converte direto pelo endpoint dedicado, sem form (mapeamento 1:1 do candidato).

@@ -6,18 +6,18 @@ Exemplo de referência: módulo **transactions** (`(routes)/(private)/transactio
 ## 0. Antes
 
 - Ler `02-conventions.md`. Se mexe em rota/fluxo, ler/atualizar `03-ui-model.md`.
-- Conferir feature em `../../.specs/03-feature-roadmap.md` (status Back). Front só avança se Back = Done. Breaking ⚠️ → não mergear até alinhar.
+- Conferir status/contrato da feature no back: `../../moneyly-back/.specs/features/<n>-<slug>.md` e handoff `front-handoff-*.md` se existir. Front só avança se Back = Done. Breaking ⚠️ → não mergear até alinhar.
 - Spec de UI da feature: `moneyly-front/.specs/features/<n>-<slug>.md` (criar se não existir).
 
 ## 1. Obter contrato atualizado
 
-- Garantir `openapi.json` fresh (ver decisão de distribuição em `../../.specs/04-sync-protocol.md`).
-- `pnpm generate-hooks` (Kubb + Orval) → regenera `(resources)/(generated)/{types,zod,schemas,hooks}`.
+- Garantir `openapi.json` fresh: no back, `pnpm openapi:gen` (os configs do front leem `../moneyly-back/openapi.json`).
+- Regenerar `(resources)/(generated)/{types,schemas,hooks}` — usar o fluxo com orval 8.5.3 descrito em `01-architecture.md` ("Geração do contrato"), não `pnpm generate-hooks` cru (churn de versão).
 - **Não editar nada em `(generated)`.** Se o tipo está errado, o `openapi.json`/back está errado — corrigir lá.
 
 ## 2. Conferir o gerado
 
-- Tipos/enums em `(generated)/types/`, zod em `(generated)/zod/`, hooks em `(generated)/hooks/<tag>/<tag>.ts`.
+- Tipos/enums em `(generated)/types/`, json-schemas em `(generated)/schemas/`, hooks em `(generated)/hooks/<tag>/<tag>.ts` (não há mais `(generated)/zod/` — plugin removido, ver `01-architecture.md`).
 - Identificar `useGetX`/`usePostXCreate`/`getGetXQueryKey` da feature.
 
 ## 3. Schema de formulário (se há input)
@@ -43,7 +43,7 @@ Exemplo de referência: módulo **transactions** (`(routes)/(private)/transactio
 ## 7. Docs
 
 - Atualizar `05-feature-catalog.md` (tela → arquivos + hooks) e `03-ui-model.md` (rota/invariante).
-- Atualizar status Front em `../../.specs/03-feature-roadmap.md`.
+- Criar/atualizar `features/<n>-<slug>.md` (espelho front do spec do back) com status e "Não feito (v1)".
 
 ## Checklist final
 

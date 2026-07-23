@@ -55,9 +55,10 @@ Componente/página
 moneyly-back (código) → openapi.json → [Kubb] tipos+Zod → [Orval] hooks React Query
 ```
 
-- Configs: `kubb.config.ts` (input `./openapi.json` → `(resources)/(generated)/{types,zod}`), `orval.config.ts` (mode `tags-split`, client react-query, mutator = `customInstance`, `staleTime: 10000`).
-- **Hoje os dois configs apontam `./openapi.json` LOCAL** (cópia commitada na raiz do front), não `../moneyly-back/openapi.json`. Ver decisão pendente em `../../.specs/04-sync-protocol.md`.
-- Regeneração: `pnpm generate-hooks`.
+- Configs: `kubb.config.ts` (input → `(resources)/(generated)/{types,schemas}`), `orval.config.ts` (mode `tags-split`, client react-query, mutator = `customInstance`, `staleTime: 10000`).
+- **Os dois configs apontam `../moneyly-back/openapi.json`** (repo irmão, arquivo gitignored no back) — gerar fresh com `pnpm openapi:gen` no back antes de regenerar aqui. Não existe mais cópia local commitada.
+- Regeneração: `pnpm generate-hooks` (kubb + orval). ⚠️ **Gotcha de versão:** o lockfile resolve orval 8.14.x, mas o baseline versionado em `(generated)` foi gerado com **8.5.3** — rodar orval novo reformata todos os hooks (5k+ linhas de churn). Fluxo limpo: `git checkout -- "src/app/(resources)/(generated)"` → kubb → `npx --yes orval@8.5.3 --config orval.config.ts` → prettier no dir gerado. Diff colapsa só nos endpoints que mudaram (último regen: `5620216`).
+- `@kubb/plugin-zod` foi removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`) — forms usam `(resources)/(schemas)` à mão.
 
 ## Infraestrutura
 

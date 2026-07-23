@@ -15,11 +15,13 @@ Mantida manualmente. Atualizar sempre que padrão, rota ou consumo de contrato m
 
 ## Specs compartilhados (Front ↔ Back)
 
-Contrato entre `moneyly-back` e `moneyly-front` fica em `../../.specs/` (raiz `moneyly/`).
+Não existe raiz `moneyly/` com `.specs/` compartilhado — o contrato vive no repo irmão
+`moneyly-back` (referências antigas a `../../.specs/*` eram aspiracionais e foram removidas).
 
-- Fonte de verdade do contrato: `moneyly-back/openapi.json`.
-- Front **não** escreve tipo de API à mão — gera via Kubb (tipos+Zod) + Orval (hooks React Query): `pnpm generate-hooks`.
-- Mudou endpoint/payload → atualizar `../../.specs/01-api-contract.md` e regenerar. Mudou invariante de domínio → `../../.specs/02-shared-domain.md`.
+- Fonte de verdade do contrato: `moneyly-back/openapi.json` (gitignored — gerar com `pnpm openapi:gen` no back).
+- Invariantes de domínio: `../../moneyly-back/.specs/03-domain-model.md`.
+- Handoffs back→front (o que mudou no contrato + o que o front constrói): `../../moneyly-back/.specs/front-handoff-*.md`.
+- Front **não** escreve tipo de API à mão — gera via Kubb (tipos) + Orval (hooks React Query): `pnpm generate-hooks`. ⚠️ Gotcha de versão do orval — ver "Geração do contrato" em `01-architecture.md`.
 
 ## Como usar (para o assistente)
 
@@ -33,4 +35,4 @@ Contrato entre `moneyly-back` e `moneyly-front` fica em `../../.specs/` (raiz `m
 Mudou padrão de código/forms → atualizar `02`.
 Mudou rota/provider/mapeamento → atualizar `03`.
 Nova tela → atualizar `05` e seguir `04`.
-Mudou contrato → regenerar hooks + sincronizar `../../.specs/`.
+Mudou contrato → regenerar hooks (fluxo em `01-architecture.md`) + conferir handoff em `moneyly-back/.specs/`.
