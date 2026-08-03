@@ -83,7 +83,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
     const payload = {
       companyId: data.companyId,
       categoryId: data.categoryId || undefined,
-      description: data.description || undefined,
+      description: data.description ?? '',
       startTime: FN_UTILS_DATE.fromBusinessDatetimeLocal(data.startTime),
       endTime: FN_UTILS_DATE.fromBusinessDatetimeLocal(data.endTime),
     };

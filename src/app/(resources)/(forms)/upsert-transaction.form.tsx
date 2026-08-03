@@ -75,7 +75,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       type: data.type,
       amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
       category: data.category,
-      description: data.description || undefined,
+      description: data.description ?? '',
       date: data.date,
     };
     if (transaction) {
