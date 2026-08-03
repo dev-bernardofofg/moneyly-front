@@ -56,4 +56,13 @@ export const FN_UTILS_STRING = {
   },
 
   formatEndDayDate: (value: string) => FN_UTILS_DATE.endOfBusinessDayISO(value),
+
+  normalizeTitle: (title: string) => {
+    return title
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[\d/\-.]+\s*$/g, '')
+      .trim();
+  },
 };

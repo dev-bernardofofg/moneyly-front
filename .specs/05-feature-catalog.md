@@ -90,5 +90,5 @@ Regen de tipos no commit `5620216` (`Notification.type` virou union com `bill_re
 
 ## Não implementado / parcial
 
-- Roadmap R/F atual (R1–R5, F1–F10) todo Done no front.
-- Pendências opcionais (spec "Não feito (v1)" de cada feature): toast/celebração de milestone pós add-amount (F9); esconder candidato residual cujo título bate com recorrente ativa (F10).
+- Roadmap R/F atual (R1–R5, F1–F10) todo Done no front, incluindo os opcionais do handoff F8–F10 (toast de milestone F9; filtro de candidato residual F10 via `FN_UTILS_STRING.normalizeTitle`).
+- Anotar pro back: schema da resposta do `add-amount` no openapi não expõe `milestones` (ver "Divergência de contrato" em `features/08-goal-milestone-alerts.md`).

@@ -1,6 +1,6 @@
 # F9 (Front) — Alertas de Milestone de Meta
 
-**Status:** Done (render + invalidation). Espelha `moneyly-back/.specs/features/08-goal-milestone-alerts.md` (handoff: `front-handoff-f8-f10.md`).
+**Status:** Done (render + invalidation + toast de celebração). Espelha `moneyly-back/.specs/features/08-goal-milestone-alerts.md` (handoff: `front-handoff-f8-f10.md`).
 Contrato: nenhum endpoint novo — `POST /goals/:id/add-amount` gera a notificação `goal_milestone` **na mesma request** (síncrono).
 
 ## Comportamento do back (relevante pro front)
@@ -19,9 +19,18 @@ Contrato: nenhum endpoint novo — `POST /goals/:id/add-amount` gera a notifica�
   `getGetNotificationsQueryKey()` nos `invalidateKeys` do `useUpsertDialog` — a notificação já
   existe quando a resposta chega, então o sino atualiza junto com goals/overview.
 - Semântica: `relatedId` → `goalId`, `periodId: null`.
+- **Toast de celebração imediata**: `AddValueToGoalForm` recebe o `goal` (não mais só `goalId`)
+  e compara % antes (prop) vs % depois (resposta) — cruzou marco → toast extra com o **maior**
+  marco cruzado (25/50/75: `Meta "<título>": <pct>% atingido`; 100: `Meta concluída: <título>.
+Parabéns!` com duração maior). Os marcos intermediários ficam no sino (back notifica todos).
+
+## Divergência de contrato (anotar pro back)
+
+O handoff diz que a resposta do `add-amount` traz goal + milestones + progress, mas o
+`openapi.json` tipa a resposta como `Goal` puro — o tipo gerado não tem `milestones`. O toast
+contorna comparando percentuais (equivalente). Se o back expuser `milestones` no schema da
+resposta e regenerar, dá para usar `isReached` direto.
 
 ## Não feito (v1)
 
-- **Toast/celebração imediata pós add-amount** (opcional no handoff): detectar marco cruzado
-  comparando `milestones` da resposta com o estado anterior e disparar toast custom
-  (ex.: confete no 100%). Hoje só o toast genérico "Valor adicionado com sucesso" + sino.
+- Confete/animação no 100% — hoje é só toast com duração maior.

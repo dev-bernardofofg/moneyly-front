@@ -28,16 +28,18 @@ Contrato: `POST /recurring-transactions/from-subscription` → `201` com a recor
 - `409` (recorrente ativa com mesmo título normalizado — case/acentos/sufixo numérico ignorados)
   e `400` (categoria inexistente): mensagem da API exibida via `getErrorMessage` em toast.
 
-## Comportamento conhecido (aceito na v1)
+## Filtro de candidato residual
 
-O candidato pode **continuar aparecendo** no detector após a conversão: a heurística do F3 olha
-transações antigas, que não ganham `recurringTransactionId` retroativo. As próximas execuções da
-recorrente criam o vínculo e o candidato some naturalmente. Decisão v1: invalidar e deixar a
-lista se reconciliar (comentário em `subscriptions-section.tsx`).
+O detector pode **continuar retornando** o candidato após a conversão (a heurística olha
+transações antigas, sem `recurringTransactionId` retroativo). Mitigação client-side na
+`SubscriptionsSection`: `useGetRecurringTransactions({ limit: 100 })` (ativas por padrão —
+mesmo conjunto do 409 do back) → esconder candidatos cujo título normalizado bate com recorrente
+ativa. Normalização em `FN_UTILS_STRING.normalizeTitle` — **paridade obrigatória** com
+`normalizeTitle` do back (`subscription-detector.ts`): lowercase, NFD sem acentos, sem sufixo
+numérico. Como a mutação invalida a query de recorrentes, o candidato some da lista na hora.
 
 ## Não feito (v1)
 
-- **Mitigação de candidato residual**: esconder candidatos cujo título normalizado bate com
-  recorrente ativa (client-side, cruzando com `useGetRecurringTransactions`). Ver plano em
-  aberto — exige replicar a normalização de título do back (case/acentos/sufixo numérico).
 - Campo `description` opcional não exposto (conversão é 1 clique, sem dialog).
+- Filtro cobre até 100 recorrentes ativas (1 página) — suficiente na prática; acima disso,
+  candidato residual pode reaparecer até as próximas execuções criarem o vínculo.

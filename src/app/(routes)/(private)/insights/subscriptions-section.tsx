@@ -7,6 +7,7 @@ import { getErrorMessage } from '@/app/(helpers)/errors';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
 import {
   getGetRecurringTransactionsQueryKey,
+  useGetRecurringTransactions,
   usePostRecurringTransactionsFromSubscription,
 } from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
 import {
@@ -15,6 +16,7 @@ import {
 } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
 import type { SubscriptionCandidate } from '@/app/(resources)/(generated)/types/SubscriptionCandidate';
 import { CustomAxiosError } from '@/app/(types)/error.type';
+import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { useQueryClient } from '@tanstack/react-query';
 import { RefreshCcw, Repeat } from 'lucide-react';
 import { toast } from 'sonner';
@@ -37,8 +39,8 @@ const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) =>
             'dd/MM'
           )}.`
         );
-        // Recorrentes muda; assinaturas pode continuar listando o candidato (heurística
-        // olha transações antigas) — invalidar deixa a lista se reconciliar.
+        // Invalidar recorrentes faz a recém-criada entrar no filtro de títulos da
+        // Section — o candidato some da lista na hora, mesmo que o detector ainda o retorne.
         queryClient.invalidateQueries({ queryKey: getGetRecurringTransactionsQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetTransactionsSubscriptionsQueryKey() });
       },
@@ -90,8 +92,21 @@ const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) =>
 };
 
 export const SubscriptionsSection = () => {
-  const { data, isLoading } = useGetTransactionsSubscriptions();
-  const candidates = data?.data ?? [];
+  const { data, isLoading: isLoadingCandidates } = useGetTransactionsSubscriptions();
+  // Candidato cujo título normalizado bate com recorrente ativa já foi convertido
+  // (o back 409aria) — a heurística do detector ainda o lista porque as transações
+  // antigas não ganham vínculo retroativo. Escondemos no client.
+  const { data: recurringData, isLoading: isLoadingRecurring } = useGetRecurringTransactions({
+    limit: 100,
+  });
+
+  const activeRecurringTitles = new Set(
+    (recurringData?.data ?? []).map((r) => FN_UTILS_STRING.normalizeTitle(r.title))
+  );
+  const candidates = (data?.data ?? []).filter(
+    (candidate) => !activeRecurringTitles.has(FN_UTILS_STRING.normalizeTitle(candidate.title))
+  );
+  const isLoading = isLoadingCandidates || isLoadingRecurring;
 
   return (
     <Section Icon={RefreshCcw} title="Possíveis assinaturas" className="p-2" classNameHeader="p-3">

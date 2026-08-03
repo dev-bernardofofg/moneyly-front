@@ -104,7 +104,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
               </BaseButton>
             }
           >
-            <AddValueToGoalForm goalId={goal.id || ''} />
+            <AddValueToGoalForm goal={goal} />
           </BaseDialog>
 
           <BaseDialog
