@@ -1,6 +1,8 @@
 'use client';
 
+import { deleteNotificationsDevicesFid } from '@/app/(resources)/(generated)/hooks/notifications/notifications';
 import { deleteCookie, getCookie, setCookie } from '@/app/(utils)/cookies';
+import { PUSH_FID_STORAGE_KEY } from '@/app/(utils)/firebase';
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useState } from 'react';
 import { PostAuthSignIn200, User } from '../(resources)/(generated)';
@@ -50,6 +52,14 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   };
 
   const signOut = () => {
+    // Desregistra o push antes de limpar o cookie: sem isso o device seguiria
+    // recebendo notificações do usuário que acabou de sair.
+    const pushFid = localStorage.getItem(PUSH_FID_STORAGE_KEY);
+    if (pushFid) {
+      void deleteNotificationsDevicesFid(pushFid).catch(() => {});
+      localStorage.removeItem(PUSH_FID_STORAGE_KEY);
+    }
+
     setUser(null);
     setToken(null);
     localStorage.removeItem('auth_user');

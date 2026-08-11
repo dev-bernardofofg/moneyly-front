@@ -663,297 +663,11 @@ export type GetHealth400 = {
   details?: unknown | null;
 };
 
-export type PostAuthSignUpBody = {
+export type GetNotificationsParams = {
   /**
-   * @minLength 1
-   * @maxLength 100
+   * @nullable
    */
-  name: string;
-  /** @maxLength 100 */
-  email: string;
-  /**
-   * @minLength 6
-   * @maxLength 128
-   */
-  password: string;
-};
-
-export type PostAuthSignUp201 = {
-  data: AuthSession;
-  message?: string;
-};
-
-export type PostAuthSignUp400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostAuthSignInBody = {
-  /** @maxLength 100 */
-  email: string;
-  /**
-   * @minLength 1
-   * @maxLength 128
-   */
-  password: string;
-};
-
-export type PostAuthSignIn200 = {
-  data: AuthSession;
-  message?: string;
-};
-
-export type PostAuthSignIn400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostAuthGoogleBody = {
-  /** @minLength 1 */
-  idToken: string;
-};
-
-export type PostAuthGoogle200 = {
-  data: AuthSession;
-  message?: string;
-};
-
-export type PostAuthGoogle400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostAuthRefreshBody = {
-  /** @minLength 1 */
-  refreshToken: string;
-};
-
-export type PostAuthRefresh200 = {
-  data: AuthRefresh;
-  message?: string;
-};
-
-export type PostAuthRefresh400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostAuthLogoutBody = {
-  /** @minLength 1 */
-  refreshToken: string;
-};
-
-export type PostAuthLogout200Data = {
-  success: boolean;
-};
-
-export type PostAuthLogout200 = {
-  data: PostAuthLogout200Data;
-  message?: string;
-};
-
-export type PostAuthLogout400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostAuthLogout401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserMe200 = {
-  data: User;
-  message?: string;
-};
-
-export type GetUserMe400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserMe401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserIncomeBody = {
-  monthlyIncome: string | number;
-};
-
-export type PutUserIncome200 = {
-  data: IncomeUpdate;
-  message?: string;
-};
-
-export type PutUserIncome400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserIncome401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserFinancialPeriodBody = {
-  /**
-   * @minimum 1
-   * @maximum 31
-   */
-  financialDayStart: number;
-  /**
-   * @minimum 1
-   * @maximum 31
-   */
-  financialDayEnd: number;
-};
-
-export type PutUserFinancialPeriod200 = {
-  data: FinancialPeriodUpdate;
-  message?: string;
-};
-
-export type PutUserFinancialPeriod400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserFinancialPeriod401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserIncomeAndPeriodBody = {
-  monthlyIncome: string | number;
-  /**
-   * @minimum 1
-   * @maximum 31
-   */
-  financialDayStart: number;
-  /**
-   * @minimum 1
-   * @maximum 31
-   */
-  financialDayEnd: number;
-};
-
-export type PutUserIncomeAndPeriod200 = {
-  data: IncomeAndPeriodUpdate;
-  message?: string;
-};
-
-export type PutUserIncomeAndPeriod400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutUserIncomeAndPeriod401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserFinancialPeriods200 = {
-  data: FinancialPeriodSummary[];
-  message?: string;
-};
-
-export type GetUserFinancialPeriods400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserFinancialPeriods401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserFinancialPeriodsPeriodId200 = {
-  data: FinancialPeriod;
-  message?: string;
-};
-
-export type GetUserFinancialPeriodsPeriodId400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserFinancialPeriodsPeriodId401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetUserFinancialPeriodsPeriodId404 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostTransactionsCreateBodyType =
-  (typeof PostTransactionsCreateBodyType)[keyof typeof PostTransactionsCreateBodyType];
-
-export const PostTransactionsCreateBodyType = {
-  income: 'income',
-  expense: 'expense',
-} as const;
-
-export type PostTransactionsCreateBody = {
-  type: PostTransactionsCreateBodyType;
-  /**
-   * @minLength 1
-   * @maxLength 100
-   */
-  title: string;
-  amount: string | number;
-  /** @minLength 1 */
-  category: string;
-  periodId?: string;
-  /** @maxLength 500 */
-  description?: string;
-  date?: string;
-};
-
-export type PostTransactionsCreate201 = {
-  data: Transaction;
-  message?: string;
-};
-
-export type PostTransactionsCreate400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostTransactionsCreate401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsParams = {
-  category?: string;
-  startDate?: string;
-  endDate?: string;
-  periodId?: string;
-  type?: GetTransactionsType;
+  unreadOnly?: boolean | null;
   /**
    * @exclusiveMinimum 0
    */
@@ -964,14 +678,7 @@ export type GetTransactionsParams = {
   limit?: number;
 };
 
-export type GetTransactionsType = (typeof GetTransactionsType)[keyof typeof GetTransactionsType];
-
-export const GetTransactionsType = {
-  income: 'income',
-  expense: 'expense',
-} as const;
-
-export type GetTransactions200Pagination = {
+export type GetNotifications200Pagination = {
   page: number;
   limit: number;
   total: number;
@@ -980,225 +687,270 @@ export type GetTransactions200Pagination = {
   hasPrev: boolean;
 };
 
-export type GetTransactions200 = {
+export type GetNotifications200 = {
   success: boolean;
-  data: Transaction[];
-  pagination: GetTransactions200Pagination;
-  summary: TransactionListSummary;
+  data: Notification[];
+  pagination: GetNotifications200Pagination;
   message?: string;
 };
 
-export type GetTransactions400 = {
+export type GetNotifications400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetTransactions401 = {
+export type GetNotifications401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutTransactionsIdBodyType =
-  (typeof PutTransactionsIdBodyType)[keyof typeof PutTransactionsIdBodyType];
+export type PatchNotificationsReadAll200Data = {
+  updatedCount: number;
+};
 
-export const PutTransactionsIdBodyType = {
-  income: 'income',
-  expense: 'expense',
-} as const;
+export type PatchNotificationsReadAll200 = {
+  data: PatchNotificationsReadAll200Data;
+  message?: string;
+};
 
-export type PutTransactionsIdBody = {
-  type?: PutTransactionsIdBodyType;
+export type PatchNotificationsReadAll400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsReadAll401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead200 = {
+  data: Notification;
+  message?: string;
+};
+
+export type PatchNotificationsIdRead400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PatchNotificationsIdRead404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostNotificationsDevicesBody = {
+  fid: string;
+};
+
+export type PostNotificationsDevices200Data = {
+  registered: boolean;
+};
+
+export type PostNotificationsDevices200 = {
+  data: PostNotificationsDevices200Data;
+  message?: string;
+};
+
+export type PostNotificationsDevices400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostNotificationsDevices401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteNotificationsDevicesFid200Data = {
+  unregistered: boolean;
+};
+
+export type DeleteNotificationsDevicesFid200 = {
+  data: DeleteNotificationsDevicesFid200Data;
+  message?: string;
+};
+
+export type DeleteNotificationsDevicesFid400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteNotificationsDevicesFid401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteNotificationsDevicesFid404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostCompaniesBody = {
   /**
    * @minLength 1
    * @maxLength 100
    */
-  title?: string;
-  amount?: string | number;
-  /** @minLength 1 */
-  category?: string;
-  periodId?: string;
-  /** @maxLength 500 */
-  description?: string;
-  date?: string;
+  name: string;
+  /** @exclusiveMinimum 0 */
+  hourlyRate: number;
 };
 
-export type PutTransactionsId200 = {
-  data: Transaction;
+export type PostCompanies200 = {
+  data: Company;
   message?: string;
 };
 
-export type PutTransactionsId400 = {
+export type PostCompanies400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutTransactionsId401 = {
+export type PostCompanies401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutTransactionsId404 = {
+export type GetCompanies200 = {
+  data: Company[];
+  message?: string;
+};
+
+export type GetCompanies400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteTransactionsId200 = {
+export type GetCompanies401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesIdBody = {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name?: string;
+  /** @exclusiveMinimum 0 */
+  hourlyRate?: number;
+};
+
+export type PutCompaniesId200 = {
+  data: Company;
+  message?: string;
+};
+
+export type PutCompaniesId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCompaniesId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCompaniesId200 = {
   data: unknown | null;
   message?: string;
 };
 
-export type DeleteTransactionsId400 = {
+export type DeleteCompaniesId400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteTransactionsId401 = {
+export type DeleteCompaniesId401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteTransactionsId404 = {
+export type DeleteCompaniesId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetTransactionsSummary200 = {
-  data: TransactionSummary;
+export type PostOvertimeBody = {
+  companyId: string;
+  categoryId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type PostOvertime200 = {
+  data: OvertimeRecord;
   message?: string;
 };
 
-export type GetTransactionsSummary400 = {
+export type PostOvertime400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetTransactionsSummary401 = {
+export type PostOvertime401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetTransactionsSummaryByMonth200 = {
-  data: MonthlySummaryItem[];
-  message?: string;
-};
-
-export type GetTransactionsSummaryByMonth400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsSummaryByMonth401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsSummaryCurrentPeriod200 = {
-  data: CurrentPeriodSummary;
-  message?: string;
-};
-
-export type GetTransactionsSummaryCurrentPeriod400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsSummaryCurrentPeriod401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsExportParams = {
-  startDate?: string;
-  endDate?: string;
-  periodId?: string;
-  type?: GetTransactionsExportType;
-};
-
-export type GetTransactionsExportType =
-  (typeof GetTransactionsExportType)[keyof typeof GetTransactionsExportType];
-
-export const GetTransactionsExportType = {
-  income: 'income',
-  expense: 'expense',
-} as const;
-
-export type GetTransactionsExport400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsExport401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsSubscriptions200 = {
-  data: SubscriptionCandidate[];
-  message?: string;
-};
-
-export type GetTransactionsSubscriptions400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetTransactionsSubscriptions401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostCategoriesCreateBody = {
-  /** @minLength 1 */
-  name: string;
-};
-
-export type PostCategoriesCreate201 = {
-  data: Category;
-  message?: string;
-};
-
-export type PostCategoriesCreate400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostCategoriesCreate401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetCategoriesParams = {
+export type GetOvertimeParams = {
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month?: number;
+  /**
+   * @minimum 2000
+   */
+  year?: number;
+  companyId?: string;
   /**
    * @exclusiveMinimum 0
    */
   page?: number;
   /**
+   * @maximum 100
    * @exclusiveMinimum 0
    */
   limit?: number;
 };
 
-export type GetCategories200Pagination = {
+export type GetOvertime200Pagination = {
   page: number;
   limit: number;
   total: number;
@@ -1207,71 +959,129 @@ export type GetCategories200Pagination = {
   hasPrev: boolean;
 };
 
-export type GetCategories200 = {
+export type GetOvertime200 = {
   success: boolean;
-  data: Category[];
-  pagination: GetCategories200Pagination;
+  data: OvertimeRecord[];
+  pagination: GetOvertime200Pagination;
   message?: string;
 };
 
-export type GetCategories400 = {
+export type GetOvertime400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetCategories401 = {
+export type GetOvertime401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutCategoriesUpdateIdBody = {
-  /** @minLength 1 */
-  name: string;
+export type GetOvertimeSummaryParams = {
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month: number;
+  /**
+   * @minimum 2000
+   */
+  year: number;
 };
 
-export type PutCategoriesUpdateId200 = {
-  data: Category;
+export type GetOvertimeSummary200 = {
+  data: OvertimeSummary;
   message?: string;
 };
 
-export type PutCategoriesUpdateId400 = {
+export type GetOvertimeSummary400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutCategoriesUpdateId401 = {
+export type GetOvertimeSummary401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PutCategoriesUpdateId404 = {
+export type GetOvertimeExportParams = {
+  /**
+   * @minimum 1
+   * @maximum 12
+   */
+  month?: number;
+  /**
+   * @minimum 2000
+   */
+  year?: number;
+  companyId?: string;
+};
+
+export type GetOvertimeExport400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteCategoriesDeleteId200 = {
+export type GetOvertimeExport401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeIdBody = {
+  companyId?: string;
+  categoryId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  startTime?: string;
+  endTime?: string;
+};
+
+export type PutOvertimeId200 = {
+  data: OvertimeRecord;
+  message?: string;
+};
+
+export type PutOvertimeId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutOvertimeId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteOvertimeId200 = {
   data: unknown | null;
   message?: string;
 };
 
-export type DeleteCategoriesDeleteId400 = {
+export type DeleteOvertimeId400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteCategoriesDeleteId401 = {
+export type DeleteOvertimeId401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteCategoriesDeleteId404 = {
+export type DeleteOvertimeId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
@@ -1526,121 +1336,357 @@ export type PostGoalsIdAddAmount404 = {
   details?: unknown | null;
 };
 
-export type GetOverviewPeriods200 = {
+export type PostCategoriesCreateBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type PostCategoriesCreate201 = {
+  data: Category;
+  message?: string;
+};
+
+export type PostCategoriesCreate400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostCategoriesCreate401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetCategoriesParams = {
+  /**
+   * @exclusiveMinimum 0
+   */
+  page?: number;
+  /**
+   * @exclusiveMinimum 0
+   */
+  limit?: number;
+};
+
+export type GetCategories200Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+};
+
+export type GetCategories200 = {
+  success: boolean;
+  data: Category[];
+  pagination: GetCategories200Pagination;
+  message?: string;
+};
+
+export type GetCategories400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetCategories401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCategoriesUpdateIdBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type PutCategoriesUpdateId200 = {
+  data: Category;
+  message?: string;
+};
+
+export type PutCategoriesUpdateId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCategoriesUpdateId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutCategoriesUpdateId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCategoriesDeleteId200 = {
+  data: unknown | null;
+  message?: string;
+};
+
+export type DeleteCategoriesDeleteId400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCategoriesDeleteId401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteCategoriesDeleteId404 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthSignUpBody = {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name: string;
+  /** @maxLength 100 */
+  email: string;
+  /**
+   * @minLength 6
+   * @maxLength 128
+   */
+  password: string;
+};
+
+export type PostAuthSignUp201 = {
+  data: AuthSession;
+  message?: string;
+};
+
+export type PostAuthSignUp400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthSignInBody = {
+  /** @maxLength 100 */
+  email: string;
+  /**
+   * @minLength 1
+   * @maxLength 128
+   */
+  password: string;
+};
+
+export type PostAuthSignIn200 = {
+  data: AuthSession;
+  message?: string;
+};
+
+export type PostAuthSignIn400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthGoogleBody = {
+  /** @minLength 1 */
+  idToken: string;
+};
+
+export type PostAuthGoogle200 = {
+  data: AuthSession;
+  message?: string;
+};
+
+export type PostAuthGoogle400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthRefreshBody = {
+  /** @minLength 1 */
+  refreshToken: string;
+};
+
+export type PostAuthRefresh200 = {
+  data: AuthRefresh;
+  message?: string;
+};
+
+export type PostAuthRefresh400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthLogoutBody = {
+  /** @minLength 1 */
+  refreshToken: string;
+};
+
+export type PostAuthLogout200Data = {
+  success: boolean;
+};
+
+export type PostAuthLogout200 = {
+  data: PostAuthLogout200Data;
+  message?: string;
+};
+
+export type PostAuthLogout400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAuthLogout401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetUserMe200 = {
+  data: User;
+  message?: string;
+};
+
+export type GetUserMe400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetUserMe401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserIncomeBody = {
+  monthlyIncome: string | number;
+};
+
+export type PutUserIncome200 = {
+  data: IncomeUpdate;
+  message?: string;
+};
+
+export type PutUserIncome400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserIncome401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserFinancialPeriodBody = {
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayStart: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayEnd: number;
+};
+
+export type PutUserFinancialPeriod200 = {
+  data: FinancialPeriodUpdate;
+  message?: string;
+};
+
+export type PutUserFinancialPeriod400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserFinancialPeriod401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserIncomeAndPeriodBody = {
+  monthlyIncome: string | number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayStart: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  financialDayEnd: number;
+};
+
+export type PutUserIncomeAndPeriod200 = {
+  data: IncomeAndPeriodUpdate;
+  message?: string;
+};
+
+export type PutUserIncomeAndPeriod400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutUserIncomeAndPeriod401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetUserFinancialPeriods200 = {
   data: FinancialPeriodSummary[];
   message?: string;
 };
 
-export type GetOverviewPeriods400 = {
+export type GetUserFinancialPeriods400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOverviewPeriods401 = {
+export type GetUserFinancialPeriods401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOverviewDashboardParams = {
-  periodId?: string;
-  startDate?: string;
-  endDate?: string;
-};
-
-export type GetOverviewDashboard200 = {
-  data: DashboardOverview;
+export type GetUserFinancialPeriodsPeriodId200 = {
+  data: FinancialPeriod;
   message?: string;
 };
 
-export type GetOverviewDashboard400 = {
+export type GetUserFinancialPeriodsPeriodId400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOverviewDashboard401 = {
+export type GetUserFinancialPeriodsPeriodId401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOverviewPlanner200 = {
-  data: PlannerOverview;
-  message?: string;
-};
-
-export type GetOverviewPlanner400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewPlanner401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewInsights200 = {
-  data: FinancialInsights;
-  message?: string;
-};
-
-export type GetOverviewInsights400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewInsights401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewForecastParams = {
-  periodId?: string;
-};
-
-export type GetOverviewForecast200 = {
-  data: ForecastResponse;
-  message?: string;
-};
-
-export type GetOverviewForecast400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewForecast401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewInsightsComparisonParams = {
-  /**
-   * @minimum 1
-   * @maximum 12
-   */
-  periodsBack?: number;
-};
-
-export type GetOverviewInsightsComparison200 = {
-  data: ComparativeInsights;
-  message?: string;
-};
-
-export type GetOverviewInsightsComparison400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOverviewInsightsComparison401 = {
+export type GetUserFinancialPeriodsPeriodId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
@@ -1943,11 +1989,53 @@ export type PatchRecurringTransactionsIdDeactivate404 = {
   details?: unknown | null;
 };
 
-export type GetNotificationsParams = {
+export type PostTransactionsCreateBodyType =
+  (typeof PostTransactionsCreateBodyType)[keyof typeof PostTransactionsCreateBodyType];
+
+export const PostTransactionsCreateBodyType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type PostTransactionsCreateBody = {
+  type: PostTransactionsCreateBodyType;
   /**
-   * @nullable
+   * @minLength 1
+   * @maxLength 100
    */
-  unreadOnly?: boolean | null;
+  title: string;
+  amount: string | number;
+  /** @minLength 1 */
+  category: string;
+  periodId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  date?: string;
+};
+
+export type PostTransactionsCreate201 = {
+  data: Transaction;
+  message?: string;
+};
+
+export type PostTransactionsCreate400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostTransactionsCreate401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsParams = {
+  category?: string;
+  startDate?: string;
+  endDate?: string;
+  periodId?: string;
+  type?: GetTransactionsType;
   /**
    * @exclusiveMinimum 0
    */
@@ -1958,7 +2046,14 @@ export type GetNotificationsParams = {
   limit?: number;
 };
 
-export type GetNotifications200Pagination = {
+export type GetTransactionsType = (typeof GetTransactionsType)[keyof typeof GetTransactionsType];
+
+export const GetTransactionsType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type GetTransactions200Pagination = {
   page: number;
   limit: number;
   total: number;
@@ -1967,349 +2062,306 @@ export type GetNotifications200Pagination = {
   hasPrev: boolean;
 };
 
-export type GetNotifications200 = {
+export type GetTransactions200 = {
   success: boolean;
-  data: Notification[];
-  pagination: GetNotifications200Pagination;
+  data: Transaction[];
+  pagination: GetTransactions200Pagination;
+  summary: TransactionListSummary;
   message?: string;
 };
 
-export type GetNotifications400 = {
+export type GetTransactions400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetNotifications401 = {
+export type GetTransactions401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PatchNotificationsReadAll200Data = {
-  updatedCount: number;
-};
+export type PutTransactionsIdBodyType =
+  (typeof PutTransactionsIdBodyType)[keyof typeof PutTransactionsIdBodyType];
 
-export type PatchNotificationsReadAll200 = {
-  data: PatchNotificationsReadAll200Data;
-  message?: string;
-};
+export const PutTransactionsIdBodyType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
 
-export type PatchNotificationsReadAll400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PatchNotificationsReadAll401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PatchNotificationsIdRead200 = {
-  data: Notification;
-  message?: string;
-};
-
-export type PatchNotificationsIdRead400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PatchNotificationsIdRead401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PatchNotificationsIdRead404 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PostCompaniesBody = {
+export type PutTransactionsIdBody = {
+  type?: PutTransactionsIdBodyType;
   /**
    * @minLength 1
    * @maxLength 100
    */
-  name: string;
-  /** @exclusiveMinimum 0 */
-  hourlyRate: number;
+  title?: string;
+  amount?: string | number;
+  /** @minLength 1 */
+  category?: string;
+  periodId?: string;
+  /** @maxLength 500 */
+  description?: string;
+  date?: string;
 };
 
-export type PostCompanies200 = {
-  data: Company;
+export type PutTransactionsId200 = {
+  data: Transaction;
   message?: string;
 };
 
-export type PostCompanies400 = {
+export type PutTransactionsId400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PostCompanies401 = {
+export type PutTransactionsId401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetCompanies200 = {
-  data: Company[];
-  message?: string;
-};
-
-export type GetCompanies400 = {
+export type PutTransactionsId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetCompanies401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutCompaniesIdBody = {
-  /**
-   * @minLength 1
-   * @maxLength 100
-   */
-  name?: string;
-  /** @exclusiveMinimum 0 */
-  hourlyRate?: number;
-};
-
-export type PutCompaniesId200 = {
-  data: Company;
-  message?: string;
-};
-
-export type PutCompaniesId400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutCompaniesId401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutCompaniesId404 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type DeleteCompaniesId200 = {
+export type DeleteTransactionsId200 = {
   data: unknown | null;
   message?: string;
 };
 
-export type DeleteCompaniesId400 = {
+export type DeleteTransactionsId400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteCompaniesId401 = {
+export type DeleteTransactionsId401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type DeleteCompaniesId404 = {
+export type DeleteTransactionsId404 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PostOvertimeBody = {
-  companyId: string;
-  categoryId?: string;
-  /** @maxLength 500 */
-  description?: string;
-  startTime: string;
-  endTime: string;
-};
-
-export type PostOvertime200 = {
-  data: OvertimeRecord;
+export type GetTransactionsSummary200 = {
+  data: TransactionSummary;
   message?: string;
 };
 
-export type PostOvertime400 = {
+export type GetTransactionsSummary400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type PostOvertime401 = {
+export type GetTransactionsSummary401 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOvertimeParams = {
+export type GetTransactionsSummaryByMonth200 = {
+  data: MonthlySummaryItem[];
+  message?: string;
+};
+
+export type GetTransactionsSummaryByMonth400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSummaryByMonth401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSummaryCurrentPeriod200 = {
+  data: CurrentPeriodSummary;
+  message?: string;
+};
+
+export type GetTransactionsSummaryCurrentPeriod400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSummaryCurrentPeriod401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsExportParams = {
+  startDate?: string;
+  endDate?: string;
+  periodId?: string;
+  type?: GetTransactionsExportType;
+};
+
+export type GetTransactionsExportType =
+  (typeof GetTransactionsExportType)[keyof typeof GetTransactionsExportType];
+
+export const GetTransactionsExportType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type GetTransactionsExport400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsExport401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSubscriptions200 = {
+  data: SubscriptionCandidate[];
+  message?: string;
+};
+
+export type GetTransactionsSubscriptions400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetTransactionsSubscriptions401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewPeriods200 = {
+  data: FinancialPeriodSummary[];
+  message?: string;
+};
+
+export type GetOverviewPeriods400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewPeriods401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewDashboardParams = {
+  periodId?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type GetOverviewDashboard200 = {
+  data: DashboardOverview;
+  message?: string;
+};
+
+export type GetOverviewDashboard400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewDashboard401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewPlanner200 = {
+  data: PlannerOverview;
+  message?: string;
+};
+
+export type GetOverviewPlanner400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewPlanner401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewInsights200 = {
+  data: FinancialInsights;
+  message?: string;
+};
+
+export type GetOverviewInsights400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewInsights401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewForecastParams = {
+  periodId?: string;
+};
+
+export type GetOverviewForecast200 = {
+  data: ForecastResponse;
+  message?: string;
+};
+
+export type GetOverviewForecast400 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewForecast401 = {
+  success: boolean;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewInsightsComparisonParams = {
   /**
    * @minimum 1
    * @maximum 12
    */
-  month?: number;
-  /**
-   * @minimum 2000
-   */
-  year?: number;
-  companyId?: string;
-  /**
-   * @exclusiveMinimum 0
-   */
-  page?: number;
-  /**
-   * @maximum 100
-   * @exclusiveMinimum 0
-   */
-  limit?: number;
+  periodsBack?: number;
 };
 
-export type GetOvertime200Pagination = {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-};
-
-export type GetOvertime200 = {
-  success: boolean;
-  data: OvertimeRecord[];
-  pagination: GetOvertime200Pagination;
+export type GetOverviewInsightsComparison200 = {
+  data: ComparativeInsights;
   message?: string;
 };
 
-export type GetOvertime400 = {
+export type GetOverviewInsightsComparison400 = {
   success: boolean;
   error: string;
   details?: unknown | null;
 };
 
-export type GetOvertime401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOvertimeSummaryParams = {
-  /**
-   * @minimum 1
-   * @maximum 12
-   */
-  month: number;
-  /**
-   * @minimum 2000
-   */
-  year: number;
-};
-
-export type GetOvertimeSummary200 = {
-  data: OvertimeSummary;
-  message?: string;
-};
-
-export type GetOvertimeSummary400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOvertimeSummary401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOvertimeExportParams = {
-  /**
-   * @minimum 1
-   * @maximum 12
-   */
-  month?: number;
-  /**
-   * @minimum 2000
-   */
-  year?: number;
-  companyId?: string;
-};
-
-export type GetOvertimeExport400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type GetOvertimeExport401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutOvertimeIdBody = {
-  companyId?: string;
-  categoryId?: string;
-  /** @maxLength 500 */
-  description?: string;
-  startTime?: string;
-  endTime?: string;
-};
-
-export type PutOvertimeId200 = {
-  data: OvertimeRecord;
-  message?: string;
-};
-
-export type PutOvertimeId400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutOvertimeId401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type PutOvertimeId404 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type DeleteOvertimeId200 = {
-  data: unknown | null;
-  message?: string;
-};
-
-export type DeleteOvertimeId400 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type DeleteOvertimeId401 = {
-  success: boolean;
-  error: string;
-  details?: unknown | null;
-};
-
-export type DeleteOvertimeId404 = {
+export type GetOverviewInsightsComparison401 = {
   success: boolean;
   error: string;
   details?: unknown | null;

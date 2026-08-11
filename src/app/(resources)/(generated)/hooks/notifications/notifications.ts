@@ -22,6 +22,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DeleteNotificationsDevicesFid200,
+  DeleteNotificationsDevicesFid400,
+  DeleteNotificationsDevicesFid401,
+  DeleteNotificationsDevicesFid404,
   GetNotifications200,
   GetNotifications400,
   GetNotifications401,
@@ -33,6 +37,10 @@ import type {
   PatchNotificationsReadAll200,
   PatchNotificationsReadAll400,
   PatchNotificationsReadAll401,
+  PostNotificationsDevices200,
+  PostNotificationsDevices400,
+  PostNotificationsDevices401,
+  PostNotificationsDevicesBody,
 } from '../moneylyAPI.schemas';
 
 import { customInstance } from '../../../../(utils)/axios-instance';
@@ -302,4 +310,172 @@ export const usePatchNotificationsIdRead = <
   TContext
 > => {
   return useMutation(getPatchNotificationsIdReadMutationOptions(options), queryClient);
+};
+/**
+ * @summary Registrar dispositivo para push (FCM)
+ */
+export const postNotificationsDevices = (
+  postNotificationsDevicesBody: PostNotificationsDevicesBody,
+  signal?: AbortSignal
+) => {
+  return customInstance<PostNotificationsDevices200>({
+    url: `/notifications/devices`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: postNotificationsDevicesBody,
+    signal,
+  });
+};
+
+export const getPostNotificationsDevicesMutationOptions = <
+  TError = PostNotificationsDevices400 | PostNotificationsDevices401,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postNotificationsDevices>>,
+    TError,
+    { data: PostNotificationsDevicesBody },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postNotificationsDevices>>,
+  TError,
+  { data: PostNotificationsDevicesBody },
+  TContext
+> => {
+  const mutationKey = ['postNotificationsDevices'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postNotificationsDevices>>,
+    { data: PostNotificationsDevicesBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postNotificationsDevices(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostNotificationsDevicesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postNotificationsDevices>>
+>;
+export type PostNotificationsDevicesMutationBody = PostNotificationsDevicesBody;
+export type PostNotificationsDevicesMutationError =
+  | PostNotificationsDevices400
+  | PostNotificationsDevices401;
+
+/**
+ * @summary Registrar dispositivo para push (FCM)
+ */
+export const usePostNotificationsDevices = <
+  TError = PostNotificationsDevices400 | PostNotificationsDevices401,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postNotificationsDevices>>,
+      TError,
+      { data: PostNotificationsDevicesBody },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof postNotificationsDevices>>,
+  TError,
+  { data: PostNotificationsDevicesBody },
+  TContext
+> => {
+  return useMutation(getPostNotificationsDevicesMutationOptions(options), queryClient);
+};
+/**
+ * @summary Remover dispositivo do push (FCM)
+ */
+export const deleteNotificationsDevicesFid = (fid: string, signal?: AbortSignal) => {
+  return customInstance<DeleteNotificationsDevicesFid200>({
+    url: `/notifications/devices/${fid}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteNotificationsDevicesFidMutationOptions = <
+  TError =
+    | DeleteNotificationsDevicesFid400
+    | DeleteNotificationsDevicesFid401
+    | DeleteNotificationsDevicesFid404,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>,
+    TError,
+    { fid: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>,
+  TError,
+  { fid: string },
+  TContext
+> => {
+  const mutationKey = ['deleteNotificationsDevicesFid'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>,
+    { fid: string }
+  > = (props) => {
+    const { fid } = props ?? {};
+
+    return deleteNotificationsDevicesFid(fid);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteNotificationsDevicesFidMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>
+>;
+
+export type DeleteNotificationsDevicesFidMutationError =
+  | DeleteNotificationsDevicesFid400
+  | DeleteNotificationsDevicesFid401
+  | DeleteNotificationsDevicesFid404;
+
+/**
+ * @summary Remover dispositivo do push (FCM)
+ */
+export const useDeleteNotificationsDevicesFid = <
+  TError =
+    | DeleteNotificationsDevicesFid400
+    | DeleteNotificationsDevicesFid401
+    | DeleteNotificationsDevicesFid404,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>,
+      TError,
+      { fid: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteNotificationsDevicesFid>>,
+  TError,
+  { fid: string },
+  TContext
+> => {
+  return useMutation(getDeleteNotificationsDevicesFidMutationOptions(options), queryClient);
 };

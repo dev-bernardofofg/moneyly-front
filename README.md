@@ -92,6 +92,17 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=seu_google_client_id
 
 # API Backend
 NEXT_PUBLIC_API_URL=http://localhost:3001
+
+# Push notifications (opcional — sem elas o app roda, só não oferece push).
+# Console do Firebase → Configurações do projeto → Seus apps → App da Web.
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+# Cloud Messaging → Configuração da Web → Certificados push da Web (chave pública)
+NEXT_PUBLIC_FIREBASE_VAPID_KEY=
 ```
 
 4. **Execute o projeto**

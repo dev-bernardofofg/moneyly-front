@@ -1,5 +1,7 @@
 allowBuilds:
+  '@firebase/util': false
   es5-ext: true
   esbuild: true
+  protobufjs: false
   sharp: true
   unrs-resolver: true

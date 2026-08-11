@@ -10,10 +10,13 @@ import {
   usePatchNotificationsReadAll,
 } from '@/app/(resources)/(generated)/hooks/notifications/notifications';
 import { Notification } from '@/app/(resources)/(generated)/types/Notification';
+import { usePushNotifications } from '@/app/(hooks)/use-push-notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   AlertTriangle,
   Bell,
+  BellOff,
+  BellRing,
   CalendarClock,
   Check,
   Info,
@@ -71,6 +74,7 @@ const notificationColor = (n: Pick<Notification, 'type' | 'severity'>) => {
 export const NotificationBell = () => {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
+  const push = usePushNotifications();
 
   const { data } = useGetNotifications(
     { page: 1, limit: 20 },
@@ -122,6 +126,32 @@ export const NotificationBell = () => {
             </Button>
           )}
         </div>
+
+        {/* Só oferecemos o push quando o Firebase está configurado e o browser
+            suporta — em iOS fora do modo standalone, por exemplo, não há API. */}
+        {push.isConfigured && push.status !== 'unavailable' && push.status !== 'checking' && (
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={push.isLoading || push.status === 'denied'}
+            onClick={() => (push.isEnabled ? push.disable() : push.enable())}
+            className="mb-3 h-8 w-full justify-start gap-2 px-2 text-xs"
+          >
+            {push.isEnabled ? (
+              <>
+                <BellOff className="size-3.5" />
+                Desativar notificações neste dispositivo
+              </>
+            ) : (
+              <>
+                <BellRing className="size-3.5" />
+                {push.status === 'denied'
+                  ? 'Notificações bloqueadas no navegador'
+                  : 'Ativar notificações neste dispositivo'}
+              </>
+            )}
+          </Button>
+        )}
 
         <Separator className="mb-3" />
 

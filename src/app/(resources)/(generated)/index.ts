@@ -61,6 +61,18 @@ export type {
   DeleteGoalsIdPathParams,
 } from './types/DeleteGoalsId.ts';
 export type {
+  DeleteNotificationsDevicesFid200,
+  DeleteNotificationsDevicesFid400,
+  DeleteNotificationsDevicesFid400SuccessEnumKey,
+  DeleteNotificationsDevicesFid401,
+  DeleteNotificationsDevicesFid401SuccessEnumKey,
+  DeleteNotificationsDevicesFid404,
+  DeleteNotificationsDevicesFid404SuccessEnumKey,
+  DeleteNotificationsDevicesFidMutation,
+  DeleteNotificationsDevicesFidMutationResponse,
+  DeleteNotificationsDevicesFidPathParams,
+} from './types/DeleteNotificationsDevicesFid.ts';
+export type {
   DeleteOvertimeId200,
   DeleteOvertimeId400,
   DeleteOvertimeId400SuccessEnumKey,
@@ -527,6 +539,16 @@ export type {
   PostGoalsIdAddAmountPathParams,
 } from './types/PostGoalsIdAddAmount.ts';
 export type {
+  PostNotificationsDevices200,
+  PostNotificationsDevices400,
+  PostNotificationsDevices400SuccessEnumKey,
+  PostNotificationsDevices401,
+  PostNotificationsDevices401SuccessEnumKey,
+  PostNotificationsDevicesMutation,
+  PostNotificationsDevicesMutationRequest,
+  PostNotificationsDevicesMutationResponse,
+} from './types/PostNotificationsDevices.ts';
+export type {
   PostOvertime200,
   PostOvertime400,
   PostOvertime400SuccessEnumKey,
@@ -726,6 +748,9 @@ export { deleteCompaniesId404SuccessEnum } from './types/DeleteCompaniesId.ts';
 export { deleteGoalsId400SuccessEnum } from './types/DeleteGoalsId.ts';
 export { deleteGoalsId401SuccessEnum } from './types/DeleteGoalsId.ts';
 export { deleteGoalsId404SuccessEnum } from './types/DeleteGoalsId.ts';
+export { deleteNotificationsDevicesFid400SuccessEnum } from './types/DeleteNotificationsDevicesFid.ts';
+export { deleteNotificationsDevicesFid401SuccessEnum } from './types/DeleteNotificationsDevicesFid.ts';
+export { deleteNotificationsDevicesFid404SuccessEnum } from './types/DeleteNotificationsDevicesFid.ts';
 export { deleteOvertimeId400SuccessEnum } from './types/DeleteOvertimeId.ts';
 export { deleteOvertimeId401SuccessEnum } from './types/DeleteOvertimeId.ts';
 export { deleteOvertimeId404SuccessEnum } from './types/DeleteOvertimeId.ts';
@@ -831,6 +856,8 @@ export { postGoals401SuccessEnum } from './types/PostGoals.ts';
 export { postGoalsIdAddAmount400SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
 export { postGoalsIdAddAmount401SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
 export { postGoalsIdAddAmount404SuccessEnum } from './types/PostGoalsIdAddAmount.ts';
+export { postNotificationsDevices400SuccessEnum } from './types/PostNotificationsDevices.ts';
+export { postNotificationsDevices401SuccessEnum } from './types/PostNotificationsDevices.ts';
 export { postOvertime400SuccessEnum } from './types/PostOvertime.ts';
 export { postOvertime401SuccessEnum } from './types/PostOvertime.ts';
 export { postRecurringTransactions400SuccessEnum } from './types/PostRecurringTransactions.ts';
