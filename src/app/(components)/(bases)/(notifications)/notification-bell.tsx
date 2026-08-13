@@ -21,6 +21,8 @@ import {
   Check,
   Info,
   PartyPopper,
+  TrendingDown,
+  TrendingUp,
   XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -47,14 +49,18 @@ const severityColor = (severity: Notification['severity']) => {
   }
 };
 
-// bill_reminder/goal_milestone chegam sempre com severity "info"; diferenciamos
-// o visual pelo type. budget_alert mantém a cor/ícone por severidade.
+// bill_reminder/goal_milestone/transaction_* chegam sempre com severity "info";
+// diferenciamos o visual pelo type. budget_alert mantém a cor/ícone por severidade.
 const notificationIcon = (n: Pick<Notification, 'type' | 'severity'>) => {
   switch (n.type) {
     case 'bill_reminder':
       return <CalendarClock className="size-4 text-warn" />;
     case 'goal_milestone':
       return <PartyPopper className="size-4 text-income" />;
+    case 'transaction_income':
+      return <TrendingUp className="size-4 text-income" />;
+    case 'transaction_expense':
+      return <TrendingDown className="size-4 text-expense" />;
     default:
       return severityIcon(n.severity);
   }
@@ -65,7 +71,10 @@ const notificationColor = (n: Pick<Notification, 'type' | 'severity'>) => {
     case 'bill_reminder':
       return 'border-l-warn bg-warn/5';
     case 'goal_milestone':
+    case 'transaction_income':
       return 'border-l-income bg-income/5';
+    case 'transaction_expense':
+      return 'border-l-expense bg-expense/5';
     default:
       return severityColor(n.severity);
   }

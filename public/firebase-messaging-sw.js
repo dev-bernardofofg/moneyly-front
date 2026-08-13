@@ -26,8 +26,9 @@ messaging.onBackgroundMessage((payload) => {
 
   self.registration.showNotification(data.title || 'Moneyly', {
     body: data.body || '',
-    icon: '/icon-192x192.png',
-    badge: '/icon-192x192.png',
+    // O back manda o ícone por tipo (entrada/saída); o do PWA é o fallback.
+    icon: data.icon || '/icon-192x192.png',
+    badge: data.badge || '/icon-192x192.png',
     // tag evita empilhar a mesma notificação se o push chegar duplicado
     tag: data.notificationId || undefined,
     data: { url: data.url || '/' },

@@ -11,6 +11,7 @@
     "ci": "pnpm lint && pnpm type-check",
     "ci:install": "pnpm install --frozen-lockfile",
     "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
+    "generate-notification-icons": "node scripts/generate-notification-icons.js",
     "generate-hooks": "kubb --config kubb.config.ts && orval --config orval.config.ts",
     "prepare": "husky"
   },

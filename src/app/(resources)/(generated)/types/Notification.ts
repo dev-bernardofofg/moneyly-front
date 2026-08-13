@@ -7,6 +7,9 @@ export const notificationTypeEnum = {
   budget_alert: 'budget_alert',
   bill_reminder: 'bill_reminder',
   goal_milestone: 'goal_milestone',
+  spending_alert: 'spending_alert',
+  transaction_income: 'transaction_income',
+  transaction_expense: 'transaction_expense',
 } as const;
 
 export type NotificationTypeEnumKey =
