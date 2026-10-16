@@ -37,6 +37,7 @@ import {
 const STATUS_LABEL = {
   imported: 'Já importada',
   possible_duplicate: 'Possível duplicata',
+  bill_payment: 'Pagamento de fatura',
 } as const;
 
 export const ImportStatementForm = () => {

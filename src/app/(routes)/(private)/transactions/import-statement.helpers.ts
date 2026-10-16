@@ -17,7 +17,8 @@ export const toBase64Url = (buffer: ArrayBuffer): string => {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
-// Já importada nunca entra; possível duplicata começa desmarcada para o usuário decidir.
+// Já importada nunca entra; possível duplicata e pagamento de fatura (não é renda) começam
+// desmarcados para o usuário decidir.
 export const initialRowState = (item: ImportPreviewItem): ImportRowState => ({
   selected: item.status === 'new',
   categoryId: item.suggestedCategoryId ?? '',
