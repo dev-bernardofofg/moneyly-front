@@ -76,6 +76,13 @@ const ITEMS: ImportPreviewItem[] = [
 const confirmMutate = vi.fn();
 let previewItems: ImportPreviewItem[] = ITEMS;
 
+vi.mock('@/app/(resources)/(generated)/hooks/accounts/accounts', () => ({
+  useGetAccounts: () => ({
+    data: {
+      data: [{ id: 'account-default', name: 'Conta principal', type: 'checking', isDefault: true }],
+    },
+  }),
+}));
 vi.mock('@/app/(resources)/(generated)/hooks/categories/categories', () => ({
   getGetCategoriesQueryKey: () => ['/categories/'],
   useGetCategories: () => ({ data: { data: [CATEGORY, OUTROS] } }),
@@ -161,7 +168,8 @@ describe('ImportStatementForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Importar 2 transações' }));
 
     await waitFor(() => expect(confirmMutate).toHaveBeenCalled());
-    const { items } = confirmMutate.mock.calls[0]![0].data;
+    const { items, accountId } = confirmMutate.mock.calls[0]![0].data;
+    expect(accountId).toBe('account-default');
     expect(items.map((item: { externalId: string }) => item.externalId)).toEqual([
       'acc:1',
       'acc:2',
