@@ -19,7 +19,8 @@ import { TransactionTable } from '@/app/(routes)/(private)/transactions/transact
 import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from './transaction.action';
 import { ExportCsvButton } from './export-csv-button';
 import { ExportCsvForm } from './export-csv-form';
-import { Download, Plus } from 'lucide-react';
+import { ImportStatementForm } from './import-statement.form';
+import { Download, FileUp, Plus } from 'lucide-react';
 
 const TransactionsPage = () => {
   const {
@@ -54,6 +55,14 @@ const TransactionsPage = () => {
           </Select>,
           <ExportCsvButton key="export-csv" />,
           <BaseDialog
+            key="import-statement-dialog"
+            title="Importar extrato"
+            description="Envie o OFX do seu banco, revise e confirme as transações."
+            trigger={<BaseButton variant="outline">Importar extrato</BaseButton>}
+          >
+            <ImportStatementForm />
+          </BaseDialog>,
+          <BaseDialog
             key="new-transaction-dialog"
             title="Nova transação"
             description="Adicione uma nova transação"
@@ -87,6 +96,13 @@ const TransactionsPage = () => {
             dialogTitle: 'Exportar transações',
             dialogDescription: 'Escolha o período e o tipo de transação para exportar.',
             children: <ExportCsvForm />,
+          },
+          {
+            icon: FileUp,
+            label: 'Importar extrato',
+            dialogTitle: 'Importar extrato',
+            dialogDescription: 'Envie o OFX do seu banco, revise e confirme as transações.',
+            children: <ImportStatementForm />,
           },
           {
             icon: Plus,
