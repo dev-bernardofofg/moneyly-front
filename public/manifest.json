@@ -1,7 +1,7 @@
 {
-  "name": "Moneyly - Gestão Financeira",
+  "name": "Moneyly - Salário sob controle",
   "short_name": "Moneyly",
-  "description": "Aplicativo de gestão financeira pessoal",
+  "description": "Saldo livre, contas, metas e renda variável no seu ciclo de pagamento",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

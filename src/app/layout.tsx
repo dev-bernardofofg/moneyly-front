@@ -17,8 +17,9 @@ const OutfitFont = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'Moneyly - Financeiro',
-  description: 'Aplicativo de gestão financeira pessoal',
+  title: 'Moneyly — salário sob controle',
+  description:
+    'Descubra quanto pode gastar até o próximo pagamento, considerando contas, metas e renda variável.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -56,7 +57,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Moneyly" />
-        <meta name="description" content="Aplicativo de gestão financeira pessoal" />
+        <meta
+          name="description"
+          content="Descubra quanto pode gastar até o próximo pagamento, considerando contas, metas e renda variável."
+        />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/browserconfig.xml" />

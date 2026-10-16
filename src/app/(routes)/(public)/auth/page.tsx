@@ -23,7 +23,7 @@ const AuthPage = () => {
                   Moneyly
                 </CardTitle>
                 <CardDescription className="text-base transition-colors duration-300 dark:text-slate-400 text-slate-600">
-                  Gerencie suas finanças de forma inteligente
+                  Saiba quanto pode gastar até receber novamente
                 </CardDescription>
               </div>
             </StaggeredFade>
