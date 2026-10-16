@@ -36,6 +36,7 @@ import {
   RefreshCcw,
   Sun,
   TableProperties,
+  WalletCards,
   User,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -120,6 +121,7 @@ export const BaseSidebar = () => {
           <SidebarItem Icon={RefreshCcw} href="/recurring-transactions" title="Recorrentes" />
           <SidebarItem Icon={Clock} href="/overtime" title="Horas Extras" />
           <SidebarItem Icon={Goal} href="/planner" title="Planejamento" />
+          <SidebarItem Icon={WalletCards} href="/accounts" title="Contas e cartões" />
           <SidebarItem Icon={TableProperties} href="/categories" title="Categorias" />
         </SidebarGroupCustom>
       </SidebarContent>

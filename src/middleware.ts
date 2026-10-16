@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
     '/planner',
     '/overtime',
     '/profile',
+    '/accounts',
   ];
   const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
 

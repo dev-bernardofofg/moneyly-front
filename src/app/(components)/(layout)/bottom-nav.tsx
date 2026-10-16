@@ -14,6 +14,7 @@ import {
   RefreshCcw,
   Sun,
   TableProperties,
+  WalletCards,
   User,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -32,6 +33,7 @@ const NAV_ITEMS = [
 const MORE_ITEMS = [
   { href: '/recurring-transactions', icon: RefreshCcw, label: 'Recorrentes' },
   { href: '/overtime', icon: Clock, label: 'Horas Extras' },
+  { href: '/accounts', icon: WalletCards, label: 'Contas e cartões' },
   { href: '/categories', icon: TableProperties, label: 'Categorias' },
   { href: '/profile', icon: User, label: 'Perfil' },
 ] as const;
