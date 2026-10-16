@@ -4,9 +4,27 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ImportStatementForm } from './import-statement.form';
-import { initialRowState, toBase64Url, type ImportPreviewItem } from './import-statement.helpers';
+import {
+  initialRowState,
+  isUncategorized,
+  toBase64Url,
+  type ImportPreviewItem,
+} from './import-statement.helpers';
 
 const CATEGORY = { id: '99999999-9999-9999-9999-999999999999', name: 'Mercado' };
+const OUTROS = { id: '88888888-8888-8888-8888-888888888888', name: 'Outros' };
+
+const UNKNOWN = (externalId: string): ImportPreviewItem => ({
+  externalId,
+  type: 'expense',
+  amount: 10,
+  date: '2026-10-08T03:00:00.000Z',
+  title: 'BOX CHINA',
+  status: 'new',
+  duplicateOf: null,
+  suggestedCategoryId: OUTROS.id,
+  suggestionSource: 'fallback',
+});
 
 const ITEMS: ImportPreviewItem[] = [
   {
@@ -18,6 +36,7 @@ const ITEMS: ImportPreviewItem[] = [
     status: 'new',
     duplicateOf: null,
     suggestedCategoryId: CATEGORY.id,
+    suggestionSource: 'rule',
   },
   {
     externalId: 'acc:2',
@@ -28,6 +47,7 @@ const ITEMS: ImportPreviewItem[] = [
     status: 'possible_duplicate',
     duplicateOf: '11111111-1111-1111-1111-111111111111',
     suggestedCategoryId: CATEGORY.id,
+    suggestionSource: 'rule',
   },
   {
     externalId: 'acc:4',
@@ -38,6 +58,7 @@ const ITEMS: ImportPreviewItem[] = [
     status: 'bill_payment',
     duplicateOf: null,
     suggestedCategoryId: CATEGORY.id,
+    suggestionSource: 'rule',
   },
   {
     externalId: 'acc:3',
@@ -48,13 +69,17 @@ const ITEMS: ImportPreviewItem[] = [
     status: 'imported',
     duplicateOf: null,
     suggestedCategoryId: CATEGORY.id,
+    suggestionSource: 'rule',
   },
 ];
 
 const confirmMutate = vi.fn();
+let previewItems: ImportPreviewItem[] = ITEMS;
 
 vi.mock('@/app/(resources)/(generated)/hooks/categories/categories', () => ({
-  useGetCategories: () => ({ data: { data: [CATEGORY] } }),
+  getGetCategoriesQueryKey: () => ['/categories/'],
+  useGetCategories: () => ({ data: { data: [CATEGORY, OUTROS] } }),
+  usePostCategoriesCreate: () => ({ isPending: false, mutate: vi.fn() }),
 }));
 vi.mock('@/app/(resources)/(generated)/hooks/transactions/transactions', () => ({
   getGetTransactionsQueryKey: () => ['/transactions/'],
@@ -65,7 +90,7 @@ vi.mock('@/app/(resources)/(generated)/hooks/transactions/transactions', () => (
     mutation: { onSuccess: (response: unknown) => void };
   }) => ({
     isPending: false,
-    mutate: () => mutation.onSuccess({ data: { accountKey: 'acc', items: ITEMS } }),
+    mutate: () => mutation.onSuccess({ data: { accountKey: 'acc', items: previewItems } }),
   }),
   usePostTransactionsImport: () => ({ isPending: false, mutate: confirmMutate }),
 }));
@@ -86,6 +111,7 @@ const uploadFile = () =>
 
 afterEach(() => {
   cleanup();
+  previewItems = ITEMS;
   confirmMutate.mockClear();
 });
 
@@ -94,6 +120,14 @@ describe('import statement helpers', () => {
     const encoded = toBase64Url(new TextEncoder().encode('<OFX>?>').buffer as ArrayBuffer);
 
     expect(encoded).toBe('PE9GWD4_Pg');
+  });
+
+  it('treats a fallback suggestion as uncategorized until the user changes it', () => {
+    const item = UNKNOWN('acc:9');
+
+    expect(isUncategorized(item, { selected: true, categoryId: OUTROS.id })).toBe(true);
+    expect(isUncategorized(item, { selected: true, categoryId: CATEGORY.id })).toBe(false);
+    expect(isUncategorized(ITEMS[0]!, { selected: true, categoryId: CATEGORY.id })).toBe(false);
   });
 
   it('selects only new rows by default', () => {
@@ -133,5 +167,15 @@ describe('ImportStatementForm', () => {
       'acc:2',
     ]);
     expect(items[0]).toMatchObject({ categoryId: CATEGORY.id, amount: 25, type: 'expense' });
+  });
+  it('warns about purchases without a defined category', async () => {
+    previewItems = [...ITEMS, UNKNOWN('acc:5'), UNKNOWN('acc:6')];
+    renderForm();
+    uploadFile();
+
+    expect(
+      await screen.findByText(/2 compras não têm categoria definida e ficariam em Outros/)
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Sem categoria definida')).toHaveLength(2);
   });
 });
