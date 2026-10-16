@@ -43,7 +43,7 @@ export const ProfileConfigFinanceForm = ({
       onSuccess: (_, variables) => {
         toast.success('Configurações atualizadas com sucesso');
         const next = variables.data;
-        if (user) {
+        if (user && next) {
           updateUser({
             ...user,
             financialDayEnd: Number(next.financialDayEnd),
