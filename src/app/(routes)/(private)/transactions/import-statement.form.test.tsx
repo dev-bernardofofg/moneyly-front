@@ -30,6 +30,16 @@ const ITEMS: ImportPreviewItem[] = [
     suggestedCategoryId: CATEGORY.id,
   },
   {
+    externalId: 'acc:4',
+    type: 'income',
+    amount: 3822,
+    date: '2026-10-04T03:00:00.000Z',
+    title: 'PAGAMENTO ON LINE',
+    status: 'bill_payment',
+    duplicateOf: null,
+    suggestedCategoryId: CATEGORY.id,
+  },
+  {
     externalId: 'acc:3',
     type: 'income',
     amount: 3000,
@@ -87,7 +97,12 @@ describe('import statement helpers', () => {
   });
 
   it('selects only new rows by default', () => {
-    expect(ITEMS.map((item) => initialRowState(item).selected)).toEqual([true, false, false]);
+    expect(ITEMS.map((item) => initialRowState(item).selected)).toEqual([
+      true,
+      false,
+      false,
+      false,
+    ]);
   });
 });
 
@@ -99,6 +114,7 @@ describe('ImportStatementForm', () => {
     expect(await screen.findByText('Padaria')).toBeInTheDocument();
     expect(screen.getByText('Possível duplicata')).toBeInTheDocument();
     expect(screen.getByText('Já importada')).toBeInTheDocument();
+    expect(screen.getByText('Pagamento de fatura')).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: /Salário/ })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Importar 1 transação' })).toBeEnabled();
   });
