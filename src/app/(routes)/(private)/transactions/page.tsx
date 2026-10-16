@@ -3,6 +3,7 @@
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
 import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
+import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
 import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
@@ -125,9 +126,10 @@ const TransactionsPage = () => {
       />
       <StaggeredFade
         variant="page"
-        className="grid grid-rows-[auto_1fr]"
-        itemClassNames={[undefined, 'overflow-y-hidden size-full']}
+        className="grid grid-rows-[auto_auto_1fr]"
+        itemClassNames={['min-w-0', undefined, 'overflow-y-hidden size-full']}
       >
+        <PeriodNavigatorWrapper />
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {TRANSACTION_STATS_INTERATOR.map((stat) => (
             <BaseStats
