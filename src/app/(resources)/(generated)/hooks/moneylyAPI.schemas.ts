@@ -498,6 +498,7 @@ export const TransactionImportPreviewItemsItemStatus = {
   new: 'new',
   imported: 'imported',
   possible_duplicate: 'possible_duplicate',
+  bill_payment: 'bill_payment',
 } as const;
 
 export type TransactionImportPreviewItemsItem = {

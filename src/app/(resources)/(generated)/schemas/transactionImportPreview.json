@@ -12,7 +12,10 @@
           "amount": { "type": "number" },
           "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
           "title": { "type": "string" },
-          "status": { "type": "string", "enum": ["new", "imported", "possible_duplicate"] },
+          "status": {
+            "type": "string",
+            "enum": ["new", "imported", "possible_duplicate", "bill_payment"]
+          },
           "duplicateOf": { "type": "string", "nullable": true, "format": "uuid" },
           "suggestedCategoryId": { "type": "string", "nullable": true, "format": "uuid" }
         },
