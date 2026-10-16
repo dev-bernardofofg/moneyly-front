@@ -112,7 +112,11 @@ export type { FinancialInsights } from './types/FinancialInsights.ts';
 export type { FinancialPeriod } from './types/FinancialPeriod.ts';
 export type { FinancialPeriodSummary } from './types/FinancialPeriodSummary.ts';
 export type { FinancialPeriodUpdate } from './types/FinancialPeriodUpdate.ts';
-export type { ForecastResponse, OccurrencesTypeEnumKey } from './types/ForecastResponse.ts';
+export type {
+  ForecastResponse,
+  FreeBalanceConfidenceEnumKey,
+  OccurrencesTypeEnumKey,
+} from './types/ForecastResponse.ts';
 export type {
   GetBudgets200,
   GetBudgets400,
@@ -760,6 +764,7 @@ export { deleteRecurringTransactionsId404SuccessEnum } from './types/DeleteRecur
 export { deleteTransactionsId400SuccessEnum } from './types/DeleteTransactionsId.ts';
 export { deleteTransactionsId401SuccessEnum } from './types/DeleteTransactionsId.ts';
 export { deleteTransactionsId404SuccessEnum } from './types/DeleteTransactionsId.ts';
+export { freeBalanceConfidenceEnum } from './types/ForecastResponse.ts';
 export { occurrencesTypeEnum } from './types/ForecastResponse.ts';
 export { getBudgets400SuccessEnum } from './types/GetBudgets.ts';
 export { getBudgets401SuccessEnum } from './types/GetBudgets.ts';

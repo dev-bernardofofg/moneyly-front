@@ -34,17 +34,73 @@
               "title": { "type": "string" },
               "type": { "type": "string", "enum": ["income", "expense"] },
               "amount": { "type": "number" },
-              "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+              "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+              "categoryId": { "type": "string", "format": "uuid" }
             },
-            "required": ["recurringTransactionId", "title", "type", "amount", "date"]
+            "required": ["recurringTransactionId", "title", "type", "amount", "date", "categoryId"]
           }
         }
       },
       "required": ["recurringIncome", "recurringExpense", "occurrences"]
     },
     "projectedEndBalance": { "type": "number" },
+    "freeBalance": {
+      "type": "object",
+      "properties": {
+        "total": { "type": "number" },
+        "daysRemaining": { "type": "integer", "minimum": 0 },
+        "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+        "income": {
+          "type": "object",
+          "properties": {
+            "fixed": { "type": "number" },
+            "variable": { "type": "number" },
+            "pendingVariable": { "type": "number" }
+          },
+          "required": ["fixed", "variable", "pendingVariable"]
+        },
+        "commitments": {
+          "type": "object",
+          "properties": { "recurringExpenses": { "type": "number" } },
+          "required": ["recurringExpenses"]
+        },
+        "reserves": {
+          "type": "object",
+          "properties": { "budgets": { "type": "number" }, "goals": { "type": "number" } },
+          "required": ["budgets", "goals"]
+        },
+        "components": {
+          "type": "object",
+          "properties": {
+            "realizedBalance": { "type": "number" },
+            "futureRecurringIncome": { "type": "number" },
+            "futureRecurringExpense": { "type": "number" },
+            "pendingVariableIncome": { "type": "number" },
+            "budgetReserve": { "type": "number" },
+            "goalReserve": { "type": "number" }
+          },
+          "required": [
+            "realizedBalance",
+            "futureRecurringIncome",
+            "futureRecurringExpense",
+            "pendingVariableIncome",
+            "budgetReserve",
+            "goalReserve"
+          ]
+        }
+      },
+      "required": [
+        "total",
+        "daysRemaining",
+        "confidence",
+        "income",
+        "commitments",
+        "reserves",
+        "components"
+      ]
+    },
     "asOf": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },
-  "required": ["period", "realized", "projected", "projectedEndBalance", "asOf"],
+  "required": ["period", "realized", "projected", "projectedEndBalance", "freeBalance", "asOf"],
   "x-readme-ref-name": "ForecastResponse"
 }

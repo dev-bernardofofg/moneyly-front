@@ -16,8 +16,6 @@ export default defineConfig({
           name: 'customInstance',
         },
         query: {
-          useQuery: true,
-          useInfinite: false,
           options: {
             staleTime: 10000,
           },

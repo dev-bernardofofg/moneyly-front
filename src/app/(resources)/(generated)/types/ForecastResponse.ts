@@ -10,6 +10,15 @@ export const occurrencesTypeEnum = {
 
 export type OccurrencesTypeEnumKey = (typeof occurrencesTypeEnum)[keyof typeof occurrencesTypeEnum];
 
+export const freeBalanceConfidenceEnum = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;
+
+export type FreeBalanceConfidenceEnumKey =
+  (typeof freeBalanceConfidenceEnum)[keyof typeof freeBalanceConfidenceEnum];
+
 export type ForecastResponse = {
   /**
    * @type object
@@ -85,12 +94,102 @@ export type ForecastResponse = {
        * @type string
        */
       date: string;
+      /**
+       * @type string, uuid
+       */
+      categoryId: string;
     }[];
   };
   /**
    * @type number
    */
   projectedEndBalance: number;
+  /**
+   * @type object
+   */
+  freeBalance: {
+    /**
+     * @type number
+     */
+    total: number;
+    /**
+     * @minLength 0
+     * @type integer
+     */
+    daysRemaining: number;
+    /**
+     * @type string
+     */
+    confidence: FreeBalanceConfidenceEnumKey;
+    /**
+     * @type object
+     */
+    income: {
+      /**
+       * @type number
+       */
+      fixed: number;
+      /**
+       * @type number
+       */
+      variable: number;
+      /**
+       * @type number
+       */
+      pendingVariable: number;
+    };
+    /**
+     * @type object
+     */
+    commitments: {
+      /**
+       * @type number
+       */
+      recurringExpenses: number;
+    };
+    /**
+     * @type object
+     */
+    reserves: {
+      /**
+       * @type number
+       */
+      budgets: number;
+      /**
+       * @type number
+       */
+      goals: number;
+    };
+    /**
+     * @type object
+     */
+    components: {
+      /**
+       * @type number
+       */
+      realizedBalance: number;
+      /**
+       * @type number
+       */
+      futureRecurringIncome: number;
+      /**
+       * @type number
+       */
+      futureRecurringExpense: number;
+      /**
+       * @type number
+       */
+      pendingVariableIncome: number;
+      /**
+       * @type number
+       */
+      budgetReserve: number;
+      /**
+       * @type number
+       */
+      goalReserve: number;
+    };
+  };
   /**
    * @type string
    */
