@@ -16,9 +16,10 @@ import { GoalDefaultValues, GoalFormValues, GoalSchema } from '../(schemas)/goal
 
 interface UpsertGoalFormProps {
   goal?: Goal;
+  onSaved?: () => void;
 }
 
-export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
+export const UpsertGoalForm = ({ goal, onSaved }: UpsertGoalFormProps) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<GoalFormValues>({
       schema: GoalSchema,
@@ -36,6 +37,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
         create: 'Meta criada com sucesso',
         update: 'Meta atualizada com sucesso',
       },
+      onSaved,
     });
 
   const createMutation = usePostGoals({
@@ -84,6 +86,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
           <DialogFormFooter
             submitLabel={goal ? 'Atualizar' : 'Criar'}
             isLoading={goal ? updateMutation.isPending : createMutation.isPending}
+            hideCancel={Boolean(onSaved)}
           />
         </BaseForm>
       </Form>

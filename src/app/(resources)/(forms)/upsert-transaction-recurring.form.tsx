@@ -58,8 +58,10 @@ const FIELDS = [
 
 export const UpsertTransactionRecurringForm = ({
   recurringTransaction,
+  onSaved,
 }: {
   recurringTransaction?: RecurringTransaction;
+  onSaved?: () => void;
 }) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<UpsertTransactionRecurringFormValues>({
@@ -90,6 +92,7 @@ export const UpsertTransactionRecurringForm = ({
         create: 'Transação recorrente criada com sucesso',
         update: 'Transação recorrente atualizada com sucesso',
       },
+      onSaved,
     });
 
   const frequency = form.watch('frequency');
@@ -264,6 +267,7 @@ export const UpsertTransactionRecurringForm = ({
           <DialogFormFooter
             submitLabel={recurringTransaction ? 'Atualizar' : 'Criar'}
             isLoading={isCreating || isUpdating}
+            hideCancel={Boolean(onSaved)}
           />
         </BaseForm>
       </Form>

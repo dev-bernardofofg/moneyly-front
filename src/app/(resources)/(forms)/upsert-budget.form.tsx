@@ -24,9 +24,10 @@ import { TransactionCategory } from '../(generated)/hooks/moneylyAPI.schemas';
 
 interface UpsertBudgetFormProps {
   budget?: BudgetProgress;
+  onSaved?: () => void;
 }
 
-export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
+export const UpsertBudgetForm = ({ budget, onSaved }: UpsertBudgetFormProps) => {
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<CreateBudgetFormValues>({
       schema: CreateBudgetSchema,
@@ -44,6 +45,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
         create: 'Orçamento criado com sucesso',
         update: 'Orçamento atualizado com sucesso',
       },
+      onSaved,
     });
 
   const createMutation = usePostBudgets({
@@ -93,6 +95,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
           <DialogFormFooter
             submitLabel={budget ? 'Atualizar' : 'Criar'}
             isLoading={budget ? updateMutation.isPending : createMutation.isPending}
+            hideCancel={Boolean(onSaved)}
           />
         </BaseForm>
       </Form>

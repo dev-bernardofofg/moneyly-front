@@ -19,6 +19,8 @@ interface UseUpsertDialogOptions<TForm extends FieldValues> {
   /** Campos do form que recebem erro de API (setFormFieldErrors). */
   errorFields: Path<TForm>[];
   successMessage: { create: string; update: string };
+  /** Fora de dialog próprio (ex.: wizard): chamado no lugar de fechar o dialog. */
+  onSaved?: () => void;
 }
 
 /**
@@ -32,6 +34,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
   invalidateKeys,
   errorFields,
   successMessage,
+  onSaved,
 }: UseUpsertDialogOptions<TForm>) => {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
@@ -51,7 +54,7 @@ export const useUpsertDialog = <TForm extends FieldValues>({
   const invalidate = () =>
     invalidateKeys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
 
-  const close = () => closeRef.current?.click();
+  const close = () => (onSaved ? onSaved() : closeRef.current?.click());
 
   const onCreated = () => {
     toast.success(successMessage.create);
