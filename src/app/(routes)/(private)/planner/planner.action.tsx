@@ -5,12 +5,15 @@ import { useGetOverviewPlanner } from '@/app/(resources)/(generated)/hooks/overv
 
 export const usePlannerAction = () => {
   const { selectedPeriodId } = usePeriod();
+  const periodId = selectedPeriodId || undefined;
 
-  const { data: budgets, isFetching: isFetchingBudgets } = useGetBudgets({
-    periodId: selectedPeriodId || undefined,
-  });
+  const { data: budgets, isFetching: isFetchingBudgets } = useGetBudgets({ periodId });
   const { data: goals, isFetching: isFetchingGoals } = useGetGoals();
-  const { data: overviewPlanner, isFetching: isFetchingOverview } = useGetOverviewPlanner();
+  const {
+    data: overviewPlanner,
+    isFetching: isFetchingOverview,
+    isError: isOverviewError,
+  } = useGetOverviewPlanner({ periodId });
 
   return {
     data: {
@@ -18,11 +21,13 @@ export const usePlannerAction = () => {
       goals: goals?.data ?? [],
       stats: overviewPlanner?.data?.stats,
       alerts: overviewPlanner?.data?.alerts ?? [],
+      freeBalanceImpact: overviewPlanner?.data?.freeBalanceImpact,
     },
     loading: {
       isFetchingBudgets,
       isFetchingGoals,
       isFetchingOverview,
+      isOverviewError,
     },
   };
 };

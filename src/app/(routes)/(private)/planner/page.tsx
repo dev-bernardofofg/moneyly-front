@@ -13,6 +13,7 @@ import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertBudgetForm } from '@/app/(resources)/(forms)/upsert-budget.form';
 import { UpsertGoalForm } from '@/app/(resources)/(forms)/upsert-goal.form';
 import { Target, Wallet } from 'lucide-react';
+import { FreeBalanceImpactSection } from './free-balance-impact-section';
 import { usePlannerAction } from './planner.action';
 
 const PlannerPage = () => {
@@ -59,8 +60,8 @@ const PlannerPage = () => {
       />
       <StaggeredFade
         variant="page"
-        className="grid grid-rows-[auto_auto_1fr_1fr] size-full"
-        itemClassNames={['min-w-0', undefined, 'min-w-0', 'min-w-0']}
+        className="grid grid-rows-[auto_auto_auto_1fr_1fr] size-full"
+        itemClassNames={['min-w-0', undefined, 'min-w-0', 'min-w-0', 'min-w-0']}
       >
         <PeriodNavigatorWrapper />
         <PlannerStats
@@ -69,6 +70,11 @@ const PlannerPage = () => {
           alreadySaved={data.stats?.totalSaved}
           alerts={data.alerts}
           loading={loading.isFetchingOverview}
+        />
+        <FreeBalanceImpactSection
+          impact={data.freeBalanceImpact}
+          loading={loading.isFetchingOverview}
+          error={loading.isOverviewError}
         />
 
         <Section
