@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "created": { "type": "integer" }, "skipped": { "type": "integer" } },
+  "required": ["created", "skipped"],
+  "x-readme-ref-name": "TransactionImportResult"
+}

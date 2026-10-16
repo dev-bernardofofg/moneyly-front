@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "accountKey": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "externalId": { "type": "string" },
+          "type": { "type": "string", "enum": ["income", "expense"] },
+          "amount": { "type": "number" },
+          "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+          "title": { "type": "string" },
+          "status": { "type": "string", "enum": ["new", "imported", "possible_duplicate"] },
+          "duplicateOf": { "type": "string", "nullable": true, "format": "uuid" },
+          "suggestedCategoryId": { "type": "string", "nullable": true, "format": "uuid" }
+        },
+        "required": [
+          "externalId",
+          "type",
+          "amount",
+          "date",
+          "title",
+          "status",
+          "duplicateOf",
+          "suggestedCategoryId"
+        ]
+      }
+    }
+  },
+  "required": ["accountKey", "items"],
+  "x-readme-ref-name": "TransactionImportPreview"
+}

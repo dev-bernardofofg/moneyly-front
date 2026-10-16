@@ -483,6 +483,46 @@ export interface SubscriptionCandidate {
   monthlyCost: number;
 }
 
+export type TransactionImportPreviewItemsItemType =
+  (typeof TransactionImportPreviewItemsItemType)[keyof typeof TransactionImportPreviewItemsItemType];
+
+export const TransactionImportPreviewItemsItemType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type TransactionImportPreviewItemsItemStatus =
+  (typeof TransactionImportPreviewItemsItemStatus)[keyof typeof TransactionImportPreviewItemsItemStatus];
+
+export const TransactionImportPreviewItemsItemStatus = {
+  new: 'new',
+  imported: 'imported',
+  possible_duplicate: 'possible_duplicate',
+} as const;
+
+export type TransactionImportPreviewItemsItem = {
+  externalId: string;
+  type: TransactionImportPreviewItemsItemType;
+  amount: number;
+  date: string;
+  title: string;
+  status: TransactionImportPreviewItemsItemStatus;
+  /** @nullable */
+  duplicateOf: string | null;
+  /** @nullable */
+  suggestedCategoryId: string | null;
+};
+
+export interface TransactionImportPreview {
+  accountKey: string;
+  items: TransactionImportPreviewItemsItem[];
+}
+
+export interface TransactionImportResult {
+  created: number;
+  skipped: number;
+}
+
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 
 export const NotificationType = {
@@ -2299,6 +2339,86 @@ export type GetTransactionsSubscriptions400 = {
 };
 
 export type GetTransactionsSubscriptions401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostTransactionsImportPreviewBody = {
+  /**
+   * @minLength 1
+   * @maxLength 7000000
+   * @pattern ^[A-Za-z0-9_-]+$
+   */
+  file: string;
+};
+
+export type PostTransactionsImportPreview200 = {
+  data: TransactionImportPreview;
+  message?: string;
+};
+
+export type PostTransactionsImportPreview400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostTransactionsImportPreview401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostTransactionsImportBodyItemsItemType =
+  (typeof PostTransactionsImportBodyItemsItemType)[keyof typeof PostTransactionsImportBodyItemsItemType];
+
+export const PostTransactionsImportBodyItemsItemType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type PostTransactionsImportBodyItemsItem = {
+  /**
+   * @minLength 1
+   * @maxLength 200
+   */
+  externalId: string;
+  type: PostTransactionsImportBodyItemsItemType;
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * @maximum 999999999
+   * @exclusiveMinimum 0
+   */
+  amount: number;
+  date: string;
+  categoryId: string;
+};
+
+export type PostTransactionsImportBody = {
+  /**
+   * @minItems 1
+   * @maxItems 500
+   */
+  items: PostTransactionsImportBodyItemsItem[];
+};
+
+export type PostTransactionsImport201 = {
+  data: TransactionImportResult;
+  message?: string;
+};
+
+export type PostTransactionsImport400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostTransactionsImport401 = {
   success: false;
   error: string;
   details?: unknown | null;

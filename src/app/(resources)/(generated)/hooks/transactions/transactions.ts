@@ -49,6 +49,14 @@ import type {
   PostTransactionsCreate400,
   PostTransactionsCreate401,
   PostTransactionsCreateBody,
+  PostTransactionsImport201,
+  PostTransactionsImport400,
+  PostTransactionsImport401,
+  PostTransactionsImportBody,
+  PostTransactionsImportPreview200,
+  PostTransactionsImportPreview400,
+  PostTransactionsImportPreview401,
+  PostTransactionsImportPreviewBody,
   PutTransactionsId200,
   PutTransactionsId400,
   PutTransactionsId401,
@@ -1023,3 +1031,172 @@ export function useGetTransactionsSubscriptions<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary Prévia de importação de extrato OFX
+ */
+export const postTransactionsImportPreview = (
+  postTransactionsImportPreviewBody?: PostTransactionsImportPreviewBody,
+  signal?: AbortSignal
+) => {
+  return customInstance<PostTransactionsImportPreview200>({
+    url: `/transactions/import/preview`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: postTransactionsImportPreviewBody,
+    signal,
+  });
+};
+
+export const getPostTransactionsImportPreviewMutationOptions = <
+  TError = PostTransactionsImportPreview400 | PostTransactionsImportPreview401,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postTransactionsImportPreview>>,
+    TError,
+    { data?: PostTransactionsImportPreviewBody },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postTransactionsImportPreview>>,
+  TError,
+  { data?: PostTransactionsImportPreviewBody },
+  TContext
+> => {
+  const mutationKey = ['postTransactionsImportPreview'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postTransactionsImportPreview>>,
+    { data?: PostTransactionsImportPreviewBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postTransactionsImportPreview(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostTransactionsImportPreviewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postTransactionsImportPreview>>
+>;
+export type PostTransactionsImportPreviewMutationBody =
+  | PostTransactionsImportPreviewBody
+  | undefined;
+export type PostTransactionsImportPreviewMutationError =
+  | PostTransactionsImportPreview400
+  | PostTransactionsImportPreview401;
+
+/**
+ * @summary Prévia de importação de extrato OFX
+ */
+export const usePostTransactionsImportPreview = <
+  TError = PostTransactionsImportPreview400 | PostTransactionsImportPreview401,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postTransactionsImportPreview>>,
+      TError,
+      { data?: PostTransactionsImportPreviewBody },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof postTransactionsImportPreview>>,
+  TError,
+  { data?: PostTransactionsImportPreviewBody },
+  TContext
+> => {
+  return useMutation(getPostTransactionsImportPreviewMutationOptions(options), queryClient);
+};
+/**
+ * @summary Importar transações confirmadas do extrato
+ */
+export const postTransactionsImport = (
+  postTransactionsImportBody?: PostTransactionsImportBody,
+  signal?: AbortSignal
+) => {
+  return customInstance<PostTransactionsImport201>({
+    url: `/transactions/import`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: postTransactionsImportBody,
+    signal,
+  });
+};
+
+export const getPostTransactionsImportMutationOptions = <
+  TError = PostTransactionsImport400 | PostTransactionsImport401,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postTransactionsImport>>,
+    TError,
+    { data?: PostTransactionsImportBody },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postTransactionsImport>>,
+  TError,
+  { data?: PostTransactionsImportBody },
+  TContext
+> => {
+  const mutationKey = ['postTransactionsImport'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postTransactionsImport>>,
+    { data?: PostTransactionsImportBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postTransactionsImport(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostTransactionsImportMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postTransactionsImport>>
+>;
+export type PostTransactionsImportMutationBody = PostTransactionsImportBody | undefined;
+export type PostTransactionsImportMutationError =
+  | PostTransactionsImport400
+  | PostTransactionsImport401;
+
+/**
+ * @summary Importar transações confirmadas do extrato
+ */
+export const usePostTransactionsImport = <
+  TError = PostTransactionsImport400 | PostTransactionsImport401,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postTransactionsImport>>,
+      TError,
+      { data?: PostTransactionsImportBody },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof postTransactionsImport>>,
+  TError,
+  { data?: PostTransactionsImportBody },
+  TContext
+> => {
+  return useMutation(getPostTransactionsImportMutationOptions(options), queryClient);
+};

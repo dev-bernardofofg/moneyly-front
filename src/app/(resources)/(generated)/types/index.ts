@@ -598,6 +598,27 @@ export type {
   PostTransactionsCreateMutationResponse,
 } from './PostTransactionsCreate.ts';
 export type {
+  ItemsTypeEnum2Key,
+  PostTransactionsImport201,
+  PostTransactionsImport400,
+  PostTransactionsImport400SuccessEnumKey,
+  PostTransactionsImport401,
+  PostTransactionsImport401SuccessEnumKey,
+  PostTransactionsImportMutation,
+  PostTransactionsImportMutationRequest,
+  PostTransactionsImportMutationResponse,
+} from './PostTransactionsImport.ts';
+export type {
+  PostTransactionsImportPreview200,
+  PostTransactionsImportPreview400,
+  PostTransactionsImportPreview400SuccessEnumKey,
+  PostTransactionsImportPreview401,
+  PostTransactionsImportPreview401SuccessEnumKey,
+  PostTransactionsImportPreviewMutation,
+  PostTransactionsImportPreviewMutationRequest,
+  PostTransactionsImportPreviewMutationResponse,
+} from './PostTransactionsImportPreview.ts';
+export type {
   PutBudgetsId200,
   PutBudgetsId400,
   PutBudgetsId400SuccessEnumKey,
@@ -735,6 +756,12 @@ export type {
 } from './SubscriptionCandidate.ts';
 export type { Transaction, TransactionTypeEnumKey } from './Transaction.ts';
 export type { TransactionCategory } from './TransactionCategory.ts';
+export type {
+  ItemsStatusEnumKey,
+  ItemsTypeEnumKey,
+  TransactionImportPreview,
+} from './TransactionImportPreview.ts';
+export type { TransactionImportResult } from './TransactionImportResult.ts';
 export type { TransactionListSummary } from './TransactionListSummary.ts';
 export type { TransactionSummary } from './TransactionSummary.ts';
 export type { User } from './User.ts';
@@ -876,6 +903,11 @@ export { postRecurringTransactionsFromSubscriptionMutationRequestCadenceEnum } f
 export { postTransactionsCreate400SuccessEnum } from './PostTransactionsCreate.ts';
 export { postTransactionsCreate401SuccessEnum } from './PostTransactionsCreate.ts';
 export { postTransactionsCreateMutationRequestTypeEnum } from './PostTransactionsCreate.ts';
+export { itemsTypeEnum2 } from './PostTransactionsImport.ts';
+export { postTransactionsImport400SuccessEnum } from './PostTransactionsImport.ts';
+export { postTransactionsImport401SuccessEnum } from './PostTransactionsImport.ts';
+export { postTransactionsImportPreview400SuccessEnum } from './PostTransactionsImportPreview.ts';
+export { postTransactionsImportPreview401SuccessEnum } from './PostTransactionsImportPreview.ts';
 export { putBudgetsId400SuccessEnum } from './PutBudgetsId.ts';
 export { putBudgetsId401SuccessEnum } from './PutBudgetsId.ts';
 export { putBudgetsId404SuccessEnum } from './PutBudgetsId.ts';
@@ -910,3 +942,5 @@ export { recurringTransactionFrequencyEnum } from './RecurringTransaction.ts';
 export { recurringTransactionTypeEnum } from './RecurringTransaction.ts';
 export { subscriptionCandidateCadenceEnum } from './SubscriptionCandidate.ts';
 export { transactionTypeEnum } from './Transaction.ts';
+export { itemsStatusEnum } from './TransactionImportPreview.ts';
+export { itemsTypeEnum } from './TransactionImportPreview.ts';
