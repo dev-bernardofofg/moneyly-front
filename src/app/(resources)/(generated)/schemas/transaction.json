@@ -13,6 +13,7 @@
     "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "periodId": { "type": "string", "nullable": true, "format": "uuid" },
     "recurringTransactionId": { "type": "string", "nullable": true, "format": "uuid" },
+    "accountId": { "type": "string", "format": "uuid" },
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "category": {
@@ -31,6 +32,7 @@
     "date",
     "periodId",
     "recurringTransactionId",
+    "accountId",
     "createdAt",
     "updatedAt",
     "category"

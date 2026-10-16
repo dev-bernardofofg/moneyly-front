@@ -93,6 +93,10 @@ export type PostTransactionsCreateMutationRequest = {
    */
   periodId?: string;
   /**
+   * @type string | undefined, uuid
+   */
+  accountId?: string;
+  /**
    * @maxLength 500
    * @type string | undefined
    */

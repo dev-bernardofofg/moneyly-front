@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "type": { "type": "string", "enum": ["checking", "credit_card"] },
+    "closingDay": { "type": "integer", "nullable": true },
+    "dueDay": { "type": "integer", "nullable": true },
+    "isDefault": { "type": "boolean" },
+    "isActive": { "type": "boolean" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": [
+    "id",
+    "userId",
+    "name",
+    "type",
+    "closingDay",
+    "dueDay",
+    "isDefault",
+    "isActive",
+    "createdAt",
+    "updatedAt"
+  ],
+  "x-readme-ref-name": "Account"
+}

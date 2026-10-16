@@ -28,6 +28,10 @@ export type GetTransactionsExportQueryParams = {
    * @type string | undefined
    */
   type?: GetTransactionsExportQueryParamsTypeEnumKey;
+  /**
+   * @type string | undefined, uuid
+   */
+  accountId?: string;
 };
 
 /**

@@ -72,6 +72,10 @@ export type ItemsTypeEnum2Key = (typeof itemsTypeEnum2)[keyof typeof itemsTypeEn
 
 export type PostTransactionsImportMutationRequest = {
   /**
+   * @type string, uuid
+   */
+  accountId: string;
+  /**
    * @type array
    */
   items: {

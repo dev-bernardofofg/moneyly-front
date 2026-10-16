@@ -47,6 +47,10 @@ export type Transaction = {
    */
   recurringTransactionId: string | null;
   /**
+   * @type string, uuid
+   */
+  accountId: string;
+  /**
    * @type string
    */
   createdAt: string;

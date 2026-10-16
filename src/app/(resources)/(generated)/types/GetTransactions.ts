@@ -36,6 +36,10 @@ export type GetTransactionsQueryParams = {
    */
   type?: GetTransactionsQueryParamsTypeEnumKey;
   /**
+   * @type string | undefined, uuid
+   */
+  accountId?: string;
+  /**
    * @type integer | undefined
    */
   page?: number;

@@ -1,3 +1,4 @@
+export type { Account, AccountTypeEnumKey } from './types/Account.ts';
 export type { AuthRefresh } from './types/AuthRefresh.ts';
 export type { AuthSession } from './types/AuthSession.ts';
 export type { Budget } from './types/Budget.ts';
@@ -12,6 +13,18 @@ export type {
 export type { CurrentPeriodSummary } from './types/CurrentPeriodSummary.ts';
 export type { ComparisonSignalEnumKey, DashboardOverview } from './types/DashboardOverview.ts';
 export type { DashboardStats } from './types/DashboardStats.ts';
+export type {
+  DeleteAccountsId200,
+  DeleteAccountsId400,
+  DeleteAccountsId400SuccessEnumKey,
+  DeleteAccountsId401,
+  DeleteAccountsId401SuccessEnumKey,
+  DeleteAccountsId404,
+  DeleteAccountsId404SuccessEnumKey,
+  DeleteAccountsIdMutation,
+  DeleteAccountsIdMutationResponse,
+  DeleteAccountsIdPathParams,
+} from './types/DeleteAccountsId.ts';
 export type {
   DeleteBudgetsId200,
   DeleteBudgetsId400,
@@ -117,6 +130,15 @@ export type {
   FreeBalanceConfidenceEnumKey,
   OccurrencesTypeEnumKey,
 } from './types/ForecastResponse.ts';
+export type {
+  GetAccounts200,
+  GetAccounts400,
+  GetAccounts400SuccessEnumKey,
+  GetAccounts401,
+  GetAccounts401SuccessEnumKey,
+  GetAccountsQuery,
+  GetAccountsQueryResponse,
+} from './types/GetAccounts.ts';
 export type {
   GetBudgets200,
   GetBudgets400,
@@ -449,6 +471,18 @@ export type {
   PlannerOverview,
 } from './types/PlannerOverview.ts';
 export type {
+  PostAccounts201,
+  PostAccounts400,
+  PostAccounts400SuccessEnumKey,
+  PostAccounts401,
+  PostAccounts401SuccessEnumKey,
+  PostAccountsMutation,
+  PostAccountsMutationRequest,
+  PostAccountsMutationRequestTypeEnum2Key,
+  PostAccountsMutationRequestTypeEnumKey,
+  PostAccountsMutationResponse,
+} from './types/PostAccounts.ts';
+export type {
   PostAuthGoogle200,
   PostAuthGoogle400,
   PostAuthGoogle400SuccessEnumKey,
@@ -619,6 +653,19 @@ export type {
   PostTransactionsImportPreviewMutationResponse,
 } from './types/PostTransactionsImportPreview.ts';
 export type {
+  PutAccountsId200,
+  PutAccountsId400,
+  PutAccountsId400SuccessEnumKey,
+  PutAccountsId401,
+  PutAccountsId401SuccessEnumKey,
+  PutAccountsId404,
+  PutAccountsId404SuccessEnumKey,
+  PutAccountsIdMutation,
+  PutAccountsIdMutationRequest,
+  PutAccountsIdMutationResponse,
+  PutAccountsIdPathParams,
+} from './types/PutAccountsId.ts';
+export type {
   PutBudgetsId200,
   PutBudgetsId400,
   PutBudgetsId400SuccessEnumKey,
@@ -766,9 +813,13 @@ export type { TransactionImportResult } from './types/TransactionImportResult.ts
 export type { TransactionListSummary } from './types/TransactionListSummary.ts';
 export type { TransactionSummary } from './types/TransactionSummary.ts';
 export type { User } from './types/User.ts';
+export { accountTypeEnum } from './types/Account.ts';
 export { byCategorySignalEnum } from './types/ComparativeInsights.ts';
 export { totalsSignalEnum } from './types/ComparativeInsights.ts';
 export { comparisonSignalEnum } from './types/DashboardOverview.ts';
+export { deleteAccountsId400SuccessEnum } from './types/DeleteAccountsId.ts';
+export { deleteAccountsId401SuccessEnum } from './types/DeleteAccountsId.ts';
+export { deleteAccountsId404SuccessEnum } from './types/DeleteAccountsId.ts';
 export { deleteBudgetsId400SuccessEnum } from './types/DeleteBudgetsId.ts';
 export { deleteBudgetsId401SuccessEnum } from './types/DeleteBudgetsId.ts';
 export { deleteBudgetsId404SuccessEnum } from './types/DeleteBudgetsId.ts';
@@ -795,6 +846,8 @@ export { deleteTransactionsId401SuccessEnum } from './types/DeleteTransactionsId
 export { deleteTransactionsId404SuccessEnum } from './types/DeleteTransactionsId.ts';
 export { freeBalanceConfidenceEnum } from './types/ForecastResponse.ts';
 export { occurrencesTypeEnum } from './types/ForecastResponse.ts';
+export { getAccounts400SuccessEnum } from './types/GetAccounts.ts';
+export { getAccounts401SuccessEnum } from './types/GetAccounts.ts';
 export { getBudgets400SuccessEnum } from './types/GetBudgets.ts';
 export { getBudgets401SuccessEnum } from './types/GetBudgets.ts';
 export { getCategories200SuccessEnum } from './types/GetCategories.ts';
@@ -873,6 +926,10 @@ export { patchRecurringTransactionsIdReactivate401SuccessEnum } from './types/Pa
 export { patchRecurringTransactionsIdReactivate404SuccessEnum } from './types/PatchRecurringTransactionsIdReactivate.ts';
 export { alertsPriorityEnum } from './types/PlannerOverview.ts';
 export { alertsTypeEnum } from './types/PlannerOverview.ts';
+export { postAccounts400SuccessEnum } from './types/PostAccounts.ts';
+export { postAccounts401SuccessEnum } from './types/PostAccounts.ts';
+export { postAccountsMutationRequestTypeEnum } from './types/PostAccounts.ts';
+export { postAccountsMutationRequestTypeEnum2 } from './types/PostAccounts.ts';
 export { postAuthGoogle400SuccessEnum } from './types/PostAuthGoogle.ts';
 export { postAuthLogout400SuccessEnum } from './types/PostAuthLogout.ts';
 export { postAuthLogout401SuccessEnum } from './types/PostAuthLogout.ts';
@@ -909,6 +966,9 @@ export { postTransactionsImport400SuccessEnum } from './types/PostTransactionsIm
 export { postTransactionsImport401SuccessEnum } from './types/PostTransactionsImport.ts';
 export { postTransactionsImportPreview400SuccessEnum } from './types/PostTransactionsImportPreview.ts';
 export { postTransactionsImportPreview401SuccessEnum } from './types/PostTransactionsImportPreview.ts';
+export { putAccountsId400SuccessEnum } from './types/PutAccountsId.ts';
+export { putAccountsId401SuccessEnum } from './types/PutAccountsId.ts';
+export { putAccountsId404SuccessEnum } from './types/PutAccountsId.ts';
 export { putBudgetsId400SuccessEnum } from './types/PutBudgetsId.ts';
 export { putBudgetsId401SuccessEnum } from './types/PutBudgetsId.ts';
 export { putBudgetsId404SuccessEnum } from './types/PutBudgetsId.ts';

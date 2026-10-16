@@ -30,6 +30,7 @@ export interface Transaction {
   periodId: string | null;
   /** @nullable */
   recurringTransactionId: string | null;
+  accountId: string;
   createdAt: string;
   updatedAt: string;
   category: TransactionCategory;
@@ -702,6 +703,28 @@ export interface TransactionListSummary {
   percentUsed: number | null;
   /** @nullable */
   alert: string | null;
+}
+
+export type AccountType = (typeof AccountType)[keyof typeof AccountType];
+
+export const AccountType = {
+  checking: 'checking',
+  credit_card: 'credit_card',
+} as const;
+
+export interface Account {
+  id: string;
+  userId: string;
+  name: string;
+  type: AccountType;
+  /** @nullable */
+  closingDay: number | null;
+  /** @nullable */
+  dueDay: number | null;
+  isDefault: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Company {
@@ -2116,6 +2139,7 @@ export type PostTransactionsCreateBody = {
   /** @minLength 1 */
   category: string;
   periodId?: string;
+  accountId?: string;
   /** @maxLength 500 */
   description?: string;
   date?: string;
@@ -2144,6 +2168,7 @@ export type GetTransactionsParams = {
   endDate?: string;
   periodId?: string;
   type?: GetTransactionsType;
+  accountId?: string;
   /**
    * @exclusiveMinimum 0
    */
@@ -2209,6 +2234,7 @@ export type PutTransactionsIdBody = {
   /** @minLength 1 */
   category?: string;
   periodId?: string;
+  accountId?: string;
   /** @maxLength 500 */
   description?: string;
   date?: string;
@@ -2316,6 +2342,7 @@ export type GetTransactionsExportParams = {
   endDate?: string;
   periodId?: string;
   type?: GetTransactionsExportType;
+  accountId?: string;
 };
 
 export type GetTransactionsExportType =
@@ -2411,6 +2438,7 @@ export type PostTransactionsImportBodyItemsItem = {
 };
 
 export type PostTransactionsImportBody = {
+  accountId: string;
   /**
    * @minItems 1
    * @maxItems 500
@@ -2554,6 +2582,132 @@ export type GetOverviewInsightsComparison400 = {
 };
 
 export type GetOverviewInsightsComparison401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetAccounts200 = {
+  data: Account[];
+  message?: string;
+};
+
+export type GetAccounts400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetAccounts401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAccountsBody =
+  | {
+      type: 'checking';
+      /**
+       * @minLength 1
+       * @maxLength 60
+       */
+      name: string;
+    }
+  | {
+      type: 'credit_card';
+      /**
+       * @minLength 1
+       * @maxLength 60
+       */
+      name: string;
+      /**
+       * @minimum 1
+       * @maximum 31
+       */
+      closingDay: number;
+      /**
+       * @minimum 1
+       * @maximum 31
+       */
+      dueDay: number;
+    };
+
+export type PostAccounts201 = {
+  data: Account;
+  message?: string;
+};
+
+export type PostAccounts400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PostAccounts401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutAccountsIdBody = {
+  /**
+   * @minLength 1
+   * @maxLength 60
+   */
+  name?: string;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  closingDay?: number;
+  /**
+   * @minimum 1
+   * @maximum 31
+   */
+  dueDay?: number;
+};
+
+export type PutAccountsId200 = {
+  data: Account;
+  message?: string;
+};
+
+export type PutAccountsId400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutAccountsId401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type PutAccountsId404 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteAccountsId200 = {
+  data: unknown | null;
+  message?: string;
+};
+
+export type DeleteAccountsId400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteAccountsId401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type DeleteAccountsId404 = {
   success: false;
   error: string;
   details?: unknown | null;
