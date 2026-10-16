@@ -55,3 +55,12 @@ concluir o onboarding.
 
 Vitest + Testing Library: `free-balance-section`, `free-balance-breakdown-section` (inclui
 mensagens), `free-balance-impact-section`, `initial-config-dialog`.
+
+## Contas e cartões (F12)
+
+- `/accounts`: CRUD de contas e cartões (`upsert-account.form.tsx`); cartão pede fechamento e
+  vencimento. Spec do contrato: `moneyly-back/.specs/features/12-accounts-and-cards.md`.
+- Transação tem seletor de conta (vazio = conta padrão); `/transactions` filtra por conta e
+  mostra a coluna Conta (`useAccounts` em `(hooks)/use-accounts.ts`).
+- Importar extrato exige escolher a conta ou o cartão do arquivo.
+- Compra no cartão aparece no período do vencimento da fatura: o front só exibe, o back calcula.
