@@ -1,20 +1,26 @@
-# Moneyly - Sistema de Gestão Financeira
+# Moneyly — salário sob controle
 
 <div align="center">
   <img src="public/logo-moneyly.png" alt="Moneyly Logo" width="120" height="120" />
   <h1>Moneyly</h1>
-  <p><strong>Gerencie suas finanças de forma inteligente</strong></p>
+  <p><strong>Saiba quanto pode gastar até receber novamente</strong></p>
 </div>
 
 ## Sobre o Projeto
 
-O **Moneyly** é uma aplicação web moderna para gestão financeira pessoal, desenvolvida com Next.js 15 e TypeScript. A aplicação permite aos usuários controlar suas receitas, despesas, categorias e acompanhar seu orçamento mensal de forma intuitiva e eficiente.
+O **Moneyly** é um copiloto financeiro para pessoas assalariadas que também recebem renda
+variável. Em vez de mostrar apenas o saldo da conta, ele calcula o **Saldo Livre** do ciclo:
+quanto ainda pode ser gasto depois de considerar contas recorrentes, orçamento, metas e
+horas extras.
 
 ### ✨ Principais Funcionalidades
 
 - **Autenticação Segura**: Login/registro com email/senha e integração com Google OAuth
 - 💰 **Gestão de Transações**: Adicionar, editar e visualizar receitas e despesas
 - 📊 **Dashboard Inteligente**: Visão geral das finanças com estatísticas em tempo real
+- **Saldo Livre**: valor disponível até o fim do ciclo, com memória de cálculo
+- **Renda Variável**: horas extras integradas às entradas do período
+- **Planejamento**: contas recorrentes, orçamentos e metas considerados na projeção
 - 🏷️ **Categorização**: Organize transações por categorias personalizáveis
 - 📅 **Período Financeiro Flexível**: Configure seu próprio período financeiro mensal
 - 🌙 **Tema Escuro/Claro**: Interface adaptável com suporte a temas

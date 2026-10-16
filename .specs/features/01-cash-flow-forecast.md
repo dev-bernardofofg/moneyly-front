@@ -1,10 +1,13 @@
-# F1 (Front) — Saldo Projetado / Cash-Flow Forecast
+# F1 (Front) — Saldo Livre e projeção
 
 **Status:** Done. Espelha `moneyly-back/.specs/features/01-cash-flow-forecast.md`.
 Contrato: `GET /overview/forecast?periodId=<uuid?>` → `ForecastResponse`.
 
 ## UI
 
+- Rota: `/dashboard`: seção principal “Saldo Livre”, antes dos indicadores do período.
+- Exibe valor disponível, dias restantes, confiança, renda fixa/variável, contas recorrentes
+  e reservas de orçamento/metas.
 - Rota: `/insights` (`src/app/(routes)/(private)/insights/page.tsx`).
 - Section "Saldo projetado (fim do período)" no topo, antes dos cards de insights.
 - Hook gerado: `useGetOverviewForecast()` (sem `periodId` = período atual).
@@ -13,7 +16,9 @@ Contrato: `GET /overview/forecast?periodId=<uuid?>` → `ForecastResponse`.
 
 ## Contrato consumido (gerado)
 
-`ForecastResponse`: `period{id,startDate,endDate,label}`, `realized{income,expense,balance}`, `projected{recurringIncome,recurringExpense,occurrences[]}`, `projectedEndBalance`, `asOf`. Dinheiro = `number`.
+`ForecastResponse`: `period`, `realized`, `projected`, `projectedEndBalance`,
+`freeBalance{total,daysRemaining,confidence,income,commitments,reserves,components}` e `asOf`.
+Dinheiro = `number`.
 
 ## Não feito (v1)
 
