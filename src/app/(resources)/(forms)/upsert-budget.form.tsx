@@ -14,10 +14,7 @@ import {
   usePutBudgetsId,
 } from '../(generated)/hooks/budgets/budgets';
 import { useGetCategories } from '../(generated)/hooks/categories/categories';
-import {
-  getGetOverviewDashboardQueryKey,
-  getGetOverviewPlannerQueryKey,
-} from '../(generated)/hooks/overview/overview';
+import { freeBalanceQueryKeys } from '../free-balance-query-keys';
 import {
   CreateBudgetDefaultValues,
   CreateBudgetFormValues,
@@ -41,11 +38,7 @@ export const UpsertBudgetForm = ({ budget }: UpsertBudgetFormProps) => {
             ),
           }
         : CreateBudgetDefaultValues,
-      invalidateKeys: [
-        getGetBudgetsQueryKey(),
-        getGetOverviewPlannerQueryKey(),
-        getGetOverviewDashboardQueryKey(),
-      ],
+      invalidateKeys: [getGetBudgetsQueryKey(), ...freeBalanceQueryKeys()],
       errorFields: ['categoryId', 'monthlyLimit'],
       successMessage: {
         create: 'Orçamento criado com sucesso',

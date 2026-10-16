@@ -7,6 +7,7 @@ import {
   getGetGoalsQueryKey,
   useDeleteGoalsId,
 } from '@/app/(resources)/(generated)/hooks/goals/goals';
+import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys';
 import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form';
 import { differenceInDays, format } from 'date-fns';
 import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react';
@@ -23,7 +24,9 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
     mutation: {
       onSuccess: () => {
         toast.success('Meta removida com sucesso');
-        queryClient.invalidateQueries({ queryKey: getGetGoalsQueryKey() });
+        [getGetGoalsQueryKey(), ...freeBalanceQueryKeys()].forEach((queryKey) =>
+          queryClient.invalidateQueries({ queryKey })
+        );
       },
     },
   });

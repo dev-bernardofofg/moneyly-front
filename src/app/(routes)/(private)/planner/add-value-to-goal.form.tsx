@@ -13,7 +13,7 @@ import {
   AddValueToGoalFormValues,
   AddValueToGoalSchema,
 } from '../../../(resources)/(schemas)/goal.schema';
-import { getGetOverviewPlannerQueryKey } from '@/app/(resources)/(generated)/hooks/overview/overview';
+import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys';
 import { getGetNotificationsQueryKey } from '@/app/(resources)/(generated)/hooks/notifications/notifications';
 import type { Goal } from '@/app/(resources)/(generated)/types/Goal';
 import { toast } from 'sonner';
@@ -37,7 +37,7 @@ export const AddValueToGoalForm = ({ goal }: AddValueToGoalFormProps) => {
       defaultValues: AddValueToGoalDefaultValues,
       invalidateKeys: [
         getGetGoalsQueryKey(),
-        getGetOverviewPlannerQueryKey(),
+        ...freeBalanceQueryKeys(),
         // F9: o marco (goal_milestone) já existe quando a resposta chega — refresca o sino.
         getGetNotificationsQueryKey(),
       ],

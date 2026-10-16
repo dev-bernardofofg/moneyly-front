@@ -11,7 +11,7 @@ import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { Form } from '@/components/ui/form';
 import { Goal } from '../(generated)';
 import { getGetGoalsQueryKey, usePostGoals, usePutGoalsId } from '../(generated)/hooks/goals/goals';
-import { getGetOverviewPlannerQueryKey } from '../(generated)/hooks/overview/overview';
+import { freeBalanceQueryKeys } from '../free-balance-query-keys';
 import { GoalDefaultValues, GoalFormValues, GoalSchema } from '../(schemas)/goal.schema';
 
 interface UpsertGoalFormProps {
@@ -30,7 +30,7 @@ export const UpsertGoalForm = ({ goal }: UpsertGoalFormProps) => {
             targetDate: FN_UTILS_DATE.formatInBusinessTZ(goal.targetDate, 'yyyy-MM-dd'),
           }
         : GoalDefaultValues,
-      invalidateKeys: [getGetGoalsQueryKey(), getGetOverviewPlannerQueryKey()],
+      invalidateKeys: [getGetGoalsQueryKey(), ...freeBalanceQueryKeys()],
       errorFields: ['title', 'description', 'targetAmount', 'targetDate'],
       successMessage: {
         create: 'Meta criada com sucesso',

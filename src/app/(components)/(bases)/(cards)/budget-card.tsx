@@ -9,6 +9,7 @@ import {
   getGetBudgetsQueryKey,
   useDeleteBudgetsId,
 } from '@/app/(resources)/(generated)/hooks/budgets/budgets';
+import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys';
 import { useQueryClient } from '@tanstack/react-query';
 import { Edit3, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -24,7 +25,9 @@ export const BudgetCard = ({ budget }: BudgetCardProps) => {
   const { mutate: deleteBudget, isPending } = useDeleteBudgetsId({
     mutation: {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getGetBudgetsQueryKey() });
+        [getGetBudgetsQueryKey(), ...freeBalanceQueryKeys()].forEach((queryKey) =>
+          queryClient.invalidateQueries({ queryKey })
+        );
         toast.success('Orçamento removido com sucesso');
       },
     },
