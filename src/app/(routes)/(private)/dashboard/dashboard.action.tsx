@@ -50,7 +50,11 @@ export const useDashboardAction = () => {
     periodId: selectedPeriodId || undefined,
   });
 
-  const { data: forecastData, isLoading: forecastLoading } = useGetOverviewForecast({
+  const {
+    data: forecastData,
+    isLoading: forecastLoading,
+    isError: forecastError,
+  } = useGetOverviewForecast({
     periodId: selectedPeriodId || undefined,
   });
 
@@ -76,6 +80,7 @@ export const useDashboardAction = () => {
     loading: {
       isPostingOverview,
       forecastLoading,
+      forecastError,
     },
   };
 };

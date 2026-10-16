@@ -13,15 +13,16 @@ import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs';
 import { RecentTransactionItem } from '@/app/(resources)/(generated)';
 import { ROUTES } from '@/app/(utils)/routes';
-import { List, Loader2, PiggyBank, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
+import { List, Loader2, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
+import { FreeBalanceSection } from './free-balance-section';
 
 const DashboardPage = () => {
   const { push } = useRouter();
   const { data, loading } = useDashboardAction();
   const { forecast, subs, cmp, recentTransactions, chartSeries, stats, transactionsCount } = data;
-  const { isPostingOverview, forecastLoading } = loading;
+  const { isPostingOverview, forecastLoading, forecastError } = loading;
 
   return (
     <Fade>
@@ -54,10 +55,11 @@ const DashboardPage = () => {
 
       <StaggeredFade
         variant="default"
-        className="grid grid-rows-[auto_auto_1fr] size-full min-h-0 overflow-y-auto p-2 gap-2"
-        itemClassNames={['min-w-0', undefined, 'min-h-0']}
+        className="grid size-full min-h-0 grid-rows-[auto_auto_auto_1fr] gap-2 overflow-y-auto p-2"
+        itemClassNames={['min-w-0', 'min-w-0', undefined, 'min-h-0']}
       >
         <PeriodNavigatorWrapper />
+        <FreeBalanceSection forecast={forecast} loading={forecastLoading} error={forecastError} />
         <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
           {DASHBOARD_STATS_CONFIG.map((stat) => (
             <BaseStats
@@ -78,18 +80,6 @@ const DashboardPage = () => {
             Icon={List}
             description="Total de transações"
             loading={isPostingOverview}
-          />
-
-          <BaseStats
-            name="Saldo projetado"
-            value={forecast?.projectedEndBalance ?? 0}
-            Icon={PiggyBank}
-            description="Prévia · ver em Insights"
-            isMonetary
-            variant={(forecast?.projectedEndBalance ?? 0) >= 0 ? 'default' : 'destructive'}
-            loading={forecastLoading}
-            clickable
-            onClick={() => push(ROUTES.INSIGHTS)}
           />
 
           <BaseStats
