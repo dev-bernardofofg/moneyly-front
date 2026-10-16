@@ -1,6 +1,7 @@
 'use client';
 
 import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
+import { BaseShiftPicker } from '@/app/(components)/(bases)/(forms)/base-shift-picker';
 import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
 import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
 import { DialogFormFooter } from '@/app/(components)/(bases)/(forms)/dialog-form-footer';
@@ -63,7 +64,6 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
 
   const selectedCompany = companies?.data?.find((c) => c.id === companyId);
   const hours = calcHours(date, start, end);
-  const overnight = Boolean(start && end && end < start);
   const preview =
     hours !== null && selectedCompany ? hours * parseFloat(selectedCompany.hourlyRate) : null;
 
@@ -116,12 +116,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
               })) || []
             }
           />
-          <BaseInput control={form.control} name="date" label="Data" type="date" />
-          <div className="grid grid-cols-2 gap-2">
-            <BaseInput control={form.control} name="start" label="Início" type="time" />
-            <BaseInput control={form.control} name="end" label="Fim" type="time" />
-          </div>
-          {overnight && <p className="text-xs text-muted-foreground">Termina no dia seguinte.</p>}
+          <BaseShiftPicker control={form.control} dateName="date" startName="start" endName="end" />
           {hours !== null && preview !== null && (
             <div className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
               {hours.toFixed(2).replace('.', ',')} h ={' '}
