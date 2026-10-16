@@ -69,11 +69,11 @@ const PlannerPage = () => {
           savingsGoal={data.stats?.totalSavingsGoal}
           alreadySaved={data.stats?.totalSaved}
           alerts={data.alerts}
-          loading={loading.isFetchingOverview}
+          loading={loading.isLoadingOverview}
         />
         <FreeBalanceImpactSection
           impact={data.freeBalanceImpact}
-          loading={loading.isFetchingOverview}
+          loading={loading.isLoadingOverview}
           error={loading.isOverviewError}
         />
 
@@ -84,7 +84,7 @@ const PlannerPage = () => {
           classNameHeader="p-3"
           classNameContent="grid grid-rows-[auto_1fr] grid-cols-1"
         >
-          <BudgetSwiper budgets={data.budgets} loading={loading.isFetchingBudgets} />
+          <BudgetSwiper budgets={data.budgets} loading={loading.isLoadingBudgets} />
         </Section>
 
         <Section
@@ -94,7 +94,7 @@ const PlannerPage = () => {
           classNameHeader="p-3"
           classNameContent="grid grid-rows-[auto_1fr] grid-cols-1"
         >
-          <GoalSwiper goals={data.goals} loading={loading.isFetchingGoals} />
+          <GoalSwiper goals={data.goals} loading={loading.isLoadingGoals} />
         </Section>
       </StaggeredFade>
     </Fade>

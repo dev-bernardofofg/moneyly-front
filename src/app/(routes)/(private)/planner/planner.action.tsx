@@ -7,11 +7,11 @@ export const usePlannerAction = () => {
   const { selectedPeriodId } = usePeriod();
   const periodId = selectedPeriodId || undefined;
 
-  const { data: budgets, isFetching: isFetchingBudgets } = useGetBudgets({ periodId });
-  const { data: goals, isFetching: isFetchingGoals } = useGetGoals();
+  const { data: budgets, isLoading: isLoadingBudgets } = useGetBudgets({ periodId });
+  const { data: goals, isLoading: isLoadingGoals } = useGetGoals();
   const {
     data: overviewPlanner,
-    isFetching: isFetchingOverview,
+    isLoading: isLoadingOverview,
     isError: isOverviewError,
   } = useGetOverviewPlanner({ periodId });
 
@@ -24,9 +24,9 @@ export const usePlannerAction = () => {
       freeBalanceImpact: overviewPlanner?.data?.freeBalanceImpact,
     },
     loading: {
-      isFetchingBudgets,
-      isFetchingGoals,
-      isFetchingOverview,
+      isLoadingBudgets,
+      isLoadingGoals,
+      isLoadingOverview,
       isOverviewError,
     },
   };
