@@ -15,7 +15,10 @@ export function middleware(request: NextRequest) {
     '/insights',
     '/categories',
     '/transactions',
-    '/initial-config',
+    '/recurring-transactions',
+    '/planner',
+    '/overtime',
+    '/profile',
   ];
   const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
 
