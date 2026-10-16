@@ -5,6 +5,7 @@ import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
 import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
 import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
 import { Header } from '@/app/(components)/(layout)/header';
+import { cn } from '@/lib/utils';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { UpsertTransactionForm } from '@/app/(resources)/(forms)/upsert-transaction.form';
@@ -34,6 +35,8 @@ const TransactionsPage = () => {
     setTypeFilter,
     accountFilter,
     setAccountFilter,
+    allPeriods,
+    setAllPeriods,
   } = useTransactionsAction();
 
   return (
@@ -129,7 +132,19 @@ const TransactionsPage = () => {
         className="grid grid-rows-[auto_auto_1fr]"
         itemClassNames={['min-w-0', undefined, 'overflow-y-hidden size-full']}
       >
-        <PeriodNavigatorWrapper />
+        <div className="flex flex-wrap items-center gap-2">
+          <div className={cn('min-w-0 flex-1', allPeriods && 'pointer-events-none opacity-50')}>
+            <PeriodNavigatorWrapper />
+          </div>
+          <BaseButton
+            type="button"
+            variant={allPeriods ? 'default' : 'outline'}
+            aria-pressed={allPeriods}
+            onClick={() => setAllPeriods((current) => !current)}
+          >
+            Todos os períodos
+          </BaseButton>
+        </div>
         <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {TRANSACTION_STATS_INTERATOR.map((stat) => (
             <BaseStats

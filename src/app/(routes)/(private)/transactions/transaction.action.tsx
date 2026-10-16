@@ -43,12 +43,14 @@ export const useTransactionsAction = () => {
     undefined
   );
   const [accountFilter, setAccountFilter] = useState<string | undefined>(undefined);
+  // Local à tela: o período global continua valendo para dashboard, planner e insights.
+  const [allPeriods, setAllPeriods] = useState(false);
 
   const { data, isLoading, isFetching } = useGetTransactions(
     {
       page: paginationParams.page,
       limit: paginationParams.limit,
-      periodId: selectedPeriodId ?? undefined,
+      periodId: allPeriods ? undefined : (selectedPeriodId ?? undefined),
       type: typeFilter,
       accountId: accountFilter,
     },
@@ -64,5 +66,7 @@ export const useTransactionsAction = () => {
     setTypeFilter,
     accountFilter,
     setAccountFilter,
+    allPeriods,
+    setAllPeriods,
   };
 };
