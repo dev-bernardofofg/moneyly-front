@@ -14,6 +14,7 @@ import { Controller } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { Category, RecurringTransaction } from '../(generated)';
 import { useGetCategories } from '../(generated)/hooks/categories/categories';
+import { freeBalanceQueryKeys } from '../free-balance-query-keys';
 import {
   getGetRecurringTransactionsQueryKey,
   usePostRecurringTransactions,
@@ -83,7 +84,7 @@ export const UpsertTransactionRecurringForm = ({
                 : '',
           }
         : UpsertTransactionRecurringDefaultValues,
-      invalidateKeys: [getGetRecurringTransactionsQueryKey()],
+      invalidateKeys: [getGetRecurringTransactionsQueryKey(), ...freeBalanceQueryKeys()],
       errorFields: [...FIELDS],
       successMessage: {
         create: 'Transação recorrente criada com sucesso',
