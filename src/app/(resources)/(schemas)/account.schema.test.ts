@@ -23,4 +23,16 @@ describe('AccountSchema', () => {
       }).success
     ).toBe(true);
   });
+
+  it('accepts billing days coming from the select as strings', () => {
+    const result = AccountSchema.safeParse({
+      name: 'Cartão Inter',
+      type: 'credit_card',
+      closingDay: '26',
+      dueDay: '7',
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.data).toMatchObject({ closingDay: 26, dueDay: 7 });
+  });
 });
