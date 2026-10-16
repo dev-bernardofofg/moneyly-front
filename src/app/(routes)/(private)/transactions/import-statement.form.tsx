@@ -4,31 +4,24 @@ import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { getErrorMessage } from '@/app/(helpers)/errors';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import { useGetCategories } from '@/app/(resources)/(generated)/hooks/categories/categories';
 import {
   getGetTransactionsQueryKey,
   getGetTransactionsSummaryQueryKey,
   usePostTransactionsImport,
   usePostTransactionsImportPreview,
 } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
-import type { TransactionCategory } from '@/app/(resources)/(generated)/hooks/moneylyAPI.schemas';
 import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys';
 import type { CustomAxiosError } from '@/app/(types)/error.type';
 import { Badge } from '@/components/ui/badge';
 import { DialogClose } from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { ImportCategoryPicker } from './import-category-picker';
 import {
   type ImportPreviewItem,
+  isUncategorized,
   type ImportRowState,
   initialRowState,
   toBase64Url,
@@ -45,7 +38,6 @@ export const ImportStatementForm = () => {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [items, setItems] = useState<ImportPreviewItem[]>([]);
   const [rows, setRows] = useState<Record<string, ImportRowState>>({});
-  const { data: categories } = useGetCategories();
 
   const onError = (error: unknown) => toast.error(getErrorMessage(error as CustomAxiosError));
 
@@ -90,7 +82,22 @@ export const ImportStatementForm = () => {
   const updateRow = (externalId: string, patch: Partial<ImportRowState>) =>
     setRows((current) => ({ ...current, [externalId]: { ...current[externalId]!, ...patch } }));
 
+  // Mesma descrição = mesmo estabelecimento: a escolha vale para todas as linhas iguais.
+  const chooseCategory = (title: string, categoryId: string) =>
+    setRows((current) => {
+      const next = { ...current };
+      for (const item of items) {
+        if (item.title === title && item.status !== 'imported') {
+          next[item.externalId] = { ...next[item.externalId]!, categoryId };
+        }
+      }
+      return next;
+    });
+
   const selectedItems = items.filter((item) => rows[item.externalId]?.selected);
+  const uncategorizedCount = selectedItems.filter((item) =>
+    isUncategorized(item, rows[item.externalId]!)
+  ).length;
   const missingCategory = selectedItems.some((item) => !rows[item.externalId]?.categoryId);
 
   const handleConfirm = () =>
@@ -132,6 +139,15 @@ export const ImportStatementForm = () => {
 
       {items.length > 0 && (
         <>
+          {uncategorizedCount > 0 && (
+            <p className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
+              {uncategorizedCount === 1
+                ? '1 compra não tem categoria definida e ficaria em Outros.'
+                : `${uncategorizedCount} compras não têm categoria definida e ficariam em Outros.`}{' '}
+              Escolha ou crie uma: o Moneyly lembra na próxima importação.
+            </p>
+          )}
+
           <ul
             className="max-h-[50vh] divide-y overflow-y-auto rounded-lg border"
             aria-label="Transações do extrato"
@@ -167,6 +183,14 @@ export const ImportStatementForm = () => {
                       {item.status !== 'new' && (
                         <Badge variant="outline">{STATUS_LABEL[item.status]}</Badge>
                       )}
+                      {isUncategorized(item, row) && (
+                        <Badge
+                          variant="outline"
+                          className="border-amber-400 text-amber-700 dark:text-amber-300"
+                        >
+                          Sem categoria definida
+                        </Badge>
+                      )}
                     </span>
                     <span
                       className={cn(
@@ -178,22 +202,12 @@ export const ImportStatementForm = () => {
                       {FN_UTILS_NUMBERS.formatCurrency(item.amount)}
                     </span>
                   </label>
-                  <Select
+                  <ImportCategoryPicker
+                    label={item.title}
                     value={row.categoryId}
                     disabled={isImported}
-                    onValueChange={(categoryId) => updateRow(item.externalId, { categoryId })}
-                  >
-                    <SelectTrigger aria-label={`Categoria de ${item.title}`}>
-                      <SelectValue placeholder="Categoria" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {(categories?.data ?? []).map((category: TransactionCategory) => (
-                        <SelectItem key={category.id} value={category.id ?? ''}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    onChange={(categoryId) => chooseCategory(item.title, categoryId)}
+                  />
                 </li>
               );
             })}

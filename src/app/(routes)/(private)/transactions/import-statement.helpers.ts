@@ -19,6 +19,12 @@ export const toBase64Url = (buffer: ArrayBuffer): string => {
 
 // Já importada nunca entra; possível duplicata e pagamento de fatura (não é renda) começam
 // desmarcados para o usuário decidir.
+// Nada identificou a compra e o usuário ainda não trocou a categoria sugerida ("Outros").
+export const isUncategorized = (item: ImportPreviewItem, row: ImportRowState) =>
+  item.status !== 'imported' &&
+  item.suggestionSource === 'fallback' &&
+  row.categoryId === (item.suggestedCategoryId ?? '');
+
 export const initialRowState = (item: ImportPreviewItem): ImportRowState => ({
   selected: item.status === 'new',
   categoryId: item.suggestedCategoryId ?? '',
