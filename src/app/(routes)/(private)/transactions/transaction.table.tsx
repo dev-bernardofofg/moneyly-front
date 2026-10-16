@@ -6,6 +6,7 @@ import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)
 import { queryClient } from '@/app/(contexts)';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { getErrorMessage } from '@/app/(helpers)/errors';
+import { useAccounts } from '@/app/(hooks)/use-accounts';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { CustomAxiosError } from '@/app/(types)/error.type';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +33,7 @@ export const TransactionTable = ({
   onPaginationChange,
   isLoading,
 }: TransactionTableProps) => {
+  const { nameById } = useAccounts();
   const { mutate } = useDeleteTransactionsId({
     mutation: {
       onSuccess: () => {
@@ -136,6 +138,15 @@ export const TransactionTable = ({
               </span>
             );
           },
+        },
+        {
+          header: 'Conta',
+          accessorKey: 'accountId',
+          cell: (_, item) => (
+            <span className="text-sm font-medium text-muted-foreground">
+              {nameById.get(item.accountId) ?? '—'}
+            </span>
+          ),
         },
         {
           header: 'Valor',

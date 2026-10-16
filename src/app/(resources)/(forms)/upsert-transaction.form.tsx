@@ -5,6 +5,7 @@ import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
 import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
 import { BaseTextarea } from '@/app/(components)/(bases)/(forms)/base-textarea';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
+import { useAccounts } from '@/app/(hooks)/use-accounts';
 import { useUpsertDialog } from '@/app/(hooks)/use-upsert-dialog';
 import { FN_UTILS_STRING } from '@/app/(helpers)/string';
 import { Form } from '@/components/ui/form';
@@ -35,6 +36,7 @@ const transactionToFormValues = (transaction: Transaction): UpsertTransactionFor
   type: transaction.type as 'income' | 'expense',
   amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount),
   category: transaction.category?.id ?? '',
+  accountId: transaction.accountId,
   description: transaction.description ?? '',
   date: FN_UTILS_DATE.formatInBusinessTZ(transaction.date, 'yyyy-MM-dd'),
 });
@@ -60,6 +62,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     });
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { options: accountOptions, isLoading: isLoadingAccounts } = useAccounts();
 
   const { mutate: createTransaction, isPending } = usePostTransactionsCreate({
     mutation: { onSuccess: onCreated, onError },
@@ -75,6 +78,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
       type: data.type,
       amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
       category: data.category,
+      accountId: data.accountId || undefined,
       description: data.description ?? '',
       date: data.date,
     };
@@ -165,6 +169,15 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
                 value: category.id || '',
               })) || []
             }
+          />
+
+          <BaseSelect
+            control={form.control}
+            name="accountId"
+            label="Conta ou cartão"
+            placeholder="Conta padrão"
+            isLoading={isLoadingAccounts}
+            options={accountOptions}
           />
 
           <button

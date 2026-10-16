@@ -2,6 +2,7 @@
 
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { getErrorMessage } from '@/app/(helpers)/errors';
+import { useAccounts } from '@/app/(hooks)/use-accounts';
 import { FN_UTILS_DATE } from '@/app/(helpers)/date';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
 import {
@@ -14,6 +15,13 @@ import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys'
 import type { CustomAxiosError } from '@/app/(types)/error.type';
 import { Badge } from '@/components/ui/badge';
 import { DialogClose } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
@@ -37,6 +45,10 @@ export const ImportStatementForm = () => {
   const queryClient = useQueryClient();
   const closeRef = useRef<HTMLButtonElement>(null);
   const [items, setItems] = useState<ImportPreviewItem[]>([]);
+  const { options: accountOptions, defaultAccountId } = useAccounts();
+  const [chosenAccountId, setChosenAccountId] = useState<string>();
+  // Até o usuário escolher, vale a conta padrão (carrega depois do primeiro render).
+  const accountId = chosenAccountId ?? defaultAccountId;
   const [rows, setRows] = useState<Record<string, ImportRowState>>({});
 
   const onError = (error: unknown) => toast.error(getErrorMessage(error as CustomAxiosError));
@@ -103,6 +115,7 @@ export const ImportStatementForm = () => {
   const handleConfirm = () =>
     confirm.mutate({
       data: {
+        accountId: accountId!,
         items: selectedItems.map(({ externalId, type, amount, date, title }) => ({
           externalId,
           type,
@@ -117,6 +130,27 @@ export const ImportStatementForm = () => {
   return (
     <div className="space-y-4">
       <DialogClose ref={closeRef} className="hidden" />
+
+      <div className="space-y-1">
+        <span id="import-account-label" className="text-sm font-medium">
+          Conta ou cartão do extrato
+        </span>
+        <Select value={accountId ?? ''} onValueChange={setChosenAccountId}>
+          <SelectTrigger aria-labelledby="import-account-label">
+            <SelectValue placeholder="Escolha a conta" />
+          </SelectTrigger>
+          <SelectContent>
+            {accountOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          Num cartão, cada compra conta no período em que a fatura vence.
+        </p>
+      </div>
 
       <div className="space-y-1">
         <label htmlFor="ofx-file" className="text-sm font-medium">
@@ -222,7 +256,7 @@ export const ImportStatementForm = () => {
           <BaseButton
             type="button"
             className="w-full"
-            disabled={selectedItems.length === 0 || missingCategory}
+            disabled={selectedItems.length === 0 || missingCategory || !accountId}
             isLoading={confirm.isPending}
             onClick={handleConfirm}
           >

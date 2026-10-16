@@ -42,6 +42,7 @@ export const useTransactionsAction = () => {
   const [typeFilter, setTypeFilter] = useState<GetTransactionsQueryParamsTypeEnumKey | undefined>(
     undefined
   );
+  const [accountFilter, setAccountFilter] = useState<string | undefined>(undefined);
 
   const { data, isLoading, isFetching } = useGetTransactions(
     {
@@ -49,6 +50,7 @@ export const useTransactionsAction = () => {
       limit: paginationParams.limit,
       periodId: selectedPeriodId ?? undefined,
       type: typeFilter,
+      accountId: accountFilter,
     },
     { query: { placeholderData: keepPreviousData } }
   );
@@ -60,5 +62,7 @@ export const useTransactionsAction = () => {
     setPaginationParams,
     typeFilter,
     setTypeFilter,
+    accountFilter,
+    setAccountFilter,
   };
 };

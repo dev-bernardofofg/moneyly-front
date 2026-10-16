@@ -12,6 +12,8 @@ export const UpsertTransactionSchema = z.object({
       return !isNaN(num) && num > 0;
     }, 'Valor deve ser maior que zero'),
   category: z.string().min(1, 'Categoria é obrigatória'),
+  // Vazio = conta padrão (o back resolve).
+  accountId: z.string().optional(),
   description: z.string().optional(),
   date: z.string().min(1, 'Data é obrigatória'),
 });
@@ -21,6 +23,7 @@ export const UpsertTransactionDefaultValues = {
   type: 'income' as const,
   amount: '',
   category: '',
+  accountId: '',
   description: '',
   date: FN_UTILS_DATE.today(),
 };

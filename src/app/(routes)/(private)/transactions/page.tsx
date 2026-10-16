@@ -20,6 +20,7 @@ import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from './transactio
 import { ExportCsvButton } from './export-csv-button';
 import { ExportCsvForm } from './export-csv-form';
 import { ImportStatementForm } from './import-statement.form';
+import { AccountFilter } from './account-filter';
 import { Download, FileUp, Plus } from 'lucide-react';
 
 const TransactionsPage = () => {
@@ -30,6 +31,8 @@ const TransactionsPage = () => {
     setPaginationParams,
     typeFilter,
     setTypeFilter,
+    accountFilter,
+    setAccountFilter,
   } = useTransactionsAction();
 
   return (
@@ -53,6 +56,7 @@ const TransactionsPage = () => {
               <SelectItem value="expense">Saídas</SelectItem>
             </SelectContent>
           </Select>,
+          <AccountFilter key="account-filter" value={accountFilter} onChange={setAccountFilter} />,
           <ExportCsvButton key="export-csv" />,
           <BaseDialog
             key="import-statement-dialog"
@@ -72,6 +76,12 @@ const TransactionsPage = () => {
           </BaseDialog>,
         ]}
         mobileHeaderActions={[
+          <AccountFilter
+            key="account-filter-mobile"
+            className="w-36"
+            value={accountFilter}
+            onChange={setAccountFilter}
+          />,
           <Select
             key="type-filter-mobile"
             value={typeFilter ?? 'all'}
