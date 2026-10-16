@@ -19,6 +19,15 @@ export const itemsStatusEnum = {
 
 export type ItemsStatusEnumKey = (typeof itemsStatusEnum)[keyof typeof itemsStatusEnum];
 
+export const itemsSuggestionSourceEnum = {
+  history: 'history',
+  rule: 'rule',
+  fallback: 'fallback',
+} as const;
+
+export type ItemsSuggestionSourceEnumKey =
+  (typeof itemsSuggestionSourceEnum)[keyof typeof itemsSuggestionSourceEnum];
+
 export type TransactionImportPreview = {
   /**
    * @type string
@@ -60,5 +69,9 @@ export type TransactionImportPreview = {
      * @type string, uuid
      */
     suggestedCategoryId: string | null;
+    /**
+     * @type string
+     */
+    suggestionSource: ItemsSuggestionSourceEnumKey;
   }[];
 };

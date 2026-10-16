@@ -758,6 +758,7 @@ export type { Transaction, TransactionTypeEnumKey } from './types/Transaction.ts
 export type { TransactionCategory } from './types/TransactionCategory.ts';
 export type {
   ItemsStatusEnumKey,
+  ItemsSuggestionSourceEnumKey,
   ItemsTypeEnumKey,
   TransactionImportPreview,
 } from './types/TransactionImportPreview.ts';
@@ -943,4 +944,5 @@ export { recurringTransactionTypeEnum } from './types/RecurringTransaction.ts';
 export { subscriptionCandidateCadenceEnum } from './types/SubscriptionCandidate.ts';
 export { transactionTypeEnum } from './types/Transaction.ts';
 export { itemsStatusEnum } from './types/TransactionImportPreview.ts';
+export { itemsSuggestionSourceEnum } from './types/TransactionImportPreview.ts';
 export { itemsTypeEnum } from './types/TransactionImportPreview.ts';

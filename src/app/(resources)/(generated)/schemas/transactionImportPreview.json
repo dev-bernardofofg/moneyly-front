@@ -17,7 +17,8 @@
             "enum": ["new", "imported", "possible_duplicate", "bill_payment"]
           },
           "duplicateOf": { "type": "string", "nullable": true, "format": "uuid" },
-          "suggestedCategoryId": { "type": "string", "nullable": true, "format": "uuid" }
+          "suggestedCategoryId": { "type": "string", "nullable": true, "format": "uuid" },
+          "suggestionSource": { "type": "string", "enum": ["history", "rule", "fallback"] }
         },
         "required": [
           "externalId",
@@ -27,7 +28,8 @@
           "title",
           "status",
           "duplicateOf",
-          "suggestedCategoryId"
+          "suggestedCategoryId",
+          "suggestionSource"
         ]
       }
     }

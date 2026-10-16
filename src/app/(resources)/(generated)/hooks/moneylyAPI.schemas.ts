@@ -501,6 +501,15 @@ export const TransactionImportPreviewItemsItemStatus = {
   bill_payment: 'bill_payment',
 } as const;
 
+export type TransactionImportPreviewItemsItemSuggestionSource =
+  (typeof TransactionImportPreviewItemsItemSuggestionSource)[keyof typeof TransactionImportPreviewItemsItemSuggestionSource];
+
+export const TransactionImportPreviewItemsItemSuggestionSource = {
+  history: 'history',
+  rule: 'rule',
+  fallback: 'fallback',
+} as const;
+
 export type TransactionImportPreviewItemsItem = {
   externalId: string;
   type: TransactionImportPreviewItemsItemType;
@@ -512,6 +521,7 @@ export type TransactionImportPreviewItemsItem = {
   duplicateOf: string | null;
   /** @nullable */
   suggestedCategoryId: string | null;
+  suggestionSource: TransactionImportPreviewItemsItemSuggestionSource;
 };
 
 export interface TransactionImportPreview {
