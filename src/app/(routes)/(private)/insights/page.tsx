@@ -6,15 +6,9 @@ import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import {
-  BarChart3,
-  CalendarClock,
-  PiggyBank,
-  TrendingDown,
-  TrendingUp,
-  Wallet,
-} from 'lucide-react';
+import { BarChart3, CalendarClock, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { ComparisonSection } from './comparison-section';
+import { FreeBalanceBreakdownSection } from './free-balance-breakdown-section';
 import { SubscriptionsSection } from './subscriptions-section';
 import { useInsightsAction } from './insights.action';
 
@@ -22,55 +16,26 @@ const formatDelta = (v: number | null | undefined) =>
   v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
 
 const InsightsPage = () => {
-  const { isLoading, forecast, forecastLoading, currentPeriod, trend, allTime, topCategories } =
-    useInsightsAction();
+  const {
+    isLoading,
+    forecast,
+    forecastLoading,
+    forecastError,
+    currentPeriod,
+    trend,
+    allTime,
+    topCategories,
+  } = useInsightsAction();
 
   return (
     <Fade>
       <Header title="Insights" />
       <StaggeredFade variant="page" className="grid gap-2 overflow-y-auto p-1">
-        <Section
-          Icon={PiggyBank}
-          title="Saldo projetado (fim do período)"
-          className="p-2"
-          classNameHeader="p-3"
-        >
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-4">
-            <BaseStats
-              name="Saldo realizado"
-              value={forecast?.realized.balance ?? 0}
-              Icon={Wallet}
-              isMonetary
-              variant={(forecast?.realized.balance ?? 0) >= 0 ? 'default' : 'destructive'}
-              loading={forecastLoading}
-            />
-            <BaseStats
-              name="Entradas previstas"
-              value={forecast?.projected.recurringIncome ?? 0}
-              Icon={TrendingUp}
-              isMonetary
-              variant="default"
-              loading={forecastLoading}
-            />
-            <BaseStats
-              name="Saídas previstas"
-              value={forecast?.projected.recurringExpense ?? 0}
-              Icon={TrendingDown}
-              isMonetary
-              variant="destructive"
-              loading={forecastLoading}
-            />
-            <BaseStats
-              name="Saldo projetado"
-              value={forecast?.projectedEndBalance ?? 0}
-              Icon={PiggyBank}
-              description={`${forecast?.projected.occurrences.length ?? 0} ocorrências previstas`}
-              isMonetary
-              variant={(forecast?.projectedEndBalance ?? 0) >= 0 ? 'default' : 'destructive'}
-              loading={forecastLoading}
-            />
-          </div>
-        </Section>
+        <FreeBalanceBreakdownSection
+          forecast={forecast}
+          loading={forecastLoading}
+          error={forecastError}
+        />
 
         <StaggeredFade className="grid grid-cols-1 gap-2 md:grid-cols-4">
           <BaseStats
