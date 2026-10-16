@@ -272,6 +272,7 @@ export type {
   GetOverviewPlanner401,
   GetOverviewPlanner401SuccessEnumKey,
   GetOverviewPlannerQuery,
+  GetOverviewPlannerQueryParams,
   GetOverviewPlannerQueryResponse,
 } from './types/GetOverviewPlanner.ts';
 export type {

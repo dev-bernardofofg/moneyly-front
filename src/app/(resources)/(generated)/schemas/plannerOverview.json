@@ -27,11 +27,21 @@
     "currentPeriod": {
       "type": "object",
       "properties": {
+        "id": { "type": "string", "format": "uuid" },
         "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "description": { "type": "string" }
       },
-      "required": ["startDate", "endDate", "description"]
+      "required": ["id", "startDate", "endDate", "description"]
+    },
+    "freeBalanceImpact": {
+      "type": "object",
+      "properties": {
+        "budgetReserve": { "type": "number" },
+        "goalReserve": { "type": "number" },
+        "total": { "type": "number" }
+      },
+      "required": ["budgetReserve", "goalReserve", "total"]
     },
     "alerts": {
       "type": "array",
@@ -50,6 +60,6 @@
       }
     }
   },
-  "required": ["stats", "currentPeriod", "alerts"],
+  "required": ["stats", "currentPeriod", "freeBalanceImpact", "alerts"],
   "x-readme-ref-name": "PlannerOverview"
 }

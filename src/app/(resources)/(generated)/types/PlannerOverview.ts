@@ -62,6 +62,10 @@ export type PlannerOverview = {
    */
   currentPeriod: {
     /**
+     * @type string, uuid
+     */
+    id: string;
+    /**
      * @type string
      */
     startDate: string;
@@ -73,6 +77,23 @@ export type PlannerOverview = {
      * @type string
      */
     description: string;
+  };
+  /**
+   * @type object
+   */
+  freeBalanceImpact: {
+    /**
+     * @type number
+     */
+    budgetReserve: number;
+    /**
+     * @type number
+     */
+    goalReserve: number;
+    /**
+     * @type number
+     */
+    total: number;
   };
   /**
    * @type array

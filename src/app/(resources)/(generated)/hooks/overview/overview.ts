@@ -40,6 +40,7 @@ import type {
   GetOverviewPlanner200,
   GetOverviewPlanner400,
   GetOverviewPlanner401,
+  GetOverviewPlannerParams,
 } from '../moneylyAPI.schemas';
 
 import { customInstance } from '../../../../(utils)/axios-instance';
@@ -271,28 +272,36 @@ export function useGetOverviewDashboard<
 }
 
 /**
- * @summary Planejamento financeiro
+ * @summary Planejamento financeiro e impacto no Saldo Livre
  */
-export const getOverviewPlanner = (signal?: AbortSignal) => {
-  return customInstance<GetOverviewPlanner200>({ url: `/overview/planner`, method: 'GET', signal });
+export const getOverviewPlanner = (params?: GetOverviewPlannerParams, signal?: AbortSignal) => {
+  return customInstance<GetOverviewPlanner200>({
+    url: `/overview/planner`,
+    method: 'GET',
+    params,
+    signal,
+  });
 };
 
-export const getGetOverviewPlannerQueryKey = () => {
-  return [`/overview/planner`] as const;
+export const getGetOverviewPlannerQueryKey = (params?: GetOverviewPlannerParams) => {
+  return [`/overview/planner`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetOverviewPlannerQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
-}) => {
+>(
+  params?: GetOverviewPlannerParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
+  }
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetOverviewPlannerQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewPlannerQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewPlanner>>> = ({ signal }) =>
-    getOverviewPlanner(signal);
+    getOverviewPlanner(params, signal);
 
   return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getOverviewPlanner>>,
@@ -310,6 +319,7 @@ export function useGetOverviewPlanner<
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
+  params: undefined | GetOverviewPlannerParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>> &
       Pick<
@@ -327,6 +337,7 @@ export function useGetOverviewPlanner<
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
+  params?: GetOverviewPlannerParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>
@@ -346,25 +357,27 @@ export function useGetOverviewPlanner<
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
+  params?: GetOverviewPlannerParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Planejamento financeiro
+ * @summary Planejamento financeiro e impacto no Saldo Livre
  */
 
 export function useGetOverviewPlanner<
   TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
   TError = GetOverviewPlanner400 | GetOverviewPlanner401,
 >(
+  params?: GetOverviewPlannerParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetOverviewPlannerQueryOptions(options);
+  const queryOptions = getGetOverviewPlannerQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;

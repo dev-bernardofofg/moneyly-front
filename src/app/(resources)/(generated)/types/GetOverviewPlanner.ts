@@ -5,6 +5,13 @@
 
 import type { PlannerOverview } from './PlannerOverview.ts';
 
+export type GetOverviewPlannerQueryParams = {
+  /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+};
+
 /**
  * @description Sucesso
  */
@@ -67,5 +74,6 @@ export type GetOverviewPlannerQueryResponse = GetOverviewPlanner200;
 
 export type GetOverviewPlannerQuery = {
   Response: GetOverviewPlanner200;
+  QueryParams: GetOverviewPlannerQueryParams;
   Errors: GetOverviewPlanner400 | GetOverviewPlanner401;
 };

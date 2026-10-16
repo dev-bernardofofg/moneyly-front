@@ -359,9 +359,16 @@ export type PlannerOverviewStats = {
 };
 
 export type PlannerOverviewCurrentPeriod = {
+  id: string;
   startDate: string;
   endDate: string;
   description: string;
+};
+
+export type PlannerOverviewFreeBalanceImpact = {
+  budgetReserve: number;
+  goalReserve: number;
+  total: number;
 };
 
 export type PlannerOverviewAlertsItemType =
@@ -395,6 +402,7 @@ export type PlannerOverviewAlertsItem = {
 export interface PlannerOverview {
   stats: PlannerOverviewStats;
   currentPeriod: PlannerOverviewCurrentPeriod;
+  freeBalanceImpact: PlannerOverviewFreeBalanceImpact;
   alerts: PlannerOverviewAlertsItem[];
 }
 
@@ -2334,6 +2342,10 @@ export type GetOverviewDashboard401 = {
   success: false;
   error: string;
   details?: unknown | null;
+};
+
+export type GetOverviewPlannerParams = {
+  periodId?: string;
 };
 
 export type GetOverviewPlanner200 = {
