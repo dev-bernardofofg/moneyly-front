@@ -2,6 +2,7 @@
 
 import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
 import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
 import { Header } from '@/app/(components)/(layout)/header';
 import { Fade } from '@/app/(components)/(motions)/fade';
 import { getErrorMessage } from '@/app/(helpers)/errors';
@@ -17,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQueryClient } from '@tanstack/react-query';
 import { CreditCard, Landmark, PencilIcon, Trash2, WalletCards } from 'lucide-react';
+import { AccountPeriodSummary } from './account-period-summary';
 import { toast } from 'sonner';
 
 const AccountsPage = () => {
@@ -58,7 +60,11 @@ const AccountsPage = () => {
           },
         ]}
       />
-      <div className="grid gap-2 p-2 sm:grid-cols-2 xl:grid-cols-3">
+      {/* content-start: o Fade dá 1fr de altura; sem isso as linhas do grid esticam e os cards ficam gigantes. */}
+      <div className="grid content-start gap-2 overflow-y-auto p-2 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="sm:col-span-2 xl:col-span-3">
+          <PeriodNavigatorWrapper />
+        </div>
         {isLoading &&
           Array.from({ length: 2 }, (_, i) => <Skeleton key={i} className="h-28 w-full" />)}
         {accounts.map((account) => {
@@ -67,7 +73,7 @@ const AccountsPage = () => {
           return (
             <article
               key={account.id}
-              className="flex flex-col justify-between gap-3 rounded-lg border border-slate-200 bg-white/95 p-4 dark:border-slate-700 dark:bg-slate-800"
+              className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white/95 p-4 dark:border-slate-700 dark:bg-slate-800"
             >
               <div className="flex items-start gap-3">
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -85,6 +91,7 @@ const AccountsPage = () => {
                   </p>
                 </div>
               </div>
+              <AccountPeriodSummary accountId={account.id} isCard={isCard} />
               <div className="flex justify-end gap-2">
                 <BaseDialog
                   title="Editar conta"
