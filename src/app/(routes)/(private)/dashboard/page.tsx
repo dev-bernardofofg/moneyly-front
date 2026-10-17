@@ -13,16 +13,39 @@ import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
 import { TransactionTabs } from '@/app/(resources)/(forms)/transaction.tabs';
 import { RecentTransactionItem } from '@/app/(resources)/(generated)';
 import { ROUTES } from '@/app/(utils)/routes';
-import { List, Loader2, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
+import { Loader2, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
+import { CardBillsSection } from './card-bills-section';
 import { FreeBalanceSection } from './free-balance-section';
 
 const DashboardPage = () => {
   const { push } = useRouter();
   const { data, loading } = useDashboardAction();
-  const { forecast, subs, cmp, recentTransactions, chartSeries, stats, transactionsCount } = data;
-  const { isPostingOverview, forecastLoading, forecastError } = loading;
+  const { forecast, subs, cmp, recentTransactions, chartSeries, stats, cardBills } = data;
+  const { isPostingOverview, forecastLoading, forecastError, cardBillsLoading, cardBillsError } =
+    loading;
+
+  const alerts = [
+    ...(subs && subs.count > 0
+      ? [
+          {
+            key: 'subs',
+            Icon: RefreshCcw,
+            text: `${subs.count} ${subs.count === 1 ? 'possível assinatura' : 'possíveis assinaturas'}${subs.topTitle ? ` · maior: ${subs.topTitle}` : ''}`,
+          },
+        ]
+      : []),
+    ...(cmp && cmp.deltaPct != null && cmp.signal !== 'stable'
+      ? [
+          {
+            key: 'cmp',
+            Icon: Scale,
+            text: `Gastos ${Math.abs(cmp.deltaPct).toFixed(0)}% ${cmp.deltaPct > 0 ? 'acima' : 'abaixo'} da média`,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <Fade>
@@ -56,64 +79,50 @@ const DashboardPage = () => {
       <StaggeredFade
         variant="default"
         className="grid size-full min-h-0 grid-rows-[auto_auto_auto_1fr] gap-2 overflow-y-auto p-2"
-        itemClassNames={['min-w-0', 'min-w-0', undefined, 'min-h-0']}
+        itemClassNames={['min-w-0', 'min-w-0', 'min-w-0', 'min-h-0']}
       >
         <PeriodNavigatorWrapper />
-        <FreeBalanceSection forecast={forecast} loading={forecastLoading} error={forecastError} />
-        <StaggeredFade className="grid base:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
-          {DASHBOARD_STATS_CONFIG.map((stat) => (
-            <BaseStats
-              key={stat.indicator}
-              name={stat.name}
-              value={stats?.[stat.indicator] ?? 0}
-              Icon={stat.icon}
-              description={stat.description}
-              isMonetary={stat.isMonetary}
-              variant={stat.variant}
-              loading={isPostingOverview}
-            />
-          ))}
-
-          <BaseStats
-            name="Transações"
-            value={transactionsCount}
-            Icon={List}
-            description="Total de transações"
-            loading={isPostingOverview}
-          />
-
-          <BaseStats
-            name="Possíveis assinaturas"
-            value={subs?.count ?? 0}
-            Icon={RefreshCcw}
-            description={subs?.topTitle ? `Maior: ${subs.topTitle}` : 'Prévia · ver em Insights'}
-            variant="secondary"
-            loading={isPostingOverview}
-            clickable
-            onClick={() => push(ROUTES.INSIGHTS)}
-          />
-
-          <BaseStats
-            name="Despesa vs média"
-            value={
-              cmp?.deltaPct == null
-                ? '—'
-                : `${cmp.deltaPct > 0 ? '+' : ''}${cmp.deltaPct.toFixed(1)}%`
-            }
-            Icon={Scale}
-            description={cmp?.topHighlight ?? 'Prévia · ver em Insights'}
-            variant={
-              cmp?.signal === 'up'
-                ? 'destructive'
-                : cmp?.signal === 'down'
-                  ? 'default'
-                  : 'secondary'
-            }
-            loading={isPostingOverview}
-            clickable
-            onClick={() => push(ROUTES.INSIGHTS)}
-          />
+        <StaggeredFade
+          className="grid gap-2 lg:grid-cols-2"
+          itemClassNames={['min-w-0', 'min-w-0']}
+        >
+          <FreeBalanceSection forecast={forecast} loading={forecastLoading} error={forecastError} />
+          <div className="grid content-start gap-2">
+            <div className="grid grid-cols-2 gap-2">
+              {DASHBOARD_STATS_CONFIG.map((stat) => (
+                <BaseStats
+                  key={stat.indicator}
+                  name={stat.name}
+                  value={stats?.[stat.indicator] ?? 0}
+                  Icon={stat.icon}
+                  description={stat.description}
+                  isMonetary={stat.isMonetary}
+                  variant={stat.variant}
+                  loading={isPostingOverview}
+                />
+              ))}
+            </div>
+            {/* Assinaturas e comparativo viram alertas de uma linha, só quando há algo a dizer. */}
+            {alerts.length > 0 && (
+              <ul className="space-y-1" aria-label="Alertas">
+                {alerts.map((alert) => (
+                  <li key={alert.key}>
+                    <button
+                      type="button"
+                      onClick={() => push(ROUTES.INSIGHTS)}
+                      className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-left text-sm hover:bg-muted dark:border-slate-700 dark:bg-slate-800"
+                    >
+                      <alert.Icon className="size-4 shrink-0 text-primary" aria-hidden />
+                      <span className="min-w-0 flex-1 truncate">{alert.text}</span>
+                      <span className="shrink-0 text-xs text-muted-foreground">Ver</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </StaggeredFade>
+        <CardBillsSection data={cardBills} loading={cardBillsLoading} error={cardBillsError} />
         <StaggeredFade
           className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-2 w-full md:h-full min-h-0"
           itemClassNames={['min-h-0', 'md:col-span-2 min-h-0']}
