@@ -3,6 +3,7 @@ export type { AuthRefresh } from './types/AuthRefresh.ts';
 export type { AuthSession } from './types/AuthSession.ts';
 export type { Budget } from './types/Budget.ts';
 export type { BudgetProgress } from './types/BudgetProgress.ts';
+export type { CardBills } from './types/CardBills.ts';
 export type { Category } from './types/Category.ts';
 export type { Company } from './types/Company.ts';
 export type {
@@ -239,6 +240,16 @@ export type {
   GetOvertimeSummaryQueryParams,
   GetOvertimeSummaryQueryResponse,
 } from './types/GetOvertimeSummary.ts';
+export type {
+  GetOverviewCardBills200,
+  GetOverviewCardBills400,
+  GetOverviewCardBills400SuccessEnumKey,
+  GetOverviewCardBills401,
+  GetOverviewCardBills401SuccessEnumKey,
+  GetOverviewCardBillsQuery,
+  GetOverviewCardBillsQueryParams,
+  GetOverviewCardBillsQueryResponse,
+} from './types/GetOverviewCardBills.ts';
 export type {
   GetOverviewDashboard200,
   GetOverviewDashboard400,
@@ -871,6 +882,8 @@ export { getOvertimeExport400SuccessEnum } from './types/GetOvertimeExport.ts';
 export { getOvertimeExport401SuccessEnum } from './types/GetOvertimeExport.ts';
 export { getOvertimeSummary400SuccessEnum } from './types/GetOvertimeSummary.ts';
 export { getOvertimeSummary401SuccessEnum } from './types/GetOvertimeSummary.ts';
+export { getOverviewCardBills400SuccessEnum } from './types/GetOverviewCardBills.ts';
+export { getOverviewCardBills401SuccessEnum } from './types/GetOverviewCardBills.ts';
 export { getOverviewDashboard400SuccessEnum } from './types/GetOverviewDashboard.ts';
 export { getOverviewDashboard401SuccessEnum } from './types/GetOverviewDashboard.ts';
 export { getOverviewForecast400SuccessEnum } from './types/GetOverviewForecast.ts';

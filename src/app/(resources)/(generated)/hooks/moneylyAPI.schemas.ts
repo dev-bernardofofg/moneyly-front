@@ -606,6 +606,27 @@ export interface CurrentPeriodSummary {
   transactionsCount: number;
 }
 
+export type CardBillsBillsItemCategoriesItem = {
+  categoryId: string;
+  name: string;
+  amount: number;
+};
+
+export type CardBillsBillsItem = {
+  accountId: string;
+  name: string;
+  closingDay: number;
+  dueDay: number;
+  total: number;
+  categories: CardBillsBillsItemCategoriesItem[];
+};
+
+export interface CardBills {
+  periodId: string;
+  total: number;
+  bills: CardBillsBillsItem[];
+}
+
 export type ForecastResponsePeriod = {
   id: string;
   startDate: string;
@@ -2582,6 +2603,27 @@ export type GetOverviewInsightsComparison400 = {
 };
 
 export type GetOverviewInsightsComparison401 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewCardBillsParams = {
+  periodId?: string;
+};
+
+export type GetOverviewCardBills200 = {
+  data: CardBills;
+  message?: string;
+};
+
+export type GetOverviewCardBills400 = {
+  success: false;
+  error: string;
+  details?: unknown | null;
+};
+
+export type GetOverviewCardBills401 = {
   success: false;
   error: string;
   details?: unknown | null;

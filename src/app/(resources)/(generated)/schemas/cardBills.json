@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "periodId": { "type": "string", "format": "uuid" },
+    "total": { "type": "number" },
+    "bills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "closingDay": { "type": "integer" },
+          "dueDay": { "type": "integer" },
+          "total": { "type": "number" },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categoryId": { "type": "string", "format": "uuid" },
+                "name": { "type": "string" },
+                "amount": { "type": "number" }
+              },
+              "required": ["categoryId", "name", "amount"]
+            }
+          }
+        },
+        "required": ["accountId", "name", "closingDay", "dueDay", "total", "categories"]
+      }
+    }
+  },
+  "required": ["periodId", "total", "bills"],
+  "x-readme-ref-name": "CardBills"
+}

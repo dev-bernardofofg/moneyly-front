@@ -19,6 +19,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetOverviewCardBills200,
+  GetOverviewCardBills400,
+  GetOverviewCardBills401,
+  GetOverviewCardBillsParams,
   GetOverviewDashboard200,
   GetOverviewDashboard400,
   GetOverviewDashboard401,
@@ -745,6 +749,129 @@ export function useGetOverviewInsightsComparison<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetOverviewInsightsComparisonQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Faturas de cartão que vencem no período, por categoria
+ */
+export const getOverviewCardBills = (params?: GetOverviewCardBillsParams, signal?: AbortSignal) => {
+  return customInstance<GetOverviewCardBills200>({
+    url: `/overview/card-bills`,
+    method: 'GET',
+    params,
+    signal,
+  });
+};
+
+export const getGetOverviewCardBillsQueryKey = (params?: GetOverviewCardBillsParams) => {
+  return [`/overview/card-bills`, ...(params ? [params] : [])] as const;
+};
+
+export const getGetOverviewCardBillsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOverviewCardBills>>,
+  TError = GetOverviewCardBills400 | GetOverviewCardBills401,
+>(
+  params?: GetOverviewCardBillsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewCardBills>>, TError, TData>
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewCardBillsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewCardBills>>> = ({ signal }) =>
+    getOverviewCardBills(params, signal);
+
+  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOverviewCardBills>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetOverviewCardBillsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOverviewCardBills>>
+>;
+export type GetOverviewCardBillsQueryError = GetOverviewCardBills400 | GetOverviewCardBills401;
+
+export function useGetOverviewCardBills<
+  TData = Awaited<ReturnType<typeof getOverviewCardBills>>,
+  TError = GetOverviewCardBills400 | GetOverviewCardBills401,
+>(
+  params: undefined | GetOverviewCardBillsParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewCardBills>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewCardBills>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewCardBills>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetOverviewCardBills<
+  TData = Awaited<ReturnType<typeof getOverviewCardBills>>,
+  TError = GetOverviewCardBills400 | GetOverviewCardBills401,
+>(
+  params?: GetOverviewCardBillsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewCardBills>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOverviewCardBills>>,
+          TError,
+          Awaited<ReturnType<typeof getOverviewCardBills>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetOverviewCardBills<
+  TData = Awaited<ReturnType<typeof getOverviewCardBills>>,
+  TError = GetOverviewCardBills400 | GetOverviewCardBills401,
+>(
+  params?: GetOverviewCardBillsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewCardBills>>, TError, TData>
+    >;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+/**
+ * @summary Faturas de cartão que vencem no período, por categoria
+ */
+
+export function useGetOverviewCardBills<
+  TData = Awaited<ReturnType<typeof getOverviewCardBills>>,
+  TError = GetOverviewCardBills400 | GetOverviewCardBills401,
+>(
+  params?: GetOverviewCardBillsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewCardBills>>, TError, TData>
+    >;
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetOverviewCardBillsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
