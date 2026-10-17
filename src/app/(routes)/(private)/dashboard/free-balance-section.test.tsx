@@ -45,8 +45,10 @@ describe('FreeBalanceSection', () => {
     expect(screen.getByText('R$ 850,00')).toBeInTheDocument();
     expect(screen.getByText('12 dias restantes')).toBeInTheDocument();
     expect(screen.getByText('Confiança alta')).toBeInTheDocument();
-    expect(screen.getByText('Renda variável considerada')).toBeInTheDocument();
-    expect(screen.getByText('R$ 350,00')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Ver como é calculado' })).toHaveAttribute(
+      'href',
+      '/insights'
+    );
   });
 
   it('shows a skeleton while the query is pending', () => {
