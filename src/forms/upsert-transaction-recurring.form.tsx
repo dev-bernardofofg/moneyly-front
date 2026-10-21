@@ -4,6 +4,7 @@ import { BaseDatePicker } from '@/components/forms/base-date-picker';
 import { BaseForm } from '@/components/forms/base-form';
 import { BaseInput } from '@/components/forms/base-input';
 import { BaseSelect } from '@/components/forms/base-select';
+import { useAccounts } from '@/hooks/use-accounts';
 import { DialogFormFooter } from '@/components/forms/dialog-form-footer';
 import { useUpsertDialog } from '@/hooks/use-upsert-dialog';
 import { FN_UTILS_DATE } from '@/lib/date';
@@ -48,6 +49,7 @@ const FIELDS = [
   'amount',
   'type',
   'categoryId',
+  'accountId',
   'frequency',
   'dayOfWeek',
   'dayOfMonth',
@@ -72,6 +74,7 @@ export const UpsertTransactionRecurringForm = ({
             title: recurringTransaction.title,
             amount: FN_UTILS_STRING.formatCentsToMoneyInput(recurringTransaction.amount),
             categoryId: recurringTransaction.categoryId,
+            accountId: recurringTransaction.accountId ?? '',
             frequency: recurringTransaction.frequency as 'daily' | 'weekly' | 'monthly' | 'yearly',
             dayOfWeek:
               recurringTransaction.dayOfWeek != null ? String(recurringTransaction.dayOfWeek) : '',
@@ -98,6 +101,7 @@ export const UpsertTransactionRecurringForm = ({
   const frequency = form.watch('frequency');
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { options: accountOptions, isLoading: isLoadingAccounts } = useAccounts();
 
   const { mutate: createRecurring, isPending: isCreating } = usePostRecurringTransactions({
     mutation: {
@@ -118,6 +122,7 @@ export const UpsertTransactionRecurringForm = ({
       title: data.title,
       amount: FN_UTILS_STRING.formatMoneyInputToCents(data.amount),
       categoryId: data.categoryId,
+      accountId: data.accountId || null,
       frequency: data.frequency,
       description: data.description || undefined,
       dayOfWeek: data.frequency === 'weekly' ? Number(data.dayOfWeek) : undefined,
@@ -212,6 +217,15 @@ export const UpsertTransactionRecurringForm = ({
                   value: category.id || '',
                 })) || []
               }
+            />
+            <BaseSelect
+              control={form.control}
+              name="accountId"
+              label="Conta ou cartão"
+              placeholder="Conta padrão"
+              description="No cartão, cada cobrança conta no período em que a fatura vence."
+              isLoading={isLoadingAccounts}
+              options={accountOptions}
             />
           </div>
           <div className="grid grid-cols-2 gap-2">

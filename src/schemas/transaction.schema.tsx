@@ -42,6 +42,8 @@ export const UpsertTransactionRecurringSchema = z
         return !isNaN(num) && num > 0;
       }, 'Valor deve ser maior que zero'),
     categoryId: z.string().min(1, 'Categoria é obrigatória'),
+    // Vazio = conta padrão (o back resolve).
+    accountId: z.string().optional(),
     frequency: z.enum(['daily', 'weekly', 'monthly', 'yearly'], { message: 'Frequência inválida' }),
     dayOfWeek: z.string().optional(),
     dayOfMonth: z.string().optional(),
@@ -74,6 +76,7 @@ export const UpsertTransactionRecurringDefaultValues = {
   title: '',
   amount: '',
   categoryId: '',
+  accountId: '',
   frequency: 'monthly' as const,
   dayOfWeek: '',
   dayOfMonth: '',
