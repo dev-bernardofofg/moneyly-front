@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { CreditCard } from 'lucide-react';
 import Link from 'next/link';
+import { BillPaymentStatus } from './bill-payment-status';
 import { billSegments, buildCategoryColors } from './card-bills.helpers';
 
 interface CardBillsSectionProps {
@@ -76,6 +77,7 @@ export const CardBillsSection = ({ data, loading, error }: CardBillsSectionProps
                   {money(bill.total)}
                 </span>
               </div>
+              <BillPaymentStatus bill={bill} />
 
               {segments.length === 0 ? (
                 <p className="text-xs text-muted-foreground">Nenhuma compra nesta fatura.</p>

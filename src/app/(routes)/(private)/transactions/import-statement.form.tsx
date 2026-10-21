@@ -11,6 +11,7 @@ import {
   usePostTransactionsImport,
   usePostTransactionsImportPreview,
 } from '@/api/generated/hooks/transactions/transactions';
+import { getGetOverviewCardBillsQueryKey } from '@/api/generated/hooks/overview/overview';
 import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import type { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
@@ -69,15 +70,16 @@ export const ImportStatementForm = () => {
   const confirm = usePostTransactionsImport({
     mutation: {
       onSuccess: (response) => {
-        const { created = 0, skipped = 0 } = response.data ?? {};
-        toast.success(
-          skipped > 0
-            ? `${created} transações importadas, ${skipped} já existiam`
-            : `${created} transações importadas`
-        );
+        const { created = 0, skipped = 0, billsPaid = 0 } = response.data ?? {};
+        const parts = [`${created} transações importadas`];
+        if (skipped > 0) parts.push(`${skipped} já existiam`);
+        if (billsPaid > 0)
+          parts.push(`${billsPaid} ${billsPaid === 1 ? 'fatura paga' : 'faturas pagas'}`);
+        toast.success(parts.join(', '));
         [
           getGetTransactionsQueryKey(),
           getGetTransactionsSummaryQueryKey(),
+          getGetOverviewCardBillsQueryKey(),
           ...freeBalanceQueryKeys(),
         ].forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
         closeRef.current?.click();
@@ -111,6 +113,10 @@ export const ImportStatementForm = () => {
     isUncategorized(item, rows[item.externalId]!)
   ).length;
   const missingCategory = selectedItems.some((item) => !rows[item.externalId]?.categoryId);
+  // Pagamento de fatura marca a fatura como paga mesmo sem virar transação.
+  const billPayments = items
+    .filter((item) => item.status === 'bill_payment')
+    .map(({ type, amount, date }) => ({ type, amount, date }));
 
   const handleConfirm = () =>
     confirm.mutate({
@@ -124,6 +130,7 @@ export const ImportStatementForm = () => {
           title,
           categoryId: rows[externalId]!.categoryId,
         })),
+        billPayments,
       },
     });
 
@@ -256,7 +263,11 @@ export const ImportStatementForm = () => {
           <BaseButton
             type="button"
             className="w-full"
-            disabled={selectedItems.length === 0 || missingCategory || !accountId}
+            disabled={
+              (selectedItems.length === 0 && billPayments.length === 0) ||
+              missingCategory ||
+              !accountId
+            }
             isLoading={confirm.isPending}
             onClick={handleConfirm}
           >
