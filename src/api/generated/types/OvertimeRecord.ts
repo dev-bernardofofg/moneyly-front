@@ -29,20 +29,20 @@ export type OvertimeRecord = {
    */
   endTime: string;
   /**
-   * @description Valor decimal como string
+   * @description Horas (decimal)
    * @type string
    */
   hoursWorked: string;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  hourlyRateSnapshot: string;
+  hourlyRateSnapshot: number;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  amount: string;
+  amount: number;
   /**
    * @type integer
    */

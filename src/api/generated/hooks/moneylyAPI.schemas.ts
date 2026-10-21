@@ -21,8 +21,8 @@ export interface Transaction {
   id: string;
   type: TransactionType;
   title: string;
-  /** Valor decimal como string */
-  amount: string;
+  /** Valor em centavos */
+  amount: number;
   /** @nullable */
   description: string | null;
   date: string;
@@ -54,7 +54,11 @@ export interface User {
   googleId?: string | null;
   /** @nullable */
   avatar?: string | null;
-  monthlyIncome: string | number;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  monthlyIncome: number | null;
   financialDayStart: number;
   financialDayEnd: number;
   /** @nullable */
@@ -74,7 +78,11 @@ export interface AuthRefresh {
 }
 
 export interface IncomeUpdate {
-  monthlyIncome: string | number;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  monthlyIncome: number | null;
   firstAccess: boolean;
 }
 
@@ -85,7 +93,11 @@ export interface FinancialPeriodUpdate {
 }
 
 export interface IncomeAndPeriodUpdate {
-  monthlyIncome: string | number;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  monthlyIncome: number | null;
   financialDayStart: number;
   financialDayEnd: number;
   firstAccess: boolean;
@@ -97,13 +109,13 @@ export interface Goal {
   title: string;
   /** @nullable */
   description: string | null;
-  /** Valor decimal como string */
-  targetAmount: string;
+  /** Valor em centavos */
+  targetAmount: number;
   /**
-   * Valor decimal como string
+   * Valor em centavos
    * @nullable
    */
-  currentAmount: string | null;
+  currentAmount: number | null;
   targetDate: string;
   startDate: string;
   /** @nullable */
@@ -116,8 +128,8 @@ export interface Budget {
   id: string;
   userId: string;
   categoryId: string;
-  /** Valor decimal como string */
-  monthlyLimit: string;
+  /** Valor em centavos */
+  monthlyLimit: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -125,10 +137,10 @@ export interface Budget {
 export interface BudgetProgress {
   id: string;
   /**
-   * Valor decimal como string
+   * Valor em centavos
    * @nullable
    */
-  monthlyLimit: string | null;
+  monthlyLimit: number | null;
   category: TransactionCategory;
   spent: number;
   remaining: number;
@@ -160,8 +172,8 @@ export interface RecurringTransaction {
   userId: string;
   type: RecurringTransactionType;
   title: string;
-  /** Valor decimal como string */
-  amount: string;
+  /** Valor em centavos */
+  amount: number;
   categoryId: string;
   frequency: RecurringTransactionFrequency;
   /** @nullable */
@@ -720,7 +732,11 @@ export interface ForecastResponse {
 export interface TransactionListSummary {
   totalExpense: number;
   totalIncome: number;
-  monthlyIncome: string | number;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  monthlyIncome: number | null;
   /** @nullable */
   percentUsed: number | null;
   /** @nullable */
@@ -743,8 +759,8 @@ export interface Account {
   closingDay: number | null;
   /** @nullable */
   dueDay: number | null;
-  /** Valor decimal como string */
-  openingBalance: string;
+  /** Valor em centavos */
+  openingBalance: number;
   /** @nullable */
   openingBalanceDate: string | null;
   isDefault: boolean;
@@ -757,8 +773,8 @@ export interface Company {
   id: string;
   userId: string;
   name: string;
-  /** Valor decimal como string */
-  hourlyRate: string;
+  /** Valor em centavos */
+  hourlyRate: number;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -777,12 +793,12 @@ export interface OvertimeRecord {
   description: string | null;
   startTime: string;
   endTime: string;
-  /** Valor decimal como string */
+  /** Horas (decimal) */
   hoursWorked: string;
-  /** Valor decimal como string */
-  hourlyRateSnapshot: string;
-  /** Valor decimal como string */
-  amount: string;
+  /** Valor em centavos */
+  hourlyRateSnapshot: number;
+  /** Valor em centavos */
+  amount: number;
   month: number;
   year: number;
   /** @nullable */

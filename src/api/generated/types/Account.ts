@@ -36,10 +36,10 @@ export type Account = {
    */
   dueDay: number | null;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  openingBalance: string;
+  openingBalance: number;
   /**
    * @type string
    */

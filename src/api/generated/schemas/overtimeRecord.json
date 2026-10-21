@@ -7,21 +7,13 @@
     "description": { "type": "string", "nullable": true },
     "startTime": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "endTime": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
-    "hoursWorked": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "hoursWorked": { "type": "string", "description": "Horas (decimal)", "example": "8.5" },
     "hourlyRateSnapshot": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
+      "type": "integer",
+      "description": "Valor em centavos",
+      "example": 123450
     },
-    "amount": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "amount": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "month": { "type": "integer" },
     "year": { "type": "integer" },
     "transactionId": { "type": "string", "nullable": true, "format": "uuid" },

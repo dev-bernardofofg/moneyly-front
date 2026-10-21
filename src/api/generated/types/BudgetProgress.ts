@@ -11,10 +11,10 @@ export type BudgetProgress = {
    */
   id: string;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  monthlyLimit: string | null;
+  monthlyLimit: number | null;
   /**
    * @type object
    */

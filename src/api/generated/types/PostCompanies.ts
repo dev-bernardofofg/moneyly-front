@@ -71,7 +71,7 @@ export type PostCompaniesMutationRequest = {
    */
   name: string;
   /**
-   * @type number
+   * @type integer
    */
   hourlyRate: number;
 };

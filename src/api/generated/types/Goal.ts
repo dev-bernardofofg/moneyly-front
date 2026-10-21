@@ -21,15 +21,15 @@ export type Goal = {
    */
   description: string | null;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  targetAmount: string;
+  targetAmount: number;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  currentAmount: string | null;
+  currentAmount: number | null;
   /**
    * @type string
    */

@@ -4,11 +4,7 @@
     "id": { "type": "string", "format": "uuid" },
     "type": { "type": "string", "enum": ["income", "expense"] },
     "title": { "type": "string" },
-    "amount": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "amount": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "description": { "type": "string", "nullable": true },
     "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "periodId": { "type": "string", "nullable": true, "format": "uuid" },

@@ -97,7 +97,7 @@ export type PostTransactionsImportMutationRequest = {
     title: string;
     /**
      * @maxLength 999999999
-     * @type number
+     * @type integer
      */
     amount: number;
     /**

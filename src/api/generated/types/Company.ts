@@ -17,10 +17,10 @@ export type Company = {
    */
   name: string;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  hourlyRate: string;
+  hourlyRate: number;
   /**
    * @type boolean
    */

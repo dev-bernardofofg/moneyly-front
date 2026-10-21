@@ -7,11 +7,7 @@
     "type": { "type": "string", "enum": ["checking", "credit_card"] },
     "closingDay": { "type": "integer", "nullable": true },
     "dueDay": { "type": "integer", "nullable": true },
-    "openingBalance": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "openingBalance": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "openingBalanceDate": {
       "type": "string",
       "nullable": true,

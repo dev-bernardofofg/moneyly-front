@@ -26,10 +26,10 @@ export type Transaction = {
    */
   title: string;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  amount: string;
+  amount: number;
   /**
    * @type string
    */

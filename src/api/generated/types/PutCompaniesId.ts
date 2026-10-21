@@ -100,7 +100,7 @@ export type PutCompaniesIdMutationRequest = {
    */
   name?: string;
   /**
-   * @type number | undefined
+   * @type integer | undefined
    */
   hourlyRate?: number;
 };

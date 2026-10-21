@@ -24,7 +24,11 @@ export type User = {
    * @type string
    */
   avatar?: string | null;
-  monthlyIncome: string | number;
+  /**
+   * @description Valor em centavos
+   * @type integer
+   */
+  monthlyIncome: number | null;
   /**
    * @type integer
    */

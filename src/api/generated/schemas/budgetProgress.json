@@ -3,10 +3,10 @@
   "properties": {
     "id": { "type": "string", "format": "uuid" },
     "monthlyLimit": {
-      "type": "string",
+      "type": "integer",
       "nullable": true,
-      "description": "Valor decimal como string",
-      "example": "1234.50"
+      "description": "Valor em centavos",
+      "example": 123450
     },
     "category": {
       "type": "object",

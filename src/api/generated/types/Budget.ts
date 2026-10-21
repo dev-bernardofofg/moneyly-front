@@ -17,10 +17,10 @@ export type Budget = {
    */
   categoryId: string;
   /**
-   * @description Valor decimal como string
-   * @type string
+   * @description Valor em centavos
+   * @type integer
    */
-  monthlyLimit: string;
+  monthlyLimit: number;
   /**
    * @type string
    */

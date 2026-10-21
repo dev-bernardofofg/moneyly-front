@@ -5,11 +5,7 @@
     "userId": { "type": "string", "format": "uuid" },
     "type": { "type": "string", "enum": ["income", "expense"] },
     "title": { "type": "string" },
-    "amount": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "amount": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "categoryId": { "type": "string", "format": "uuid" },
     "frequency": { "type": "string", "enum": ["daily", "weekly", "monthly", "yearly"] },
     "dayOfMonth": { "type": "integer", "nullable": true },

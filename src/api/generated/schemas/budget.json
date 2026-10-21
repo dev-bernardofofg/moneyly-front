@@ -4,11 +4,7 @@
     "id": { "type": "string", "format": "uuid" },
     "userId": { "type": "string", "format": "uuid" },
     "categoryId": { "type": "string", "format": "uuid" },
-    "monthlyLimit": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "monthlyLimit": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "updatedAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
   },

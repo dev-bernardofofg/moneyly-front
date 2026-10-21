@@ -92,7 +92,7 @@ export type PostAccountsMutationRequest =
       /**
        * @minLength -999999999
        * @maxLength 999999999
-       * @type number | undefined
+       * @type integer | undefined
        */
       openingBalance?: number;
       /**

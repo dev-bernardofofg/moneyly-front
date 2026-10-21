@@ -4,7 +4,11 @@
  */
 
 export type IncomeAndPeriodUpdate = {
-  monthlyIncome: string | number;
+  /**
+   * @description Valor em centavos
+   * @type integer
+   */
+  monthlyIncome: number | null;
   /**
    * @type integer
    */

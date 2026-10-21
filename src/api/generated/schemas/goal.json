@@ -5,16 +5,12 @@
     "userId": { "type": "string", "format": "uuid" },
     "title": { "type": "string" },
     "description": { "type": "string", "nullable": true },
-    "targetAmount": {
-      "type": "string",
-      "description": "Valor decimal como string",
-      "example": "1234.50"
-    },
+    "targetAmount": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
     "currentAmount": {
-      "type": "string",
+      "type": "integer",
       "nullable": true,
-      "description": "Valor decimal como string",
-      "example": "1234.50"
+      "description": "Valor em centavos",
+      "example": 123450
     },
     "targetDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
