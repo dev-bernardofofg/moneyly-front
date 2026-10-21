@@ -44,3 +44,6 @@ next-env.d.ts
 .claude
 # contrato gerado a partir de ../moneyly-back/openapi.json
 /openapi.json
+
+# .env* fica ignorado; o exemplo é versionado
+!.env.example
