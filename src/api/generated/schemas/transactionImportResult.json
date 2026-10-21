@@ -3,8 +3,9 @@
   "properties": {
     "created": { "type": "integer" },
     "skipped": { "type": "integer" },
-    "billsPaid": { "type": "integer" }
+    "billsPaid": { "type": "integer" },
+    "transfers": { "type": "integer" }
   },
-  "required": ["created", "skipped", "billsPaid"],
+  "required": ["created", "skipped", "billsPaid", "transfers"],
   "x-readme-ref-name": "TransactionImportResult"
 }

@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "fromAccountId": { "type": "string", "format": "uuid" },
+    "toAccountId": { "type": "string", "format": "uuid" },
+    "amount": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
+    "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "description": { "type": "string", "nullable": true },
+    "fromExternalId": { "type": "string", "nullable": true },
+    "toExternalId": { "type": "string", "nullable": true },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": [
+    "id",
+    "userId",
+    "fromAccountId",
+    "toAccountId",
+    "amount",
+    "date",
+    "description",
+    "fromExternalId",
+    "toExternalId",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "Transfer"
+}

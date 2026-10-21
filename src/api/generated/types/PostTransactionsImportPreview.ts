@@ -71,6 +71,10 @@ export type PostTransactionsImportPreviewMutationRequest = {
    * @type string
    */
   file: string;
+  /**
+   * @type string | undefined, uuid
+   */
+  accountId?: string;
 };
 
 export type PostTransactionsImportPreviewMutationResponse = PostTransactionsImportPreview200;

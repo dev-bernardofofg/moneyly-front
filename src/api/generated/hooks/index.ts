@@ -10,4 +10,5 @@ export * from './overtime/overtime.ts';
 export * from './overview/overview.ts';
 export * from './recurring-transactions/recurring-transactions.ts';
 export * from './transactions/transactions.ts';
+export * from './transfers/transfers.ts';
 export * from './user/user.ts';

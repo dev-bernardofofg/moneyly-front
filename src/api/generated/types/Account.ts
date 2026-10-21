@@ -46,6 +46,11 @@ export type Account = {
    */
   openingBalance: number;
   /**
+   * @description Valor em centavos
+   * @type integer
+   */
+  currentBalance?: number | null;
+  /**
    * @type string
    */
   openingBalanceDate: string | null;

@@ -14,9 +14,18 @@
           "title": { "type": "string" },
           "status": {
             "type": "string",
-            "enum": ["new", "imported", "possible_duplicate", "bill_payment"]
+            "enum": ["new", "imported", "possible_duplicate", "bill_payment", "transfer"]
           },
           "duplicateOf": { "type": "string", "nullable": true, "format": "uuid" },
+          "transferOf": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "transactionId": { "type": "string", "format": "uuid" },
+              "accountId": { "type": "string", "format": "uuid" }
+            },
+            "required": ["transactionId", "accountId"]
+          },
           "suggestedCategoryId": { "type": "string", "nullable": true, "format": "uuid" },
           "suggestionSource": { "type": "string", "enum": ["history", "rule", "fallback"] }
         },
@@ -28,6 +37,7 @@
           "title",
           "status",
           "duplicateOf",
+          "transferOf",
           "suggestedCategoryId",
           "suggestionSource"
         ]

@@ -135,6 +135,18 @@ export type {
   DeleteTransactionsIdMutationResponse,
   DeleteTransactionsIdPathParams,
 } from './DeleteTransactionsId.ts';
+export type {
+  DeleteTransfersId200,
+  DeleteTransfersId400,
+  DeleteTransfersId400SuccessEnumKey,
+  DeleteTransfersId401,
+  DeleteTransfersId401SuccessEnumKey,
+  DeleteTransfersId404,
+  DeleteTransfersId404SuccessEnumKey,
+  DeleteTransfersIdMutation,
+  DeleteTransfersIdMutationResponse,
+  DeleteTransfersIdPathParams,
+} from './DeleteTransfersId.ts';
 export type { FinancialInsights } from './FinancialInsights.ts';
 export type { FinancialPeriod } from './FinancialPeriod.ts';
 export type { FinancialPeriodSummary } from './FinancialPeriodSummary.ts';
@@ -403,6 +415,16 @@ export type {
   GetTransactionsSummaryCurrentPeriodQuery,
   GetTransactionsSummaryCurrentPeriodQueryResponse,
 } from './GetTransactionsSummaryCurrentPeriod.ts';
+export type {
+  GetTransfers200,
+  GetTransfers400,
+  GetTransfers400SuccessEnumKey,
+  GetTransfers401,
+  GetTransfers401SuccessEnumKey,
+  GetTransfersQuery,
+  GetTransfersQueryParams,
+  GetTransfersQueryResponse,
+} from './GetTransfers.ts';
 export type {
   GetUserFinancialPeriods200,
   GetUserFinancialPeriods400,
@@ -691,6 +713,16 @@ export type {
   PostTransactionsImportPreviewMutationResponse,
 } from './PostTransactionsImportPreview.ts';
 export type {
+  PostTransfers201,
+  PostTransfers400,
+  PostTransfers400SuccessEnumKey,
+  PostTransfers401,
+  PostTransfers401SuccessEnumKey,
+  PostTransfersMutation,
+  PostTransfersMutationRequest,
+  PostTransfersMutationResponse,
+} from './PostTransfers.ts';
+export type {
   PutAccountsId200,
   PutAccountsId400,
   PutAccountsId400SuccessEnumKey,
@@ -850,6 +882,7 @@ export type {
 export type { TransactionImportResult } from './TransactionImportResult.ts';
 export type { TransactionListSummary } from './TransactionListSummary.ts';
 export type { TransactionSummary } from './TransactionSummary.ts';
+export type { Transfer } from './Transfer.ts';
 export type { User } from './User.ts';
 export { accountTypeEnum } from './Account.ts';
 export { cardBillPaymentSourceEnum } from './CardBillPayment.ts';
@@ -887,6 +920,9 @@ export { deleteRecurringTransactionsId404SuccessEnum } from './DeleteRecurringTr
 export { deleteTransactionsId400SuccessEnum } from './DeleteTransactionsId.ts';
 export { deleteTransactionsId401SuccessEnum } from './DeleteTransactionsId.ts';
 export { deleteTransactionsId404SuccessEnum } from './DeleteTransactionsId.ts';
+export { deleteTransfersId400SuccessEnum } from './DeleteTransfersId.ts';
+export { deleteTransfersId401SuccessEnum } from './DeleteTransfersId.ts';
+export { deleteTransfersId404SuccessEnum } from './DeleteTransfersId.ts';
 export { freeBalanceConfidenceEnum } from './ForecastResponse.ts';
 export { occurrencesTypeEnum } from './ForecastResponse.ts';
 export { getAccounts400SuccessEnum } from './GetAccounts.ts';
@@ -949,6 +985,8 @@ export { getTransactionsSummaryByMonth400SuccessEnum } from './GetTransactionsSu
 export { getTransactionsSummaryByMonth401SuccessEnum } from './GetTransactionsSummaryByMonth.ts';
 export { getTransactionsSummaryCurrentPeriod400SuccessEnum } from './GetTransactionsSummaryCurrentPeriod.ts';
 export { getTransactionsSummaryCurrentPeriod401SuccessEnum } from './GetTransactionsSummaryCurrentPeriod.ts';
+export { getTransfers400SuccessEnum } from './GetTransfers.ts';
+export { getTransfers401SuccessEnum } from './GetTransfers.ts';
 export { getUserFinancialPeriods400SuccessEnum } from './GetUserFinancialPeriods.ts';
 export { getUserFinancialPeriods401SuccessEnum } from './GetUserFinancialPeriods.ts';
 export { getUserFinancialPeriodsPeriodid400SuccessEnum } from './GetUserFinancialPeriodsPeriodid.ts';
@@ -1015,6 +1053,8 @@ export { postTransactionsImport400SuccessEnum } from './PostTransactionsImport.t
 export { postTransactionsImport401SuccessEnum } from './PostTransactionsImport.ts';
 export { postTransactionsImportPreview400SuccessEnum } from './PostTransactionsImportPreview.ts';
 export { postTransactionsImportPreview401SuccessEnum } from './PostTransactionsImportPreview.ts';
+export { postTransfers400SuccessEnum } from './PostTransfers.ts';
+export { postTransfers401SuccessEnum } from './PostTransfers.ts';
 export { putAccountsId400SuccessEnum } from './PutAccountsId.ts';
 export { putAccountsId401SuccessEnum } from './PutAccountsId.ts';
 export { putAccountsId404SuccessEnum } from './PutAccountsId.ts';

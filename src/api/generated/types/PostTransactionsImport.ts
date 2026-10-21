@@ -113,9 +113,13 @@ export type PostTransactionsImportMutationRequest = {
      */
     date: string;
     /**
-     * @type string, uuid
+     * @type string | undefined, uuid
      */
-    categoryId: string;
+    categoryId?: string;
+    /**
+     * @type string | undefined, uuid
+     */
+    transferOf?: string;
   }[];
   /**
    * @type array | undefined

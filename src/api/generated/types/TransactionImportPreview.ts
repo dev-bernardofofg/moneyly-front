@@ -15,6 +15,7 @@ export const itemsStatusEnum = {
   imported: 'imported',
   possible_duplicate: 'possible_duplicate',
   bill_payment: 'bill_payment',
+  transfer: 'transfer',
 } as const;
 
 export type ItemsStatusEnumKey = (typeof itemsStatusEnum)[keyof typeof itemsStatusEnum];
@@ -65,6 +66,19 @@ export type TransactionImportPreview = {
      * @type string, uuid
      */
     duplicateOf: string | null;
+    /**
+     * @type object
+     */
+    transferOf: {
+      /**
+       * @type string, uuid
+       */
+      transactionId: string;
+      /**
+       * @type string, uuid
+       */
+      accountId: string;
+    } | null;
     /**
      * @type string, uuid
      */

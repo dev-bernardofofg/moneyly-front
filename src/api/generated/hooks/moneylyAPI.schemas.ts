@@ -514,7 +514,16 @@ export const TransactionImportPreviewItemsItemStatus = {
   imported: 'imported',
   possible_duplicate: 'possible_duplicate',
   bill_payment: 'bill_payment',
+  transfer: 'transfer',
 } as const;
+
+/**
+ * @nullable
+ */
+export type TransactionImportPreviewItemsItemTransferOf = {
+  transactionId: string;
+  accountId: string;
+} | null;
 
 export type TransactionImportPreviewItemsItemSuggestionSource =
   (typeof TransactionImportPreviewItemsItemSuggestionSource)[keyof typeof TransactionImportPreviewItemsItemSuggestionSource];
@@ -535,6 +544,8 @@ export type TransactionImportPreviewItemsItem = {
   /** @nullable */
   duplicateOf: string | null;
   /** @nullable */
+  transferOf: TransactionImportPreviewItemsItemTransferOf;
+  /** @nullable */
   suggestedCategoryId: string | null;
   suggestionSource: TransactionImportPreviewItemsItemSuggestionSource;
 };
@@ -548,6 +559,7 @@ export interface TransactionImportResult {
   created: number;
   skipped: number;
   billsPaid: number;
+  transfers: number;
 }
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
@@ -619,6 +631,23 @@ export interface CurrentPeriodSummary {
   /** @nullable */
   alert: string | null;
   transactionsCount: number;
+}
+
+export interface Transfer {
+  id: string;
+  userId: string;
+  fromAccountId: string;
+  toAccountId: string;
+  /** Valor em centavos */
+  amount: number;
+  date: string;
+  /** @nullable */
+  description: string | null;
+  /** @nullable */
+  fromExternalId: string | null;
+  /** @nullable */
+  toExternalId: string | null;
+  createdAt: string;
 }
 
 export type CardBillPaymentSource =
@@ -818,6 +847,11 @@ export interface Account {
   creditLimit: number | null;
   /** Valor em centavos */
   openingBalance: number;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  currentBalance?: number | null;
   /** @nullable */
   openingBalanceDate: string | null;
   isDefault: boolean;
@@ -2492,6 +2526,7 @@ export type PostTransactionsImportPreviewBody = {
    * @pattern ^[A-Za-z0-9_-]+$
    */
   file: string;
+  accountId?: string;
 };
 
 export type PostTransactionsImportPreview200 = {
@@ -2537,7 +2572,8 @@ export type PostTransactionsImportBodyItemsItem = {
    */
   amount: number;
   date: string;
-  categoryId: string;
+  categoryId?: string;
+  transferOf?: string;
 };
 
 export type PostTransactionsImportBodyBillPaymentsItemType =
@@ -2928,6 +2964,81 @@ export type DeleteAccountsIdBillPaymentDueDate401 = {
 };
 
 export type DeleteAccountsIdBillPaymentDueDate404 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type GetTransfersParams = {
+  periodId?: string;
+};
+
+export type GetTransfers200 = {
+  data: Transfer[];
+  message?: string;
+};
+
+export type GetTransfers400 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type GetTransfers401 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type PostTransfersBody = {
+  fromAccountId: string;
+  toAccountId: string;
+  /**
+   * @maximum 999999999
+   * @exclusiveMinimum 0
+   */
+  amount: number;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  date: string;
+  /** @maxLength 500 */
+  description?: string;
+};
+
+export type PostTransfers201 = {
+  data: Transfer;
+  message?: string;
+};
+
+export type PostTransfers400 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type PostTransfers401 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteTransfersId200 = {
+  data: unknown;
+  message?: string;
+};
+
+export type DeleteTransfersId400 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteTransfersId401 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteTransfersId404 = {
   success: false;
   error: string;
   details?: unknown;

@@ -16,4 +16,8 @@ export type TransactionImportResult = {
    * @type integer
    */
   billsPaid: number;
+  /**
+   * @type integer
+   */
+  transfers: number;
 };
