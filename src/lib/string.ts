@@ -46,13 +46,13 @@ export const FN_UTILS_STRING = {
     return Number(value.replace(/\./g, '').replace(',', '.'));
   },
 
-  formatReaisToMoneyInputDigits: (value: string | number | undefined): string => {
-    if (value === undefined || value === null) return '';
-    const raw = String(value).trim();
-    if (raw === '') return '';
-    const n = Number(raw.replace(/\./g, '').replace(',', '.'));
+  // API manda decimal com ponto ("10.5"); o campo guarda o texto da máscara ("10,50"),
+  // que formatCurrentStringToNumber converte de volta.
+  formatReaisToMoneyInput: (value: string | number | undefined): string => {
+    if (value === undefined || value === null || String(value).trim() === '') return '';
+    const n = Number(value);
     if (!Number.isFinite(n)) return '';
-    return String(Math.round(n * 100));
+    return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   },
 
   formatEndDayDate: (value: string) => FN_UTILS_DATE.endOfBusinessDayISO(value),

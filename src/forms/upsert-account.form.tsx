@@ -37,11 +37,8 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
             type: account.type,
             closingDay: account.closingDay ?? undefined,
             dueDay: account.dueDay ?? undefined,
-            // Mesmo formato da máscara ("1.000,50"): o submit converte sem o campo ter sido editado.
             openingBalance: account.openingBalanceDate
-              ? Number(account.openingBalance).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                })
+              ? FN_UTILS_STRING.formatReaisToMoneyInput(account.openingBalance)
               : '',
             openingBalanceDate: account.openingBalanceDate
               ? FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'yyyy-MM-dd')

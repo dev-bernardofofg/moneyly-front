@@ -70,7 +70,7 @@ export const UpsertTransactionRecurringForm = ({
         ? {
             type: recurringTransaction.type as 'income' | 'expense',
             title: recurringTransaction.title,
-            amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(recurringTransaction.amount),
+            amount: FN_UTILS_STRING.formatReaisToMoneyInput(recurringTransaction.amount),
             categoryId: recurringTransaction.categoryId,
             frequency: recurringTransaction.frequency as 'daily' | 'weekly' | 'monthly' | 'yearly',
             dayOfWeek:

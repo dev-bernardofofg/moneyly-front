@@ -27,7 +27,7 @@ export const UpsertCompanyForm = ({ company }: { company?: Company }) => {
       defaultValues: company
         ? {
             name: company.name,
-            hourlyRate: FN_UTILS_STRING.formatReaisToMoneyInputDigits(company.hourlyRate),
+            hourlyRate: FN_UTILS_STRING.formatReaisToMoneyInput(company.hourlyRate),
           }
         : UpsertCompanyDefaultValues,
       invalidateKeys: [getGetCompaniesQueryKey()],

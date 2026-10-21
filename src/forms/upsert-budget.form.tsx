@@ -34,9 +34,7 @@ export const UpsertBudgetForm = ({ budget, onSaved }: UpsertBudgetFormProps) => 
       defaultValues: budget
         ? {
             categoryId: budget.category?.id || '',
-            monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInputDigits(
-              budget.monthlyLimit ?? undefined
-            ),
+            monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInput(budget.monthlyLimit ?? undefined),
           }
         : CreateBudgetDefaultValues,
       invalidateKeys: [getGetBudgetsQueryKey(), ...freeBalanceQueryKeys()],

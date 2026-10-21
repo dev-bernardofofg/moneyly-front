@@ -34,7 +34,7 @@ export const ProfileConfigFinanceForm = ({
     defaultValues: {
       financialDayStart: defaultValues.financialDayStart!,
       financialDayEnd: defaultValues.financialDayEnd!,
-      monthlyIncome: FN_UTILS_STRING.formatReaisToMoneyInputDigits(defaultValues.monthlyIncome),
+      monthlyIncome: FN_UTILS_STRING.formatReaisToMoneyInput(defaultValues.monthlyIncome),
     },
   });
 

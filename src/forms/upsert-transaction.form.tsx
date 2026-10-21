@@ -34,7 +34,7 @@ import {
 const transactionToFormValues = (transaction: Transaction): UpsertTransactionFormValues => ({
   title: transaction.title,
   type: transaction.type as 'income' | 'expense',
-  amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount),
+  amount: FN_UTILS_STRING.formatReaisToMoneyInput(transaction.amount),
   category: transaction.category?.id ?? '',
   accountId: transaction.accountId,
   description: transaction.description ?? '',
