@@ -140,14 +140,14 @@ describe('import statement helpers', () => {
   it('treats a fallback suggestion as uncategorized until the user changes it', () => {
     const item = UNKNOWN('acc:9');
 
+    expect(isUncategorized(item, { selected: true, categoryId: OUTROS.id, mode: 'create' })).toBe(
+      true
+    );
+    expect(isUncategorized(item, { selected: true, categoryId: CATEGORY.id, mode: 'create' })).toBe(
+      false
+    );
     expect(
-      isUncategorized(item, { selected: true, categoryId: OUTROS.id, asTransfer: false })
-    ).toBe(true);
-    expect(
-      isUncategorized(item, { selected: true, categoryId: CATEGORY.id, asTransfer: false })
-    ).toBe(false);
-    expect(
-      isUncategorized(ITEMS[0]!, { selected: true, categoryId: CATEGORY.id, asTransfer: false })
+      isUncategorized(ITEMS[0]!, { selected: true, categoryId: CATEGORY.id, mode: 'create' })
     ).toBe(false);
   });
 
@@ -163,17 +163,13 @@ describe('import statement helpers', () => {
     };
     const row = initialRowState(transfer);
 
-    expect(row).toMatchObject({ selected: true, asTransfer: true });
+    expect(row).toMatchObject({ selected: true, mode: 'transfer' });
     expect(isUncategorized(transfer, row)).toBe(false);
   });
 
-  it('selects only new rows by default', () => {
-    expect(ITEMS.map((item) => initialRowState(item).selected)).toEqual([
-      true,
-      false,
-      false,
-      false,
-    ]);
+  it('selects new rows and rows already in the app, never imported or bill payments', () => {
+    expect(ITEMS.map((item) => initialRowState(item).selected)).toEqual([true, true, false, false]);
+    expect(initialRowState(ITEMS[1]!).mode).toBe('link');
   });
 });
 
@@ -183,19 +179,18 @@ describe('ImportStatementForm', () => {
     uploadFile();
 
     expect(await screen.findByText('Padaria')).toBeInTheDocument();
-    expect(screen.getByText('Possível duplicata')).toBeInTheDocument();
+    expect(screen.getByText('Já lançada no app')).toBeInTheDocument();
     expect(screen.getByText('Já importada')).toBeInTheDocument();
     expect(screen.getByText('Pagamento de fatura')).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: /Salário/ })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Importar 1 transação' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Importar 2 transações' })).toBeEnabled();
   });
 
-  it('confirms only the selected rows with their categories', async () => {
+  it('creates new rows and links the ones already in the app', async () => {
     renderForm();
     uploadFile();
-    fireEvent.click(await screen.findByRole('checkbox', { name: /Farmácia/ }));
 
-    fireEvent.click(screen.getByRole('button', { name: 'Importar 2 transações' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Importar 2 transações' }));
 
     await waitFor(() => expect(confirmMutate).toHaveBeenCalled());
     const { items, accountId } = confirmMutate.mock.calls[0]![0].data;
@@ -205,6 +200,21 @@ describe('ImportStatementForm', () => {
       'acc:2',
     ]);
     expect(items[0]).toMatchObject({ categoryId: CATEGORY.id, amount: 25, type: 'expense' });
+    expect(items[1]).toMatchObject({ duplicateOf: '11111111-1111-1111-1111-111111111111' });
+    expect(items[1]).not.toHaveProperty('categoryId');
+  });
+
+  it('creates a row as a new transaction when the user says it is another one', async () => {
+    renderForm();
+    uploadFile();
+    fireEvent.click(await screen.findByRole('button', { name: 'É outro lançamento' }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Importar 2 transações' }));
+
+    await waitFor(() => expect(confirmMutate).toHaveBeenCalled());
+    const { items } = confirmMutate.mock.calls[0]![0].data;
+    expect(items[1]).toMatchObject({ categoryId: CATEGORY.id });
+    expect(items[1]).not.toHaveProperty('duplicateOf');
   });
   it('sends the bill due date of a PDF bill and checks its total', async () => {
     previewBill = { dueDate: '2026-10-07T03:00:00.000Z', total: 999 };
@@ -214,7 +224,7 @@ describe('ImportStatementForm', () => {
     expect(await screen.findByText(/Fatura com vencimento em/)).toHaveTextContent('07/10/2026');
     expect(screen.getByRole('alert')).toHaveTextContent('não bate com o total da fatura');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Importar 1 transação' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Importar 2 transações' }));
     await waitFor(() => expect(confirmMutate).toHaveBeenCalled());
     expect(confirmMutate.mock.calls[0]![0].data.billDueDate).toBe(previewBill.dueDate);
   });
