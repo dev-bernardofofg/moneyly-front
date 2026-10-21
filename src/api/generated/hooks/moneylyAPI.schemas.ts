@@ -547,6 +547,7 @@ export interface TransactionImportPreview {
 export interface TransactionImportResult {
   created: number;
   skipped: number;
+  billsPaid: number;
 }
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
@@ -620,6 +621,40 @@ export interface CurrentPeriodSummary {
   transactionsCount: number;
 }
 
+export type CardBillPaymentSource =
+  (typeof CardBillPaymentSource)[keyof typeof CardBillPaymentSource];
+
+export const CardBillPaymentSource = {
+  manual: 'manual',
+  import: 'import',
+} as const;
+
+export interface CardBillPayment {
+  id: string;
+  userId: string;
+  accountId: string;
+  dueDate: string;
+  source: CardBillPaymentSource;
+  paidAt: string;
+  createdAt: string;
+}
+
+export type CardBillsBillsItemPaymentSource =
+  (typeof CardBillsBillsItemPaymentSource)[keyof typeof CardBillsBillsItemPaymentSource];
+
+export const CardBillsBillsItemPaymentSource = {
+  manual: 'manual',
+  import: 'import',
+} as const;
+
+/**
+ * @nullable
+ */
+export type CardBillsBillsItemPayment = {
+  paidAt: string;
+  source: CardBillsBillsItemPaymentSource;
+} | null;
+
 export type CardBillsBillsItemCategoriesItem = {
   categoryId: string;
   name: string;
@@ -631,6 +666,10 @@ export type CardBillsBillsItem = {
   name: string;
   closingDay: number;
   dueDay: number;
+  /** @nullable */
+  dueDate: string | null;
+  /** @nullable */
+  payment: CardBillsBillsItemPayment;
   total: number;
   categories: CardBillsBillsItemCategoriesItem[];
 };
@@ -2485,13 +2524,30 @@ export type PostTransactionsImportBodyItemsItem = {
   categoryId: string;
 };
 
+export type PostTransactionsImportBodyBillPaymentsItemType =
+  (typeof PostTransactionsImportBodyBillPaymentsItemType)[keyof typeof PostTransactionsImportBodyBillPaymentsItemType];
+
+export const PostTransactionsImportBodyBillPaymentsItemType = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type PostTransactionsImportBodyBillPaymentsItem = {
+  type: PostTransactionsImportBodyBillPaymentsItemType;
+  /**
+   * @maximum 999999999
+   * @exclusiveMinimum 0
+   */
+  amount: number;
+  date: string;
+};
+
 export type PostTransactionsImportBody = {
   accountId: string;
-  /**
-   * @minItems 1
-   * @maxItems 500
-   */
+  /** @maxItems 500 */
   items: PostTransactionsImportBodyItemsItem[];
+  /** @maxItems 500 */
+  billPayments?: PostTransactionsImportBodyBillPaymentsItem[];
 };
 
 export type PostTransactionsImport201 = {
@@ -2794,6 +2850,57 @@ export type DeleteAccountsId401 = {
 };
 
 export type DeleteAccountsId404 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type PostAccountsIdBillPaymentBody = {
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  dueDate: string;
+};
+
+export type PostAccountsIdBillPayment200 = {
+  data: CardBillPayment;
+  message?: string;
+};
+
+export type PostAccountsIdBillPayment400 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type PostAccountsIdBillPayment401 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type PostAccountsIdBillPayment404 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteAccountsIdBillPaymentDueDate200 = {
+  data: unknown;
+  message?: string;
+};
+
+export type DeleteAccountsIdBillPaymentDueDate400 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteAccountsIdBillPaymentDueDate401 = {
+  success: false;
+  error: string;
+  details?: unknown;
+};
+
+export type DeleteAccountsIdBillPaymentDueDate404 = {
   success: false;
   error: string;
   details?: unknown;

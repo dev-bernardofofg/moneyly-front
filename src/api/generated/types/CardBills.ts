@@ -3,6 +3,13 @@
  * Do not edit manually.
  */
 
+export const paymentSourceEnum = {
+  manual: 'manual',
+  import: 'import',
+} as const;
+
+export type PaymentSourceEnumKey = (typeof paymentSourceEnum)[keyof typeof paymentSourceEnum];
+
 export type CardBills = {
   /**
    * @type string, uuid
@@ -32,6 +39,23 @@ export type CardBills = {
      * @type integer
      */
     dueDay: number;
+    /**
+     * @type string
+     */
+    dueDate: string | null;
+    /**
+     * @type object
+     */
+    payment: {
+      /**
+       * @type string
+       */
+      paidAt: string;
+      /**
+       * @type string
+       */
+      source: PaymentSourceEnumKey;
+    } | null;
     /**
      * @type number
      */

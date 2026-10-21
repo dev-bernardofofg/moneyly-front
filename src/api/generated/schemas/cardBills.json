@@ -12,6 +12,16 @@
           "name": { "type": "string" },
           "closingDay": { "type": "integer" },
           "dueDay": { "type": "integer" },
+          "dueDate": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
+          "payment": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "paidAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+              "source": { "type": "string", "enum": ["manual", "import"] }
+            },
+            "required": ["paidAt", "source"]
+          },
           "total": { "type": "number" },
           "categories": {
             "type": "array",
@@ -26,7 +36,16 @@
             }
           }
         },
-        "required": ["accountId", "name", "closingDay", "dueDay", "total", "categories"]
+        "required": [
+          "accountId",
+          "name",
+          "closingDay",
+          "dueDay",
+          "dueDate",
+          "payment",
+          "total",
+          "categories"
+        ]
       }
     }
   },

@@ -70,6 +70,14 @@ export const itemsTypeEnum2 = {
 
 export type ItemsTypeEnum2Key = (typeof itemsTypeEnum2)[keyof typeof itemsTypeEnum2];
 
+export const billPaymentsTypeEnum = {
+  income: 'income',
+  expense: 'expense',
+} as const;
+
+export type BillPaymentsTypeEnumKey =
+  (typeof billPaymentsTypeEnum)[keyof typeof billPaymentsTypeEnum];
+
 export type PostTransactionsImportMutationRequest = {
   /**
    * @type string, uuid
@@ -108,6 +116,24 @@ export type PostTransactionsImportMutationRequest = {
      * @type string, uuid
      */
     categoryId: string;
+  }[];
+  /**
+   * @type array | undefined
+   */
+  billPayments?: {
+    /**
+     * @type string
+     */
+    type: BillPaymentsTypeEnumKey;
+    /**
+     * @maxLength 999999999
+     * @type integer
+     */
+    amount: number;
+    /**
+     * @type string, date-time
+     */
+    date: string;
   }[];
 };
 

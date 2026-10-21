@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "userId": { "type": "string", "format": "uuid" },
+    "accountId": { "type": "string", "format": "uuid" },
+    "dueDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "source": { "type": "string", "enum": ["manual", "import"] },
+    "paidAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+    "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+  },
+  "required": ["id", "userId", "accountId", "dueDate", "source", "paidAt", "createdAt"],
+  "x-readme-ref-name": "CardBillPayment"
+}

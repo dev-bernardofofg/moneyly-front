@@ -3,7 +3,8 @@ export type { AuthRefresh } from './types/AuthRefresh.ts';
 export type { AuthSession } from './types/AuthSession.ts';
 export type { Budget } from './types/Budget.ts';
 export type { BudgetProgress } from './types/BudgetProgress.ts';
-export type { CardBills } from './types/CardBills.ts';
+export type { CardBillPayment, CardBillPaymentSourceEnumKey } from './types/CardBillPayment.ts';
+export type { CardBills, PaymentSourceEnumKey } from './types/CardBills.ts';
 export type { Category } from './types/Category.ts';
 export type { Company } from './types/Company.ts';
 export type {
@@ -26,6 +27,18 @@ export type {
   DeleteAccountsIdMutationResponse,
   DeleteAccountsIdPathParams,
 } from './types/DeleteAccountsId.ts';
+export type {
+  DeleteAccountsIdBillPaymentDuedate200,
+  DeleteAccountsIdBillPaymentDuedate400,
+  DeleteAccountsIdBillPaymentDuedate400SuccessEnumKey,
+  DeleteAccountsIdBillPaymentDuedate401,
+  DeleteAccountsIdBillPaymentDuedate401SuccessEnumKey,
+  DeleteAccountsIdBillPaymentDuedate404,
+  DeleteAccountsIdBillPaymentDuedate404SuccessEnumKey,
+  DeleteAccountsIdBillPaymentDuedateMutation,
+  DeleteAccountsIdBillPaymentDuedateMutationResponse,
+  DeleteAccountsIdBillPaymentDuedatePathParams,
+} from './types/DeleteAccountsIdBillPaymentDuedate.ts';
 export type {
   DeleteBudgetsId200,
   DeleteBudgetsId400,
@@ -494,6 +507,19 @@ export type {
   PostAccountsMutationResponse,
 } from './types/PostAccounts.ts';
 export type {
+  PostAccountsIdBillPayment200,
+  PostAccountsIdBillPayment400,
+  PostAccountsIdBillPayment400SuccessEnumKey,
+  PostAccountsIdBillPayment401,
+  PostAccountsIdBillPayment401SuccessEnumKey,
+  PostAccountsIdBillPayment404,
+  PostAccountsIdBillPayment404SuccessEnumKey,
+  PostAccountsIdBillPaymentMutation,
+  PostAccountsIdBillPaymentMutationRequest,
+  PostAccountsIdBillPaymentMutationResponse,
+  PostAccountsIdBillPaymentPathParams,
+} from './types/PostAccountsIdBillPayment.ts';
+export type {
   PostAuthGoogle200,
   PostAuthGoogle400,
   PostAuthGoogle400SuccessEnumKey,
@@ -643,6 +669,7 @@ export type {
   PostTransactionsCreateMutationResponse,
 } from './types/PostTransactionsCreate.ts';
 export type {
+  BillPaymentsTypeEnumKey,
   ItemsTypeEnum2Key,
   PostTransactionsImport201,
   PostTransactionsImport400,
@@ -825,12 +852,17 @@ export type { TransactionListSummary } from './types/TransactionListSummary.ts';
 export type { TransactionSummary } from './types/TransactionSummary.ts';
 export type { User } from './types/User.ts';
 export { accountTypeEnum } from './types/Account.ts';
+export { cardBillPaymentSourceEnum } from './types/CardBillPayment.ts';
+export { paymentSourceEnum } from './types/CardBills.ts';
 export { byCategorySignalEnum } from './types/ComparativeInsights.ts';
 export { totalsSignalEnum } from './types/ComparativeInsights.ts';
 export { comparisonSignalEnum } from './types/DashboardOverview.ts';
 export { deleteAccountsId400SuccessEnum } from './types/DeleteAccountsId.ts';
 export { deleteAccountsId401SuccessEnum } from './types/DeleteAccountsId.ts';
 export { deleteAccountsId404SuccessEnum } from './types/DeleteAccountsId.ts';
+export { deleteAccountsIdBillPaymentDuedate400SuccessEnum } from './types/DeleteAccountsIdBillPaymentDuedate.ts';
+export { deleteAccountsIdBillPaymentDuedate401SuccessEnum } from './types/DeleteAccountsIdBillPaymentDuedate.ts';
+export { deleteAccountsIdBillPaymentDuedate404SuccessEnum } from './types/DeleteAccountsIdBillPaymentDuedate.ts';
 export { deleteBudgetsId400SuccessEnum } from './types/DeleteBudgetsId.ts';
 export { deleteBudgetsId401SuccessEnum } from './types/DeleteBudgetsId.ts';
 export { deleteBudgetsId404SuccessEnum } from './types/DeleteBudgetsId.ts';
@@ -943,6 +975,9 @@ export { postAccounts400SuccessEnum } from './types/PostAccounts.ts';
 export { postAccounts401SuccessEnum } from './types/PostAccounts.ts';
 export { postAccountsMutationRequestTypeEnum } from './types/PostAccounts.ts';
 export { postAccountsMutationRequestTypeEnum2 } from './types/PostAccounts.ts';
+export { postAccountsIdBillPayment400SuccessEnum } from './types/PostAccountsIdBillPayment.ts';
+export { postAccountsIdBillPayment401SuccessEnum } from './types/PostAccountsIdBillPayment.ts';
+export { postAccountsIdBillPayment404SuccessEnum } from './types/PostAccountsIdBillPayment.ts';
 export { postAuthGoogle400SuccessEnum } from './types/PostAuthGoogle.ts';
 export { postAuthLogout400SuccessEnum } from './types/PostAuthLogout.ts';
 export { postAuthLogout401SuccessEnum } from './types/PostAuthLogout.ts';
@@ -974,6 +1009,7 @@ export { postRecurringTransactionsFromSubscriptionMutationRequestCadenceEnum } f
 export { postTransactionsCreate400SuccessEnum } from './types/PostTransactionsCreate.ts';
 export { postTransactionsCreate401SuccessEnum } from './types/PostTransactionsCreate.ts';
 export { postTransactionsCreateMutationRequestTypeEnum } from './types/PostTransactionsCreate.ts';
+export { billPaymentsTypeEnum } from './types/PostTransactionsImport.ts';
 export { itemsTypeEnum2 } from './types/PostTransactionsImport.ts';
 export { postTransactionsImport400SuccessEnum } from './types/PostTransactionsImport.ts';
 export { postTransactionsImport401SuccessEnum } from './types/PostTransactionsImport.ts';

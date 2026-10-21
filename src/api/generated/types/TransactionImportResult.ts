@@ -12,4 +12,8 @@ export type TransactionImportResult = {
    * @type integer
    */
   skipped: number;
+  /**
+   * @type integer
+   */
+  billsPaid: number;
 };

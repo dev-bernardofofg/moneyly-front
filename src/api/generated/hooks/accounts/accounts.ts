@@ -26,6 +26,10 @@ import type {
   DeleteAccountsId400,
   DeleteAccountsId401,
   DeleteAccountsId404,
+  DeleteAccountsIdBillPaymentDueDate200,
+  DeleteAccountsIdBillPaymentDueDate400,
+  DeleteAccountsIdBillPaymentDueDate401,
+  DeleteAccountsIdBillPaymentDueDate404,
   GetAccounts200,
   GetAccounts400,
   GetAccounts401,
@@ -33,6 +37,11 @@ import type {
   PostAccounts400,
   PostAccounts401,
   PostAccountsBody,
+  PostAccountsIdBillPayment200,
+  PostAccountsIdBillPayment400,
+  PostAccountsIdBillPayment401,
+  PostAccountsIdBillPayment404,
+  PostAccountsIdBillPaymentBody,
   PutAccountsId200,
   PutAccountsId400,
   PutAccountsId401,
@@ -390,4 +399,188 @@ export const useDeleteAccountsId = <
   TContext
 > => {
   return useMutation(getDeleteAccountsIdMutationOptions(options), queryClient);
+};
+/**
+ * @summary Marcar como paga a fatura do cartão que vence na data
+ */
+export const postAccountsIdBillPayment = (
+  id: string,
+  postAccountsIdBillPaymentBody?: PostAccountsIdBillPaymentBody,
+  signal?: AbortSignal
+) => {
+  return customInstance<PostAccountsIdBillPayment200>({
+    url: `/accounts/${id}/bill-payment`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: postAccountsIdBillPaymentBody,
+    signal,
+  });
+};
+
+export const getPostAccountsIdBillPaymentMutationKey = () => ['postAccountsIdBillPayment'] as const;
+
+export const getPostAccountsIdBillPaymentMutationOptions = <
+  TError =
+    PostAccountsIdBillPayment400 | PostAccountsIdBillPayment401 | PostAccountsIdBillPayment404,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postAccountsIdBillPayment>>,
+    TError,
+    PostAccountsIdBillPaymentMutationVariables,
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postAccountsIdBillPayment>>,
+  TError,
+  PostAccountsIdBillPaymentMutationVariables,
+  TContext
+> => {
+  const mutationKey = getPostAccountsIdBillPaymentMutationKey();
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postAccountsIdBillPayment>>,
+    PostAccountsIdBillPaymentMutationVariables
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return postAccountsIdBillPayment(id, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostAccountsIdBillPaymentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountsIdBillPayment>>
+>;
+export type PostAccountsIdBillPaymentMutationBody = PostAccountsIdBillPaymentBody | undefined;
+export type PostAccountsIdBillPaymentMutationError =
+  PostAccountsIdBillPayment400 | PostAccountsIdBillPayment401 | PostAccountsIdBillPayment404;
+export type PostAccountsIdBillPaymentMutationVariables = {
+  id: string;
+  data?: PostAccountsIdBillPaymentBody;
+};
+
+/**
+ * @summary Marcar como paga a fatura do cartão que vence na data
+ */
+export const usePostAccountsIdBillPayment = <
+  TError =
+    PostAccountsIdBillPayment400 | PostAccountsIdBillPayment401 | PostAccountsIdBillPayment404,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postAccountsIdBillPayment>>,
+      TError,
+      PostAccountsIdBillPaymentMutationVariables,
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof postAccountsIdBillPayment>>,
+  TError,
+  PostAccountsIdBillPaymentMutationVariables,
+  TContext
+> => {
+  return useMutation(getPostAccountsIdBillPaymentMutationOptions(options), queryClient);
+};
+/**
+ * @summary Voltar a fatura do cartão para pendente
+ */
+export const deleteAccountsIdBillPaymentDueDate = (
+  id: string,
+  dueDate: string,
+  signal?: AbortSignal
+) => {
+  return customInstance<DeleteAccountsIdBillPaymentDueDate200>({
+    url: `/accounts/${id}/bill-payment/${dueDate}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteAccountsIdBillPaymentDueDateMutationKey = () =>
+  ['deleteAccountsIdBillPaymentDueDate'] as const;
+
+export const getDeleteAccountsIdBillPaymentDueDateMutationOptions = <
+  TError =
+    | DeleteAccountsIdBillPaymentDueDate400
+    | DeleteAccountsIdBillPaymentDueDate401
+    | DeleteAccountsIdBillPaymentDueDate404,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>,
+    TError,
+    DeleteAccountsIdBillPaymentDueDateMutationVariables,
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>,
+  TError,
+  DeleteAccountsIdBillPaymentDueDateMutationVariables,
+  TContext
+> => {
+  const mutationKey = getDeleteAccountsIdBillPaymentDueDateMutationKey();
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>,
+    DeleteAccountsIdBillPaymentDueDateMutationVariables
+  > = (props) => {
+    const { id, dueDate } = props ?? {};
+
+    return deleteAccountsIdBillPaymentDueDate(id, dueDate);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteAccountsIdBillPaymentDueDateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>
+>;
+
+export type DeleteAccountsIdBillPaymentDueDateMutationError =
+  | DeleteAccountsIdBillPaymentDueDate400
+  | DeleteAccountsIdBillPaymentDueDate401
+  | DeleteAccountsIdBillPaymentDueDate404;
+export type DeleteAccountsIdBillPaymentDueDateMutationVariables = { id: string; dueDate: string };
+
+/**
+ * @summary Voltar a fatura do cartão para pendente
+ */
+export const useDeleteAccountsIdBillPaymentDueDate = <
+  TError =
+    | DeleteAccountsIdBillPaymentDueDate400
+    | DeleteAccountsIdBillPaymentDueDate401
+    | DeleteAccountsIdBillPaymentDueDate404,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>,
+      TError,
+      DeleteAccountsIdBillPaymentDueDateMutationVariables,
+      TContext
+    >;
+  },
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteAccountsIdBillPaymentDueDate>>,
+  TError,
+  DeleteAccountsIdBillPaymentDueDateMutationVariables,
+  TContext
+> => {
+  return useMutation(getDeleteAccountsIdBillPaymentDueDateMutationOptions(options), queryClient);
 };
