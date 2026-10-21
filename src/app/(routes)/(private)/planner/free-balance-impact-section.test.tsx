@@ -8,7 +8,7 @@ describe('FreeBalanceImpactSection', () => {
   it('shows the total and each reserve from the contract', () => {
     render(
       <FreeBalanceImpactSection
-        impact={{ budgetReserve: 250, goalReserve: 100.5, total: 350.5 }}
+        impact={{ budgetReserve: 25000, goalReserve: 10050, total: 35050 }}
         loading={false}
         error={false}
       />

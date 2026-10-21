@@ -10,21 +10,21 @@ const category = (id: string, name: string, amount: number) => ({ categoryId: id
 
 const DATA: CardBills = {
   periodId: '11111111-1111-1111-1111-111111111111',
-  total: 1000,
+  total: 100000,
   bills: [
     {
       accountId: 'inter',
       name: 'Cartão Inter',
       closingDay: 25,
       dueDay: 5,
-      total: 700,
+      total: 70000,
       categories: [
-        category('ride', 'Transporte', 400),
-        category('food', 'Alimentação', 200),
-        category('a', 'A', 40),
-        category('b', 'B', 30),
-        category('c', 'C', 20),
-        category('d', 'D', 10),
+        category('ride', 'Transporte', 40000),
+        category('food', 'Alimentação', 20000),
+        category('a', 'A', 4000),
+        category('b', 'B', 3000),
+        category('c', 'C', 2000),
+        category('d', 'D', 1000),
       ],
     },
     {
@@ -32,8 +32,8 @@ const DATA: CardBills = {
       name: 'Cartão Nubank',
       closingDay: 3,
       dueDay: 10,
-      total: 300,
-      categories: [category('food', 'Alimentação', 300)],
+      total: 30000,
+      categories: [category('food', 'Alimentação', 30000)],
     },
   ],
 };
@@ -64,7 +64,7 @@ describe('card bills helpers', () => {
       'C',
       'Outras',
     ]);
-    expect(segments.at(-1)).toMatchObject({ amount: 10, color: 'var(--series-other)' });
+    expect(segments.at(-1)).toMatchObject({ amount: 1000, color: 'var(--series-other)' });
   });
 });
 

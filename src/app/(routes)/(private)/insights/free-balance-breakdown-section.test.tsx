@@ -15,12 +15,12 @@ const makeForecast = (
 ): ForecastResponse => {
   const components = {
     carryOverBalance: 0,
-    realizedBalance: 1500,
+    realizedBalance: 150000,
     futureRecurringIncome: 0,
-    futureRecurringExpense: 300,
+    futureRecurringExpense: 30000,
     pendingVariableIncome: 0,
-    budgetReserve: 250,
-    goalReserve: 100,
+    budgetReserve: 25000,
+    goalReserve: 10000,
     ...overrides.components,
   };
 
@@ -31,18 +31,18 @@ const makeForecast = (
       endDate: overrides.endDate ?? '2026-11-01T02:59:59.000Z',
       label: '01/10 a 31/10',
     },
-    realized: { income: 2000, expense: 500, balance: components.realizedBalance },
+    realized: { income: 200000, expense: 50000, balance: components.realizedBalance },
     projected: {
       recurringIncome: components.futureRecurringIncome,
       recurringExpense: components.futureRecurringExpense,
       occurrences: overrides.occurrences ?? [],
     },
-    projectedEndBalance: 1200,
+    projectedEndBalance: 120000,
     freeBalance: {
-      total: overrides.total ?? 850,
+      total: overrides.total ?? 85000,
       daysRemaining: 12,
       confidence: 'high',
-      income: { fixed: 1800, variable: 0, pendingVariable: 0, ...overrides.income },
+      income: { fixed: 180000, variable: 0, pendingVariable: 0, ...overrides.income },
       commitments: { recurringExpenses: components.futureRecurringExpense },
       reserves: { budgets: components.budgetReserve, goals: components.goalReserve },
       components,
@@ -59,7 +59,7 @@ const messagesOf = (forecast: ForecastResponse) =>
 
 describe('buildFreeBalanceMessages', () => {
   it('explains bills, reserves and overtime with contract values', () => {
-    const messages = messagesOf(makeForecast({ income: { variable: 200 } }));
+    const messages = messagesOf(makeForecast({ income: { variable: 20000 } }));
 
     expect(messages).toEqual([
       'Suas contas futuras consomem R$ 300,00.',
@@ -71,8 +71,8 @@ describe('buildFreeBalanceMessages', () => {
   it('names the largest outflow when the free balance is negative', () => {
     const messages = messagesOf(
       makeForecast({
-        total: -50,
-        components: { realizedBalance: 100, futureRecurringExpense: 50, budgetReserve: 100 },
+        total: -5000,
+        components: { realizedBalance: 10000, futureRecurringExpense: 5000, budgetReserve: 10000 },
       })
     );
 
@@ -112,7 +112,7 @@ describe('FreeBalanceBreakdownSection', () => {
   it('shows a negative realized balance as a subtraction', () => {
     render(
       <FreeBalanceBreakdownSection
-        forecast={makeForecast({ total: -700, components: { realizedBalance: -250 } })}
+        forecast={makeForecast({ total: -70000, components: { realizedBalance: -25000 } })}
         loading={false}
         error={false}
       />
@@ -129,7 +129,7 @@ describe('FreeBalanceBreakdownSection', () => {
 
     rerender(
       <FreeBalanceBreakdownSection
-        forecast={makeForecast({ components: { carryOverBalance: 970 } })}
+        forecast={makeForecast({ components: { carryOverBalance: 97000 } })}
         loading={false}
         error={false}
       />
@@ -146,7 +146,7 @@ describe('FreeBalanceBreakdownSection', () => {
               recurringTransactionId: '22222222-2222-2222-2222-222222222222',
               title: 'Aluguel',
               type: 'expense',
-              amount: 300,
+              amount: 30000,
               date: '2026-10-25T03:00:00.000Z',
               categoryId: '33333333-3333-3333-3333-333333333333',
             },
