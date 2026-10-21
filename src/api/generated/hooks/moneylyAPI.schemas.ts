@@ -688,6 +688,7 @@ export type ForecastResponseFreeBalanceReserves = {
 };
 
 export type ForecastResponseFreeBalanceComponents = {
+  carryOverBalance: number;
   realizedBalance: number;
   futureRecurringIncome: number;
   futureRecurringExpense: number;
@@ -742,6 +743,10 @@ export interface Account {
   closingDay: number | null;
   /** @nullable */
   dueDay: number | null;
+  /** Valor decimal como string */
+  openingBalance: string;
+  /** @nullable */
+  openingBalanceDate: string | null;
   isDefault: boolean;
   isActive: boolean;
   createdAt: string;
@@ -2654,6 +2659,13 @@ export type PostAccountsBody =
        * @maxLength 60
        */
       name: string;
+      /**
+       * @minimum -999999999
+       * @maximum 999999999
+       */
+      openingBalance?: number;
+      /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+      openingBalanceDate?: string;
     }
   | {
       type: 'credit_card';
@@ -2707,6 +2719,16 @@ export type PutAccountsIdBody = {
    * @maximum 31
    */
   dueDay?: number;
+  /**
+   * @minimum -999999999
+   * @maximum 999999999
+   */
+  openingBalance?: number;
+  /**
+   * @nullable
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  openingBalanceDate?: string | null;
 };
 
 export type PutAccountsId200 = {

@@ -167,6 +167,10 @@ export type ForecastResponse = {
       /**
        * @type number
        */
+      carryOverBalance: number;
+      /**
+       * @type number
+       */
       realizedBalance: number;
       /**
        * @type number

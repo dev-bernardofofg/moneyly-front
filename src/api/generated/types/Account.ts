@@ -36,6 +36,15 @@ export type Account = {
    */
   dueDay: number | null;
   /**
+   * @description Valor decimal como string
+   * @type string
+   */
+  openingBalance: string;
+  /**
+   * @type string
+   */
+  openingBalanceDate: string | null;
+  /**
    * @type boolean
    */
   isDefault: boolean;

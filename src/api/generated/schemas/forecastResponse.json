@@ -72,6 +72,7 @@
         "components": {
           "type": "object",
           "properties": {
+            "carryOverBalance": { "type": "number" },
             "realizedBalance": { "type": "number" },
             "futureRecurringIncome": { "type": "number" },
             "futureRecurringExpense": { "type": "number" },
@@ -80,6 +81,7 @@
             "goalReserve": { "type": "number" }
           },
           "required": [
+            "carryOverBalance",
             "realizedBalance",
             "futureRecurringIncome",
             "futureRecurringExpense",
