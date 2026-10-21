@@ -49,6 +49,8 @@ export const ImportStatementForm = () => {
   const queryClient = useQueryClient();
   const closeRef = useRef<HTMLButtonElement>(null);
   const [items, setItems] = useState<ImportPreviewItem[]>([]);
+  // Fatura em PDF: vencimento e total impressos nela.
+  const [bill, setBill] = useState<{ dueDate: string; total: number | null } | null>(null);
   const { options: accountOptions, defaultAccountId, nameById } = useAccounts();
   const [chosenAccountId, setChosenAccountId] = useState<string>();
   // Até o usuário escolher, vale a conta padrão (carrega depois do primeiro render).
@@ -62,6 +64,7 @@ export const ImportStatementForm = () => {
       onSuccess: (response) => {
         const previewItems = response.data?.items ?? [];
         setItems(previewItems);
+        setBill(response.data?.bill ?? null);
         setRows(
           Object.fromEntries(previewItems.map((item) => [item.externalId, initialRowState(item)]))
         );
@@ -105,6 +108,7 @@ export const ImportStatementForm = () => {
     setChosenAccountId(id);
     setItems([]);
     setRows({});
+    setBill(null);
   };
 
   const updateRow = (externalId: string, patch: Partial<ImportRowState>) =>
@@ -149,8 +153,13 @@ export const ImportStatementForm = () => {
             : { categoryId: rows[item.externalId]!.categoryId }),
         })),
         billPayments,
+        ...(bill && { billDueDate: bill.dueDate }),
       },
     });
+
+  const billRowsTotal = items
+    .filter((item) => item.type === 'expense')
+    .reduce((total, item) => total + item.amount, 0);
 
   return (
     <div className="space-y-4">
@@ -179,18 +188,18 @@ export const ImportStatementForm = () => {
 
       <div className="space-y-1">
         <label htmlFor="ofx-file" className="text-sm font-medium">
-          Arquivo OFX do extrato
+          Extrato OFX ou fatura do Inter em PDF
         </label>
         <input
           id="ofx-file"
           type="file"
-          accept=".ofx,application/x-ofx"
+          accept=".ofx,.pdf,application/x-ofx,application/pdf"
           disabled={preview.isPending}
           onChange={(event) => handleFile(event.target.files?.[0])}
           className="block w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-2 file:text-primary-foreground"
         />
         <p className="text-xs text-muted-foreground">
-          Exporte o extrato em OFX no app ou internet banking do seu banco.
+          Exporte o extrato em OFX no app do banco, ou envie o PDF da fatura do cartão Inter.
         </p>
       </div>
 
@@ -198,6 +207,31 @@ export const ImportStatementForm = () => {
 
       {items.length > 0 && (
         <>
+          {bill && (
+            <div className="rounded-md border p-3 text-sm">
+              <p>
+                Fatura com vencimento em{' '}
+                <span className="font-medium">
+                  {FN_UTILS_DATE.formatInBusinessTZ(bill.dueDate, 'dd/MM/yyyy')}
+                </span>
+                {bill.total != null && (
+                  <>
+                    {' · total '}
+                    <span className="font-medium">
+                      {FN_UTILS_NUMBERS.formatCurrency(bill.total)}
+                    </span>
+                  </>
+                )}
+                . Todas as linhas contam nessa fatura, inclusive parcelas de compras antigas.
+              </p>
+              {bill.total != null && bill.total !== billRowsTotal && (
+                <p role="alert" className="mt-1 text-expense">
+                  A soma das compras lidas ({FN_UTILS_NUMBERS.formatCurrency(billRowsTotal)}) não
+                  bate com o total da fatura. Confira antes de importar.
+                </p>
+              )}
+            </div>
+          )}
           {uncategorizedCount > 0 && (
             <p className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
               {uncategorizedCount === 1
