@@ -69,6 +69,9 @@ export const FreeBalanceBreakdownSection = ({
       <div className="grid gap-4 lg:grid-cols-2">
         <div>
           <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+            {components.carryOverBalance !== 0 && (
+              <Line label="Saldo anterior" value={components.carryOverBalance} sign="+" />
+            )}
             <Line label="Saldo realizado" value={components.realizedBalance} sign="+" />
             <Line
               label="Entradas recorrentes previstas"

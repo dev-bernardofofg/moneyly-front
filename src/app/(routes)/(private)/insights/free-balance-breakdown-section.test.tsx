@@ -14,6 +14,7 @@ const makeForecast = (
   } = {}
 ): ForecastResponse => {
   const components = {
+    carryOverBalance: 0,
     realizedBalance: 1500,
     futureRecurringIncome: 0,
     futureRecurringExpense: 300,
@@ -118,6 +119,22 @@ describe('FreeBalanceBreakdownSection', () => {
     );
 
     expect(screen.getByText('Saldo realizado').nextSibling).toHaveTextContent('− R$ 250,00');
+  });
+
+  it('shows the carried balance only when an opening balance applies', () => {
+    const { rerender } = render(
+      <FreeBalanceBreakdownSection forecast={makeForecast()} loading={false} error={false} />
+    );
+    expect(screen.queryByText('Saldo anterior')).not.toBeInTheDocument();
+
+    rerender(
+      <FreeBalanceBreakdownSection
+        forecast={makeForecast({ components: { carryOverBalance: 970 } })}
+        loading={false}
+        error={false}
+      />
+    );
+    expect(screen.getByText('Saldo anterior').nextSibling).toHaveTextContent('+ R$ 970,00');
   });
 
   it('renders upcoming occurrences', () => {

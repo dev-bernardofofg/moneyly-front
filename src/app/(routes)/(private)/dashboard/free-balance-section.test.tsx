@@ -25,6 +25,7 @@ const forecast: ForecastResponse = {
     commitments: { recurringExpenses: 300 },
     reserves: { budgets: 250, goals: 100 },
     components: {
+      carryOverBalance: 0,
       realizedBalance: 1500,
       futureRecurringIncome: 0,
       futureRecurringExpense: 300,
