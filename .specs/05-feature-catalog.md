@@ -3,7 +3,7 @@
 Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adicionar/alterar tela.
 
 > **Âncora:** sincronizado em commit `6a6edc3`.
-> **Fonte de verdade de endpoints/payloads: `moneyly-back/openapi.json`.** Hooks: `(resources)/(generated)/hooks/<tag>`. Em divergência, vale o openapi → regerar.
+> **Fonte de verdade de endpoints/payloads: `moneyly-back/openapi.json`.** Hooks: `src/api/generated/hooks/<tag>`. Em divergência, vale o openapi → regerar.
 
 ## Auth — `/auth`
 
@@ -12,44 +12,44 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 ## Dashboard — `/dashboard`
 
-- `(routes)/(private)/dashboard/page.tsx` + `(components)/(bases)/(charts)/monthly-history-chart.tsx` + `(stats)`.
+- `(routes)/(private)/dashboard/page.tsx` + `src/components/charts/monthly-history-chart.tsx` + `(stats)`.
 - Hooks `overview/overview.ts` (`useGetOverviewDashboard`) + `transactions` (`summary-by-month`). Stats, transações recentes, histórico mensal agregado (R1).
 
 ## Transactions — `/transactions`
 
-- `page.tsx` + `transaction.table.tsx` + `transaction.utils.ts`; form `(forms)/upsert-transaction.form.tsx` + `transaction.tabs.tsx`.
-- Hooks `transactions/transactions.ts`: `useGetTransactions` (paginado), `usePostTransactionsCreate`, `usePut/DeleteTransactions{id}`, summaries. Schema form `(schemas)/transaction.schema.tsx`. Mutação invalida dashboard+lista+summary. Dinheiro: string→number no submit.
+- `page.tsx` + `transaction.table.tsx` + `transaction.utils.ts`; form `src/forms/upsert-transaction.form.tsx` + `transaction.tabs.tsx`.
+- Hooks `transactions/transactions.ts`: `useGetTransactions` (paginado), `usePostTransactionsCreate`, `usePut/DeleteTransactions{id}`, summaries. Schema form `src/schemas/transaction.schema.tsx`. Mutação invalida dashboard+lista+summary. Dinheiro: string→number no submit.
 
 ## Recurring Transactions — `/recurring-transactions`
 
-- `page.tsx` + `recurring-transaction.table.tsx` + `recurring-transaction-history.dialog.tsx` + `.utils.ts`; form `(forms)/upsert-transaction-recurring.form.tsx`.
+- `page.tsx` + `recurring-transaction.table.tsx` + `recurring-transaction-history.dialog.tsx` + `.utils.ts`; form `src/forms/upsert-transaction-recurring.form.tsx`.
 - Hooks `recurring-transactions/*`: CRUD + `{id}/transactions` (histórico) + `deactivate`/`reactivate`. Frequência `daily|weekly|monthly|yearly`; `dayOfMonth` só monthly, `dayOfWeek` (0=dom) só weekly. Materialização é no back (scheduler).
 
 ## Categories — `/categories`
 
-- `page.tsx` + `category.table.tsx`; form `(forms)/upsert-category.form.tsx`, schema `(schemas)/category.schema.tsx`.
+- `page.tsx` + `category.table.tsx`; form `src/forms/upsert-category.form.tsx`, schema `src/schemas/category.schema.tsx`.
 - Hooks `categories/categories.ts`: list, create, update/{id}, delete/{id}. **Global (`isGlobal`/`userId=null`) não editável/deletável no UI.**
 
 ## Planner (Budgets + Goals) — `/planner`
 
-- `page.tsx` + `add-value-to-goal.form.tsx`; forms `(forms)/upsert-budget.form.tsx`, `upsert-goal.form.tsx`; swipers `(bases)/(swipers)`.
-- Hooks `budgets/budgets.ts` (+`{id}`) e `goals/goals.ts` (+`{id}`, `add-amount`). Budget progress vem calculado do back; status `safe/attention/warning/exceeded` → cores via `(helpers)/budget-level.ts`. 1 budget/categoria (back 409 se duplicado). Repassar `periodId`.
+- `page.tsx` + `add-value-to-goal.form.tsx`; forms `src/forms/upsert-budget.form.tsx`, `upsert-goal.form.tsx`; swipers `src/components/swipers`.
+- Hooks `budgets/budgets.ts` (+`{id}`) e `goals/goals.ts` (+`{id}`, `add-amount`). Budget progress vem calculado do back; status `safe/attention/warning/exceeded` → cores via `src/lib/budget-level.ts`. 1 budget/categoria (back 409 se duplicado). Repassar `periodId`.
 
 ## Overtime — `/overtime`
 
-- `page.tsx` + `overtime.table.tsx`; forms `(forms)/upsert-overtime.form.tsx`, `upsert-company.form.tsx`; schema `(schemas)/overtime.schema.tsx`; `(bases)/(forms)/base-date-time-picker.tsx`.
+- `page.tsx` + `overtime.table.tsx`; forms `src/forms/upsert-overtime.form.tsx`, `upsert-company.form.tsx`; schema `src/schemas/overtime.schema.tsx`; `src/components/forms/base-shift-picker.tsx`.
 - Hooks `overtime/overtime.ts` (list paginado por `month`/`year` civil, summary, CRUD) + `companies/companies.ts` (CRUD). Filtra por **mês civil** derivado do `startDate` do período selecionado, não por `periodId`. Valores decimais como string → `parseFloat`. Detalhe: `.specs/features/06-overtime.md`.
 
 ## Profile — `/profile`
 
-- `page.tsx` + `profile-config-finance.form.tsx`; `(schemas)/initial-config.schema.tsx`; guard inicial (`use-initial-config`).
+- `page.tsx` + `profile-config-finance.form.tsx`; `src/schemas/initial-config.schema.tsx`; guard inicial (`use-initial-config`).
 - Hooks `user/user.ts`: `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`, `/income`. Define `financialDayStart/End` (período financeiro pessoal).
 
 ## Infra transversal
 
-- `(utils)/axios-instance.ts` (`customInstance`, Bearer, refresh, formata erro) · `(utils)/cookies.ts` · `(utils)/routes.ts` · `(utils)/env.ts`.
-- `(helpers)/`: `number.ts` (BRL), `string.ts` (parse moeda), `errors.ts` (`getErrorMessage`/`setFormFieldErrors`), `budget-level.ts`.
-- `(contexts)/`: auth/period/theme/index (QueryClient).
+- `src/lib/axios-instance.ts` (`customInstance`, Bearer, refresh, formata erro) · `src/lib/cookies.ts` · `src/lib/routes.ts` · `src/lib/env.ts`.
+- `src/lib/`: `number.ts` (BRL), `string.ts` (parse moeda), `errors.ts` (`getErrorMessage`/`setFormFieldErrors`), `budget-level.ts`.
+- `src/contexts/`: auth/period/theme/index (QueryClient).
 - Geração: `kubb.config.ts`, `orval.config.ts`, `openapi.json` → `pnpm generate-hooks`.
 
 ## ✅ Contrato I1 consumido — front fechado (R1–R5)
@@ -64,7 +64,7 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 ## 🟢 Notas (não bloqueiam)
 
 - Ajustes de consumo durante I1 (type correto, sem tipo à mão): `GET /budgets/`→`BudgetProgress` (`budget-card`/`budget-swiper`/`upsert-budget.form`); `GET /user/financial-periods`→`FinancialPeriodSummary` (`use-periods`); `GET /categories/` não paginado (`categories/page` client-side).
-- `@kubb/plugin-zod` removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`). Forms usam `(resources)/(schemas)` à mão.
+- `@kubb/plugin-zod` removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`). Forms usam `src/schemas` à mão.
 
 ## F1 / F2 — Done
 

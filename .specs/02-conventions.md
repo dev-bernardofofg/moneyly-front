@@ -5,23 +5,23 @@ SOLID + Clean Code + WCAG. Código/identificadores em inglês; textos de UI e sp
 
 ## ⛔ Proibido (anti-padrões — checar sempre)
 
-- **Escrever tipo de API à mão** (request/response, params, enums de domínio) → usar SEMPRE o gerado em `(resources)/(generated)/{types,zod}`. Se falta tipo, regenerar do `openapi.json`, não digitar.
-- **Editar arquivo em `(resources)/(generated)/`** → é sobrescrito por `pnpm generate-hooks`. Mudança real vai no back → regenera.
+- **Escrever tipo de API à mão** (request/response, params, enums de domínio) → usar SEMPRE o gerado em `src/api/generated/{types,zod}`. Se falta tipo, regenerar do `openapi.json`, não digitar.
+- **Editar arquivo em `src/api/generated/`** → é sobrescrito por `pnpm generate-hooks`. Mudança real vai no back → regenera.
 - **`fetch`/`axios` cru numa tela** → usar hook gerado (`useGetX`/`usePostX...`) + `customInstance`. Nada de instância axios nova.
-- **Criar outra instância axios / baseURL hardcoded** → só `src/app/(utils)/axios-instance.ts` (`NEXT_PUBLIC_API_URL`).
+- **Criar outra instância axios / baseURL hardcoded** → só `src/lib/axios-instance.ts` (`NEXT_PUBLIC_API_URL`).
 - **Mutação sem `invalidateQueries`** das queries afetadas → cache fica velho.
 - **Somar/comparar dinheiro como string ou como float do input** → API manda **string decimal**; converter com helper (`FN_UTILS_STRING.formatCurrentStringToNumber`) só na borda; nunca `"1.50" + "2"`.
-- **`new Date()` / `.toISOString()` cru para data de negócio** → usar `FN_UTILS_DATE` (`(helpers)/date.ts`, BUSINESS_TZ=America/Sao_Paulo); não assumir mês civil 1–31, usar `periodId`/período do `PeriodProvider`.
+- **`new Date()` / `.toISOString()` cru para data de negócio** → usar `FN_UTILS_DATE` (`src/lib/date.ts`, BUSINESS_TZ=America/Sao_Paulo); não assumir mês civil 1–31, usar `periodId`/período do `PeriodProvider`.
 - **Assumir mês civil** em filtros/labels de período → período financeiro ≠ mês (ver `../../moneyly-back/.specs/03-domain-model.md`).
 - **Ler `response` sem respeitar o envelope** → sucesso vem em `data`; erro em `error`/`details`. `customInstance` já entrega `.data`; não reembrulhar.
-- **Schema Zod de formulário usado como tipo de API** → `(resources)/(schemas)` valida **input do form**; ao submeter, mapear para o tipo gerado.
+- **Schema Zod de formulário usado como tipo de API** → `src/schemas` valida **input do form**; ao submeter, mapear para o tipo gerado.
 - **Editar/deletar categoria global no UI** (`isGlobal=true`/`userId=null`) → bloquear ação.
-- **Mapear cor/alerta de budget fora do enum** `safe|attention|warning|exceeded` → usar tokens centralizados (`(helpers)/budget-level.ts`).
+- **Mapear cor/alerta de budget fora do enum** `safe|attention|warning|exceeded` → usar tokens centralizados (`src/lib/budget-level.ts`).
 - **Commit sem confirmação do usuário ou com `Co-Authored-By`.**
 
 ## Consumo de API (regra de ouro)
 
-- 1 hook gerado por endpoint, namespace por tag: `(resources)/(generated)/hooks/<tag>/<tag>.ts`.
+- 1 hook gerado por endpoint, namespace por tag: `src/api/generated/hooks/<tag>/<tag>.ts`.
 - Query: `useGetX(params, { query: { ...opts } })`. Mutação: `usePostXCreate({ mutation: { onSuccess, onError } })`.
 - `onSuccess` → `toast.success(...)` + `queryClient.invalidateQueries({ queryKey: getGetXQueryKey() })` + `form.reset()` + fechar dialog.
 - `onError: (e: CustomAxiosError)` → `toast.error(getErrorMessage(e))` + `setFormFieldErrors(e, form.setError, [campos])`.
@@ -30,7 +30,7 @@ SOLID + Clean Code + WCAG. Código/identificadores em inglês; textos de UI e sp
 
 ## Forms
 
-- `useForm<T>({ resolver: zodResolver(Schema), defaultValues })` com `Schema` de `(resources)/(schemas)/*.schema.tsx`.
+- `useForm<T>({ resolver: zodResolver(Schema), defaultValues })` com `Schema` de `src/schemas/*.schema.tsx`.
 - Schema de form valida UX (mensagens PT, máscara de moeda em string `"1.234,56"`). No submit, converter para o shape do tipo gerado (ex.: `amount` → number via `FN_UTILS_STRING`).
 - Form de upsert reutilizável: 1 arquivo `upsert-<x>.form.tsx`, modo create/edit por presença de `id`.
 - Erro de API mapeia para campo via `setFormFieldErrors`.
@@ -43,9 +43,9 @@ SOLID + Clean Code + WCAG. Código/identificadores em inglês; textos de UI e sp
 
 ## Componentes
 
-- Telas em `(routes)/(private|public)/<rota>/page.tsx`. Tabela colocalizada: `<rota>.table.tsx` (+ `<rota>.utils.ts`) usando `BaseTable` de `(components)/(bases)/(tables)`.
-- Componentes compostos reutilizáveis em `(components)/(bases)/(<categoria>)/`. Primitivos shadcn em `src/components/ui/`.
-- Rotas nomeadas em `(utils)/routes.ts` (`ROUTES.*`) — não hardcodar string de path.
+- Telas em `(routes)/(private|public)/<rota>/page.tsx`. Tabela colocalizada: `<rota>.table.tsx` (+ `<rota>.utils.ts`) usando `BaseTable` de `src/components/tables`.
+- Componentes compostos reutilizáveis em `src/components/<categoria>/`. Primitivos shadcn em `src/components/ui/`.
+- Rotas nomeadas em `src/lib/routes.ts` (`ROUTES.*`) — não hardcodar string de path.
 - A skill `gft` é de outro projeto (TanStack Router/Table); **não** é o gerador do moneyly-front. Padrão aqui = `page.tsx` + `<feature>.table.tsx` colocalizados + hooks Orval.
 
 ## Idioma & commits

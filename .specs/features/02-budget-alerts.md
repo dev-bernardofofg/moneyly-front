@@ -5,8 +5,8 @@ Contrato: `GET /notifications?unreadOnly&page&limit` (paginado), `PATCH /notific
 
 ## UI
 
-- Componente: `src/app/(components)/(bases)/(notifications)/notification-bell.tsx`.
-- Sininho global no `Header` (`(components)/(layout)/header.tsx`) → presente em todas telas privadas.
+- Componente: `src/components/notifications/notification-bell.tsx`.
+- Sininho global no `Header` (`src/components/layout/header.tsx`) → presente em todas telas privadas.
 - Badge com contagem não-lidas (`isRead === false`); `9+` acima de 9.
 - Popover com lista (`useGetNotifications({page:1,limit:20})`), cor/ícone por `severity` (`info`/`warning`/`danger`).
 - "Marcar como lida" (`usePatchNotificationsIdRead`) e "Marcar todas" (`usePatchNotificationsReadAll`) → `invalidateQueries(getGetNotificationsQueryKey)`.

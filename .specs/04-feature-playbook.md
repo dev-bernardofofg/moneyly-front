@@ -12,7 +12,7 @@ Exemplo de referência: módulo **transactions** (`(routes)/(private)/transactio
 ## 1. Obter contrato atualizado
 
 - Garantir `openapi.json` fresh: no back, `pnpm openapi:gen` (os configs do front leem `../moneyly-back/openapi.json`).
-- Regenerar `(resources)/(generated)/{types,schemas,hooks}` — usar o fluxo com orval 8.5.3 descrito em `01-architecture.md` ("Geração do contrato"), não `pnpm generate-hooks` cru (churn de versão).
+- Regenerar `src/api/generated/{types,schemas,hooks}` — usar o fluxo com orval 8.5.3 descrito em `01-architecture.md` ("Geração do contrato"), não `pnpm generate-hooks` cru (churn de versão).
 - **Não editar nada em `(generated)`.** Se o tipo está errado, o `openapi.json`/back está errado — corrigir lá.
 
 ## 2. Conferir o gerado
@@ -22,12 +22,12 @@ Exemplo de referência: módulo **transactions** (`(routes)/(private)/transactio
 
 ## 3. Schema de formulário (se há input)
 
-- `(resources)/(schemas)/<x>.schema.tsx`: zod de UX (mensagens PT, moeda como string mascarada).
+- `src/schemas/<x>.schema.tsx`: zod de UX (mensagens PT, moeda como string mascarada).
 - No submit, mapear para o tipo gerado (ex.: `amount` string → number).
 
 ## 4. Form
 
-- `(resources)/(forms)/upsert-<x>.form.tsx`: RHF + `zodResolver`, create/edit por `id`.
+- `src/forms/upsert-<x>.form.tsx`: RHF + `zodResolver`, create/edit por `id`.
 - Mutação: hook gerado + `onSuccess` (toast, `invalidateQueries`, reset, fechar) + `onError` (`getErrorMessage`, `setFormFieldErrors`).
 
 ## 5. Tela
@@ -38,7 +38,7 @@ Exemplo de referência: módulo **transactions** (`(routes)/(private)/transactio
 
 ## 6. Navegação
 
-- Adicionar rota em `(utils)/routes.ts` (`ROUTES.*`); link no sidebar/header se for top-level. Rota privada coberta por `middleware.ts`.
+- Adicionar rota em `src/lib/routes.ts` (`ROUTES.*`); link no sidebar/header se for top-level. Rota privada coberta por `middleware.ts`.
 
 ## 7. Docs
 

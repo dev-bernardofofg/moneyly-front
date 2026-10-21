@@ -7,7 +7,7 @@
 - **Framework:** Next.js 15 (App Router) + React 19 + TypeScript
 - **UI:** TailwindCSS 4 + Shadcn UI (`src/components/ui/`) + lucide-react
 - **Estado servidor:** TanStack Query 5 (hooks **gerados** pelo Orval)
-- **HTTP:** axios (instância única `src/app/(utils)/axios-instance.ts`)
+- **HTTP:** axios (instância única `src/lib/axios-instance.ts`)
 - **Forms:** react-hook-form + zod (`@hookform/resolvers`)
 - **Geração de contrato:** Kubb 4.33 (tipos TS + Zod) + Orval 8.5 (hooks React Query) — `pnpm generate-hooks`
 - **Gráficos:** recharts · **Datas:** date-fns + date-fns-tz · **URL state:** nuqs
@@ -16,29 +16,30 @@
 
 ## App Router — route groups
 
-Base: `src/app/`. Pastas `(grupo)` não viram segmento de URL.
+`src/app/` só tem rotas (App Router); `(routes)`, `(private)` e `(public)` são route groups e não viram segmento de URL. Código fora de rota vive nas pastas de `src/`.
 
-| Grupo                       | Papel                                                                                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `(routes)/(private)/`       | Telas autenticadas: `dashboard`, `transactions`, `categories`, `recurring-transactions`, `planner`, `profile`. `layout.tsx` = `PrivateLayout`. |
-| `(routes)/(public)/`        | `auth` (sign-in/sign-up). `layout.tsx` = `PublicLayout`.                                                                                       |
-| `(resources)/(generated)/`  | ⚠️ **Gerado por Kubb+Orval** — `types/`, `zod/`, `schemas/`, `hooks/<tag>/`. Nunca editar à mão.                                               |
-| `(resources)/(forms)/`      | Forms `upsert-*.form.tsx` (RHF + zod) + `confirm-action.tsx`, `transaction.tabs.tsx`.                                                          |
-| `(resources)/(schemas)/`    | Zod **de formulário** escrito à mão (`*.schema.tsx`). NÃO é tipo de API.                                                                       |
-| `(components)/(bases)/(x)/` | Biblioteca de componentes compostos (cards, charts, forms, tables, stats, swipers...).                                                         |
-| `(contexts)/`               | Providers: `auth-provider`, `period-provider`, `theme-provider`, `index.tsx` (raiz).                                                           |
-| `(helpers)/`                | `number.ts` (BRL), `string.ts` (parse moeda), `errors.ts`, `budget-level.ts`.                                                                  |
-| `(hooks)/` + `src/hooks/`   | Hooks de app (`use-periods`, `use-pagination`, `use-disclosure`...).                                                                           |
-| `(utils)/`                  | `axios-instance.ts`, `cookies.ts`, `routes.ts`, `env.ts`.                                                                                      |
-| `(layouts)/`                | `private-layout.tsx`, `public-layout.tsx`.                                                                                                     |
+| Pasta                         | Papel                                                                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app/(routes)/(private)/` | Telas autenticadas (`dashboard`, `transactions`, `accounts`, `planner`, `insights`, `overtime`, ...). Cada rota colocaliza `page.tsx`, `<rota>.action.tsx`, tabelas e seções. `layout.tsx` = `PrivateLayout`. |
+| `src/app/(routes)/(public)/`  | `auth` (sign-in/sign-up). `layout.tsx` = `PublicLayout`.                                                                                                                                                      |
+| `src/api/generated/`          | ⚠️ **Gerado por Kubb+Orval** — `types/`, `schemas/`, `hooks/<tag>/`. Nunca editar à mão.                                                                                                                      |
+| `src/api/`                    | Utilitários sobre a API gerada (ex.: `free-balance-query-keys.ts`).                                                                                                                                           |
+| `src/forms/`                  | Forms `upsert-*.form.tsx` (RHF + zod) + `confirm-action.tsx`, `transaction.tabs.tsx`.                                                                                                                         |
+| `src/schemas/`                | Zod **de formulário** escrito à mão (`*.schema.tsx`). NÃO é tipo de API.                                                                                                                                      |
+| `src/components/ui/`          | Primitivos shadcn (não editar à mão; `pnpm dlx shadcn add`).                                                                                                                                                  |
+| `src/components/<categoria>/` | Componentes compostos: `cards`, `charts`, `forms`, `tables`, `stats`, `layout`, `dialogs`, `motions`, `layouts`...                                                                                            |
+| `src/contexts/`               | Providers: `auth-provider`, `period-provider`, `theme-provider`, `index.tsx` (raiz).                                                                                                                          |
+| `src/hooks/`                  | Hooks de app (`use-periods`, `use-accounts`, `use-upsert-dialog`, `use-pagination`...).                                                                                                                       |
+| `src/lib/`                    | `utils.ts` (`cn()`), `number.ts` (BRL), `date.ts`, `string.ts`, `errors.ts`, `axios-instance.ts`, `routes.ts`, `env.ts`, `cookies.ts`, `firebase.ts`.                                                         |
+| `src/types/`                  | Tipos de UI que não vêm da API (`pagination`, `period`, `error`).                                                                                                                                             |
 
-`src/middleware.ts` = guarda de rota (cookie `auth_token`). `src/lib/utils.ts` = `cn()`.
+`src/middleware.ts` = guarda de rota (cookie `auth_token`).
 
 ## Fluxo de um request (tela → API)
 
 ```
 Componente/página
-  → hook gerado (Orval): useGetX / usePostXCreate  (src/app/(resources)/(generated)/hooks/<tag>)
+  → hook gerado (Orval): useGetX / usePostXCreate  (src/api/generated/hooks/<tag>)
   → customInstance (axios-instance.ts)              # injeta Bearer, refresh 401, formata erro
   → API back (NEXT_PUBLIC_API_URL, default :5000)
   ← envelope { data } | { success:false, error }
@@ -55,14 +56,14 @@ Componente/página
 moneyly-back (código) → openapi.json → [Kubb] tipos+Zod → [Orval] hooks React Query
 ```
 
-- Configs: `kubb.config.ts` (input → `(resources)/(generated)/{types,schemas}`), `orval.config.ts` (mode `tags-split`, client react-query, mutator = `customInstance`, `staleTime: 10000`).
+- Configs: `kubb.config.ts` (input → `src/api/generated/{types,schemas}`), `orval.config.ts` (mode `tags-split`, client react-query, mutator = `customInstance`, `staleTime: 10000`).
 - **Os dois configs apontam `../moneyly-back/openapi.json`** (repo irmão, arquivo gitignored no back) — gerar fresh com `pnpm openapi:gen` no back antes de regenerar aqui. Não existe mais cópia local commitada.
-- Regeneração: `pnpm generate-hooks` (kubb + orval). ⚠️ **Gotcha de versão:** o lockfile resolve orval 8.14.x, mas o baseline versionado em `(generated)` foi gerado com **8.5.3** — rodar orval novo reformata todos os hooks (5k+ linhas de churn). Fluxo limpo: `git checkout -- "src/app/(resources)/(generated)"` → kubb → `npx --yes orval@8.5.3 --config orval.config.ts` → prettier no dir gerado. Diff colapsa só nos endpoints que mudaram (último regen: `5620216`).
-- `@kubb/plugin-zod` foi removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`) — forms usam `(resources)/(schemas)` à mão.
+- Regeneração: `pnpm generate-hooks` (kubb + orval). ⚠️ **Gotcha de versão:** o lockfile resolve orval 8.14.x, mas o baseline versionado em `(generated)` foi gerado com **8.5.3** — rodar orval novo reformata todos os hooks (5k+ linhas de churn). Fluxo limpo: `git checkout -- "src/api/generated"` → kubb → `npx --yes orval@8.5.3 --config orval.config.ts` → prettier no dir gerado. Diff colapsa só nos endpoints que mudaram (último regen: `5620216`).
+- `@kubb/plugin-zod` foi removido do `kubb.config.ts` (zod gerado não consumido + quebrava em `allOf:[{$ref},{nullable:true}]`) — forms usam `src/schemas` à mão.
 
 ## Infraestrutura
 
-- **Providers (raiz):** `(contexts)/index.tsx` → `QueryClientProvider` > `NuqsAdapter` > `GoogleOAuthProvider` > `AuthProvider` > `ThemeProvider` > `PeriodProvider`.
+- **Providers (raiz):** `src/contexts/index.tsx` → `QueryClientProvider` > `NuqsAdapter` > `GoogleOAuthProvider` > `AuthProvider` > `ThemeProvider` > `PeriodProvider`.
 - **Auth:** token em cookie `auth_token` + `refresh_token`; `auth_user` em `localStorage`. Refresh automático no interceptor 401 (com fila anti-corrida).
 - **Guarda de rota:** `middleware.ts` (Edge) — sem token + rota privada → `/auth`; com token + `/auth` → `/dashboard`.
 - **Período financeiro:** `PeriodProvider` + `use-periods` — seleção de período propagada como `periodId` nos GETs.

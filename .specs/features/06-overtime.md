@@ -98,7 +98,7 @@ A transaction gerada internamente pelo back recebe `periodId` financeiro normalm
 
 ## Schemas Zod
 
-`src/app/(resources)/(schemas)/overtime.schema.tsx`
+`src/schemas/overtime.schema.tsx`
 
 ### `UpsertCompanySchema`
 
@@ -125,7 +125,7 @@ A transaction gerada internamente pelo back recebe `periodId` financeiro normalm
 
 ### `BaseDateTimePicker`
 
-`src/app/(components)/(bases)/(forms)/base-date-time-picker.tsx`
+`src/components/forms/base-date-time-picker.tsx`
 
 - Popover com calendário ShadCN (`react-day-picker v9`) + selects de hora (00–23) e minuto (múltiplos de 5)
 - Cabeçalho custom (select de ano + nome do mês + prev/next) sobrepõe o nav nativo (oculto via `classNames={{ nav: 'hidden', month_caption: 'hidden' }}`)
@@ -135,7 +135,7 @@ A transaction gerada internamente pelo back recebe `periodId` financeiro normalm
 
 ### `UpsertOvertimeForm`
 
-`src/app/(resources)/(forms)/upsert-overtime.form.tsx`
+`src/forms/upsert-overtime.form.tsx`
 
 - Create / Update via `useUpsertDialog`
 - Campos: `companyId` (BaseSelect), `startTime` + `endTime` (BaseDateTimePicker, grid 2 cols), preview de horas + valor, `description` (opcional), `categoryId` (opcional)
@@ -145,7 +145,7 @@ A transaction gerada internamente pelo back recebe `periodId` financeiro normalm
 
 ### `UpsertCompanyForm`
 
-`src/app/(resources)/(forms)/upsert-company.form.tsx`
+`src/forms/upsert-company.form.tsx`
 
 - Campos: `name`, `hourlyRate` (string decimal)
 - Invalida `getGetCompaniesQueryKey()` em success

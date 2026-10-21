@@ -11,7 +11,7 @@ ativas com vencimento nos próximos 3 dias e cria a notificação (idempotente p
 
 ## UI
 
-- Componente: `src/app/(components)/(bases)/(notifications)/notification-bell.tsx` (mesmo sino do F2).
+- Componente: `src/components/notifications/notification-bell.tsx` (mesmo sino do F2).
 - `bill_reminder` sempre chega com `severity: "info"` — o visual é diferenciado pelo `type`,
   não pela severidade: ícone `CalendarClock` + borda/fundo `warn` (`notificationIcon`/`notificationColor`).
 - `title`/`message` já vêm prontos em pt-BR do back (`Conta a vencer: <título>` ·

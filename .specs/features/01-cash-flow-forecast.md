@@ -39,7 +39,7 @@ Regra geral: nenhuma fórmula financeira no front. Componentes exibem os valores
 
 ## Cache
 
-`freeBalanceQueryKeys()` (`(resources)/free-balance-query-keys.ts`) invalida planner, forecast e
+`freeBalanceQueryKeys()` (`src/api/free-balance-query-keys.ts`) invalida planner, forecast e
 dashboard. Usado após mutações de orçamento, meta, contribuição em meta e recorrência, e ao
 concluir o onboarding.
 
@@ -61,6 +61,6 @@ mensagens), `free-balance-impact-section`, `initial-config-dialog`.
 - `/accounts`: CRUD de contas e cartões (`upsert-account.form.tsx`); cartão pede fechamento e
   vencimento. Spec do contrato: `moneyly-back/.specs/features/12-accounts-and-cards.md`.
 - Transação tem seletor de conta (vazio = conta padrão); `/transactions` filtra por conta e
-  mostra a coluna Conta (`useAccounts` em `(hooks)/use-accounts.ts`).
+  mostra a coluna Conta (`useAccounts` em `src/hooks/use-accounts.ts`).
 - Importar extrato exige escolher a conta ou o cartão do arquivo.
 - Compra no cartão aparece no período do vencimento da fatura: o front só exibe, o back calcula.

@@ -129,30 +129,17 @@ http://localhost:3000
 
 ```
 src/
-├── app/
-│   ├── (components)/          # Componentes reutilizáveis
-│   │   ├── (bases)/          # Componentes base (inputs, forms, etc.)
-│   │   ├── (dialogs)/        # Modais e diálogos
-│   │   ├── (elements)/       # Elementos básicos (logo, etc.)
-│   │   ├── (layout)/         # Componentes de layout
-│   │   └── (motions)/        # Animações
-│   ├── (contexts)/           # Contextos React (Auth, Theme)
-│   ├── (helpers)/            # Funções utilitárias
-│   ├── (layouts)/            # Layouts da aplicação
-│   ├── (resources)/          # Recursos específicos
-│   │   ├── (forms)/          # Formulários
-│   │   ├── (schemas)/        # Schemas de validação
-│   │   └── (tables)/         # Tabelas de dados
-│   ├── (routes)/             # Páginas da aplicação
-│   │   ├── (private)/        # Rotas autenticadas
-│   │   └── (public)/         # Rotas públicas
-│   ├── (services)/           # Serviços de API
-│   ├── (types)/              # Definições de tipos TypeScript
-│   └── (utils)/              # Utilitários
-├── components/
-│   └── ui/                   # Componentes UI base
-├── hooks/                    # Custom hooks
-└── lib/                      # Bibliotecas e configurações
+├── app/(routes)/     # só rotas (App Router): (private)/<rota>, (public)/auth
+├── api/generated/    # tipos + hooks gerados do openapi.json do back (não editar)
+├── api/              # utilitários sobre a API (query keys)
+├── components/       # ui/ (shadcn) + componentes compostos por categoria
+├── contexts/         # providers (auth, período, tema)
+├── forms/            # forms upsert-* (react-hook-form + zod)
+├── hooks/            # hooks de app
+├── lib/              # utils, datas, moeda, axios, rotas, env
+├── schemas/          # zod dos formulários
+├── types/            # tipos de UI
+└── middleware.ts     # guarda de rota
 ```
 
 <div align="center">

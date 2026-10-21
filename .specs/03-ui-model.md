@@ -1,8 +1,8 @@
 # 03 — Modelo de UI
 
-Como o domínio do back vira tela. Fonte de tipos: `(resources)/(generated)`. Invariantes: `../../moneyly-back/.specs/03-domain-model.md`.
+Como o domínio do back vira tela. Fonte de tipos: `src/api/generated`. Invariantes: `../../moneyly-back/.specs/03-domain-model.md`.
 
-> **Âncora:** sincronizado em commit `6a6edc3`. Releia `src/app/(routes)` / `(contexts)` se HEAD divergiu.
+> **Âncora:** sincronizado em commit `6a6edc3`. Releia `src/app/(routes)` / `src/contexts` se HEAD divergiu.
 
 ## Rotas (UI)
 
@@ -11,7 +11,7 @@ Como o domínio do back vira tela. Fonte de tipos: `(resources)/(generated)`. In
 | `/auth`                   | `(routes)/(public)/auth/page.tsx`                                                 | sign-in / sign-up / Google                                                                          | `POST /auth/sign-in`,`/sign-up`,`/google`,`/refresh`                                                                                                             |
 | `/dashboard`              | `(routes)/(private)/dashboard/page.tsx`                                           | stats, recentes, gráfico mensal                                                                     | `GET /overview/dashboard`, `/transactions/summary-by-month`                                                                                                      |
 | `/insights`               | `.../insights/page.tsx` (+ `comparison-section.tsx`, `subscriptions-section.tsx`) | F1 saldo projetado + insights + F4 comparativo + F3 assinaturas + F10 converter em recorrente       | `GET /overview/insights`, `/overview/forecast`, `/overview/insights/comparison`, `/transactions/subscriptions`, `POST /recurring-transactions/from-subscription` |
-| _(global)_                | `(components)/(layout)/header.tsx` → `notification-bell.tsx`                      | sininho notificações (F2 budget_alert, F8 bill_reminder, F9 goal_milestone) em todas telas privadas | `GET /notifications`, `PATCH /notifications/:id/read`, `/read-all`                                                                                               |
+| _(global)_                | `src/components/layout/header.tsx` → `notification-bell.tsx`                      | sininho notificações (F2 budget_alert, F8 bill_reminder, F9 goal_milestone) em todas telas privadas | `GET /notifications`, `PATCH /notifications/:id/read`, `/read-all`                                                                                               |
 | `/transactions`           | `.../transactions/page.tsx` + `transaction.table.tsx` + `export-csv-button.tsx`   | lista paginada + CRUD + export CSV                                                                  | `GET /transactions/`, `POST /transactions/create`, `PUT/DELETE /transactions/{id}`, `GET /transactions/export`                                                   |
 | `/recurring-transactions` | `.../recurring-transactions/page.tsx` + table + history dialog                    | CRUD recorrentes + histórico + (de)reativar                                                         | `*/recurring-transactions/*`                                                                                                                                     |
 | `/categories`             | `.../categories/page.tsx` + `category.table.tsx`                                  | globais + custom                                                                                    | `GET /categories/`, `POST /categories/create`, `PUT/DELETE`                                                                                                      |
@@ -19,30 +19,30 @@ Como o domínio do back vira tela. Fonte de tipos: `(resources)/(generated)`. In
 | `/planner`                | `.../planner/page.tsx` (+ `add-value-to-goal.form.tsx`)                           | budgets + goals                                                                                     | `GET/POST /budgets/`, `PUT/DELETE /budgets/{id}`, `*/goals/*`                                                                                                    |
 | `/profile`                | `.../profile/page.tsx` + `profile-config-finance.form.tsx`                        | perfil, renda, período financeiro                                                                   | `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`, `/income`                                                                                    |
 
-Constantes de navegação em `(utils)/routes.ts` (`ROUTES`). Guarda: `middleware.ts`.
+Constantes de navegação em `src/lib/routes.ts` (`ROUTES`). Guarda: `middleware.ts`.
 
 ## Providers (estado de app)
 
-- **AuthProvider** (`(contexts)/auth-provider.tsx`): `user`/`token`; `setAuth({data})` grava cookie + `localStorage.auth_user`; `signOut` limpa e vai p/ `/auth`. Restaura de cookie+localStorage no mount.
-- **PeriodProvider** (`(contexts)/period-provider.tsx`) + `(hooks)/use-periods`: período financeiro selecionado → `periodId` nos GETs. Período ≠ mês civil.
+- **AuthProvider** (`src/contexts/auth-provider.tsx`): `user`/`token`; `setAuth({data})` grava cookie + `localStorage.auth_user`; `signOut` limpa e vai p/ `/auth`. Restaura de cookie+localStorage no mount.
+- **PeriodProvider** (`src/contexts/period-provider.tsx`) + `src/hooks/use-periods`: período financeiro selecionado → `periodId` nos GETs. Período ≠ mês civil.
 - **ThemeProvider**: dark/light (`next-themes`).
-- **QueryClient**: `(contexts)/index.tsx` (`queryClient` exportado p/ `invalidateQueries` fora de componente).
+- **QueryClient**: `src/contexts/index.tsx` (`queryClient` exportado p/ `invalidateQueries` fora de componente).
 
 ## Invariantes no front (espelham `02-shared-domain.md`)
 
-| Invariante                                      | Aplicação no front                                         | Onde                                               |
-| ----------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- |
-| Dinheiro = string decimal                       | exibir BRL; parsear input mascarado; nunca somar string    | `(helpers)/number.ts`, `(helpers)/string.ts`       |
-| Datas ISO; negócio em America/Sao_Paulo         | usar `FN_UTILS_DATE` (date-fns-tz); não assumir mês civil  | `(helpers)/date.ts`                                |
-| Envelope `{data}` / `{success:false,error}`     | `customInstance` entrega `.data`; erro → `getErrorMessage` | `(utils)/axios-instance.ts`, `(helpers)/errors.ts` |
-| Budget status `safe/attention/warning/exceeded` | cores/alertas só desses 4                                  | `(helpers)/budget-level.ts`                        |
-| `periodId` opcional                             | repassar quando filtrar período                            | `PeriodProvider`/`use-periods`                     |
-| Categoria global não editável                   | bloquear edit/delete quando `isGlobal`                     | `category.table.tsx`                               |
-| Auth Bearer + refresh em 401                    | interceptor com fila anti-corrida                          | `axios-instance.ts`                                |
-| Transaction type / Recurring frequency          | enums fechados (gerados)                                   | tipos `(generated)`                                |
+| Invariante                                      | Aplicação no front                                         | Onde                                             |
+| ----------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| Dinheiro = string decimal                       | exibir BRL; parsear input mascarado; nunca somar string    | `src/lib/number.ts`, `src/lib/string.ts`         |
+| Datas ISO; negócio em America/Sao_Paulo         | usar `FN_UTILS_DATE` (date-fns-tz); não assumir mês civil  | `src/lib/date.ts`                                |
+| Envelope `{data}` / `{success:false,error}`     | `customInstance` entrega `.data`; erro → `getErrorMessage` | `src/lib/axios-instance.ts`, `src/lib/errors.ts` |
+| Budget status `safe/attention/warning/exceeded` | cores/alertas só desses 4                                  | `src/lib/budget-level.ts`                        |
+| `periodId` opcional                             | repassar quando filtrar período                            | `PeriodProvider`/`use-periods`                   |
+| Categoria global não editável                   | bloquear edit/delete quando `isGlobal`                     | `category.table.tsx`                             |
+| Auth Bearer + refresh em 401                    | interceptor com fila anti-corrida                          | `axios-instance.ts`                              |
+| Transaction type / Recurring frequency          | enums fechados (gerados)                                   | tipos `(generated)`                              |
 
 ## Lacunas conhecidas (corrigir ao tocar)
 
-- **Timezone:** ✅ resolvido (commit pós-`153b8aa`) — `(helpers)/date.ts` `FN_UTILS_DATE` (BUSINESS_TZ=America/Sao_Paulo): `today()`, `endOfBusinessDayISO()`, `formatInBusinessTZ()`, `toBusinessZoned()`. `formatEndDayDate` agora delega (deprecado). Usar `FN_UTILS_DATE` em toda data de negócio nova; não usar `new Date().toISOString()` cru.
+- **Timezone:** ✅ resolvido (commit pós-`153b8aa`) — `src/lib/date.ts` `FN_UTILS_DATE` (BUSINESS_TZ=America/Sao_Paulo): `today()`, `endOfBusinessDayISO()`, `formatInBusinessTZ()`, `toBusinessZoned()`. `formatEndDayDate` agora delega (deprecado). Usar `FN_UTILS_DATE` em toda data de negócio nova; não usar `new Date().toISOString()` cru.
 - **Dinheiro:** `FN_UTILS_NUMBERS.formatNumberToCurrency` faz `Number().toFixed(2)` — ok p/ exibir; não usar como caminho de cálculo/soma.
-- **Tipos de form vs API:** `(resources)/(schemas)` são à mão (form), legítimos; mas o que vai pra API deve casar com o tipo gerado — não derivar tipo de API do schema de form.
+- **Tipos de form vs API:** `src/schemas` são à mão (form), legítimos; mas o que vai pra API deve casar com o tipo gerado — não derivar tipo de API do schema de form.
