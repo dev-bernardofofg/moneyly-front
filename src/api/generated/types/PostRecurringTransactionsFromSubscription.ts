@@ -106,6 +106,5 @@ export type PostRecurringTransactionsFromSubscriptionMutation = {
   Response: PostRecurringTransactionsFromSubscription201;
   Request: PostRecurringTransactionsFromSubscriptionMutationRequest;
   Errors:
-    | PostRecurringTransactionsFromSubscription400
-    | PostRecurringTransactionsFromSubscription401;
+    PostRecurringTransactionsFromSubscription400 | PostRecurringTransactionsFromSubscription401;
 };

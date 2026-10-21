@@ -157,7 +157,5 @@ export type PutRecurringTransactionsIdMutation = {
   Request: PutRecurringTransactionsIdMutationRequest;
   PathParams: PutRecurringTransactionsIdPathParams;
   Errors:
-    | PutRecurringTransactionsId400
-    | PutRecurringTransactionsId401
-    | PutRecurringTransactionsId404;
+    PutRecurringTransactionsId400 | PutRecurringTransactionsId401 | PutRecurringTransactionsId404;
 };
