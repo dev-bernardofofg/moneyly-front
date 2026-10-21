@@ -1,7 +1,7 @@
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import type { CardBills } from '@/app/(resources)/(generated)/types/CardBills';
-import { ROUTES } from '@/app/(utils)/routes';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import type { CardBills } from '@/api/generated/types/CardBills';
+import { ROUTES } from '@/lib/routes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { CreditCard } from 'lucide-react';

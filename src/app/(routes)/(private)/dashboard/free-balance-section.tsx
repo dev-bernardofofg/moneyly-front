@@ -1,11 +1,11 @@
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import type { ForecastResponse } from '@/app/(resources)/(generated)/types/ForecastResponse';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { CalendarDays, CircleGauge, WalletCards } from 'lucide-react';
 import Link from 'next/link';
-import { ROUTES } from '@/app/(utils)/routes';
+import { ROUTES } from '@/lib/routes';
 
 interface FreeBalanceSectionProps {
   forecast?: ForecastResponse;

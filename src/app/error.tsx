@@ -1,6 +1,6 @@
 'use client';
 
-import { BaseButton } from './(components)/(bases)/(clickable)/base-button';
+import { BaseButton } from '@/components/clickable/base-button';
 
 export default function GlobalError({
   error,

@@ -1,4 +1,4 @@
-import type { TransactionImportPreview } from '@/app/(resources)/(generated)/types/TransactionImportPreview';
+import type { TransactionImportPreview } from '@/api/generated/types/TransactionImportPreview';
 
 export type ImportPreviewItem = TransactionImportPreview['items'][number];
 

@@ -1,8 +1,8 @@
-import { usePeriod } from '@/app/(contexts)/period-provider';
+import { usePeriod } from '@/contexts/period-provider';
 import {
   useGetOverviewForecast,
   useGetOverviewInsights,
-} from '@/app/(resources)/(generated)/hooks/overview/overview';
+} from '@/api/generated/hooks/overview/overview';
 
 export const useInsightsAction = () => {
   const { selectedPeriodId } = usePeriod();

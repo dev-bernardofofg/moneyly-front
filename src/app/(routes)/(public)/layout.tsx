@@ -1,3 +1,3 @@
-import { PublicLayout } from '@/app/(layouts)/public-layout';
+import { PublicLayout } from '@/components/layouts/public-layout';
 
 export default PublicLayout;

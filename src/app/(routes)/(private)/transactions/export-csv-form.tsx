@@ -1,12 +1,12 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { usePeriods } from '@/app/(hooks)/use-periods';
-import { Period } from '@/app/(types)/period.type';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { getTransactionsExport } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
-import { GetTransactionsExportQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactionsExport';
+import { BaseButton } from '@/components/clickable/base-button';
+import { usePeriods } from '@/hooks/use-periods';
+import { Period } from '@/types/period.type';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { getErrorMessage } from '@/lib/errors';
+import { getTransactionsExport } from '@/api/generated/hooks/transactions/transactions';
+import { GetTransactionsExportQueryParamsTypeEnumKey } from '@/api/generated/types/GetTransactionsExport';
 import { Label } from '@/components/ui/label';
 import {
   Select,

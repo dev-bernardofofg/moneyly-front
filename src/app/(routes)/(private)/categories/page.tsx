@@ -1,11 +1,11 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { Header } from '@/app/(components)/(layout)/header';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { UpsertCategoryForm } from '@/app/(resources)/(forms)/upsert-category.form';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { Header } from '@/components/layout/header';
+import { Fade } from '@/components/motions/fade';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
+import { UpsertCategoryForm } from '@/forms/upsert-category.form';
 import { Tag } from 'lucide-react';
 import { CategoryTable } from './category.table';
 import { useCategoryAction } from './category.action';

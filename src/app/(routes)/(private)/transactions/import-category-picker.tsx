@@ -1,14 +1,14 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { getErrorMessage } from '@/app/(helpers)/errors';
+import { BaseButton } from '@/components/clickable/base-button';
+import { getErrorMessage } from '@/lib/errors';
 import {
   getGetCategoriesQueryKey,
   useGetCategories,
   usePostCategoriesCreate,
-} from '@/app/(resources)/(generated)/hooks/categories/categories';
-import type { TransactionCategory } from '@/app/(resources)/(generated)/hooks/moneylyAPI.schemas';
-import type { CustomAxiosError } from '@/app/(types)/error.type';
+} from '@/api/generated/hooks/categories/categories';
+import type { TransactionCategory } from '@/api/generated/hooks/moneylyAPI.schemas';
+import type { CustomAxiosError } from '@/types/error.type';
 import { Input } from '@/components/ui/input';
 import {
   Select,

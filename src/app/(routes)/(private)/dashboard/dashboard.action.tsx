@@ -1,10 +1,10 @@
-import { usePeriod } from '@/app/(contexts)/period-provider';
+import { usePeriod } from '@/contexts/period-provider';
 import {
   useGetOverviewCardBills,
   useGetOverviewDashboard,
   useGetOverviewForecast,
-} from '@/app/(resources)/(generated)/hooks/overview/overview';
-import type { DashboardStats } from '@/app/(resources)/(generated)/types/DashboardStats';
+} from '@/api/generated/hooks/overview/overview';
+import type { DashboardStats } from '@/api/generated/types/DashboardStats';
 import { TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
 
 type StatVariant = 'default' | 'secondary' | 'destructive';

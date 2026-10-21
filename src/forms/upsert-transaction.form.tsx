@@ -1,0 +1,216 @@
+import { DialogFormFooter } from '@/components/forms/dialog-form-footer';
+import { BaseDatePicker } from '@/components/forms/base-date-picker';
+import { BaseForm } from '@/components/forms/base-form';
+import { BaseInput } from '@/components/forms/base-input';
+import { BaseSelect } from '@/components/forms/base-select';
+import { BaseTextarea } from '@/components/forms/base-textarea';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { useAccounts } from '@/hooks/use-accounts';
+import { useUpsertDialog } from '@/hooks/use-upsert-dialog';
+import { FN_UTILS_STRING } from '@/lib/string';
+import { Form } from '@/components/ui/form';
+import { ChevronDown, ChevronUp, TrendingDown, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { cn } from '@/lib/utils';
+import { Category, Transaction } from '@/api/generated';
+import { useGetCategories } from '@/api/generated/hooks/categories/categories';
+import {
+  getGetOverviewDashboardQueryKey,
+  getGetOverviewPlannerQueryKey,
+} from '@/api/generated/hooks/overview/overview';
+import {
+  getGetTransactionsQueryKey,
+  getGetTransactionsSummaryQueryKey,
+  usePostTransactionsCreate,
+  usePutTransactionsId,
+} from '@/api/generated/hooks/transactions/transactions';
+import {
+  UpsertTransactionDefaultValues,
+  UpsertTransactionFormValues,
+  UpsertTransactionSchema,
+} from '@/schemas/transaction.schema';
+
+const transactionToFormValues = (transaction: Transaction): UpsertTransactionFormValues => ({
+  title: transaction.title,
+  type: transaction.type as 'income' | 'expense',
+  amount: FN_UTILS_STRING.formatReaisToMoneyInputDigits(transaction.amount),
+  category: transaction.category?.id ?? '',
+  accountId: transaction.accountId,
+  description: transaction.description ?? '',
+  date: FN_UTILS_DATE.formatInBusinessTZ(transaction.date, 'yyyy-MM-dd'),
+});
+
+export const UpsertTransactionForm = ({ transaction }: { transaction?: Transaction }) => {
+  const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
+    useUpsertDialog<UpsertTransactionFormValues>({
+      schema: UpsertTransactionSchema,
+      defaultValues: transaction
+        ? transactionToFormValues(transaction)
+        : UpsertTransactionDefaultValues,
+      invalidateKeys: [
+        getGetOverviewDashboardQueryKey(),
+        getGetTransactionsQueryKey(),
+        getGetTransactionsSummaryQueryKey(),
+        getGetOverviewPlannerQueryKey(),
+      ],
+      errorFields: ['title', 'amount', 'type', 'category', 'date', 'description'],
+      successMessage: {
+        create: 'Transação criada com sucesso',
+        update: 'Transação atualizada com sucesso',
+      },
+    });
+
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategories();
+  const { options: accountOptions, isLoading: isLoadingAccounts } = useAccounts();
+
+  const { mutate: createTransaction, isPending } = usePostTransactionsCreate({
+    mutation: { onSuccess: onCreated, onError },
+  });
+
+  const { mutate: updateTransaction, isPending: isUpdating } = usePutTransactionsId({
+    mutation: { onSuccess: onUpdated, onError },
+  });
+
+  const handleUpsertTransaction = (data: UpsertTransactionFormValues) => {
+    const payload = {
+      title: data.title,
+      type: data.type,
+      amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+      category: data.category,
+      accountId: data.accountId || undefined,
+      description: data.description ?? '',
+      date: data.date,
+    };
+    if (transaction) {
+      updateTransaction({ id: transaction.id, data: payload });
+    } else {
+      createTransaction({ data: payload });
+    }
+  };
+
+  const [showMore, setShowMore] = useState(!!transaction);
+
+  useEffect(() => {
+    if (transaction) {
+      form.reset(transactionToFormValues(transaction));
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowMore(true);
+    }
+  }, [transaction, form]);
+
+  return (
+    <>
+      <DialogCloseHidden />
+      <Form {...form}>
+        <BaseForm onSubmit={form.handleSubmit(handleUpsertTransaction)}>
+          <Controller
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <div className="flex flex-col gap-2">
+                <span className="text-sm font-medium">Tipo</span>
+                <div
+                  className={cn(
+                    'relative grid grid-cols-2 rounded-lg border overflow-hidden h-11 p-0.5 gap-0.5 transition-colors duration-300',
+                    field.value === 'income'
+                      ? 'border-income/60 bg-income/5'
+                      : 'border-expense/60 bg-expense/5'
+                  )}
+                >
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('income')}
+                    className={cn(
+                      'relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300',
+                      field.value === 'income'
+                        ? 'bg-income text-income-foreground shadow-sm shadow-income/40'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-income/10'
+                    )}
+                  >
+                    <TrendingUp className="size-3.5 shrink-0" />
+                    Entrada
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('expense')}
+                    className={cn(
+                      'relative flex items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-all duration-300',
+                      field.value === 'expense'
+                        ? 'bg-expense text-expense-foreground shadow-sm shadow-expense/40'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-expense/10'
+                    )}
+                  >
+                    <TrendingDown className="size-3.5 shrink-0" />
+                    Saída
+                  </button>
+                </div>
+              </div>
+            )}
+          />
+          <BaseInput
+            control={form.control}
+            name="amount"
+            label="Valor"
+            type="money"
+            placeholder="0,00"
+            autoFocus
+          />
+          <BaseInput control={form.control} name="title" label="Título" placeholder="Ex: Mercado" />
+          <BaseSelect
+            control={form.control}
+            name="category"
+            label="Categoria"
+            isLoading={isLoadingCategories}
+            emptyMessage="Nenhuma categoria. Crie em Categorias."
+            options={
+              categories?.data?.map((category: Category) => ({
+                label: category.name || '',
+                value: category.id || '',
+              })) || []
+            }
+          />
+
+          <BaseSelect
+            control={form.control}
+            name="accountId"
+            label="Conta ou cartão"
+            placeholder="Conta padrão"
+            isLoading={isLoadingAccounts}
+            options={accountOptions}
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowMore((prev) => !prev)}
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showMore ? (
+              <>
+                <ChevronUp className="size-4" />
+                Menos opções
+              </>
+            ) : (
+              <>
+                <ChevronDown className="size-4" />
+                Mais opções
+              </>
+            )}
+          </button>
+
+          {showMore && (
+            <div className="space-y-1">
+              <BaseTextarea control={form.control} name="description" label="Descrição" />
+              <BaseDatePicker control={form.control} name="date" label="Data" />
+            </div>
+          )}
+
+          <DialogFormFooter
+            submitLabel={transaction ? 'Atualizar Transação' : 'Criar Transação'}
+            isLoading={isPending || isUpdating}
+          />
+        </BaseForm>
+      </Form>
+    </>
+  );
+};

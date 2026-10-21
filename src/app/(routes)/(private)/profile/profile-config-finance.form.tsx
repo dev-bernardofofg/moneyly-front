@@ -1,11 +1,11 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
-import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
-import { BaseSelect } from '@/app/(components)/(bases)/(forms)/base-select';
-import { useAuth } from '@/app/(contexts)/auth-provider';
-import { FN_UTILS_STRING } from '@/app/(helpers)/string';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseForm } from '@/components/forms/base-form';
+import { BaseInput } from '@/components/forms/base-input';
+import { BaseSelect } from '@/components/forms/base-select';
+import { useAuth } from '@/contexts/auth-provider';
+import { FN_UTILS_STRING } from '@/lib/string';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ import {
   getGetUserFinancialPeriodsQueryKey,
   getGetUserMeQueryKey,
   usePutUserIncomeAndPeriod,
-} from '../../../(resources)/(generated)/hooks/user/user';
+} from '@/api/generated/hooks/user/user';
 import {
   ProfileConfigFinanceFormValues,
   profileConfigFinanceFormSchema,

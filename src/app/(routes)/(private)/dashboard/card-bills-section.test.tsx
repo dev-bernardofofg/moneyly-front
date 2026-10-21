@@ -1,4 +1,4 @@
-import type { CardBills } from '@/app/(resources)/(generated)/types/CardBills';
+import type { CardBills } from '@/api/generated/types/CardBills';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';

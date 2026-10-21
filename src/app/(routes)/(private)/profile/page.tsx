@@ -1,10 +1,10 @@
 'use client';
 
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { Header } from '@/app/(components)/(layout)/header';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
+import { Section } from '@/components/cards/section';
+import { Header } from '@/components/layout/header';
+import { Fade } from '@/components/motions/fade';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
+import { FN_UTILS_DATE } from '@/lib/date';
 import { ProfileConfigFinanceForm } from '@/app/(routes)/(private)/profile/profile-config-finance.form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

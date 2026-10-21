@@ -1,4 +1,4 @@
-import { PaginationType } from '@/app/(types)/pagination.type';
+import { PaginationType } from '@/types/pagination.type';
 import { parseAsInteger, useQueryStates } from 'nuqs';
 import { useCallback, useEffect } from 'react';
 

@@ -1,0 +1,138 @@
+import { queryClient } from '@/contexts';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import { ConfirmActionForm } from '@/forms/confirm-action';
+import { UpsertGoalForm } from '@/forms/upsert-goal.form';
+import { Goal } from '@/api/generated';
+import { getGetGoalsQueryKey, useDeleteGoalsId } from '@/api/generated/hooks/goals/goals';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
+import { AddValueToGoalForm } from '@/app/(routes)/(private)/planner/add-value-to-goal.form';
+import { differenceInDays, format } from 'date-fns';
+import { Calendar, CheckCircle, Clock, Edit3, Plus, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+
+interface GoalCardProps {
+  goal: Goal;
+}
+
+export const GoalCard = ({ goal }: GoalCardProps) => {
+  const { mutate: deleteGoal } = useDeleteGoalsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success('Meta removida com sucesso');
+        [getGetGoalsQueryKey(), ...freeBalanceQueryKeys()].forEach((queryKey) =>
+          queryClient.invalidateQueries({ queryKey })
+        );
+      },
+    },
+  });
+
+  const handleDeleteGoal = () => {
+    deleteGoal({ id: goal.id || '' });
+  };
+
+  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null;
+  const now = new Date();
+  const isExpired = targetDate ? targetDate.getTime() < now.getTime() : false;
+  const currentAmount = Number(goal.currentAmount || 0);
+  const targetAmount = Number(goal.targetAmount || 0);
+  const progressPercentage = targetAmount > 0 ? (currentAmount / targetAmount) * 100 : 0;
+  const remaining = targetAmount - currentAmount;
+
+  return (
+    <div className="dark:bg-slate-700 bg-white/95 border dark:border-slate-600 border-slate-100 rounded-lg p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{goal.title}</h3>
+        {goal.isActive && <CheckCircle className="size-5 text-primary" />}
+      </div>
+
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-slate-400">Progresso</span>
+            <span className="font-medium dark:text-slate-200 text-slate-900">
+              {FN_UTILS_NUMBERS.formatPercentage(progressPercentage)}
+            </span>
+          </div>
+          <div className="w-full dark:bg-slate-600 bg-slate-300 rounded-full h-2">
+            <div
+              className="h-2 rounded-full bg-primary transition-all"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-primary font-medium">
+              {FN_UTILS_NUMBERS.formatCurrency(currentAmount)}
+            </span>
+            <span className="text-slate-400">{FN_UTILS_NUMBERS.formatCurrency(targetAmount)}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 text-sm text-slate-400">
+          <div className="flex items-center gap-1">
+            <Calendar className="size-4" />
+            <span>{targetDate ? format(targetDate, 'dd/MM/yyyy') : '—'}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Clock className="size-4" />
+            <span className={isExpired ? 'text-warn font-medium' : ''}>
+              {!targetDate
+                ? '—'
+                : isExpired
+                  ? 'Vencido'
+                  : `${differenceInDays(targetDate, now)} dias`}
+            </span>
+          </div>
+        </div>
+
+        <div className="dark:bg-slate-600 bg-slate-200 p-2 rounded-lg flex items-center justify-between">
+          <div className="text-sm dark:text-slate-400 text-slate-600">Faltam</div>
+          <div className="font-semibold text-lg dark:text-slate-100 text-slate-600">
+            {FN_UTILS_NUMBERS.formatCurrency(remaining)}
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <BaseDialog
+            title="Adicionar valor"
+            description="Adicione um valor à meta"
+            trigger={
+              <BaseButton size="sm">
+                <Plus className="size-3 mr-1" />
+                Adicionar
+              </BaseButton>
+            }
+          >
+            <AddValueToGoalForm goal={goal} />
+          </BaseDialog>
+
+          <BaseDialog
+            title="Editar meta"
+            description="Edite a meta"
+            trigger={
+              <BaseButton size="sm" variant="outline">
+                <Edit3 className="size-3 mr-1" />
+                Editar
+              </BaseButton>
+            }
+          >
+            <UpsertGoalForm goal={goal as Goal} />
+          </BaseDialog>
+
+          <ConfirmActionForm
+            title="Remover meta"
+            description="Tem certeza que deseja remover esta meta?"
+            onConfirm={handleDeleteGoal}
+            trigger={
+              <BaseButton size="sm" variant="outline">
+                <Trash2 className="size-3 mr-1" />
+                Remover
+              </BaseButton>
+            }
+          />
+        </div>
+      </div>
+    </div>
+  );
+};

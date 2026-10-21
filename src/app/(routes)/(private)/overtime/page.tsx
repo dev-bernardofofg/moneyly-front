@@ -6,26 +6,26 @@ const fmtHours = (n: number) => {
   return min > 0 ? `${h}h ${min}min` : `${h}h`;
 };
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
-import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
-import { Header } from '@/app/(components)/(layout)/header';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { UpsertCompanyForm } from '@/app/(resources)/(forms)/upsert-company.form';
-import { UpsertOvertimeForm } from '@/app/(resources)/(forms)/upsert-overtime.form';
-import { useGetCompanies } from '@/app/(resources)/(generated)/hooks/companies/companies';
-import { getOvertimeExport } from '@/app/(resources)/(generated)/hooks/overtime/overtime';
-import { queryClient } from '@/app/(contexts)';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { CustomAxiosError } from '@/app/(types)/error.type';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { BaseStats } from '@/components/stats/base-stats';
+import { PeriodNavigatorWrapper } from '@/components/layout/period-navigator-wrapper';
+import { Header } from '@/components/layout/header';
+import { Fade } from '@/components/motions/fade';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
+import { UpsertCompanyForm } from '@/forms/upsert-company.form';
+import { UpsertOvertimeForm } from '@/forms/upsert-overtime.form';
+import { useGetCompanies } from '@/api/generated/hooks/companies/companies';
+import { getOvertimeExport } from '@/api/generated/hooks/overtime/overtime';
+import { queryClient } from '@/contexts';
+import { getErrorMessage } from '@/lib/errors';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { CustomAxiosError } from '@/types/error.type';
 import {
   getGetCompaniesQueryKey,
   useDeleteCompaniesId,
-} from '@/app/(resources)/(generated)/hooks/companies/companies';
-import { Company } from '@/app/(resources)/(generated)';
+} from '@/api/generated/hooks/companies/companies';
+import { Company } from '@/api/generated';
 import {
   Select,
   SelectContent,
@@ -36,7 +36,7 @@ import {
 import { Briefcase, Building2, Clock, Download, PencilIcon, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
+import { ConfirmActionForm } from '@/forms/confirm-action';
 import { OvertimeTable } from './overtime.table';
 import { useOvertimeAction } from './overtime.action';
 

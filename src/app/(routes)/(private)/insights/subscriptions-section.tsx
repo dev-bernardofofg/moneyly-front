@@ -1,22 +1,22 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { BaseButton } from '@/components/clickable/base-button';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { getErrorMessage } from '@/lib/errors';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
 import {
   getGetRecurringTransactionsQueryKey,
   useGetRecurringTransactions,
   usePostRecurringTransactionsFromSubscription,
-} from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
+} from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import {
   getGetTransactionsSubscriptionsQueryKey,
   useGetTransactionsSubscriptions,
-} from '@/app/(resources)/(generated)/hooks/transactions/transactions';
-import type { SubscriptionCandidate } from '@/app/(resources)/(generated)/types/SubscriptionCandidate';
-import { CustomAxiosError } from '@/app/(types)/error.type';
-import { FN_UTILS_STRING } from '@/app/(helpers)/string';
+} from '@/api/generated/hooks/transactions/transactions';
+import type { SubscriptionCandidate } from '@/api/generated/types/SubscriptionCandidate';
+import { CustomAxiosError } from '@/types/error.type';
+import { FN_UTILS_STRING } from '@/lib/string';
 import { useQueryClient } from '@tanstack/react-query';
 import { RefreshCcw, Repeat } from 'lucide-react';
 import { toast } from 'sonner';

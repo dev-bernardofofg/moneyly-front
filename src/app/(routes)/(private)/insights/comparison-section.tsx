@@ -1,9 +1,9 @@
 'use client';
 
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import { useGetOverviewInsightsComparison } from '@/app/(resources)/(generated)/hooks/overview/overview';
-import type { ComparativeInsights } from '@/app/(resources)/(generated)/types/ComparativeInsights';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import { useGetOverviewInsightsComparison } from '@/api/generated/hooks/overview/overview';
+import type { ComparativeInsights } from '@/api/generated/types/ComparativeInsights';
 import { ArrowDownRight, ArrowUpRight, Minus, Scale } from 'lucide-react';
 
 type Signal = ComparativeInsights['totals']['signal'];

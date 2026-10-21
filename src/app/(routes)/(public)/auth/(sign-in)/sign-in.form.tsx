@@ -1,8 +1,8 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseForm } from '@/app/(components)/(bases)/(forms)/base-form';
-import { BaseInput } from '@/app/(components)/(bases)/(forms)/base-input';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseForm } from '@/components/forms/base-form';
+import { BaseInput } from '@/components/forms/base-input';
 import {
   SignInDefaultValues,
   SignInFormValues,
@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, Mail } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Separator } from '@/components/ui/separator';
-import { GoogleAuthButton } from '@/app/(components)/(bases)/(clickable)/google-button';
+import { GoogleAuthButton } from '@/components/clickable/google-button';
 import { useAuthActions } from '../auth.actions';
 
 export const SignInForm = () => {

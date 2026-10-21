@@ -1,10 +1,7 @@
 'use client';
 
-import { usePeriod } from '@/app/(contexts)/period-provider';
-import {
-  useGetOvertime,
-  useGetOvertimeSummary,
-} from '@/app/(resources)/(generated)/hooks/overtime/overtime';
+import { usePeriod } from '@/contexts/period-provider';
+import { useGetOvertime, useGetOvertimeSummary } from '@/api/generated/hooks/overtime/overtime';
 import { usePagination } from '@/hooks/use-pagination';
 import { keepPreviousData } from '@tanstack/react-query';
 

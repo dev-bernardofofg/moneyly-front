@@ -76,19 +76,19 @@ const ITEMS: ImportPreviewItem[] = [
 const confirmMutate = vi.fn();
 let previewItems: ImportPreviewItem[] = ITEMS;
 
-vi.mock('@/app/(resources)/(generated)/hooks/accounts/accounts', () => ({
+vi.mock('@/api/generated/hooks/accounts/accounts', () => ({
   useGetAccounts: () => ({
     data: {
       data: [{ id: 'account-default', name: 'Conta principal', type: 'checking', isDefault: true }],
     },
   }),
 }));
-vi.mock('@/app/(resources)/(generated)/hooks/categories/categories', () => ({
+vi.mock('@/api/generated/hooks/categories/categories', () => ({
   getGetCategoriesQueryKey: () => ['/categories/'],
   useGetCategories: () => ({ data: { data: [CATEGORY, OUTROS] } }),
   usePostCategoriesCreate: () => ({ isPending: false, mutate: vi.fn() }),
 }));
-vi.mock('@/app/(resources)/(generated)/hooks/transactions/transactions', () => ({
+vi.mock('@/api/generated/hooks/transactions/transactions', () => ({
   getGetTransactionsQueryKey: () => ['/transactions/'],
   getGetTransactionsSummaryQueryKey: () => ['/transactions/summary'],
   usePostTransactionsImportPreview: ({

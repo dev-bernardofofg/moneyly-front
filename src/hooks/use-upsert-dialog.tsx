@@ -1,0 +1,81 @@
+'use client';
+
+import { useDialogCloseGuard } from '@/components/portals/base-dialog';
+import { getErrorMessage, setFormFieldErrors } from '@/lib/errors';
+import { CustomAxiosError } from '@/types/error.type';
+import { DialogClose } from '@/components/ui/dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
+import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import type { ZodType, ZodTypeDef } from 'zod';
+
+interface UseUpsertDialogOptions<TForm extends FieldValues> {
+  schema: ZodType<TForm>;
+  defaultValues: DefaultValues<TForm>;
+  /** Query keys invalidados após sucesso (create e update). */
+  invalidateKeys: readonly (readonly unknown[])[];
+  /** Campos do form que recebem erro de API (setFormFieldErrors). */
+  errorFields: Path<TForm>[];
+  successMessage: { create: string; update: string };
+  /** Fora de dialog próprio (ex.: wizard): chamado no lugar de fechar o dialog. */
+  onSaved?: () => void;
+}
+
+/**
+ * Boilerplate único dos forms upsert em dialog: form RHF+zod, fechar dialog
+ * (DialogClose escondido), invalidação de cache e tratamento de erro padrão.
+ * Substitui a duplicação de closeRef/mutations gêmeas/onError espalhada.
+ */
+export const useUpsertDialog = <TForm extends FieldValues>({
+  schema,
+  defaultValues,
+  invalidateKeys,
+  errorFields,
+  successMessage,
+  onSaved,
+}: UseUpsertDialogOptions<TForm>) => {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient();
+
+  const form = useForm<TForm>({
+    resolver: zodResolver(schema as ZodType<TForm, ZodTypeDef & { typeName: string }, TForm>),
+    defaultValues,
+  });
+
+  // Bloqueia fechar o dialog (X/Esc/fora) com alterações não salvas.
+  const guard = useDialogCloseGuard();
+  useEffect(() => {
+    guard?.setGuard(() => !form.formState.isDirty);
+    return () => guard?.setGuard(null);
+  }, [guard, form]);
+
+  const invalidate = () =>
+    invalidateKeys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
+
+  const close = () => (onSaved ? onSaved() : closeRef.current?.click());
+
+  const onCreated = () => {
+    toast.success(successMessage.create);
+    invalidate();
+    form.reset();
+    close();
+  };
+
+  const onUpdated = () => {
+    toast.success(successMessage.update);
+    invalidate();
+    form.reset(); // limpa isDirty p/ não disparar o guard ao fechar
+    close();
+  };
+
+  const onError = (error: CustomAxiosError) => {
+    toast.error(getErrorMessage(error));
+    setFormFieldErrors(error, form.setError, errorFields);
+  };
+
+  const DialogCloseHidden = () => <DialogClose ref={closeRef} className="hidden" />;
+
+  return { form, closeRef, onCreated, onUpdated, onError, DialogCloseHidden };
+};

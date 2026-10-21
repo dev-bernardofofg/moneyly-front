@@ -1,7 +1,7 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
 import { Download } from 'lucide-react';
 import { ExportCsvForm } from './export-csv-form';
 

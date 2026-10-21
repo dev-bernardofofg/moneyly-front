@@ -1,14 +1,14 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
-import { queryClient } from '@/app/(contexts)';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import { FN_UTILS_STRING } from '@/app/(helpers)/string';
-import { CustomAxiosError } from '@/app/(types)/error.type';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
+import { queryClient } from '@/contexts';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { getErrorMessage } from '@/lib/errors';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import { FN_UTILS_STRING } from '@/lib/string';
+import { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
@@ -21,15 +21,15 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
-import { UpsertTransactionRecurringForm } from '../../../(resources)/(forms)/upsert-transaction-recurring.form';
-import { RecurringTransaction } from '../../../(resources)/(generated)';
+import { ConfirmActionForm } from '@/forms/confirm-action';
+import { UpsertTransactionRecurringForm } from '@/forms/upsert-transaction-recurring.form';
+import { RecurringTransaction } from '@/api/generated';
 import {
   getGetRecurringTransactionsQueryKey,
   useDeleteRecurringTransactionsId,
   usePatchRecurringTransactionsIdDeactivate,
   usePatchRecurringTransactionsIdReactivate,
-} from '../../../(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
+} from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import { formatFrequency } from './recurring-transaction.utils';
 import { RecurringTransactionHistoryDialog } from './recurring-transaction-history.dialog';
 

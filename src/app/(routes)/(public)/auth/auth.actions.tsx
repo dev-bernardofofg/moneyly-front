@@ -1,16 +1,16 @@
-import { useAuth } from '@/app/(contexts)/auth-provider';
-import { queryClient } from '@/app/(contexts)';
-import { getErrorMessage, setFormFieldErrors } from '@/app/(helpers)/errors';
+import { useAuth } from '@/contexts/auth-provider';
+import { queryClient } from '@/contexts';
+import { getErrorMessage, setFormFieldErrors } from '@/lib/errors';
 import {
   usePostAuthGoogle,
   usePostAuthSignIn,
   usePostAuthSignUp,
-} from '@/app/(resources)/(generated)/hooks/auth/auth';
+} from '@/api/generated/hooks/auth/auth';
 import {
   getGetOverviewDashboardQueryKey,
   getOverviewDashboard,
-} from '@/app/(resources)/(generated)/hooks/overview/overview';
-import { CustomAxiosError } from '@/app/(types)/error.type';
+} from '@/api/generated/hooks/overview/overview';
+import { CustomAxiosError } from '@/types/error.type';
 import { useRouter } from 'next/navigation';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';

@@ -1,10 +1,10 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { FN_UTILS_STRING } from '@/app/(helpers)/string';
-import { useGetRecurringTransactionsIdTransactions } from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { FN_UTILS_STRING } from '@/lib/string';
+import { useGetRecurringTransactionsIdTransactions } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,

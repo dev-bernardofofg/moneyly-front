@@ -1,18 +1,18 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { useAccounts } from '@/app/(hooks)/use-accounts';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { BaseButton } from '@/components/clickable/base-button';
+import { getErrorMessage } from '@/lib/errors';
+import { useAccounts } from '@/hooks/use-accounts';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
 import {
   getGetTransactionsQueryKey,
   getGetTransactionsSummaryQueryKey,
   usePostTransactionsImport,
   usePostTransactionsImportPreview,
-} from '@/app/(resources)/(generated)/hooks/transactions/transactions';
-import { freeBalanceQueryKeys } from '@/app/(resources)/free-balance-query-keys';
-import type { CustomAxiosError } from '@/app/(types)/error.type';
+} from '@/api/generated/hooks/transactions/transactions';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
+import type { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { DialogClose } from '@/components/ui/dialog';
 import {

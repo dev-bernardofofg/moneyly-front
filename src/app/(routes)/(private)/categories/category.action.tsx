@@ -1,11 +1,11 @@
-import { queryClient } from '@/app/(contexts)';
-import { getErrorMessage } from '@/app/(helpers)/errors';
+import { queryClient } from '@/contexts';
+import { getErrorMessage } from '@/lib/errors';
 import {
   getGetCategoriesQueryKey,
   useDeleteCategoriesDeleteId,
   useGetCategories,
-} from '@/app/(resources)/(generated)/hooks/categories/categories';
-import { CustomAxiosError } from '@/app/(types)/error.type';
+} from '@/api/generated/hooks/categories/categories';
+import { CustomAxiosError } from '@/types/error.type';
 import { usePagination } from '@/hooks/use-pagination';
 import { keepPreviousData } from '@tanstack/react-query';
 import { toast } from 'sonner';

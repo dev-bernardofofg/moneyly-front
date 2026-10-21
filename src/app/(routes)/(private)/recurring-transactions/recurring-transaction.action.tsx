@@ -1,4 +1,4 @@
-import { useGetRecurringTransactions } from '@/app/(resources)/(generated)/hooks/recurring-transactions/recurring-transactions';
+import { useGetRecurringTransactions } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import { usePagination } from '@/hooks/use-pagination';
 import { keepPreviousData } from '@tanstack/react-query';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import { Logo } from '@/app/(components)/(elements)/logo';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
+import { Logo } from '@/components/elements/logo';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
 import { SignInForm } from '@/app/(routes)/(public)/auth/(sign-in)/sign-in.form';
 import { SignUpForm } from '@/app/(routes)/(public)/auth/(sign-up)/sign-up.form';
 import { AuthFloatingElements } from '@/app/(routes)/(public)/auth/auth-floating-elements';

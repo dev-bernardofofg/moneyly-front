@@ -1,26 +1,26 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
-import { queryClient } from '@/app/(contexts)';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { useAccounts } from '@/app/(hooks)/use-accounts';
-import { FN_UTILS_STRING } from '@/app/(helpers)/string';
-import { CustomAxiosError } from '@/app/(types)/error.type';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
+import { queryClient } from '@/contexts';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { getErrorMessage } from '@/lib/errors';
+import { useAccounts } from '@/hooks/use-accounts';
+import { FN_UTILS_STRING } from '@/lib/string';
+import { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Info, PencilIcon, Trash2, TrendingDown, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
-import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
-import { UpsertTransactionForm } from '../../../(resources)/(forms)/upsert-transaction.form';
-import { Transaction } from '../../../(resources)/(generated)';
+import { ConfirmActionForm } from '@/forms/confirm-action';
+import { UpsertTransactionForm } from '@/forms/upsert-transaction.form';
+import { Transaction } from '@/api/generated';
 import {
   getGetTransactionsQueryKey,
   getGetTransactionsSummaryQueryKey,
   useDeleteTransactionsId,
-} from '../../../(resources)/(generated)/hooks/transactions/transactions';
+} from '@/api/generated/hooks/transactions/transactions';
 
 interface TransactionTableProps extends BaseTableOptions {
   transactions: Transaction[];

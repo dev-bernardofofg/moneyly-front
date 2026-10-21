@@ -1,4 +1,4 @@
-import type { CardBills } from '@/app/(resources)/(generated)/types/CardBills';
+import type { CardBills } from '@/api/generated/types/CardBills';
 
 const SERIES = ['--series-1', '--series-2', '--series-3', '--series-4', '--series-5'];
 export const OTHER_COLOR = 'var(--series-other)';

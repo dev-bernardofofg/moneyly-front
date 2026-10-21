@@ -1,22 +1,22 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseTable, BaseTableOptions } from '@/app/(components)/(bases)/(tables)/base-table';
-import { queryClient } from '@/app/(contexts)';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { CustomAxiosError } from '@/app/(types)/error.type';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
+import { queryClient } from '@/contexts';
+import { getErrorMessage } from '@/lib/errors';
+import { CustomAxiosError } from '@/types/error.type';
+import { FN_UTILS_DATE } from '@/lib/date';
 import { PencilIcon, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { ConfirmActionForm } from '../../../(resources)/(forms)/confirm-action';
-import { UpsertOvertimeForm } from '../../../(resources)/(forms)/upsert-overtime.form';
-import { OvertimeRecord } from '../../../(resources)/(generated)';
+import { ConfirmActionForm } from '@/forms/confirm-action';
+import { UpsertOvertimeForm } from '@/forms/upsert-overtime.form';
+import { OvertimeRecord } from '@/api/generated';
 import {
   getGetOvertimeQueryKey,
   getGetOvertimeSummaryQueryKey,
   useDeleteOvertimeId,
-} from '../../../(resources)/(generated)/hooks/overtime/overtime';
+} from '@/api/generated/hooks/overtime/overtime';
 
 interface OvertimeTableProps extends BaseTableOptions {
   records: OvertimeRecord[];

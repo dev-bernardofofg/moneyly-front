@@ -1,11 +1,11 @@
 'use client';
 
-import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { Header } from '@/app/(components)/(layout)/header';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
+import { BaseStats } from '@/components/stats/base-stats';
+import { Section } from '@/components/cards/section';
+import { Header } from '@/components/layout/header';
+import { Fade } from '@/components/motions/fade';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { BarChart3, CalendarClock, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { ComparisonSection } from './comparison-section';
 import { FreeBalanceBreakdownSection } from './free-balance-breakdown-section';

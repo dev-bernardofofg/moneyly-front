@@ -1,7 +1,7 @@
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_DATE } from '@/app/(helpers)/date';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import type { ForecastResponse } from '@/app/(resources)/(generated)/types/ForecastResponse';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Info, WalletCards } from 'lucide-react';

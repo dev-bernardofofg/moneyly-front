@@ -1,4 +1,4 @@
-import { useAuth } from '@/app/(contexts)/auth-provider';
+import { useAuth } from '@/contexts/auth-provider';
 
 export const useProfileAction = () => {
   const { user } = useAuth();

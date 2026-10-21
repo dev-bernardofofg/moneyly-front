@@ -1,15 +1,15 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { BaseStats } from '@/app/(components)/(bases)/(stats)/base-stats';
-import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
-import { Header } from '@/app/(components)/(layout)/header';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { BaseStats } from '@/components/stats/base-stats';
+import { PeriodNavigatorWrapper } from '@/components/layout/period-navigator-wrapper';
+import { Header } from '@/components/layout/header';
 import { cn } from '@/lib/utils';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { StaggeredFade } from '@/app/(components)/(motions)/staggered-fade';
-import { UpsertTransactionForm } from '@/app/(resources)/(forms)/upsert-transaction.form';
-import { GetTransactionsQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactions';
+import { Fade } from '@/components/motions/fade';
+import { StaggeredFade } from '@/components/motions/staggered-fade';
+import { UpsertTransactionForm } from '@/forms/upsert-transaction.form';
+import { GetTransactionsQueryParamsTypeEnumKey } from '@/api/generated/types/GetTransactions';
 import {
   Select,
   SelectContent,

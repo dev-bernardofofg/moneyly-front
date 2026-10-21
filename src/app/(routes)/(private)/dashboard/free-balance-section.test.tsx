@@ -1,4 +1,4 @@
-import type { ForecastResponse } from '@/app/(resources)/(generated)/types/ForecastResponse';
+import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { FreeBalanceSection } from './free-balance-section';

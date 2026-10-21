@@ -7,12 +7,12 @@ export default defineConfig({
     },
     output: {
       mode: 'tags-split',
-      target: './src/app/(resources)/(generated)/hooks',
+      target: './src/api/generated/hooks',
       client: 'react-query',
       httpClient: 'axios',
       override: {
         mutator: {
-          path: './src/app/(utils)/axios-instance.ts',
+          path: './src/lib/axios-instance.ts',
           name: 'customInstance',
         },
         query: {

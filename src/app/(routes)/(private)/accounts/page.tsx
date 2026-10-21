@@ -1,19 +1,19 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
-import { BaseDialog } from '@/app/(components)/(bases)/(portals)/base-dialog';
-import { PeriodNavigatorWrapper } from '@/app/(components)/(bases)/(layout)/period-navigator-wrapper';
-import { Header } from '@/app/(components)/(layout)/header';
-import { Fade } from '@/app/(components)/(motions)/fade';
-import { getErrorMessage } from '@/app/(helpers)/errors';
-import { ConfirmActionForm } from '@/app/(resources)/(forms)/confirm-action';
-import { UpsertAccountForm } from '@/app/(resources)/(forms)/upsert-account.form';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
+import { PeriodNavigatorWrapper } from '@/components/layout/period-navigator-wrapper';
+import { Header } from '@/components/layout/header';
+import { Fade } from '@/components/motions/fade';
+import { getErrorMessage } from '@/lib/errors';
+import { ConfirmActionForm } from '@/forms/confirm-action';
+import { UpsertAccountForm } from '@/forms/upsert-account.form';
 import {
   getGetAccountsQueryKey,
   useDeleteAccountsId,
   useGetAccounts,
-} from '@/app/(resources)/(generated)/hooks/accounts/accounts';
-import type { CustomAxiosError } from '@/app/(types)/error.type';
+} from '@/api/generated/hooks/accounts/accounts';
+import type { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQueryClient } from '@tanstack/react-query';

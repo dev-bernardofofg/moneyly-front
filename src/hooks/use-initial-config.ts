@@ -1,4 +1,4 @@
-import { useAuth } from '@/app/(contexts)/auth-provider';
+import { useAuth } from '@/contexts/auth-provider';
 
 export const useInitialConfig = () => {
   const { user } = useAuth();

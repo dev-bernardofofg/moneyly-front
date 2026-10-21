@@ -1,6 +1,6 @@
-import { Section } from '@/app/(components)/(bases)/(cards)/section';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import type { PlannerOverview } from '@/app/(resources)/(generated)/types/PlannerOverview';
+import { Section } from '@/components/cards/section';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import type { PlannerOverview } from '@/api/generated/types/PlannerOverview';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PiggyBank, Target, WalletCards } from 'lucide-react';
 

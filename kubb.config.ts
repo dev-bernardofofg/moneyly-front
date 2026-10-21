@@ -7,7 +7,7 @@ export default defineConfig({
     path: '../moneyly-back/openapi.json',
   },
   output: {
-    path: './src/app/(resources)/(generated)',
+    path: './src/api/generated',
   },
   plugins: [
     pluginOas(),

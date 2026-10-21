@@ -1,6 +1,6 @@
 'use client';
 
-import { BaseButton } from '@/app/(components)/(bases)/(clickable)/base-button';
+import { BaseButton } from '@/components/clickable/base-button';
 import { useRouter } from 'next/navigation';
 
 export default function PrivateError({

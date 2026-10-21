@@ -1,5 +1,5 @@
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import type { ForecastResponse } from '@/app/(resources)/(generated)/types/ForecastResponse';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 
 const money = FN_UTILS_NUMBERS.formatCurrency;
 

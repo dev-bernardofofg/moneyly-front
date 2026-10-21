@@ -1,6 +1,6 @@
-import { usePeriod } from '@/app/(contexts)/period-provider';
-import { useGetTransactions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
-import { GetTransactionsQueryParamsTypeEnumKey } from '@/app/(resources)/(generated)/types/GetTransactions';
+import { usePeriod } from '@/contexts/period-provider';
+import { useGetTransactions } from '@/api/generated/hooks/transactions/transactions';
+import { GetTransactionsQueryParamsTypeEnumKey } from '@/api/generated/types/GetTransactions';
 import { usePagination } from '@/hooks/use-pagination';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useState } from 'react';

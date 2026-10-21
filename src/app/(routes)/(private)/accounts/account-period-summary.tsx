@@ -1,8 +1,8 @@
 'use client';
 
-import { usePeriod } from '@/app/(contexts)/period-provider';
-import { FN_UTILS_NUMBERS } from '@/app/(helpers)/number';
-import { useGetTransactions } from '@/app/(resources)/(generated)/hooks/transactions/transactions';
+import { usePeriod } from '@/contexts/period-provider';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+import { useGetTransactions } from '@/api/generated/hooks/transactions/transactions';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface AccountPeriodSummaryProps {
