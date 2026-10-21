@@ -102,6 +102,10 @@ export type PostRecurringTransactionsMutationRequest = {
    */
   frequency: PostRecurringTransactionsMutationRequestFrequencyEnumKey;
   /**
+   * @type string, uuid
+   */
+  accountId?: string | null;
+  /**
    * @minLength 1
    * @maxLength 31
    * @type integer | undefined

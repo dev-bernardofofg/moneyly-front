@@ -48,6 +48,10 @@ export type RecurringTransaction = {
    */
   categoryId: string;
   /**
+   * @type string, uuid
+   */
+  accountId: string | null;
+  /**
    * @type string
    */
   frequency: RecurringTransactionFrequencyEnumKey;

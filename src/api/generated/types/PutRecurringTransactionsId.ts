@@ -119,6 +119,10 @@ export type PutRecurringTransactionsIdMutationRequest = {
    */
   frequency?: PutRecurringTransactionsIdMutationRequestFrequencyEnumKey;
   /**
+   * @type string, uuid
+   */
+  accountId?: string | null;
+  /**
    * @minLength 1
    * @maxLength 31
    * @type integer | undefined

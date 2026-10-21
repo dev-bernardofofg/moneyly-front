@@ -175,6 +175,8 @@ export interface RecurringTransaction {
   /** Valor em centavos */
   amount: number;
   categoryId: string;
+  /** @nullable */
+  accountId: string | null;
   frequency: RecurringTransactionFrequency;
   /** @nullable */
   dayOfMonth: number | null;
@@ -1893,6 +1895,8 @@ export type PostRecurringTransactionsBody = {
   amount: string | number;
   categoryId: string;
   frequency: PostRecurringTransactionsBodyFrequency;
+  /** @nullable */
+  accountId?: string | null;
   /**
    * @minimum 1
    * @maximum 31
@@ -2029,6 +2033,8 @@ export type PutRecurringTransactionsIdBody = {
   amount?: string | number;
   categoryId?: string;
   frequency?: PutRecurringTransactionsIdBodyFrequency;
+  /** @nullable */
+  accountId?: string | null;
   /**
    * @minimum 1
    * @maximum 31
