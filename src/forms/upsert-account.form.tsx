@@ -38,7 +38,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
             closingDay: account.closingDay ?? undefined,
             dueDay: account.dueDay ?? undefined,
             openingBalance: account.openingBalanceDate
-              ? FN_UTILS_STRING.formatReaisToMoneyInput(account.openingBalance)
+              ? FN_UTILS_STRING.formatCentsToMoneyInput(account.openingBalance)
               : '',
             openingBalanceDate: account.openingBalanceDate
               ? FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'yyyy-MM-dd')
@@ -73,7 +73,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
   }: AccountFormValues) => {
     const opening = openingBalanceDate
       ? {
-          openingBalance: FN_UTILS_STRING.formatCurrentStringToNumber(openingBalance || '0'),
+          openingBalance: FN_UTILS_STRING.formatMoneyInputToCents(openingBalance || '0'),
           openingBalanceDate,
         }
       : undefined;

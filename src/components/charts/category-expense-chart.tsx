@@ -44,6 +44,7 @@ export function CategoryExpenseChart({ data, categories, isLoading }: Props) {
       barVariant="gradient"
       hideLegend
       isLoading={isLoading}
+      tooltipValueFormatter={(v) => FN_UTILS_NUMBERS.formatCurrency(Number(v))}
       yAxisProps={{
         tickFormatter: (v: number) => FN_UTILS_NUMBERS.formatCurrency(v),
         width: 72,

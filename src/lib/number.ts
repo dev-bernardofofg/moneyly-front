@@ -10,23 +10,10 @@ const BRL_DECIMAL_FORMATTER = new Intl.NumberFormat('pt-BR', {
   maximumFractionDigits: 2,
 });
 
-const parseMonetaryValue = (value: number | string): number => {
-  if (typeof value === 'number') {
-    return Number.isFinite(value) ? value : 0;
-  }
-
-  const cleaned = value.replace(/R\$\s*/gi, '').trim();
-  if (cleaned === '') return 0;
-
-  const normalized = cleaned.includes(',') ? cleaned.replace(/\./g, '').replace(',', '.') : cleaned;
-
-  const parsed = Number(normalized);
-  return Number.isFinite(parsed) ? parsed : 0;
-};
-
 export const FN_UTILS_NUMBERS = {
-  formatCurrency: (value: number | string): string =>
-    BRL_CURRENCY_FORMATTER.format(parseMonetaryValue(value)),
+  // Dinheiro trafega em centavos (1050 = R$ 10,50).
+  formatCurrency: (cents: number): string =>
+    BRL_CURRENCY_FORMATTER.format(Number.isFinite(cents) ? cents / 100 : 0),
 
   formatPercentage: (value: number): string => {
     if (!Number.isFinite(value)) return '0,00%';

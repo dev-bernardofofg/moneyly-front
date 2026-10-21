@@ -1,5 +1,7 @@
 'use client';
 
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+
 import { BaseForm } from '@/components/forms/base-form';
 import { BaseShiftPicker } from '@/components/forms/base-shift-picker';
 import { BaseInput } from '@/components/forms/base-input';
@@ -65,7 +67,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
   const selectedCompany = companies?.data?.find((c) => c.id === companyId);
   const hours = calcHours(date, start, end);
   const preview =
-    hours !== null && selectedCompany ? hours * parseFloat(selectedCompany.hourlyRate) : null;
+    hours !== null && selectedCompany ? Math.round(hours * selectedCompany.hourlyRate) : null;
 
   const { mutate: createOvertime, isPending: isCreating } = usePostOvertime({
     mutation: {
@@ -121,10 +123,7 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
             <div className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
               {hours.toFixed(2).replace('.', ',')} h ={' '}
               <span className="font-semibold text-foreground">
-                {new Intl.NumberFormat('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                }).format(preview)}
+                {FN_UTILS_NUMBERS.formatCurrency(preview)}
               </span>
             </div>
           )}

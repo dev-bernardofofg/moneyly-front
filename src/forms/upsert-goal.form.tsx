@@ -31,7 +31,7 @@ export const UpsertGoalForm = ({ goal, onSaved }: UpsertGoalFormProps) => {
         ? {
             title: goal.title || '',
             description: goal.description || '',
-            targetAmount: FN_UTILS_STRING.formatReaisToMoneyInput(goal.targetAmount),
+            targetAmount: FN_UTILS_STRING.formatCentsToMoneyInput(goal.targetAmount),
             targetDate: FN_UTILS_DATE.formatInBusinessTZ(goal.targetDate, 'yyyy-MM-dd'),
           }
         : GoalDefaultValues,
@@ -56,7 +56,7 @@ export const UpsertGoalForm = ({ goal, onSaved }: UpsertGoalFormProps) => {
     const payload = {
       title: data.title,
       description: data.description,
-      targetAmount: FN_UTILS_STRING.formatCurrentStringToNumber(data.targetAmount),
+      targetAmount: FN_UTILS_STRING.formatMoneyInputToCents(data.targetAmount),
       targetDate: FN_UTILS_STRING.formatEndDayDate(data.targetDate),
     };
     if (goal) {

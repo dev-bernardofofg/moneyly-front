@@ -34,7 +34,7 @@ import {
 const transactionToFormValues = (transaction: Transaction): UpsertTransactionFormValues => ({
   title: transaction.title,
   type: transaction.type as 'income' | 'expense',
-  amount: FN_UTILS_STRING.formatReaisToMoneyInput(transaction.amount),
+  amount: FN_UTILS_STRING.formatCentsToMoneyInput(transaction.amount),
   category: transaction.category?.id ?? '',
   accountId: transaction.accountId,
   description: transaction.description ?? '',
@@ -76,7 +76,7 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
     const payload = {
       title: data.title,
       type: data.type,
-      amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+      amount: FN_UTILS_STRING.formatMoneyInputToCents(data.amount),
       category: data.category,
       accountId: data.accountId || undefined,
       description: data.description ?? '',

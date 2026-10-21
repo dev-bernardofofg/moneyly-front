@@ -24,7 +24,20 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     if (typeof window === 'undefined') return null;
     try {
       const stored = localStorage.getItem('auth_user');
-      return stored ? (JSON.parse(stored) as User) : null;
+      if (!stored) return null;
+      const parsed = JSON.parse(stored) as Omit<User, 'monthlyIncome'> & {
+        monthlyIncome: User['monthlyIncome'] | string;
+      };
+      // Salvo antes da migração para centavos: a API mandava reais como string ("5000.5").
+      if (typeof parsed.monthlyIncome === 'string') {
+        const migrated = {
+          ...parsed,
+          monthlyIncome: Math.round(Number(parsed.monthlyIncome) * 100),
+        };
+        localStorage.setItem('auth_user', JSON.stringify(migrated));
+        return migrated;
+      }
+      return parsed as User;
     } catch {
       localStorage.removeItem('auth_user');
       return null;

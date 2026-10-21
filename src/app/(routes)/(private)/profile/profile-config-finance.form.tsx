@@ -34,7 +34,7 @@ export const ProfileConfigFinanceForm = ({
     defaultValues: {
       financialDayStart: defaultValues.financialDayStart!,
       financialDayEnd: defaultValues.financialDayEnd!,
-      monthlyIncome: FN_UTILS_STRING.formatReaisToMoneyInput(defaultValues.monthlyIncome),
+      monthlyIncome: defaultValues.monthlyIncome,
     },
   });
 
@@ -48,7 +48,7 @@ export const ProfileConfigFinanceForm = ({
             ...user,
             financialDayEnd: Number(next.financialDayEnd),
             financialDayStart: Number(next.financialDayStart),
-            monthlyIncome: Number(next.monthlyIncome).toString(),
+            monthlyIncome: Number(next.monthlyIncome),
           });
         }
         form.reset(form.getValues());
@@ -68,7 +68,7 @@ export const ProfileConfigFinanceForm = ({
     }
     updateProfile({
       data: {
-        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
+        monthlyIncome: FN_UTILS_STRING.formatMoneyInputToCents(data.monthlyIncome),
         financialDayStart: Number(data.financialDayStart),
         financialDayEnd: Number(data.financialDayEnd),
       },

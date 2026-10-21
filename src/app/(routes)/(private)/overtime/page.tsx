@@ -1,5 +1,7 @@
 'use client';
 
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+
 const fmtHours = (n: number) => {
   const h = Math.floor(n);
   const min = Math.round((n - h) * 60);
@@ -93,7 +95,7 @@ const CompaniesManager = () => {
               <div className="flex flex-col">
                 <span className="text-sm font-medium">{company.name}</span>
                 <span className="text-xs text-muted-foreground">
-                  R$ {parseFloat(company.hourlyRate).toFixed(2).replace('.', ',')}/h
+                  {FN_UTILS_NUMBERS.formatCurrency(company.hourlyRate)}/h
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -270,10 +272,7 @@ const OvertimePage = () => {
                 <div className="flex items-center gap-3">
                   <span className="text-muted-foreground">{fmtHours(item.hours)}</span>
                   <span className="font-medium">
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    }).format(item.amount)}
+                    {FN_UTILS_NUMBERS.formatCurrency(item.amount)}
                   </span>
                 </div>
               </div>

@@ -1,5 +1,7 @@
 'use client';
 
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseDialog } from '@/components/portals/base-dialog';
 import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
@@ -31,13 +33,6 @@ const formatHours = (hours: string) => {
   const h = Math.floor(n);
   const min = Math.round((n - h) * 60);
   return min > 0 ? `${h}h ${min}min` : `${h}h`;
-};
-
-const formatAmount = (amount: string) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(parseFloat(amount));
 };
 
 export const OvertimeTable = ({
@@ -137,7 +132,7 @@ export const OvertimeTable = ({
           accessorKey: 'amount',
           cell: (_, item) => (
             <span className="text-sm font-medium text-muted-foreground">
-              {formatAmount(item.amount)}
+              {FN_UTILS_NUMBERS.formatCurrency(item.amount)}
             </span>
           ),
         },

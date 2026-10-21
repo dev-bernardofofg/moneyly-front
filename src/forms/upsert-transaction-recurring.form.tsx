@@ -70,7 +70,7 @@ export const UpsertTransactionRecurringForm = ({
         ? {
             type: recurringTransaction.type as 'income' | 'expense',
             title: recurringTransaction.title,
-            amount: FN_UTILS_STRING.formatReaisToMoneyInput(recurringTransaction.amount),
+            amount: FN_UTILS_STRING.formatCentsToMoneyInput(recurringTransaction.amount),
             categoryId: recurringTransaction.categoryId,
             frequency: recurringTransaction.frequency as 'daily' | 'weekly' | 'monthly' | 'yearly',
             dayOfWeek:
@@ -116,7 +116,7 @@ export const UpsertTransactionRecurringForm = ({
   const handleSubmit = (data: UpsertTransactionRecurringFormValues) => {
     const sharedPayload = {
       title: data.title,
-      amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+      amount: FN_UTILS_STRING.formatMoneyInputToCents(data.amount),
       categoryId: data.categoryId,
       frequency: data.frequency,
       description: data.description || undefined,

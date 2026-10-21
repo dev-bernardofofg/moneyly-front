@@ -1,5 +1,7 @@
 'use client';
 
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseDialog } from '@/components/portals/base-dialog';
 import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
@@ -154,7 +156,7 @@ export const TransactionTable = ({
           cell: (_, item) => {
             return (
               <span className="text-sm font-medium text-muted-foreground">
-                {FN_UTILS_STRING.formatNumberToCurrency(item.amount?.toString() || '0')}
+                {FN_UTILS_NUMBERS.formatCurrency(item.amount ?? 0)}
               </span>
             );
           },

@@ -78,7 +78,7 @@ export const AddValueToGoalForm = ({ goal }: AddValueToGoalFormProps) => {
     addValueToGoal({
       id: goal.id,
       data: {
-        amount: FN_UTILS_STRING.formatCurrentStringToNumber(data.amount),
+        amount: FN_UTILS_STRING.formatMoneyInputToCents(data.amount),
       },
     });
   };

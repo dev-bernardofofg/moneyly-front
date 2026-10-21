@@ -64,7 +64,7 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
   const handleSubmit = (data: InitialConfigFormValues) => {
     updateIncomeAndPeriod({
       data: {
-        monthlyIncome: FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyIncome),
+        monthlyIncome: FN_UTILS_STRING.formatMoneyInputToCents(data.monthlyIncome),
         financialDayStart: data.financialDayStart,
         financialDayEnd: data.financialDayEnd,
       },

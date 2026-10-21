@@ -34,7 +34,7 @@ export const UpsertBudgetForm = ({ budget, onSaved }: UpsertBudgetFormProps) => 
       defaultValues: budget
         ? {
             categoryId: budget.category?.id || '',
-            monthlyLimit: FN_UTILS_STRING.formatReaisToMoneyInput(budget.monthlyLimit ?? undefined),
+            monthlyLimit: FN_UTILS_STRING.formatCentsToMoneyInput(budget.monthlyLimit ?? undefined),
           }
         : CreateBudgetDefaultValues,
       invalidateKeys: [getGetBudgetsQueryKey(), ...freeBalanceQueryKeys()],
@@ -57,7 +57,7 @@ export const UpsertBudgetForm = ({ budget, onSaved }: UpsertBudgetFormProps) => 
   const { data: categories } = useGetCategories();
 
   const handleForm = (data: CreateBudgetFormValues) => {
-    const monthlyLimit = FN_UTILS_STRING.formatCurrentStringToNumber(data.monthlyLimit);
+    const monthlyLimit = FN_UTILS_STRING.formatMoneyInputToCents(data.monthlyLimit);
     if (budget) {
       if (!budget.id) return;
       updateMutation.mutate({ id: budget.id, data: { monthlyLimit } });

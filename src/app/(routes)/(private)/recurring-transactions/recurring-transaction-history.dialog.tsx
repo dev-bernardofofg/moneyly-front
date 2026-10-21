@@ -1,5 +1,7 @@
 'use client';
 
+import { FN_UTILS_NUMBERS } from '@/lib/number';
+
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseDialog } from '@/components/portals/base-dialog';
 import { FN_UTILS_DATE } from '@/lib/date';
@@ -87,7 +89,7 @@ const HistoryContent = ({ recurringTransactionId }: { recurringTransactionId: st
                 {tx.date ? FN_UTILS_DATE.formatInBusinessTZ(tx.date, 'dd/MM/yyyy') : '—'}
               </TableCell>
               <TableCell className="text-sm font-medium text-muted-foreground">
-                {FN_UTILS_STRING.formatNumberToCurrency(tx.amount?.toString() || '0')}
+                {FN_UTILS_NUMBERS.formatCurrency(tx.amount ?? 0)}
               </TableCell>
             </TableRow>
           ))}

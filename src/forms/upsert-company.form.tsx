@@ -27,7 +27,7 @@ export const UpsertCompanyForm = ({ company }: { company?: Company }) => {
       defaultValues: company
         ? {
             name: company.name,
-            hourlyRate: FN_UTILS_STRING.formatReaisToMoneyInput(company.hourlyRate),
+            hourlyRate: FN_UTILS_STRING.formatCentsToMoneyInput(company.hourlyRate),
           }
         : UpsertCompanyDefaultValues,
       invalidateKeys: [getGetCompaniesQueryKey()],
@@ -53,7 +53,7 @@ export const UpsertCompanyForm = ({ company }: { company?: Company }) => {
   });
 
   const handleSubmit = (data: UpsertCompanyFormValues) => {
-    const hourlyRate = parseFloat(data.hourlyRate.replace(/\./g, '').replace(',', '.'));
+    const hourlyRate = FN_UTILS_STRING.formatMoneyInputToCents(data.hourlyRate);
 
     if (company) {
       updateCompany({ id: company.id, data: { name: data.name, hourlyRate } });

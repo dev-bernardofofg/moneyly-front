@@ -193,7 +193,7 @@ export const RecurringTransactionTable = ({
           accessorKey: 'amount',
           cell: (_, item) => (
             <span className="text-sm font-medium text-muted-foreground">
-              {FN_UTILS_STRING.formatNumberToCurrency(item.amount?.toString() || '0')}
+              {FN_UTILS_NUMBERS.formatCurrency(item.amount ?? 0)}
             </span>
           ),
         },

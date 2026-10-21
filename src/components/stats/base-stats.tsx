@@ -116,7 +116,7 @@ export const BaseStats = ({
                   ease: 'easeOut',
                 }}
               >
-                {isMonetary ? FN_UTILS_NUMBERS.formatCurrency(value) : value}
+                {isMonetary ? FN_UTILS_NUMBERS.formatCurrency(Number(value)) : value}
               </motion.span>
             )}
           </AnimatePresence>
