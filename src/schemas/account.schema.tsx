@@ -9,6 +9,7 @@ export const AccountSchema = z
     type: z.enum(['checking', 'credit_card']),
     closingDay: dayOfMonth,
     dueDay: dayOfMonth,
+    creditLimit: z.string().optional(),
     openingBalance: z.string().optional(),
     openingBalanceDate: z.string().optional(),
   })
@@ -30,6 +31,7 @@ export const AccountDefaultValues: AccountFormValues = {
   type: 'credit_card',
   closingDay: undefined,
   dueDay: undefined,
+  creditLimit: '',
   openingBalance: '',
   openingBalanceDate: '',
 };

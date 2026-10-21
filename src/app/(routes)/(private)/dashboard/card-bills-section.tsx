@@ -4,6 +4,7 @@ import type { CardBills } from '@/api/generated/types/CardBills';
 import { ROUTES } from '@/lib/routes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 import { CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import { BillPaymentStatus } from './bill-payment-status';
@@ -16,6 +17,34 @@ interface CardBillsSectionProps {
 }
 
 const money = FN_UTILS_NUMBERS.formatCurrency;
+
+type BillLimit = NonNullable<CardBills['bills'][number]['limit']>;
+
+// Usado = faturas a vencer e não pagas (inclui parcelas futuras), não só a deste período.
+const CardLimit = ({ limit }: { limit: BillLimit }) => {
+  const usedPct = Math.min(100, Math.max(0, (limit.used / limit.total) * 100));
+  return (
+    <div className="space-y-1">
+      <div
+        className="h-1.5 w-full overflow-hidden rounded bg-muted"
+        role="meter"
+        aria-label="Limite usado"
+        aria-valuemin={0}
+        aria-valuemax={limit.total}
+        aria-valuenow={limit.used}
+      >
+        <span
+          className={cn('block h-full rounded', usedPct >= 90 ? 'bg-expense' : 'bg-primary')}
+          style={{ width: `${usedPct}%` }}
+        />
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Limite: <span className="font-medium text-foreground">{money(limit.available)}</span>{' '}
+        disponível de {money(limit.total)}
+      </p>
+    </div>
+  );
+};
 
 export const CardBillsSection = ({ data, loading, error }: CardBillsSectionProps) => {
   if (loading) {
@@ -78,6 +107,7 @@ export const CardBillsSection = ({ data, loading, error }: CardBillsSectionProps
                 </span>
               </div>
               <BillPaymentStatus bill={bill} />
+              {bill.limit && <CardLimit limit={bill.limit} />}
 
               {segments.length === 0 ? (
                 <p className="text-xs text-muted-foreground">Nenhuma compra nesta fatura.</p>

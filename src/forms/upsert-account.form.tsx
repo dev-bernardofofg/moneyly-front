@@ -37,6 +37,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
             type: account.type,
             closingDay: account.closingDay ?? undefined,
             dueDay: account.dueDay ?? undefined,
+            creditLimit: FN_UTILS_STRING.formatCentsToMoneyInput(account.creditLimit),
             openingBalance: account.openingBalanceDate
               ? FN_UTILS_STRING.formatCentsToMoneyInput(account.openingBalance)
               : '',
@@ -51,7 +52,14 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
         getGetTransactionsQueryKey(),
         ...freeBalanceQueryKeys(),
       ],
-      errorFields: ['name', 'closingDay', 'dueDay', 'openingBalance', 'openingBalanceDate'],
+      errorFields: [
+        'name',
+        'closingDay',
+        'dueDay',
+        'creditLimit',
+        'openingBalance',
+        'openingBalanceDate',
+      ],
       successMessage: {
         create: 'Conta criada com sucesso',
         update: 'Conta atualizada com sucesso',
@@ -68,9 +76,12 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
     type,
     closingDay,
     dueDay,
+    creditLimit,
     openingBalance,
     openingBalanceDate,
   }: AccountFormValues) => {
+    // Campo vazio = sem limite.
+    const limitCents = creditLimit ? FN_UTILS_STRING.formatMoneyInputToCents(creditLimit) : 0;
     const opening = openingBalanceDate
       ? {
           openingBalance: FN_UTILS_STRING.formatMoneyInputToCents(openingBalance || '0'),
@@ -82,12 +93,20 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
       updateMutation.mutate({
         id: account.id,
         data: isCard
-          ? { name, closingDay, dueDay }
+          ? { name, closingDay, dueDay, creditLimit: limitCents || null }
           : // Data apagada remove o saldo inicial; o back zera o valor.
             { name, ...(opening ?? (account.openingBalanceDate && { openingBalanceDate: null })) },
       });
     } else if (type === 'credit_card') {
-      createMutation.mutate({ data: { type, name, closingDay: closingDay!, dueDay: dueDay! } });
+      createMutation.mutate({
+        data: {
+          type,
+          name,
+          closingDay: closingDay!,
+          dueDay: dueDay!,
+          ...(limitCents > 0 && { creditLimit: limitCents }),
+        },
+      });
     } else {
       createMutation.mutate({ data: { type, name, ...opening } });
     }
@@ -132,6 +151,13 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
                   options={DAYS}
                 />
               </div>
+              <BaseInput
+                name="creditLimit"
+                label="Limite (opcional)"
+                type="money"
+                placeholder="0,00"
+                control={form.control}
+              />
               <p className="text-xs text-muted-foreground">
                 Compras do cartão contam no Saldo Livre do período em que a fatura vence.
               </p>
