@@ -120,6 +120,10 @@ export type PostTransactionsImportMutationRequest = {
      * @type string | undefined, uuid
      */
     transferOf?: string;
+    /**
+     * @type string | undefined, uuid
+     */
+    duplicateOf?: string;
   }[];
   /**
    * @type string | undefined, date-time

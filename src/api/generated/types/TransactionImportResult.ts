@@ -20,4 +20,8 @@ export type TransactionImportResult = {
    * @type integer
    */
   transfers: number;
+  /**
+   * @type integer
+   */
+  linked: number;
 };

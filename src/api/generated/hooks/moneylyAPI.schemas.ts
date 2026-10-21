@@ -571,6 +571,7 @@ export interface TransactionImportResult {
   skipped: number;
   billsPaid: number;
   transfers: number;
+  linked: number;
 }
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
@@ -2585,6 +2586,7 @@ export type PostTransactionsImportBodyItemsItem = {
   date: string;
   categoryId?: string;
   transferOf?: string;
+  duplicateOf?: string;
 };
 
 export type PostTransactionsImportBodyBillPaymentsItemType =
