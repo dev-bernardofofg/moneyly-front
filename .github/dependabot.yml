@@ -19,6 +19,10 @@ updates:
       - 'dependencies'
       - 'automated'
       - 'auto-merge'
+    # Um PR por semana com todas as minor/patch, em vez de um por pacote.
+    groups:
+      minor-and-patch:
+        update-types: ['minor', 'patch']
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']

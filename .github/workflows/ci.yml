@@ -1,0 +1,32 @@
+name: CI
+
+# Deploy é feito pela integração Git da Vercel; aqui só validamos.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Versão do pnpm vem de "packageManager" no package.json.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm type-check
+      - run: pnpm test
+      - run: pnpm build
+        env:
+          # env.ts exige as duas no build; valores fictícios bastam para compilar.
+          NEXT_PUBLIC_API_URL: https://api.example.com
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: ci-placeholder
