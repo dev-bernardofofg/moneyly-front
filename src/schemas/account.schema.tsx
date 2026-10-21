@@ -9,6 +9,8 @@ export const AccountSchema = z
     type: z.enum(['checking', 'credit_card']),
     closingDay: dayOfMonth,
     dueDay: dayOfMonth,
+    openingBalance: z.string().optional(),
+    openingBalanceDate: z.string().optional(),
   })
   .refine((data) => data.type !== 'credit_card' || data.closingDay !== undefined, {
     message: 'Informe o dia de fechamento',
@@ -17,6 +19,10 @@ export const AccountSchema = z
   .refine((data) => data.type !== 'credit_card' || data.dueDay !== undefined, {
     message: 'Informe o dia de vencimento',
     path: ['dueDay'],
+  })
+  .refine((data) => data.type !== 'checking' || !data.openingBalance || !!data.openingBalanceDate, {
+    message: 'Informe a data do saldo',
+    path: ['openingBalanceDate'],
   });
 
 export const AccountDefaultValues: AccountFormValues = {
@@ -24,6 +30,8 @@ export const AccountDefaultValues: AccountFormValues = {
   type: 'credit_card',
   closingDay: undefined,
   dueDay: undefined,
+  openingBalance: '',
+  openingBalanceDate: '',
 };
 
 export type AccountFormValues = z.infer<typeof AccountSchema>;

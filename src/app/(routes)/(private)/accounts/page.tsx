@@ -5,7 +5,9 @@ import { BaseDialog } from '@/components/portals/base-dialog';
 import { PeriodNavigatorWrapper } from '@/components/layout/period-navigator-wrapper';
 import { Header } from '@/components/layout/header';
 import { Fade } from '@/components/motions/fade';
+import { FN_UTILS_DATE } from '@/lib/date';
 import { getErrorMessage } from '@/lib/errors';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { ConfirmActionForm } from '@/forms/confirm-action';
 import { UpsertAccountForm } from '@/forms/upsert-account.form';
 import {
@@ -87,7 +89,9 @@ const AccountsPage = () => {
                   <p className="text-sm text-muted-foreground">
                     {isCard
                       ? `Cartão · fecha dia ${account.closingDay} · vence dia ${account.dueDay}`
-                      : 'Conta corrente'}
+                      : account.openingBalanceDate
+                        ? `Conta corrente · saldo de ${FN_UTILS_NUMBERS.formatCurrency(account.openingBalance)} em ${FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'dd/MM/yyyy')}`
+                        : 'Conta corrente'}
                   </p>
                 </div>
               </div>
