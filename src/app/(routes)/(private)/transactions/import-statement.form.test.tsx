@@ -80,6 +80,7 @@ const ITEMS: ImportPreviewItem[] = [
 
 const confirmMutate = vi.fn();
 let previewItems: ImportPreviewItem[] = ITEMS;
+let previewBill: { dueDate: string; total: number | null } | null = null;
 
 vi.mock('@/api/generated/hooks/accounts/accounts', () => ({
   useGetAccounts: () => ({
@@ -102,7 +103,8 @@ vi.mock('@/api/generated/hooks/transactions/transactions', () => ({
     mutation: { onSuccess: (response: unknown) => void };
   }) => ({
     isPending: false,
-    mutate: () => mutation.onSuccess({ data: { accountKey: 'acc', items: previewItems } }),
+    mutate: () =>
+      mutation.onSuccess({ data: { accountKey: 'acc', bill: previewBill, items: previewItems } }),
   }),
   usePostTransactionsImport: () => ({ isPending: false, mutate: confirmMutate }),
 }));
@@ -117,13 +119,14 @@ const renderForm = () =>
   });
 
 const uploadFile = () =>
-  fireEvent.change(screen.getByLabelText('Arquivo OFX do extrato'), {
+  fireEvent.change(screen.getByLabelText('Extrato OFX ou fatura do Inter em PDF'), {
     target: { files: [new File(['<OFX>'], 'extrato.ofx')] },
   });
 
 afterEach(() => {
   cleanup();
   previewItems = ITEMS;
+  previewBill = null;
   confirmMutate.mockClear();
 });
 
@@ -203,6 +206,19 @@ describe('ImportStatementForm', () => {
     ]);
     expect(items[0]).toMatchObject({ categoryId: CATEGORY.id, amount: 25, type: 'expense' });
   });
+  it('sends the bill due date of a PDF bill and checks its total', async () => {
+    previewBill = { dueDate: '2026-10-07T03:00:00.000Z', total: 999 };
+    renderForm();
+    uploadFile();
+
+    expect(await screen.findByText(/Fatura com vencimento em/)).toHaveTextContent('07/10/2026');
+    expect(screen.getByRole('alert')).toHaveTextContent('não bate com o total da fatura');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Importar 1 transação' }));
+    await waitFor(() => expect(confirmMutate).toHaveBeenCalled());
+    expect(confirmMutate.mock.calls[0]![0].data.billDueDate).toBe(previewBill.dueDate);
+  });
+
   it('warns about purchases without a defined category', async () => {
     previewItems = [...ITEMS, UNKNOWN('acc:5'), UNKNOWN('acc:6')];
     renderForm();
