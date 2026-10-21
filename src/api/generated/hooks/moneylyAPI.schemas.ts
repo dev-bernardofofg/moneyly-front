@@ -655,6 +655,15 @@ export type CardBillsBillsItemPayment = {
   source: CardBillsBillsItemPaymentSource;
 } | null;
 
+/**
+ * @nullable
+ */
+export type CardBillsBillsItemLimit = {
+  total: number;
+  used: number;
+  available: number;
+} | null;
+
 export type CardBillsBillsItemCategoriesItem = {
   categoryId: string;
   name: string;
@@ -670,6 +679,8 @@ export type CardBillsBillsItem = {
   dueDate: string | null;
   /** @nullable */
   payment: CardBillsBillsItemPayment;
+  /** @nullable */
+  limit: CardBillsBillsItemLimit;
   total: number;
   categories: CardBillsBillsItemCategoriesItem[];
 };
@@ -800,6 +811,11 @@ export interface Account {
   closingDay: number | null;
   /** @nullable */
   dueDay: number | null;
+  /**
+   * Valor em centavos
+   * @nullable
+   */
+  creditLimit: number | null;
   /** Valor em centavos */
   openingBalance: number;
   /** @nullable */
@@ -2762,6 +2778,11 @@ export type PostAccountsBody =
        * @maximum 31
        */
       dueDay: number;
+      /**
+       * @maximum 999999999
+       * @exclusiveMinimum 0
+       */
+      creditLimit?: number;
     };
 
 export type PostAccounts201 = {
@@ -2797,6 +2818,12 @@ export type PutAccountsIdBody = {
    * @maximum 31
    */
   dueDay?: number;
+  /**
+   * @maximum 999999999
+   * @exclusiveMinimum 0
+   * @nullable
+   */
+  creditLimit?: number | null;
   /**
    * @minimum -999999999
    * @maximum 999999999

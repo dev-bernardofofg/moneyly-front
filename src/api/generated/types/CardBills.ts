@@ -57,6 +57,23 @@ export type CardBills = {
       source: PaymentSourceEnumKey;
     } | null;
     /**
+     * @type object
+     */
+    limit: {
+      /**
+       * @type number
+       */
+      total: number;
+      /**
+       * @type number
+       */
+      used: number;
+      /**
+       * @type number
+       */
+      available: number;
+    } | null;
+    /**
      * @type number
      */
     total: number;

@@ -112,6 +112,11 @@ export type PutAccountsIdMutationRequest = {
    */
   dueDay?: number;
   /**
+   * @maxLength 999999999
+   * @type integer
+   */
+  creditLimit?: number | null;
+  /**
    * @minLength -999999999
    * @maxLength 999999999
    * @type integer | undefined

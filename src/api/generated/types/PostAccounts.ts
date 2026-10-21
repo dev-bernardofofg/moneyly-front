@@ -124,6 +124,11 @@ export type PostAccountsMutationRequest =
        * @type integer
        */
       dueDay: number;
+      /**
+       * @maxLength 999999999
+       * @type integer | undefined
+       */
+      creditLimit?: number;
     };
 
 export type PostAccountsMutationResponse = PostAccounts201;

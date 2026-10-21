@@ -22,6 +22,16 @@
             },
             "required": ["paidAt", "source"]
           },
+          "limit": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "total": { "type": "number" },
+              "used": { "type": "number" },
+              "available": { "type": "number" }
+            },
+            "required": ["total", "used", "available"]
+          },
           "total": { "type": "number" },
           "categories": {
             "type": "array",
@@ -43,6 +53,7 @@
           "dueDay",
           "dueDate",
           "payment",
+          "limit",
           "total",
           "categories"
         ]

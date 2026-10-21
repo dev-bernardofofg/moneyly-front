@@ -39,6 +39,11 @@ export type Account = {
    * @description Valor em centavos
    * @type integer
    */
+  creditLimit: number | null;
+  /**
+   * @description Valor em centavos
+   * @type integer
+   */
   openingBalance: number;
   /**
    * @type string
