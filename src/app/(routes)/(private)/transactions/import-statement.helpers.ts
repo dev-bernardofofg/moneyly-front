@@ -5,8 +5,9 @@ export type ImportPreviewItem = TransactionImportPreview['items'][number];
 export interface ImportRowState {
   selected: boolean;
   categoryId: string;
-  // Casada com a outra ponta: importa como transferência, sem categoria.
-  asTransfer: boolean;
+  // create = nova transação; transfer = junta com a outra ponta; link = confirma o lançamento
+  // que já está no app. Os dois últimos não levam categoria.
+  mode: 'create' | 'transfer' | 'link';
 }
 
 // base64url sem padding: é o formato que o back exige (o sanitizer global remove "=").
@@ -22,14 +23,19 @@ export const toBase64Url = (buffer: ArrayBuffer): string => {
 // Nada identificou a compra e o usuário ainda não trocou a categoria sugerida ("Outros").
 export const isUncategorized = (item: ImportPreviewItem, row: ImportRowState) =>
   item.status !== 'imported' &&
-  !row.asTransfer &&
+  row.mode === 'create' &&
   item.suggestionSource === 'fallback' &&
   row.categoryId === (item.suggestedCategoryId ?? '');
 
-// Já importada nunca entra; possível duplicata e pagamento de fatura (não é renda) começam
-// desmarcados para o usuário decidir.
+// Já importada nunca entra; pagamento de fatura (não é renda) começa desmarcado. Linha que já
+// está no app vem marcada para confirmar, não para duplicar.
 export const initialRowState = (item: ImportPreviewItem): ImportRowState => ({
-  selected: item.status === 'new' || item.status === 'transfer',
+  selected: ['new', 'transfer', 'possible_duplicate'].includes(item.status),
   categoryId: item.suggestedCategoryId ?? '',
-  asTransfer: item.status === 'transfer',
+  mode:
+    item.status === 'transfer'
+      ? 'transfer'
+      : item.status === 'possible_duplicate' && item.duplicateOf
+        ? 'link'
+        : 'create',
 });

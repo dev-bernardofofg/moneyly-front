@@ -40,7 +40,7 @@ import {
 
 const STATUS_LABEL = {
   imported: 'Já importada',
-  possible_duplicate: 'Possível duplicata',
+  possible_duplicate: 'Já lançada no app',
   bill_payment: 'Pagamento de fatura',
   transfer: 'Transferência',
 } as const;
@@ -79,6 +79,8 @@ export const ImportStatementForm = () => {
         const { created = 0, skipped = 0, billsPaid = 0, transfers = 0 } = response.data ?? {};
         const parts = [`${created} transações importadas`];
         if (skipped > 0) parts.push(`${skipped} já existiam`);
+        const { linked = 0 } = response.data ?? {};
+        if (linked > 0) parts.push(`${linked} ${linked === 1 ? 'confirmada' : 'confirmadas'}`);
         if (transfers > 0)
           parts.push(`${transfers} ${transfers === 1 ? 'transferência' : 'transferências'}`);
         if (billsPaid > 0)
@@ -131,7 +133,7 @@ export const ImportStatementForm = () => {
     isUncategorized(item, rows[item.externalId]!)
   ).length;
   const missingCategory = selectedItems.some(
-    (item) => !rows[item.externalId]?.asTransfer && !rows[item.externalId]?.categoryId
+    (item) => rows[item.externalId]?.mode === 'create' && !rows[item.externalId]?.categoryId
   );
   // Pagamento de fatura marca a fatura como paga mesmo sem virar transação.
   const billPayments = items
@@ -148,9 +150,11 @@ export const ImportStatementForm = () => {
           amount: item.amount,
           date: item.date,
           title: item.title,
-          ...(rows[item.externalId]!.asTransfer
+          ...(rows[item.externalId]!.mode === 'transfer'
             ? { transferOf: item.transferOf!.transactionId }
-            : { categoryId: rows[item.externalId]!.categoryId }),
+            : rows[item.externalId]!.mode === 'link'
+              ? { duplicateOf: item.duplicateOf! }
+              : { categoryId: rows[item.externalId]!.categoryId }),
         })),
         billPayments,
         ...(bill && { billDueDate: bill.dueDate }),
@@ -299,17 +303,19 @@ export const ImportStatementForm = () => {
                       {FN_UTILS_NUMBERS.formatCurrency(item.amount)}
                     </span>
                   </label>
-                  {row.asTransfer ? (
+                  {row.mode !== 'create' ? (
                     <div className="self-center space-y-1 text-xs text-muted-foreground">
                       <p>
-                        Junta com o lançamento da outra conta. Não conta como receita nem despesa.
+                        {row.mode === 'transfer'
+                          ? 'Junta com o lançamento da outra conta. Não conta como receita nem despesa.'
+                          : 'Confirma o lançamento que já está no app, com o valor do arquivo. Não duplica.'}
                       </p>
                       <button
                         type="button"
                         className="font-medium text-primary underline-offset-2 hover:underline"
-                        onClick={() => updateRow(item.externalId, { asTransfer: false })}
+                        onClick={() => updateRow(item.externalId, { mode: 'create' })}
                       >
-                        Não é transferência
+                        {row.mode === 'transfer' ? 'Não é transferência' : 'É outro lançamento'}
                       </button>
                     </div>
                   ) : (
