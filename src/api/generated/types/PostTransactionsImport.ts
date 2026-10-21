@@ -122,6 +122,10 @@ export type PostTransactionsImportMutationRequest = {
     transferOf?: string;
   }[];
   /**
+   * @type string | undefined, date-time
+   */
+  billDueDate?: string;
+  /**
    * @type array | undefined
    */
   billPayments?: {

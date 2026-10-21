@@ -2,6 +2,15 @@
   "type": "object",
   "properties": {
     "accountKey": { "type": "string" },
+    "bill": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "dueDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "total": { "type": "number", "nullable": true }
+      },
+      "required": ["dueDate", "total"]
+    },
     "items": {
       "type": "array",
       "items": {
@@ -44,6 +53,6 @@
       }
     }
   },
-  "required": ["accountKey", "items"],
+  "required": ["accountKey", "bill", "items"],
   "x-readme-ref-name": "TransactionImportPreview"
 }

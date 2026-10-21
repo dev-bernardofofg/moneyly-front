@@ -35,6 +35,19 @@ export type TransactionImportPreview = {
    */
   accountKey: string;
   /**
+   * @type object
+   */
+  bill: {
+    /**
+     * @type string
+     */
+    dueDate: string;
+    /**
+     * @type number
+     */
+    total: number | null;
+  } | null;
+  /**
    * @type array
    */
   items: {

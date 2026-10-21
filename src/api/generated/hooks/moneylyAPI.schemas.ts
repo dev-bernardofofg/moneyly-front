@@ -498,6 +498,15 @@ export interface SubscriptionCandidate {
   monthlyCost: number;
 }
 
+/**
+ * @nullable
+ */
+export type TransactionImportPreviewBill = {
+  dueDate: string;
+  /** @nullable */
+  total: number | null;
+} | null;
+
 export type TransactionImportPreviewItemsItemType =
   (typeof TransactionImportPreviewItemsItemType)[keyof typeof TransactionImportPreviewItemsItemType];
 
@@ -552,6 +561,8 @@ export type TransactionImportPreviewItemsItem = {
 
 export interface TransactionImportPreview {
   accountKey: string;
+  /** @nullable */
+  bill: TransactionImportPreviewBill;
   items: TransactionImportPreviewItemsItem[];
 }
 
@@ -2598,6 +2609,7 @@ export type PostTransactionsImportBody = {
   accountId: string;
   /** @maxItems 500 */
   items: PostTransactionsImportBodyItemsItem[];
+  billDueDate?: string;
   /** @maxItems 500 */
   billPayments?: PostTransactionsImportBodyBillPaymentsItem[];
 };
