@@ -5,6 +5,8 @@ export type ImportPreviewItem = TransactionImportPreview['items'][number];
 export interface ImportRowState {
   selected: boolean;
   categoryId: string;
+  // Casada com a outra ponta: importa como transferência, sem categoria.
+  asTransfer: boolean;
 }
 
 // base64url sem padding: é o formato que o back exige (o sanitizer global remove "=").
@@ -17,15 +19,17 @@ export const toBase64Url = (buffer: ArrayBuffer): string => {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
-// Já importada nunca entra; possível duplicata e pagamento de fatura (não é renda) começam
-// desmarcados para o usuário decidir.
 // Nada identificou a compra e o usuário ainda não trocou a categoria sugerida ("Outros").
 export const isUncategorized = (item: ImportPreviewItem, row: ImportRowState) =>
   item.status !== 'imported' &&
+  !row.asTransfer &&
   item.suggestionSource === 'fallback' &&
   row.categoryId === (item.suggestedCategoryId ?? '');
 
+// Já importada nunca entra; possível duplicata e pagamento de fatura (não é renda) começam
+// desmarcados para o usuário decidir.
 export const initialRowState = (item: ImportPreviewItem): ImportRowState => ({
-  selected: item.status === 'new',
+  selected: item.status === 'new' || item.status === 'transfer',
   categoryId: item.suggestedCategoryId ?? '',
+  asTransfer: item.status === 'transfer',
 });

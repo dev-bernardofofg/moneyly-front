@@ -11,7 +11,9 @@ import {
   usePostTransactionsImport,
   usePostTransactionsImportPreview,
 } from '@/api/generated/hooks/transactions/transactions';
+import { getGetAccountsQueryKey } from '@/api/generated/hooks/accounts/accounts';
 import { getGetOverviewCardBillsQueryKey } from '@/api/generated/hooks/overview/overview';
+import { getGetTransfersQueryKey } from '@/api/generated/hooks/transfers/transfers';
 import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import type { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
@@ -40,13 +42,14 @@ const STATUS_LABEL = {
   imported: 'Já importada',
   possible_duplicate: 'Possível duplicata',
   bill_payment: 'Pagamento de fatura',
+  transfer: 'Transferência',
 } as const;
 
 export const ImportStatementForm = () => {
   const queryClient = useQueryClient();
   const closeRef = useRef<HTMLButtonElement>(null);
   const [items, setItems] = useState<ImportPreviewItem[]>([]);
-  const { options: accountOptions, defaultAccountId } = useAccounts();
+  const { options: accountOptions, defaultAccountId, nameById } = useAccounts();
   const [chosenAccountId, setChosenAccountId] = useState<string>();
   // Até o usuário escolher, vale a conta padrão (carrega depois do primeiro render).
   const accountId = chosenAccountId ?? defaultAccountId;
@@ -70,9 +73,11 @@ export const ImportStatementForm = () => {
   const confirm = usePostTransactionsImport({
     mutation: {
       onSuccess: (response) => {
-        const { created = 0, skipped = 0, billsPaid = 0 } = response.data ?? {};
+        const { created = 0, skipped = 0, billsPaid = 0, transfers = 0 } = response.data ?? {};
         const parts = [`${created} transações importadas`];
         if (skipped > 0) parts.push(`${skipped} já existiam`);
+        if (transfers > 0)
+          parts.push(`${transfers} ${transfers === 1 ? 'transferência' : 'transferências'}`);
         if (billsPaid > 0)
           parts.push(`${billsPaid} ${billsPaid === 1 ? 'fatura paga' : 'faturas pagas'}`);
         toast.success(parts.join(', '));
@@ -80,6 +85,8 @@ export const ImportStatementForm = () => {
           getGetTransactionsQueryKey(),
           getGetTransactionsSummaryQueryKey(),
           getGetOverviewCardBillsQueryKey(),
+          getGetAccountsQueryKey(),
+          getGetTransfersQueryKey(),
           ...freeBalanceQueryKeys(),
         ].forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
         closeRef.current?.click();
@@ -90,7 +97,14 @@ export const ImportStatementForm = () => {
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
-    preview.mutate({ data: { file: toBase64Url(await file.arrayBuffer()) } });
+    preview.mutate({ data: { file: toBase64Url(await file.arrayBuffer()), accountId } });
+  };
+
+  // A prévia casa transferências com a outra conta: trocar a conta invalida a prévia.
+  const chooseAccount = (id: string) => {
+    setChosenAccountId(id);
+    setItems([]);
+    setRows({});
   };
 
   const updateRow = (externalId: string, patch: Partial<ImportRowState>) =>
@@ -112,7 +126,9 @@ export const ImportStatementForm = () => {
   const uncategorizedCount = selectedItems.filter((item) =>
     isUncategorized(item, rows[item.externalId]!)
   ).length;
-  const missingCategory = selectedItems.some((item) => !rows[item.externalId]?.categoryId);
+  const missingCategory = selectedItems.some(
+    (item) => !rows[item.externalId]?.asTransfer && !rows[item.externalId]?.categoryId
+  );
   // Pagamento de fatura marca a fatura como paga mesmo sem virar transação.
   const billPayments = items
     .filter((item) => item.status === 'bill_payment')
@@ -122,13 +138,15 @@ export const ImportStatementForm = () => {
     confirm.mutate({
       data: {
         accountId: accountId!,
-        items: selectedItems.map(({ externalId, type, amount, date, title }) => ({
-          externalId,
-          type,
-          amount,
-          date,
-          title,
-          categoryId: rows[externalId]!.categoryId,
+        items: selectedItems.map((item) => ({
+          externalId: item.externalId,
+          type: item.type,
+          amount: item.amount,
+          date: item.date,
+          title: item.title,
+          ...(rows[item.externalId]!.asTransfer
+            ? { transferOf: item.transferOf!.transactionId }
+            : { categoryId: rows[item.externalId]!.categoryId }),
         })),
         billPayments,
       },
@@ -142,7 +160,7 @@ export const ImportStatementForm = () => {
         <span id="import-account-label" className="text-sm font-medium">
           Conta ou cartão do extrato
         </span>
-        <Select value={accountId ?? ''} onValueChange={setChosenAccountId}>
+        <Select value={accountId ?? ''} onValueChange={chooseAccount}>
           <SelectTrigger aria-labelledby="import-account-label">
             <SelectValue placeholder="Escolha a conta" />
           </SelectTrigger>
@@ -222,7 +240,11 @@ export const ImportStatementForm = () => {
                       </span>
                       <span className="truncate font-medium">{item.title}</span>
                       {item.status !== 'new' && (
-                        <Badge variant="outline">{STATUS_LABEL[item.status]}</Badge>
+                        <Badge variant="outline">
+                          {STATUS_LABEL[item.status]}
+                          {item.transferOf &&
+                            ` ${item.type === 'income' ? 'de' : 'para'} ${nameById.get(item.transferOf.accountId) ?? 'outra conta'}`}
+                        </Badge>
                       )}
                       {isUncategorized(item, row) && (
                         <Badge
@@ -243,12 +265,27 @@ export const ImportStatementForm = () => {
                       {FN_UTILS_NUMBERS.formatCurrency(item.amount)}
                     </span>
                   </label>
-                  <ImportCategoryPicker
-                    label={item.title}
-                    value={row.categoryId}
-                    disabled={isImported}
-                    onChange={(categoryId) => chooseCategory(item.title, categoryId)}
-                  />
+                  {row.asTransfer ? (
+                    <div className="self-center space-y-1 text-xs text-muted-foreground">
+                      <p>
+                        Junta com o lançamento da outra conta. Não conta como receita nem despesa.
+                      </p>
+                      <button
+                        type="button"
+                        className="font-medium text-primary underline-offset-2 hover:underline"
+                        onClick={() => updateRow(item.externalId, { asTransfer: false })}
+                      >
+                        Não é transferência
+                      </button>
+                    </div>
+                  ) : (
+                    <ImportCategoryPicker
+                      label={item.title}
+                      value={row.categoryId}
+                      disabled={isImported}
+                      onChange={(categoryId) => chooseCategory(item.title, categoryId)}
+                    />
+                  )}
                 </li>
               );
             })}

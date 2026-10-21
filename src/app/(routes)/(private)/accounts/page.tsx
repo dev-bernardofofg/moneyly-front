@@ -20,7 +20,9 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQueryClient } from '@tanstack/react-query';
 import { CreditCard, Landmark, PencilIcon, Trash2, WalletCards } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { AccountPeriodSummary } from './account-period-summary';
+import { TransfersSection } from './transfers-section';
 import { toast } from 'sonner';
 
 const AccountsPage = () => {
@@ -89,10 +91,32 @@ const AccountsPage = () => {
                   <p className="text-sm text-muted-foreground">
                     {isCard
                       ? `Cartão · fecha dia ${account.closingDay} · vence dia ${account.dueDay}`
-                      : account.openingBalanceDate
-                        ? `Conta corrente · saldo de ${FN_UTILS_NUMBERS.formatCurrency(account.openingBalance)} em ${FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'dd/MM/yyyy')}`
-                        : 'Conta corrente'}
+                      : 'Conta corrente'}
                   </p>
+                  {!isCard &&
+                    (account.currentBalance != null ? (
+                      <p className="text-sm">
+                        Saldo atual{' '}
+                        <span
+                          className={cn(
+                            'font-semibold tabular-nums',
+                            account.currentBalance < 0 ? 'text-expense' : 'text-income'
+                          )}
+                        >
+                          {FN_UTILS_NUMBERS.formatCurrency(account.currentBalance)}
+                        </span>
+                        {account.openingBalanceDate && (
+                          <span className="text-xs text-muted-foreground">
+                            {' · desde '}
+                            {FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'dd/MM')}
+                          </span>
+                        )}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">
+                        Informe o saldo inicial para ver o saldo atual.
+                      </p>
+                    ))}
                 </div>
               </div>
               <AccountPeriodSummary accountId={account.id} isCard={isCard} />
@@ -125,6 +149,9 @@ const AccountsPage = () => {
             </article>
           );
         })}
+        <div className="sm:col-span-2 xl:col-span-3">
+          <TransfersSection />
+        </div>
       </div>
     </Fade>
   );
