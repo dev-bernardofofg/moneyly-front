@@ -1,5 +1,6 @@
 import type { CardBills } from '@/api/generated/types/CardBills';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -17,6 +18,8 @@ const DATA: CardBills = {
       name: 'Cartão Inter',
       closingDay: 25,
       dueDay: 5,
+      dueDate: '2026-10-05T03:00:00.000Z',
+      payment: null,
       total: 70000,
       categories: [
         category('ride', 'Transporte', 40000),
@@ -32,6 +35,8 @@ const DATA: CardBills = {
       name: 'Cartão Nubank',
       closingDay: 3,
       dueDay: 10,
+      dueDate: '2026-10-10T03:00:00.000Z',
+      payment: { paidAt: '2026-10-09T12:00:00.000Z', source: 'import' },
       total: 30000,
       categories: [category('food', 'Alimentação', 30000)],
     },
@@ -39,7 +44,9 @@ const DATA: CardBills = {
 };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <TooltipProvider>{children}</TooltipProvider>
+  <QueryClientProvider client={new QueryClient()}>
+    <TooltipProvider>{children}</TooltipProvider>
+  </QueryClientProvider>
 );
 
 afterEach(cleanup);
@@ -78,6 +85,16 @@ describe('CardBillsSection', () => {
     expect(within(inter).getByText('R$ 700,00')).toBeInTheDocument();
     expect(within(inter).getByText('Transporte')).toBeInTheDocument();
     expect(within(inter).getByText('R$ 400,00')).toBeInTheDocument();
+  });
+
+  it('shows whether each bill is paid', () => {
+    render(<CardBillsSection data={DATA} loading={false} error={false} />, { wrapper });
+
+    const inter = screen.getByText('Cartão Inter').closest('li')!;
+    expect(within(inter).getByText('Pendente')).toBeInTheDocument();
+    expect(within(inter).getByRole('button', { name: 'Marcar como paga' })).toBeInTheDocument();
+    const nubank = screen.getByText('Cartão Nubank').closest('li')!;
+    expect(within(nubank).getByText('Paga (extrato)')).toBeInTheDocument();
   });
 
   it('invites to register a card when there is none', () => {
