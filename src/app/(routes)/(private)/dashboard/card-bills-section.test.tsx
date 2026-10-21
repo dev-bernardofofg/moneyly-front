@@ -20,6 +20,7 @@ const DATA: CardBills = {
       dueDay: 5,
       dueDate: '2026-10-05T03:00:00.000Z',
       payment: null,
+      limit: { total: 500000, used: 120000, available: 380000 },
       total: 70000,
       categories: [
         category('ride', 'Transporte', 40000),
@@ -37,6 +38,7 @@ const DATA: CardBills = {
       dueDay: 10,
       dueDate: '2026-10-10T03:00:00.000Z',
       payment: { paidAt: '2026-10-09T12:00:00.000Z', source: 'import' },
+      limit: null,
       total: 30000,
       categories: [category('food', 'Alimentação', 30000)],
     },
@@ -95,6 +97,19 @@ describe('CardBillsSection', () => {
     expect(within(inter).getByRole('button', { name: 'Marcar como paga' })).toBeInTheDocument();
     const nubank = screen.getByText('Cartão Nubank').closest('li')!;
     expect(within(nubank).getByText('Paga (extrato)')).toBeInTheDocument();
+  });
+
+  it('shows the available limit only for cards with a limit', () => {
+    render(<CardBillsSection data={DATA} loading={false} error={false} />, { wrapper });
+
+    const inter = screen.getByText('Cartão Inter').closest('li')!;
+    expect(within(inter).getByRole('meter', { name: 'Limite usado' })).toHaveAttribute(
+      'aria-valuenow',
+      '120000'
+    );
+    expect(within(inter).getByText(/disponível de R\$ 5\.000,00/)).toBeInTheDocument();
+    const nubank = screen.getByText('Cartão Nubank').closest('li')!;
+    expect(within(nubank).queryByRole('meter')).not.toBeInTheDocument();
   });
 
   it('invites to register a card when there is none', () => {
