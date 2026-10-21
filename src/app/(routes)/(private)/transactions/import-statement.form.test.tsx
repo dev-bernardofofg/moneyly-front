@@ -22,6 +22,7 @@ const UNKNOWN = (externalId: string): ImportPreviewItem => ({
   title: 'BOX CHINA',
   status: 'new',
   duplicateOf: null,
+  transferOf: null,
   suggestedCategoryId: OUTROS.id,
   suggestionSource: 'fallback',
 });
@@ -35,6 +36,7 @@ const ITEMS: ImportPreviewItem[] = [
     title: 'Padaria',
     status: 'new',
     duplicateOf: null,
+    transferOf: null,
     suggestedCategoryId: CATEGORY.id,
     suggestionSource: 'rule',
   },
@@ -46,6 +48,7 @@ const ITEMS: ImportPreviewItem[] = [
     title: 'Farmácia',
     status: 'possible_duplicate',
     duplicateOf: '11111111-1111-1111-1111-111111111111',
+    transferOf: null,
     suggestedCategoryId: CATEGORY.id,
     suggestionSource: 'rule',
   },
@@ -57,6 +60,7 @@ const ITEMS: ImportPreviewItem[] = [
     title: 'PAGAMENTO ON LINE',
     status: 'bill_payment',
     duplicateOf: null,
+    transferOf: null,
     suggestedCategoryId: CATEGORY.id,
     suggestionSource: 'rule',
   },
@@ -68,6 +72,7 @@ const ITEMS: ImportPreviewItem[] = [
     title: 'Salário',
     status: 'imported',
     duplicateOf: null,
+    transferOf: null,
     suggestedCategoryId: CATEGORY.id,
     suggestionSource: 'rule',
   },
@@ -132,9 +137,31 @@ describe('import statement helpers', () => {
   it('treats a fallback suggestion as uncategorized until the user changes it', () => {
     const item = UNKNOWN('acc:9');
 
-    expect(isUncategorized(item, { selected: true, categoryId: OUTROS.id })).toBe(true);
-    expect(isUncategorized(item, { selected: true, categoryId: CATEGORY.id })).toBe(false);
-    expect(isUncategorized(ITEMS[0]!, { selected: true, categoryId: CATEGORY.id })).toBe(false);
+    expect(
+      isUncategorized(item, { selected: true, categoryId: OUTROS.id, asTransfer: false })
+    ).toBe(true);
+    expect(
+      isUncategorized(item, { selected: true, categoryId: CATEGORY.id, asTransfer: false })
+    ).toBe(false);
+    expect(
+      isUncategorized(ITEMS[0]!, { selected: true, categoryId: CATEGORY.id, asTransfer: false })
+    ).toBe(false);
+  });
+
+  it('selects a matched transfer as a transfer, without category', () => {
+    const transfer: ImportPreviewItem = {
+      ...UNKNOWN('acc:10'),
+      type: 'income',
+      status: 'transfer',
+      transferOf: {
+        transactionId: '77777777-7777-7777-7777-777777777777',
+        accountId: '66666666-6666-6666-6666-666666666666',
+      },
+    };
+    const row = initialRowState(transfer);
+
+    expect(row).toMatchObject({ selected: true, asTransfer: true });
+    expect(isUncategorized(transfer, row)).toBe(false);
   });
 
   it('selects only new rows by default', () => {
