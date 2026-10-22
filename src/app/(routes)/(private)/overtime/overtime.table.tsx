@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { ConfirmActionForm } from '@/forms/confirm-action';
 import { UpsertOvertimeForm } from '@/forms/upsert-overtime.form';
 import { OvertimeRecord } from '@/api/generated';
+import { formatHoursLong } from './overtime-report.helpers';
 import {
   getGetOvertimeQueryKey,
   getGetOvertimeSummaryQueryKey,
@@ -23,6 +24,8 @@ import {
 interface OvertimeTableProps extends BaseTableOptions {
   records: OvertimeRecord[];
   isLoading: boolean;
+  /** Total do mês inteiro (todas as páginas), não só das linhas visíveis. */
+  totals?: { hours: number; amount: number } | null;
 }
 
 const formatTime = (iso: string) => FN_UTILS_DATE.formatInBusinessTZ(iso, 'HH:mm');
@@ -40,6 +43,7 @@ export const OvertimeTable = ({
   isLoading,
   tableOptions,
   onPaginationChange,
+  totals,
 }: OvertimeTableProps) => {
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getGetOvertimeQueryKey() });
@@ -61,6 +65,15 @@ export const OvertimeTable = ({
   return (
     <BaseTable
       data={records}
+      footer={
+        totals
+          ? {
+              company: 'Total do mês',
+              hoursWorked: formatHoursLong(totals.hours),
+              amount: FN_UTILS_NUMBERS.formatCurrency(totals.amount),
+            }
+          : undefined
+      }
       title="Horas Extras"
       emptyMessage="Nenhuma hora extra registrada"
       loading={isLoading}

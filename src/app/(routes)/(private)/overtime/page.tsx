@@ -213,6 +213,12 @@ const OvertimePage = () => {
   };
 
   const byCompany = summary?.byCompany ?? [];
+  // O resumo é do mês inteiro; com filtro de empresa, o total da tabela é o dessa empresa.
+  const filteredCompany = byCompany.find((company) => company.companyId === companyFilter);
+  const tableTotals =
+    companyFilter === 'all'
+      ? summary && { hours: summary.totalHours, amount: summary.totalAmount }
+      : { hours: filteredCompany?.hours ?? 0, amount: filteredCompany?.amount ?? 0 };
 
   return (
     <Fade>
@@ -358,6 +364,7 @@ const OvertimePage = () => {
           <OvertimeTable
             records={records}
             isLoading={isLoading}
+            totals={tableTotals}
             tableOptions={{
               pagination: {
                 ...paginationParams,

@@ -10,6 +10,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -35,6 +36,8 @@ interface BaseTableProps<T> {
   onPaginationChange?: (value: PaginationType) => void;
   pagination?: PaginationType;
   keyExtractor?: (item: T, index: number) => string | number;
+  /** Linha de totais alinhada às colunas (chave = accessorKey). */
+  footer?: Partial<Record<keyof T, React.ReactNode>>;
 }
 
 export interface BaseTableOptions {
@@ -56,6 +59,7 @@ export function BaseTable<T>({
   onPaginationChange,
   pagination,
   keyExtractor,
+  footer,
 }: BaseTableProps<T>) {
   return (
     <div
@@ -142,6 +146,21 @@ export function BaseTable<T>({
                   ))}
                 </AnimatePresence>
               </TableBody>
+              {footer && (
+                <TableFooter>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={String(column.accessorKey)}
+                        className={cn('font-semibold', column.className)}
+                      >
+                        {footer[column.accessorKey]}
+                      </TableCell>
+                    ))}
+                    {actions && <TableCell className="w-14" />}
+                  </TableRow>
+                </TableFooter>
+              )}
             </Table>
           </motion.div>
         </AnimatePresence>
