@@ -108,7 +108,7 @@ export const FreeBalanceBreakdownSection = ({
           <ul className="mt-4 space-y-2" aria-label="Explicações do Saldo Livre">
             {messages.map((message) => (
               <li key={message} className="flex gap-2 text-sm">
-                <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                <Info className="mt-0.5 size-4 shrink-0 text-primary-strong" aria-hidden />
                 <span>{message}</span>
               </li>
             ))}

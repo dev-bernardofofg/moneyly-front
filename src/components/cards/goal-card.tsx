@@ -44,7 +44,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
     <div className="dark:bg-slate-700 bg-white/95 border dark:border-slate-600 border-slate-100 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{goal.title}</h3>
-        {goal.isActive && <CheckCircle className="size-5 text-primary" />}
+        {goal.isActive && <CheckCircle className="size-5 text-primary-strong" />}
       </div>
 
       <div className="space-y-4">
@@ -62,7 +62,7 @@ export const GoalCard = ({ goal }: GoalCardProps) => {
             />
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-primary font-medium">
+            <span className="text-primary-strong font-medium">
               {FN_UTILS_NUMBERS.formatCurrency(currentAmount)}
             </span>
             <span className="text-slate-400">{FN_UTILS_NUMBERS.formatCurrency(targetAmount)}</span>

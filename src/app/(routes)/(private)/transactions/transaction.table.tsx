@@ -113,7 +113,7 @@ export const TransactionTable = ({
                 {item.recurringTransactionId && (
                   <Badge
                     variant="outline"
-                    className="text-xs px-1.5 py-0 h-5 font-normal border-primary/40 text-primary"
+                    className="text-xs px-1.5 py-0 h-5 font-normal border-primary/40 text-primary-strong"
                   >
                     Recorrente
                   </Badge>

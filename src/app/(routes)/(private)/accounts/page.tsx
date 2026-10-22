@@ -80,7 +80,7 @@ const AccountsPage = () => {
               className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white/95 p-4 dark:border-slate-700 dark:bg-slate-800"
             >
               <div className="flex items-start gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary-strong">
                   <Icon className="size-5" aria-hidden />
                 </span>
                 <div className="min-w-0 space-y-1">

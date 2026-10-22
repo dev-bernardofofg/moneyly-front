@@ -312,7 +312,7 @@ export const ImportStatementForm = () => {
                       </p>
                       <button
                         type="button"
-                        className="font-medium text-primary underline-offset-2 hover:underline"
+                        className="font-medium text-primary-strong underline-offset-2 hover:underline"
                         onClick={() => updateRow(item.externalId, { mode: 'create' })}
                       >
                         {row.mode === 'transfer' ? 'Não é transferência' : 'É outro lançamento'}

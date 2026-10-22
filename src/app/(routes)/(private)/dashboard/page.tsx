@@ -112,7 +112,7 @@ const DashboardPage = () => {
                       onClick={() => push(ROUTES.INSIGHTS)}
                       className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-left text-sm hover:bg-muted dark:border-slate-700 dark:bg-slate-800"
                     >
-                      <alert.Icon className="size-4 shrink-0 text-primary" aria-hidden />
+                      <alert.Icon className="size-4 shrink-0 text-primary-strong" aria-hidden />
                       <span className="min-w-0 flex-1 truncate">{alert.text}</span>
                       <span className="shrink-0 text-xs text-muted-foreground">Ver</span>
                     </button>

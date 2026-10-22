@@ -75,7 +75,7 @@ export const CardBillsSection = ({ data, loading, error }: CardBillsSectionProps
           Nenhum cartão cadastrado.{' '}
           <Link
             href={ROUTES.ACCOUNTS}
-            className="font-medium text-primary underline-offset-2 hover:underline"
+            className="font-medium text-primary-strong underline-offset-2 hover:underline"
           >
             Cadastre um cartão
           </Link>{' '}

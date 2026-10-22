@@ -58,7 +58,7 @@ export const BottomNav = () => {
               href={href}
               className={cn(
                 'flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
-                active ? 'text-primary' : 'text-muted-foreground'
+                active ? 'text-primary-strong' : 'text-muted-foreground'
               )}
             >
               <Icon className="size-5" />
@@ -71,7 +71,7 @@ export const BottomNav = () => {
           onClick={() => setMoreOpen(true)}
           className={cn(
             'flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
-            isMoreActive ? 'text-primary' : 'text-muted-foreground'
+            isMoreActive ? 'text-primary-strong' : 'text-muted-foreground'
           )}
         >
           <MoreHorizontal className="size-5" />
@@ -95,7 +95,7 @@ export const BottomNav = () => {
                 className={cn(
                   'flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors',
                   pathname === href
-                    ? 'bg-primary/10 text-primary font-medium'
+                    ? 'bg-primary/10 text-primary-strong font-medium'
                     : 'text-foreground hover:bg-muted'
                 )}
               >

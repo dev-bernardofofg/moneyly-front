@@ -29,7 +29,7 @@ export const Section = ({
           className={cn('border-b border-slate-200 dark:border-slate-700', classNameHeader)}
         >
           <CardTitle className="flex items-center gap-2">
-            <Icon className="size-5 text-primary" />
+            <Icon className="size-5 text-primary-strong" />
             <span className="text-lg font-bold">{title}</span>
           </CardTitle>
         </CardHeader>

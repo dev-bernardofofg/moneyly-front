@@ -63,8 +63,8 @@ const SidebarItem = ({ Icon, href, title }: SidebarItemProps) => {
       onClick={() => isMobile && toggleSidebar()}
       id="sidebar-item"
       className={`group/item flex gap-2 w-full items-center transition-all text-slate-950 dark:text-white text-sm relative  ${
-        active && 'text-primary bg-primary/20'
-      } hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
+        active && 'text-primary-strong bg-primary/20'
+      } hover:text-primary-strong hover:bg-primary/10 dark:hover:bg-primary/10 p-2 rounded-md`}
     >
       <div
         className={`w-1 h-5 absolute left-0 top-1/2 -translate-y-1/2 ${
@@ -75,10 +75,10 @@ const SidebarItem = ({ Icon, href, title }: SidebarItemProps) => {
       />
       <div className="flex items-center gap-3">
         <Icon
-          className={`size-4 ${active ? 'text-primary group-hover/item:text-primary' : 'group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200'}`}
+          className={`size-4 ${active ? 'text-primary-strong group-hover/item:text-primary-strong' : 'group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200'}`}
         />
         <span
-          className={`${active ? 'text-primary group-hover/item:text-primary' : 'group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200'}`}
+          className={`${active ? 'text-primary-strong group-hover/item:text-primary-strong' : 'group-hover/item:text-neutral-700 dark:group-hover/item:text-neutral-200'}`}
         >
           {title}
         </span>

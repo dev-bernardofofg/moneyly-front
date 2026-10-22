@@ -129,7 +129,12 @@ export const FloatingElements = ({
           }}
           className="relative z-10"
         >
-          <Icon className={cn('text-primary/60 dark:text-primary/70', iconSizeClasses[size])} />
+          <Icon
+            className={cn(
+              'text-primary-strong/60 dark:text-primary-strong/70',
+              iconSizeClasses[size]
+            )}
+          />
         </motion.div>
       )}
     </motion.div>

@@ -70,7 +70,7 @@ export const FreeBalanceSection = ({ forecast, loading, error }: FreeBalanceSect
           {/* O detalhamento (renda, contas, reservas) mora em /insights. */}
           <Link
             href={ROUTES.INSIGHTS}
-            className="ml-auto font-medium text-primary underline-offset-2 hover:underline"
+            className="ml-auto font-medium text-primary-strong underline-offset-2 hover:underline"
           >
             Ver como é calculado
           </Link>

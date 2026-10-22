@@ -7,7 +7,7 @@ export const LoadingScreen = () => {
       <div className="flex flex-col items-center justify-center gap-4">
         <Image src="/logo-moneyly.png" alt="Moneyly" width={64} height={64} />
         <span className="text-lg font-bold text-slate-950 dark:text-white">Moneyly</span>
-        <LoaderCircle className="animate-spin size-10 text-primary" />
+        <LoaderCircle className="animate-spin size-10 text-primary-strong" />
       </div>
     </div>
   );
