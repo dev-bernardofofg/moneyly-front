@@ -24,3 +24,20 @@ describe('BaseTable', () => {
     expect(cells.map((cell) => cell.textContent)).toEqual(['Total do mês', '', 'R$ 70,00']);
   });
 });
+
+describe('BaseTable mobile cards', () => {
+  it('renders a card per row for small screens next to the table', () => {
+    render(
+      <BaseTable<Row>
+        data={[{ name: 'Acme', hours: '2h', amount: 'R$ 70,00' }]}
+        columns={[{ header: 'Empresa', accessorKey: 'name' }]}
+        mobileCard={(item) => <span>card {item.name}</span>}
+        actions={() => <button type="button">Editar</button>}
+      />
+    );
+
+    expect(screen.getByText('card Acme').closest('ul')).toHaveClass('md:hidden');
+    expect(screen.getByRole('table')).toHaveClass('hidden', 'md:table');
+    expect(screen.getAllByRole('button', { name: 'Editar' })).toHaveLength(2);
+  });
+});
