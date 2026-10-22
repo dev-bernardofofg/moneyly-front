@@ -24,7 +24,19 @@ export const pendingSetupSteps = (
     ? recurrences.filter((rec) => rec.isActive && rec.type === 'expense' && !rec.accountId)
     : [];
 
+  // Salário como recorrência: aparece previsto no Saldo Livre antes de cair e o extrato confirma.
+  const hasRecurringIncome = recurrences.some((rec) => rec.isActive && rec.type === 'income');
+
   return [
+    ...(hasRecurringIncome
+      ? []
+      : [
+          {
+            key: 'salary',
+            text: 'Cadastre seu salário como recorrência de entrada no dia em que ele cai',
+            href: ROUTES.RECURRING_TRANSACTIONS,
+          },
+        ]),
     ...(withoutBalance.length
       ? [
           {

@@ -145,7 +145,7 @@ const TransactionsPage = () => {
             Todos os períodos
           </BaseButton>
         </div>
-        <StaggeredFade className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <StaggeredFade className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {TRANSACTION_STATS_INTERATOR.map((stat) => (
             <BaseStats
               key={stat.indicator}

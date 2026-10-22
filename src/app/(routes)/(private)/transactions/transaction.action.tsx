@@ -4,18 +4,9 @@ import { GetTransactionsQueryParamsTypeEnumKey } from '@/api/generated/types/Get
 import { usePagination } from '@/hooks/use-pagination';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useState } from 'react';
-import { DollarSign, TrendingDown, TrendingUp } from 'lucide-react';
+import { TrendingDown, TrendingUp } from 'lucide-react';
 
 export const TRANSACTION_STATS_INTERATOR = [
-  {
-    name: 'Rendimento Mensal',
-    indicator: 'monthlyIncome',
-    icon: DollarSign,
-    description: 'Rendimento mensal cadastrado',
-    isMonetary: true,
-    variant: 'default',
-    loading: false,
-  },
   {
     name: 'Entradas',
     indicator: 'totalIncome',

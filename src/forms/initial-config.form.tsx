@@ -1,11 +1,9 @@
 'use client';
 
 import { BaseForm } from '@/components/forms/base-form';
-import { BaseInput } from '@/components/forms/base-input';
 import { BaseSelect } from '@/components/forms/base-select';
 import { useAuth } from '@/contexts/auth-provider';
 import { getErrorMessage } from '@/lib/errors';
-import { FN_UTILS_STRING } from '@/lib/string';
 import {
   InitialConfigDefaultValues,
   InitialConfigFormValues,
@@ -15,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { Calendar, DollarSign, Info } from 'lucide-react';
+import { Calendar, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import {
@@ -64,7 +62,6 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
   const handleSubmit = (data: InitialConfigFormValues) => {
     updateIncomeAndPeriod({
       data: {
-        monthlyIncome: FN_UTILS_STRING.formatMoneyInputToCents(data.monthlyIncome),
         financialDayStart: data.financialDayStart,
         financialDayEnd: data.financialDayEnd,
       },
@@ -76,21 +73,6 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
   return (
     <Form {...form}>
       <BaseForm onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <DollarSign className="size-4 text-income" />
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">Renda Mensal</h3>
-          </div>
-
-          <BaseInput
-            control={form.control}
-            label="Qual é o seu rendimento mensal?"
-            name="monthlyIncome"
-            placeholder="Digite seu rendimento mensal"
-            type="money"
-          />
-        </div>
-
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Calendar className="size-4 text-info" />
@@ -125,6 +107,15 @@ export const InitialConfigForm = ({ onSuccess }: InitialConfigFormProps) => {
               name="financialDayEnd"
               options={days.map((day) => ({ label: day.toString(), value: day }))}
             />
+          </div>
+
+          <div className="bg-income/5 border border-income/20 rounded-lg p-4 text-sm">
+            <p className="font-medium mb-1">E o seu salário?</p>
+            <p className="text-muted-foreground">
+              Depois, cadastre o salário como transação recorrente de entrada no dia em que ele cai.
+              Assim ele já aparece previsto no Saldo Livre antes de entrar na conta, e o extrato
+              importado confirma o valor sem duplicar.
+            </p>
           </div>
 
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 dark:bg-gray-800 dark:border-gray-700">

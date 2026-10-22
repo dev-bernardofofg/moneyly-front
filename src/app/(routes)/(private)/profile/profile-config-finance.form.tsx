@@ -2,10 +2,8 @@
 
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseForm } from '@/components/forms/base-form';
-import { BaseInput } from '@/components/forms/base-input';
 import { BaseSelect } from '@/components/forms/base-select';
 import { useAuth } from '@/contexts/auth-provider';
-import { FN_UTILS_STRING } from '@/lib/string';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -34,7 +32,6 @@ export const ProfileConfigFinanceForm = ({
     defaultValues: {
       financialDayStart: defaultValues.financialDayStart!,
       financialDayEnd: defaultValues.financialDayEnd!,
-      monthlyIncome: defaultValues.monthlyIncome,
     },
   });
 
@@ -48,7 +45,6 @@ export const ProfileConfigFinanceForm = ({
             ...user,
             financialDayEnd: Number(next.financialDayEnd),
             financialDayStart: Number(next.financialDayStart),
-            monthlyIncome: Number(next.monthlyIncome),
           });
         }
         form.reset(form.getValues());
@@ -68,7 +64,6 @@ export const ProfileConfigFinanceForm = ({
     }
     updateProfile({
       data: {
-        monthlyIncome: FN_UTILS_STRING.formatMoneyInputToCents(data.monthlyIncome),
         financialDayStart: Number(data.financialDayStart),
         financialDayEnd: Number(data.financialDayEnd),
       },
@@ -79,15 +74,8 @@ export const ProfileConfigFinanceForm = ({
     <Form {...form}>
       <BaseForm
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-0 grid grid-cols-3 gap-3 size-full"
+        className="space-y-0 grid grid-cols-2 gap-3 size-full"
       >
-        <BaseInput
-          control={form.control}
-          label="Renda Mensal"
-          name="monthlyIncome"
-          placeholder="R$ 0,00"
-          type="money"
-        />
         <BaseSelect
           control={form.control}
           label="Dia de início"

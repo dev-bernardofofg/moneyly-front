@@ -14,16 +14,6 @@ export const profileConfigFinanceFormSchema = z.object({
     .string()
     .min(1, { message: 'O dia final é obrigatório' })
     .refine(dayInRange, { message: 'Dia deve ser entre 1 e 31' }),
-  monthlyIncome: z
-    .string()
-    .min(1, { message: 'O valor mensal é obrigatório' })
-    .refine(
-      (v) => {
-        const n = parseFloat(v.replace(/\./g, '').replace(',', '.'));
-        return Number.isFinite(n) && n > 0;
-      },
-      { message: 'Renda mensal deve ser maior que zero' }
-    ),
 });
 
 export type ProfileConfigFinanceFormValues = z.infer<typeof profileConfigFinanceFormSchema>;

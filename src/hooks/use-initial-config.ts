@@ -6,8 +6,9 @@ export const useInitialConfig = () => {
   const needsInitialConfig = () => {
     if (!user) return false;
 
+    // firstAccess cai em false quando o período é configurado (PUT /user/income-and-period).
     return (
-      !user.monthlyIncome ||
+      user.firstAccess === true ||
       user.financialDayStart === undefined ||
       user.financialDayEnd === undefined
     );
