@@ -21,7 +21,6 @@ import { useGetCompanies } from '@/api/generated/hooks/companies/companies';
 import { getOvertimeExport } from '@/api/generated/hooks/overtime/overtime';
 import { queryClient } from '@/contexts';
 import { getErrorMessage } from '@/lib/errors';
-import { FN_UTILS_DATE } from '@/lib/date';
 import { CustomAxiosError } from '@/types/error.type';
 import {
   getGetCompaniesQueryKey,
@@ -35,7 +34,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Briefcase, Building2, Clock, Download, PencilIcon, Plus, Trash2 } from 'lucide-react';
+import {
+  Briefcase,
+  Building2,
+  Clock,
+  Download,
+  FileText,
+  PencilIcon,
+  Plus,
+  Sheet,
+  Trash2,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/contexts/auth-provider';
+import { exportOvertimePdf } from './overtime-report.export';
+import { reportFileName } from './overtime-report.helpers';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { ConfirmActionForm } from '@/forms/confirm-action';
@@ -131,6 +149,8 @@ const CompaniesManager = () => {
 
 const OvertimePage = () => {
   const [companyFilter, setCompanyFilter] = useState<string>('all');
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const { user } = useAuth();
   const { data: companiesData } = useGetCompanies();
   const companies = companiesData?.data ?? [];
 
@@ -159,7 +179,7 @@ const OvertimePage = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `horas-extras-${FN_UTILS_DATE.today()}.csv`;
+      link.download = `${reportFileName(monthYear.month, monthYear.year)}.csv`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -170,6 +190,28 @@ const OvertimePage = () => {
     }
   };
 
+  const handleExportPdf = async () => {
+    if (!monthYear) {
+      toast.error('Selecione um período');
+      return;
+    }
+    setIsExportingPdf(true);
+    try {
+      await exportOvertimePdf({
+        month: monthYear.month,
+        year: monthYear.year,
+        companyId: companyFilter === 'all' ? undefined : companyFilter,
+        companyName: companies.find((company) => company.id === companyFilter)?.name,
+        ownerName: user?.name,
+      });
+      toast.success('PDF exportado com sucesso');
+    } catch {
+      toast.error('Falha ao exportar PDF');
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
+
   const byCompany = summary?.byCompany ?? [];
 
   return (
@@ -177,10 +219,24 @@ const OvertimePage = () => {
       <Header
         title="Horas Extras"
         actions={[
-          <BaseButton key="export-csv" variant="outline" onClick={handleExportCsv}>
-            <Download className="size-4 mr-1" />
-            Exportar CSV
-          </BaseButton>,
+          <DropdownMenu key="export">
+            <DropdownMenuTrigger asChild>
+              <BaseButton variant="outline" isLoading={isExportingPdf} loadingText="Gerando PDF">
+                <Download className="size-4 mr-1" />
+                Exportar
+              </BaseButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={handleExportPdf}>
+                <FileText className="size-4" />
+                PDF (relatório)
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={handleExportCsv}>
+                <Sheet className="size-4" />
+                CSV (planilha)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>,
           <BaseDialog
             key="manage-companies"
             title="Gerenciar empresas"
