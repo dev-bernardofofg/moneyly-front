@@ -92,26 +92,27 @@ function BaseInputInner<T extends FieldValues>(
                   )}
                 </div>
               )}
-              <FormControl>
-                {isLoading ? (
-                  <div className="w-full h-10 flex items-center justify-center bg-background rounded border border-border">
-                    <LoaderCircle className="animate-spin size-5 opacity-40" />
-                  </div>
-                ) : (
-                  <motion.div
-                    className={cn(
-                      'relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600',
-                      displayIcon && 'pl-8',
-                      (isPassword || readOnly) && 'pr-10',
-                      rightElement && 'pr-24',
-                      className
-                    )}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 20,
-                    }}
-                  >
+              {/* FormControl no <input>: é ele que recebe o id do <label> e o aria-invalid. */}
+              {isLoading ? (
+                <div className="w-full h-10 flex items-center justify-center bg-background rounded border border-border">
+                  <LoaderCircle className="animate-spin size-5 opacity-40" />
+                </div>
+              ) : (
+                <motion.div
+                  className={cn(
+                    'relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600',
+                    displayIcon && 'pl-8',
+                    (isPassword || readOnly) && 'pr-10',
+                    rightElement && 'pr-24',
+                    className
+                  )}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                >
+                  <FormControl>
                     <Input
                       tabIndex={0}
                       placeholder={placeholder}
@@ -125,27 +126,27 @@ function BaseInputInner<T extends FieldValues>(
                       className="h-10 w-full bg-transparent dark:bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-sm"
                       {...rest}
                     />
-                    {displayIcon &&
-                      React.createElement(displayIcon, {
-                        className:
-                          'absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-input-hover leading-tight',
-                      })}
-                    {isPassword && (
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-gray-600 group-focus-within:text-input-hover"
-                        aria-label={showPassword ? 'Hide password' : 'Show password'}
-                      >
-                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                      </button>
-                    )}
-                    {rightElement && (
-                      <div className="absolute right-0 top-0 h-full">{rightElement}</div>
-                    )}
-                  </motion.div>
-                )}
-              </FormControl>
+                  </FormControl>
+                  {displayIcon &&
+                    React.createElement(displayIcon, {
+                      className:
+                        'absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-input-hover leading-tight',
+                    })}
+                  {isPassword && (
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-gray-600 group-focus-within:text-input-hover"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  )}
+                  {rightElement && (
+                    <div className="absolute right-0 top-0 h-full">{rightElement}</div>
+                  )}
+                </motion.div>
+              )}
               {description && <FormDescription>{description}</FormDescription>}
             </FormItem>
           </motion.div>

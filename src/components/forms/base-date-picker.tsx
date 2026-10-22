@@ -97,9 +97,9 @@ export function BaseDatePicker<T extends FieldValues>({
             </motion.div>
           )}
 
-          <FormControl>
-            <Popover>
-              <PopoverTrigger asChild>
+          <Popover>
+            <PopoverTrigger asChild>
+              <FormControl>
                 <BaseButton
                   variant="input"
                   className={cn(
@@ -117,101 +117,101 @@ export function BaseDatePicker<T extends FieldValues>({
                     <span>{placeholder}</span>
                   )}
                 </BaseButton>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 p-3">
-                  <div className="flex items-center gap-2">
-                    <Select
-                      value={currentYear.toString()}
-                      onValueChange={(year) => {
-                        const newDate = new Date(currentMonth);
-                        newDate.setFullYear(parseInt(year));
-                        setCalendarDate(newDate);
-                      }}
-                    >
-                      <SelectTrigger className="h-8 w-[90px]">
-                        <SelectValue placeholder="Ano" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {years.map((year) => (
-                          <SelectItem key={year} value={year.toString()} className="cursor-pointer">
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 p-3">
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={currentYear.toString()}
+                    onValueChange={(year) => {
+                      const newDate = new Date(currentMonth);
+                      newDate.setFullYear(parseInt(year));
+                      setCalendarDate(newDate);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-[90px]">
+                      <SelectValue placeholder="Ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year} value={year.toString()} className="cursor-pointer">
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                    <div className="text-sm font-medium capitalize">{currentMonthName}</div>
-                  </div>
-
-                  <div className="flex gap-1">
-                    <Button variant="outline" className="h-7 w-7 p-0" onClick={handlePreviousMonth}>
-                      <ChevronLeft className="size-4" />
-                    </Button>
-                    <Button variant="outline" className="h-7 w-7 p-0" onClick={handleNextMonth}>
-                      <ChevronRight className="size-4" />
-                    </Button>
-                  </div>
+                  <div className="text-sm font-medium capitalize">{currentMonthName}</div>
                 </div>
 
-                <Calendar
-                  mode="single"
-                  month={calendarDate}
-                  onMonthChange={setCalendarDate}
-                  selected={field.value ? parseISO(field.value) : undefined}
-                  onSelect={(date) => {
-                    if (date) {
-                      field.onChange(format(date, 'yyyy-MM-dd'));
-                      setCalendarDate(date);
-                    } else {
-                      field.onChange('');
-                      setCalendarDate(undefined);
-                    }
-                  }}
-                  disabled={(date) => {
-                    if (disableFutureDates && date > new Date()) return true;
-                    if (disablePastDates && date < startOfDay(new Date())) return true;
-                    if (minDate && date < minDate) return true;
-                    if (maxDate && date > maxDate) return true;
-                    if (isDateAvailable && !isDateAvailable(date)) return true;
-                    return false;
-                  }}
-                  initialFocus
-                  locale={ptBR}
-                  showOutsideDays
-                  fixedWeeks
-                  classNames={{
-                    months: 'space-y-4',
-                    head_row: 'flex',
-                    head_cell: cn(
-                      'text-muted-foreground rounded-md w-8 font-normal text-[0.8rem] capitalize'
-                    ),
-                    row: 'flex w-full mt-2',
-                    cell: cn(
-                      'relative p-0 text-center text-sm focus-within:relative focus-within:z-20',
-                      '[&:has([aria-selected])]:bg-accent'
-                    ),
-                    day: cn(
-                      'h-8 w-8 p-0 font-normal',
-                      'hover:bg-accent hover:text-accent-foreground',
-                      'focus:bg-accent focus:text-accent-foreground focus:outline-hidden'
-                    ),
-                    day_selected: cn(
-                      'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
-                      'focus:bg-primary focus:text-primary-foreground'
-                    ),
-                    day_today: 'bg-accent/50 text-accent-foreground',
-                    day_outside: 'text-muted-foreground opacity-50',
-                    day_disabled: 'text-muted-foreground opacity-50',
-                    day_hidden: 'invisible',
-                    nav: 'hidden',
-                    caption: 'hidden',
-                    table: 'w-full border-collapse space-y-1',
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-          </FormControl>
+                <div className="flex gap-1">
+                  <Button variant="outline" className="h-7 w-7 p-0" onClick={handlePreviousMonth}>
+                    <ChevronLeft className="size-4" />
+                  </Button>
+                  <Button variant="outline" className="h-7 w-7 p-0" onClick={handleNextMonth}>
+                    <ChevronRight className="size-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <Calendar
+                mode="single"
+                month={calendarDate}
+                onMonthChange={setCalendarDate}
+                selected={field.value ? parseISO(field.value) : undefined}
+                onSelect={(date) => {
+                  if (date) {
+                    field.onChange(format(date, 'yyyy-MM-dd'));
+                    setCalendarDate(date);
+                  } else {
+                    field.onChange('');
+                    setCalendarDate(undefined);
+                  }
+                }}
+                disabled={(date) => {
+                  if (disableFutureDates && date > new Date()) return true;
+                  if (disablePastDates && date < startOfDay(new Date())) return true;
+                  if (minDate && date < minDate) return true;
+                  if (maxDate && date > maxDate) return true;
+                  if (isDateAvailable && !isDateAvailable(date)) return true;
+                  return false;
+                }}
+                initialFocus
+                locale={ptBR}
+                showOutsideDays
+                fixedWeeks
+                classNames={{
+                  months: 'space-y-4',
+                  head_row: 'flex',
+                  head_cell: cn(
+                    'text-muted-foreground rounded-md w-8 font-normal text-[0.8rem] capitalize'
+                  ),
+                  row: 'flex w-full mt-2',
+                  cell: cn(
+                    'relative p-0 text-center text-sm focus-within:relative focus-within:z-20',
+                    '[&:has([aria-selected])]:bg-accent'
+                  ),
+                  day: cn(
+                    'h-8 w-8 p-0 font-normal',
+                    'hover:bg-accent hover:text-accent-foreground',
+                    'focus:bg-accent focus:text-accent-foreground focus:outline-hidden'
+                  ),
+                  day_selected: cn(
+                    'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+                    'focus:bg-primary focus:text-primary-foreground'
+                  ),
+                  day_today: 'bg-accent/50 text-accent-foreground',
+                  day_outside: 'text-muted-foreground opacity-50',
+                  day_disabled: 'text-muted-foreground opacity-50',
+                  day_hidden: 'invisible',
+                  nav: 'hidden',
+                  caption: 'hidden',
+                  table: 'w-full border-collapse space-y-1',
+                }}
+              />
+            </PopoverContent>
+          </Popover>
 
           {description && <FormDescription>{description}</FormDescription>}
         </FormItem>

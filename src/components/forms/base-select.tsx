@@ -74,73 +74,74 @@ export const BaseSelect = <T extends FieldValues>({
             </motion.div>
           )}
 
-          <FormControl>
-            {isLoading ? (
-              <div className="relative w-full rounded-md border border-slate-200 dark:border-slate-700 dark:bg-slate-800/95 bg-white/95 overflow-hidden">
-                <div className="h-10 px-3 flex items-center justify-between">
-                  {/* shimmer de texto */}
-                  <div className="h-3.5 w-2/5 rounded-sm bg-slate-200 dark:bg-slate-700 animate-pulse" />
-                  {/* chevron fantasma */}
-                  <ChevronDown className="size-4 opacity-50" />
-                </div>
+          {/* FormControl no trigger: é o elemento focável que o <label> nomeia. */}
+          {isLoading ? (
+            <div className="relative w-full rounded-md border border-slate-200 dark:border-slate-700 dark:bg-slate-800/95 bg-white/95 overflow-hidden">
+              <div className="h-10 px-3 flex items-center justify-between">
+                {/* shimmer de texto */}
+                <div className="h-3.5 w-2/5 rounded-sm bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                {/* chevron fantasma */}
+                <ChevronDown className="size-4 opacity-50" />
               </div>
-            ) : (
-              <Select
-                value={field.value ? String(field.value) : ''}
-                onValueChange={field.onChange}
-                disabled={disabled || Boolean(selectDate)}
+            </div>
+          ) : (
+            <Select
+              value={field.value ? String(field.value) : ''}
+              onValueChange={field.onChange}
+              disabled={disabled || Boolean(selectDate)}
+            >
+              <motion.div
+                className="relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600"
+                transition={{
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 20,
+                }}
               >
-                <motion.div
-                  className="relative group rounded-md border focus-within:border-primary focus-within:ring-0.5 focus-within:ring-primary focus-within:outline-hidden dark:bg-slate-800/95  dark:shadow-black/20 bg-white/95 border-slate-200 dark:border-slate-700 shadow-slate-900/10 dark:text-slate-300 text-slate-600"
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 20,
-                  }}
-                >
+                <FormControl>
                   <SelectTrigger className="h-10 w-full bg-transparent border-none outline-hidden ring-0 focus:ring-0 focus-visible:ring-0 focus-within:ring-0 focus:border-none focus-within:border-none focus-visible:border-none active:border-none active:ring-0 active:outline-hidden focus:outline-hidden focus-visible:outline-hidden px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50">
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
-                </motion.div>
+                </FormControl>
+              </motion.div>
 
-                <SelectContent>
-                  {optionGroups.length > 0 ? (
-                    optionGroups.map((group) => (
-                      <SelectGroup key={group.label}>
-                        <SelectLabel>{group.label}</SelectLabel>
-                        {group.options.map((option) => (
-                          <SelectItem key={option.value} value={String(option.value)}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    ))
-                  ) : isFullDate ? (
-                    days.map((day) => (
-                      <SelectItem key={day} value={String(day)}>
-                        {day.toString()}
-                      </SelectItem>
-                    ))
-                  ) : options.length === 0 ? (
-                    <div className="px-2 py-4 text-center text-sm text-muted-foreground">
-                      {emptyMessage}
-                    </div>
-                  ) : (
-                    options.map((option) => (
-                      <SelectItem
-                        key={option.value}
-                        value={String(option.value)}
-                        className="truncate"
-                        disabled={option.available === false}
-                      >
-                        {option.label}
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            )}
-          </FormControl>
+              <SelectContent>
+                {optionGroups.length > 0 ? (
+                  optionGroups.map((group) => (
+                    <SelectGroup key={group.label}>
+                      <SelectLabel>{group.label}</SelectLabel>
+                      {group.options.map((option) => (
+                        <SelectItem key={option.value} value={String(option.value)}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  ))
+                ) : isFullDate ? (
+                  days.map((day) => (
+                    <SelectItem key={day} value={String(day)}>
+                      {day.toString()}
+                    </SelectItem>
+                  ))
+                ) : options.length === 0 ? (
+                  <div className="px-2 py-4 text-center text-sm text-muted-foreground">
+                    {emptyMessage}
+                  </div>
+                ) : (
+                  options.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      value={String(option.value)}
+                      className="truncate"
+                      disabled={option.available === false}
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          )}
 
           {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
