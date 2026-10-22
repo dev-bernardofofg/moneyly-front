@@ -64,7 +64,6 @@ export type PutUserIncomeAndPeriod401 = {
 };
 
 export type PutUserIncomeAndPeriodMutationRequest = {
-  monthlyIncome: string | number;
   /**
    * @minLength 1
    * @maxLength 31

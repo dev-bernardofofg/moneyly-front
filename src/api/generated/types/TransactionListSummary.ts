@@ -13,11 +13,6 @@ export type TransactionListSummary = {
    */
   totalIncome: number;
   /**
-   * @description Valor em centavos
-   * @type integer
-   */
-  monthlyIncome: number | null;
-  /**
    * @type number
    */
   percentUsed: number | null;

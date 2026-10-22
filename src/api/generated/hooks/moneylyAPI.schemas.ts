@@ -54,11 +54,6 @@ export interface User {
   googleId?: string | null;
   /** @nullable */
   avatar?: string | null;
-  /**
-   * Valor em centavos
-   * @nullable
-   */
-  monthlyIncome: number | null;
   financialDayStart: number;
   financialDayEnd: number;
   /** @nullable */
@@ -77,15 +72,6 @@ export interface AuthRefresh {
   accessToken: string;
 }
 
-export interface IncomeUpdate {
-  /**
-   * Valor em centavos
-   * @nullable
-   */
-  monthlyIncome: number | null;
-  firstAccess: boolean;
-}
-
 export interface FinancialPeriodUpdate {
   financialDayStart: number;
   financialDayEnd: number;
@@ -93,11 +79,6 @@ export interface FinancialPeriodUpdate {
 }
 
 export interface IncomeAndPeriodUpdate {
-  /**
-   * Valor em centavos
-   * @nullable
-   */
-  monthlyIncome: number | null;
   financialDayStart: number;
   financialDayEnd: number;
   firstAccess: boolean;
@@ -614,7 +595,6 @@ export type TransactionSummaryByCategory = { [key: string]: number };
 export interface TransactionSummary {
   totalIncome: number;
   totalExpenses: number;
-  monthlyIncome: number;
   balance: number;
   /** @nullable */
   percentUsed: number | null;
@@ -635,7 +615,6 @@ export interface CurrentPeriodSummary {
   currentPeriod: CurrentPeriodSummaryCurrentPeriod;
   totalIncome: number;
   totalExpenses: number;
-  monthlyIncome: number;
   balance: number;
   /** @nullable */
   percentUsed: number | null;
@@ -825,11 +804,6 @@ export interface ForecastResponse {
 export interface TransactionListSummary {
   totalExpense: number;
   totalIncome: number;
-  /**
-   * Valor em centavos
-   * @nullable
-   */
-  monthlyIncome: number | null;
   /** @nullable */
   percentUsed: number | null;
   /** @nullable */
@@ -1846,27 +1820,6 @@ export type GetUserMe401 = {
   details?: unknown;
 };
 
-export type PutUserIncomeBody = {
-  monthlyIncome: string | number;
-};
-
-export type PutUserIncome200 = {
-  data: IncomeUpdate;
-  message?: string;
-};
-
-export type PutUserIncome400 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
-export type PutUserIncome401 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
 export type PutUserFinancialPeriodBody = {
   /**
    * @minimum 1
@@ -1898,7 +1851,6 @@ export type PutUserFinancialPeriod401 = {
 };
 
 export type PutUserIncomeAndPeriodBody = {
-  monthlyIncome: string | number;
   /**
    * @minimum 1
    * @maximum 31

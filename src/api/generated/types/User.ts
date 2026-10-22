@@ -25,11 +25,6 @@ export type User = {
    */
   avatar?: string | null;
   /**
-   * @description Valor em centavos
-   * @type integer
-   */
-  monthlyIncome: number | null;
-  /**
    * @type integer
    */
   financialDayStart: number;

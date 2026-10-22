@@ -15,10 +15,6 @@ export type TransactionSummary = {
   /**
    * @type number
    */
-  monthlyIncome: number;
-  /**
-   * @type number
-   */
   balance: number;
   /**
    * @type number

@@ -9,12 +9,6 @@
         "email": { "type": "string", "format": "email" },
         "googleId": { "type": "string", "nullable": true },
         "avatar": { "type": "string", "nullable": true },
-        "monthlyIncome": {
-          "type": "integer",
-          "nullable": true,
-          "description": "Valor em centavos",
-          "example": 123450
-        },
         "financialDayStart": { "type": "integer" },
         "financialDayEnd": { "type": "integer" },
         "firstAccess": { "type": "boolean", "nullable": true },
@@ -24,7 +18,6 @@
         "id",
         "name",
         "email",
-        "monthlyIncome",
         "financialDayStart",
         "financialDayEnd",
         "firstAccess",

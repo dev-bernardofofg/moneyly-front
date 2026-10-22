@@ -457,7 +457,6 @@ export type {
 } from './GetUserMe.ts';
 export type { Goal } from './Goal.ts';
 export type { IncomeAndPeriodUpdate } from './IncomeAndPeriodUpdate.ts';
-export type { IncomeUpdate } from './IncomeUpdate.ts';
 export type { MonthlySummaryItem } from './MonthlySummaryItem.ts';
 export type {
   Notification,
@@ -839,16 +838,6 @@ export type {
   PutUserFinancialPeriodMutationResponse,
 } from './PutUserFinancialPeriod.ts';
 export type {
-  PutUserIncome200,
-  PutUserIncome400,
-  PutUserIncome400SuccessEnumKey,
-  PutUserIncome401,
-  PutUserIncome401SuccessEnumKey,
-  PutUserIncomeMutation,
-  PutUserIncomeMutationRequest,
-  PutUserIncomeMutationResponse,
-} from './PutUserIncome.ts';
-export type {
   PutUserIncomeAndPeriod200,
   PutUserIncomeAndPeriod400,
   PutUserIncomeAndPeriod400SuccessEnumKey,
@@ -1083,8 +1072,6 @@ export { putTransactionsId404SuccessEnum } from './PutTransactionsId.ts';
 export { putTransactionsIdMutationRequestTypeEnum } from './PutTransactionsId.ts';
 export { putUserFinancialPeriod400SuccessEnum } from './PutUserFinancialPeriod.ts';
 export { putUserFinancialPeriod401SuccessEnum } from './PutUserFinancialPeriod.ts';
-export { putUserIncome400SuccessEnum } from './PutUserIncome.ts';
-export { putUserIncome401SuccessEnum } from './PutUserIncome.ts';
 export { putUserIncomeAndPeriod400SuccessEnum } from './PutUserIncomeAndPeriod.ts';
 export { putUserIncomeAndPeriod401SuccessEnum } from './PutUserIncomeAndPeriod.ts';
 export { recentTransactionItemTypeEnum } from './RecentTransactionItem.ts';

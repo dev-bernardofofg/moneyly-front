@@ -3,15 +3,9 @@
   "properties": {
     "totalExpense": { "type": "number" },
     "totalIncome": { "type": "number" },
-    "monthlyIncome": {
-      "type": "integer",
-      "nullable": true,
-      "description": "Valor em centavos",
-      "example": 123450
-    },
     "percentUsed": { "type": "number", "nullable": true },
     "alert": { "type": "string", "nullable": true }
   },
-  "required": ["totalExpense", "totalIncome", "monthlyIncome", "percentUsed", "alert"],
+  "required": ["totalExpense", "totalIncome", "percentUsed", "alert"],
   "x-readme-ref-name": "TransactionListSummary"
 }

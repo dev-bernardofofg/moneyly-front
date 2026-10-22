@@ -32,10 +32,6 @@ export type CurrentPeriodSummary = {
   /**
    * @type number
    */
-  monthlyIncome: number;
-  /**
-   * @type number
-   */
   balance: number;
   /**
    * @type number

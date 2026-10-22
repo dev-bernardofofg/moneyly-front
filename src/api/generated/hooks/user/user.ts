@@ -36,14 +36,10 @@ import type {
   PutUserFinancialPeriod400,
   PutUserFinancialPeriod401,
   PutUserFinancialPeriodBody,
-  PutUserIncome200,
-  PutUserIncome400,
-  PutUserIncome401,
   PutUserIncomeAndPeriod200,
   PutUserIncomeAndPeriod400,
   PutUserIncomeAndPeriod401,
   PutUserIncomeAndPeriodBody,
-  PutUserIncomeBody,
 } from '../moneylyAPI.schemas.ts';
 
 import { customInstance } from '../../../../lib/axios-instance.ts';
@@ -163,82 +159,6 @@ export function useGetUserMe<
 }
 
 /**
- * @summary Atualizar renda mensal
- */
-export const putUserIncome = (putUserIncomeBody?: PutUserIncomeBody, signal?: AbortSignal) => {
-  return customInstance<PutUserIncome200>({
-    url: `/user/income`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: putUserIncomeBody,
-    signal,
-  });
-};
-
-export const getPutUserIncomeMutationKey = () => ['putUserIncome'] as const;
-
-export const getPutUserIncomeMutationOptions = <
-  TError = PutUserIncome400 | PutUserIncome401,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putUserIncome>>,
-    TError,
-    PutUserIncomeMutationVariables,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof putUserIncome>>,
-  TError,
-  PutUserIncomeMutationVariables,
-  TContext
-> => {
-  const mutationKey = getPutUserIncomeMutationKey();
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putUserIncome>>,
-    PutUserIncomeMutationVariables
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return putUserIncome(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PutUserIncomeMutationResult = NonNullable<Awaited<ReturnType<typeof putUserIncome>>>;
-export type PutUserIncomeMutationBody = PutUserIncomeBody | undefined;
-export type PutUserIncomeMutationError = PutUserIncome400 | PutUserIncome401;
-export type PutUserIncomeMutationVariables = { data?: PutUserIncomeBody };
-
-/**
- * @summary Atualizar renda mensal
- */
-export const usePutUserIncome = <TError = PutUserIncome400 | PutUserIncome401, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof putUserIncome>>,
-      TError,
-      PutUserIncomeMutationVariables,
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof putUserIncome>>,
-  TError,
-  PutUserIncomeMutationVariables,
-  TContext
-> => {
-  return useMutation(getPutUserIncomeMutationOptions(options), queryClient);
-};
-/**
  * @summary Atualizar período financeiro
  */
 export const putUserFinancialPeriod = (
@@ -324,7 +244,7 @@ export const usePutUserFinancialPeriod = <
   return useMutation(getPutUserFinancialPeriodMutationOptions(options), queryClient);
 };
 /**
- * @summary Atualizar renda + período
+ * @summary Configuração inicial: período financeiro (encerra o firstAccess)
  */
 export const putUserIncomeAndPeriod = (
   putUserIncomeAndPeriodBody?: PutUserIncomeAndPeriodBody,
@@ -385,7 +305,7 @@ export type PutUserIncomeAndPeriodMutationError =
 export type PutUserIncomeAndPeriodMutationVariables = { data?: PutUserIncomeAndPeriodBody };
 
 /**
- * @summary Atualizar renda + período
+ * @summary Configuração inicial: período financeiro (encerra o firstAccess)
  */
 export const usePutUserIncomeAndPeriod = <
   TError = PutUserIncomeAndPeriod400 | PutUserIncomeAndPeriod401,
