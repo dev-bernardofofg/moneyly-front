@@ -7,7 +7,6 @@ import { queryClient } from '@/contexts';
 import { FN_UTILS_DATE } from '@/lib/date';
 import { getErrorMessage } from '@/lib/errors';
 import { FN_UTILS_NUMBERS } from '@/lib/number';
-import { FN_UTILS_STRING } from '@/lib/string';
 import { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';

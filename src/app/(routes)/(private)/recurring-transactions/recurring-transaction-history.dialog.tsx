@@ -5,7 +5,6 @@ import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseDialog } from '@/components/portals/base-dialog';
 import { FN_UTILS_DATE } from '@/lib/date';
-import { FN_UTILS_STRING } from '@/lib/string';
 import { useGetRecurringTransactionsIdTransactions } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import { Badge } from '@/components/ui/badge';
 import {
