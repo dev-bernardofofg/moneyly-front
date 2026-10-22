@@ -17,6 +17,7 @@ const recurrence = (extra: Partial<RecurringTransaction>) =>
 describe('pendingSetupSteps', () => {
   it('asks for the opening balance and a card when there is only a bare checking account', () => {
     expect(pendingSetupSteps([account({})], [recurrence({})]).map((step) => step.key)).toEqual([
+      'salary',
       'opening-balance',
       'card',
     ]);
@@ -32,6 +33,7 @@ describe('pendingSetupSteps', () => {
     );
 
     expect(steps.map((step) => step.key)).toEqual(['credit-limit', 'recurring-card']);
+    expect(steps.map((step) => step.key)).not.toContain('salary');
     expect(steps[1]!.text).toContain('1 recorrência');
   });
 
@@ -42,7 +44,7 @@ describe('pendingSetupSteps', () => {
           account({ openingBalanceDate: '2026-09-01T03:00:00.000Z' }),
           account({ type: 'credit_card', creditLimit: 500000 }),
         ],
-        [recurrence({ accountId: 'card' })]
+        [recurrence({ accountId: 'card' }), recurrence({ type: 'income' })]
       )
     ).toEqual([]);
   });
