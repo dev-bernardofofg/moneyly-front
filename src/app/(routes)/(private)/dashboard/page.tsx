@@ -16,7 +16,9 @@ import { ROUTES } from '@/lib/routes';
 import { Loader2, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
+import { AccountsOverviewSection } from './accounts-overview-section';
 import { CardBillsSection } from './card-bills-section';
+import { SetupChecklist } from './setup-checklist';
 import { FreeBalanceSection } from './free-balance-section';
 
 const DashboardPage = () => {
@@ -122,7 +124,13 @@ const DashboardPage = () => {
             )}
           </div>
         </StaggeredFade>
-        <CardBillsSection data={cardBills} loading={cardBillsLoading} error={cardBillsError} />
+        <div className="grid min-w-0 gap-2">
+          <SetupChecklist />
+          <div className="grid gap-2 lg:grid-cols-2">
+            <CardBillsSection data={cardBills} loading={cardBillsLoading} error={cardBillsError} />
+            <AccountsOverviewSection cardBills={cardBills} />
+          </div>
+        </div>
         <StaggeredFade
           className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-2 w-full md:h-full min-h-0"
           itemClassNames={['min-h-0', 'md:col-span-2 min-h-0']}
