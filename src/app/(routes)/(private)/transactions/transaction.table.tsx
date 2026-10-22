@@ -9,8 +9,8 @@ import { queryClient } from '@/contexts';
 import { FN_UTILS_DATE } from '@/lib/date';
 import { getErrorMessage } from '@/lib/errors';
 import { useAccounts } from '@/hooks/use-accounts';
-import { FN_UTILS_STRING } from '@/lib/string';
 import { CustomAxiosError } from '@/types/error.type';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Info, PencilIcon, Trash2, TrendingDown, TrendingUp } from 'lucide-react';
@@ -59,6 +59,41 @@ export const TransactionTable = ({
       onPaginationChange={onPaginationChange}
       loading={isLoading}
       keyExtractor={(item) => item.id || ''}
+      mobileCard={(item) => {
+        const isIncome = item.type === 'income';
+        return (
+          <div className="flex items-start gap-3">
+            <span
+              className={cn(
+                'flex size-9 shrink-0 items-center justify-center rounded-full',
+                isIncome ? 'bg-income/10 text-income' : 'bg-expense/10 text-expense'
+              )}
+              aria-hidden
+            >
+              {isIncome ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-medium">{item.title}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {item.category?.name || 'Nenhuma categoria'} · {nameById.get(item.accountId) ?? '—'}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {FN_UTILS_DATE.formatInBusinessTZ(item.date, 'dd/MM/yyyy')}
+                {item.recurringTransactionId && ' · Recorrente'}
+              </p>
+            </div>
+            <span
+              className={cn(
+                'shrink-0 text-base font-semibold tabular-nums',
+                isIncome ? 'text-income' : 'text-expense'
+              )}
+            >
+              <span className="sr-only">{isIncome ? 'Entrada de ' : 'Saída de '}</span>
+              {isIncome ? '+' : '−'} {FN_UTILS_NUMBERS.formatCurrency(item.amount ?? 0)}
+            </span>
+          </div>
+        );
+      }}
       actions={(item) => (
         <div className="flex items-center gap-2">
           <BaseDialog

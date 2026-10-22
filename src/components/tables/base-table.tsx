@@ -38,6 +38,8 @@ interface BaseTableProps<T> {
   keyExtractor?: (item: T, index: number) => string | number;
   /** Linha de totais alinhada às colunas (chave = accessorKey). */
   footer?: Partial<Record<keyof T, React.ReactNode>>;
+  /** Abaixo de md, troca a tabela por uma lista de cards (as ações vão junto). */
+  mobileCard?: (item: T) => React.ReactNode;
 }
 
 export interface BaseTableOptions {
@@ -60,6 +62,7 @@ export function BaseTable<T>({
   pagination,
   keyExtractor,
   footer,
+  mobileCard,
 }: BaseTableProps<T>) {
   return (
     <div
@@ -103,7 +106,20 @@ export function BaseTable<T>({
             }}
             className="size-full overflow-auto pb-4"
           >
-            <Table>
+            {mobileCard && (
+              <ul className="space-y-2 md:hidden">
+                {data.map((item, index) => (
+                  <li
+                    key={keyExtractor ? keyExtractor(item, index) : index}
+                    className="rounded-lg border border-slate-200 p-3 dark:border-slate-700"
+                  >
+                    {mobileCard(item)}
+                    {actions && <div className="mt-2 flex justify-end">{actions(item)}</div>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Table className={cn(mobileCard && 'hidden md:table')}>
               <TableHeader>
                 <TableRow>
                   {columns.map((column) => (
