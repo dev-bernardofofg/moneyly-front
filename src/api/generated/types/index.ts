@@ -7,11 +7,6 @@ export type { CardBillPayment, CardBillPaymentSourceEnumKey } from './CardBillPa
 export type { CardBills, PaymentSourceEnumKey } from './CardBills.ts';
 export type { Category } from './Category.ts';
 export type { Company } from './Company.ts';
-export type {
-  ByCategorySignalEnumKey,
-  ComparativeInsights,
-  TotalsSignalEnumKey,
-} from './ComparativeInsights.ts';
 export type { CurrentPeriodSummary } from './CurrentPeriodSummary.ts';
 export type { ComparisonSignalEnumKey, DashboardOverview } from './DashboardOverview.ts';
 export type { DashboardStats } from './DashboardStats.ts';
@@ -309,16 +304,6 @@ export type {
   GetOverviewInsightsQueryParams,
   GetOverviewInsightsQueryResponse,
 } from './GetOverviewInsights.ts';
-export type {
-  GetOverviewInsightsComparison200,
-  GetOverviewInsightsComparison400,
-  GetOverviewInsightsComparison400SuccessEnumKey,
-  GetOverviewInsightsComparison401,
-  GetOverviewInsightsComparison401SuccessEnumKey,
-  GetOverviewInsightsComparisonQuery,
-  GetOverviewInsightsComparisonQueryParams,
-  GetOverviewInsightsComparisonQueryResponse,
-} from './GetOverviewInsightsComparison.ts';
 export type {
   GetOverviewPeriods200,
   GetOverviewPeriods400,
@@ -881,8 +866,6 @@ export type { User } from './User.ts';
 export { accountTypeEnum } from './Account.ts';
 export { cardBillPaymentSourceEnum } from './CardBillPayment.ts';
 export { paymentSourceEnum } from './CardBills.ts';
-export { byCategorySignalEnum } from './ComparativeInsights.ts';
-export { totalsSignalEnum } from './ComparativeInsights.ts';
 export { comparisonSignalEnum } from './DashboardOverview.ts';
 export { deleteAccountsId400SuccessEnum } from './DeleteAccountsId.ts';
 export { deleteAccountsId401SuccessEnum } from './DeleteAccountsId.ts';
@@ -954,8 +937,6 @@ export { getOverviewForecast400SuccessEnum } from './GetOverviewForecast.ts';
 export { getOverviewForecast401SuccessEnum } from './GetOverviewForecast.ts';
 export { getOverviewInsights400SuccessEnum } from './GetOverviewInsights.ts';
 export { getOverviewInsights401SuccessEnum } from './GetOverviewInsights.ts';
-export { getOverviewInsightsComparison400SuccessEnum } from './GetOverviewInsightsComparison.ts';
-export { getOverviewInsightsComparison401SuccessEnum } from './GetOverviewInsightsComparison.ts';
 export { getOverviewPeriods400SuccessEnum } from './GetOverviewPeriods.ts';
 export { getOverviewPeriods401SuccessEnum } from './GetOverviewPeriods.ts';
 export { getOverviewPlanner400SuccessEnum } from './GetOverviewPlanner.ts';

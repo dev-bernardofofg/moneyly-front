@@ -430,61 +430,6 @@ export interface PlannerOverview {
   alerts: PlannerOverviewAlertsItem[];
 }
 
-export type ComparativeInsightsBasisCurrentPeriod = {
-  startDate: string;
-  endDate: string;
-  label: string;
-};
-
-export type ComparativeInsightsBasis = {
-  periodsCompared: number;
-  currentPeriod: ComparativeInsightsBasisCurrentPeriod;
-};
-
-export type ComparativeInsightsTotalsSignal =
-  (typeof ComparativeInsightsTotalsSignal)[keyof typeof ComparativeInsightsTotalsSignal];
-
-export const ComparativeInsightsTotalsSignal = {
-  up: 'up',
-  down: 'down',
-  stable: 'stable',
-} as const;
-
-export type ComparativeInsightsTotals = {
-  currentExpense: number;
-  averageExpense: number;
-  /** @nullable */
-  deltaPct: number | null;
-  signal: ComparativeInsightsTotalsSignal;
-};
-
-export type ComparativeInsightsByCategoryItemSignal =
-  (typeof ComparativeInsightsByCategoryItemSignal)[keyof typeof ComparativeInsightsByCategoryItemSignal];
-
-export const ComparativeInsightsByCategoryItemSignal = {
-  up: 'up',
-  down: 'down',
-  stable: 'stable',
-} as const;
-
-export type ComparativeInsightsByCategoryItem = {
-  categoryId: string;
-  categoryName: string;
-  currentExpense: number;
-  averageExpense: number;
-  /** @nullable */
-  deltaPct: number | null;
-  signal: ComparativeInsightsByCategoryItemSignal;
-  message: string;
-};
-
-export interface ComparativeInsights {
-  basis: ComparativeInsightsBasis;
-  totals: ComparativeInsightsTotals;
-  byCategory: ComparativeInsightsByCategoryItem[];
-  highlights: string[];
-}
-
 export type SubscriptionCandidateCadence =
   (typeof SubscriptionCandidateCadence)[keyof typeof SubscriptionCandidateCadence];
 
@@ -2711,31 +2656,6 @@ export type GetOverviewForecast400 = {
 };
 
 export type GetOverviewForecast401 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
-export type GetOverviewInsightsComparisonParams = {
-  /**
-   * @minimum 1
-   * @maximum 12
-   */
-  periodsBack?: number;
-};
-
-export type GetOverviewInsightsComparison200 = {
-  data: ComparativeInsights;
-  message?: string;
-};
-
-export type GetOverviewInsightsComparison400 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
-export type GetOverviewInsightsComparison401 = {
   success: false;
   error: string;
   details?: unknown;
