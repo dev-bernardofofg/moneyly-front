@@ -38,6 +38,7 @@ import type {
   GetOverviewInsightsComparison400,
   GetOverviewInsightsComparison401,
   GetOverviewInsightsComparisonParams,
+  GetOverviewInsightsParams,
   GetOverviewPeriods200,
   GetOverviewPeriods400,
   GetOverviewPeriods401,
@@ -406,32 +407,38 @@ export function useGetOverviewPlanner<
 }
 
 /**
- * @summary Insights financeiros
+ * @summary Gastos do período por categoria e comparados aos períodos anteriores
  */
-export const getOverviewInsights = (signal?: AbortSignal) => {
+export const getOverviewInsights = (params?: GetOverviewInsightsParams, signal?: AbortSignal) => {
   return customInstance<GetOverviewInsights200>({
     url: `/overview/insights`,
     method: 'GET',
+    params,
     signal,
   });
 };
 
-export const getGetOverviewInsightsQueryKey = () => {
-  return [`/overview/insights`] as const;
+export const getGetOverviewInsightsQueryKey = (params?: GetOverviewInsightsParams) => {
+  return [`/overview/insights`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetOverviewInsightsQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>>;
-}) => {
+>(
+  params?: GetOverviewInsightsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
+    >;
+  }
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetOverviewInsightsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewInsightsQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewInsights>>> = ({ signal }) =>
-    getOverviewInsights(signal);
+    getOverviewInsights(params, signal);
 
   return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getOverviewInsights>>,
@@ -449,6 +456,7 @@ export function useGetOverviewInsights<
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
 >(
+  params: undefined | GetOverviewInsightsParams,
   options: {
     query: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
@@ -468,6 +476,7 @@ export function useGetOverviewInsights<
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
 >(
+  params?: GetOverviewInsightsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
@@ -487,6 +496,7 @@ export function useGetOverviewInsights<
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
 >(
+  params?: GetOverviewInsightsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
@@ -495,13 +505,14 @@ export function useGetOverviewInsights<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Insights financeiros
+ * @summary Gastos do período por categoria e comparados aos períodos anteriores
  */
 
 export function useGetOverviewInsights<
   TData = Awaited<ReturnType<typeof getOverviewInsights>>,
   TError = GetOverviewInsights400 | GetOverviewInsights401,
 >(
+  params?: GetOverviewInsightsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewInsights>>, TError, TData>
@@ -509,7 +520,7 @@ export function useGetOverviewInsights<
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetOverviewInsightsQueryOptions(options);
+  const queryOptions = getGetOverviewInsightsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;

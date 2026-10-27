@@ -147,7 +147,11 @@ export type {
   DeleteTransfersIdMutationResponse,
   DeleteTransfersIdPathParams,
 } from './DeleteTransfersId.ts';
-export type { FinancialInsights } from './FinancialInsights.ts';
+export type {
+  CategoriesSignalEnumKey,
+  FinancialInsights,
+  SpendingSignalEnumKey,
+} from './FinancialInsights.ts';
 export type { FinancialPeriod } from './FinancialPeriod.ts';
 export type { FinancialPeriodSummary } from './FinancialPeriodSummary.ts';
 export type { FinancialPeriodUpdate } from './FinancialPeriodUpdate.ts';
@@ -302,6 +306,7 @@ export type {
   GetOverviewInsights401,
   GetOverviewInsights401SuccessEnumKey,
   GetOverviewInsightsQuery,
+  GetOverviewInsightsQueryParams,
   GetOverviewInsightsQueryResponse,
 } from './GetOverviewInsights.ts';
 export type {
@@ -912,6 +917,8 @@ export { deleteTransactionsId404SuccessEnum } from './DeleteTransactionsId.ts';
 export { deleteTransfersId400SuccessEnum } from './DeleteTransfersId.ts';
 export { deleteTransfersId401SuccessEnum } from './DeleteTransfersId.ts';
 export { deleteTransfersId404SuccessEnum } from './DeleteTransfersId.ts';
+export { categoriesSignalEnum } from './FinancialInsights.ts';
+export { spendingSignalEnum } from './FinancialInsights.ts';
 export { freeBalanceConfidenceEnum } from './ForecastResponse.ts';
 export { occurrencesTypeEnum } from './ForecastResponse.ts';
 export { getAccounts400SuccessEnum } from './GetAccounts.ts';

@@ -3,29 +3,114 @@
  * Do not edit manually.
  */
 
-import type { MonthlySummaryItem } from './MonthlySummaryItem.ts';
+export const spendingSignalEnum = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type SpendingSignalEnumKey = (typeof spendingSignalEnum)[keyof typeof spendingSignalEnum];
+
+export const categoriesSignalEnum = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type CategoriesSignalEnumKey =
+  (typeof categoriesSignalEnum)[keyof typeof categoriesSignalEnum];
 
 export type FinancialInsights = {
   /**
    * @type object
    */
-  currentPeriod: {
+  period: {
     /**
-     * @type integer
+     * @type string, uuid
      */
-    daysElapsed: number;
+    id: string;
     /**
-     * @type integer
+     * @type string
      */
-    totalDays: number;
+    startDate: string;
+    /**
+     * @type string
+     */
+    endDate: string;
+    /**
+     * @type string
+     */
+    label: string;
+    /**
+     * @type boolean
+     */
+    isOpen: boolean;
+  };
+  /**
+   * @type object
+   */
+  spending: {
     /**
      * @type number
      */
-    completionPercentage: number;
+    income: number;
     /**
      * @type number
      */
-    currentExpense: number;
+    expense: number;
+    /**
+     * @type number
+     */
+    upcomingExpense: number;
+    /**
+     * @type number
+     */
+    projectedExpense: number;
+    /**
+     * @type number
+     */
+    averageExpense: number | null;
+    /**
+     * @type number
+     */
+    deltaPct: number | null;
+    /**
+     * @type string
+     */
+    signal: SpendingSignalEnumKey;
+    /**
+     * @type integer
+     */
+    periodsCompared: number;
+  };
+  /**
+   * @type array
+   */
+  history: {
+    /**
+     * @type string, uuid
+     */
+    periodId: string;
+    /**
+     * @type string
+     */
+    label: string;
+    /**
+     * @type string
+     */
+    startDate: string;
+    /**
+     * @type string
+     */
+    endDate: string;
+    /**
+     * @type number
+     */
+    income: number;
+    /**
+     * @type number
+     */
+    expense: number;
     /**
      * @type number
      */
@@ -33,50 +118,16 @@ export type FinancialInsights = {
     /**
      * @type boolean
      */
-    isOnTrack: boolean;
-  };
-  /**
-   * @type object
-   */
-  trend: {
-    previousMonth: MonthlySummaryItem | null;
-    currentMonth: MonthlySummaryItem | null;
-    /**
-     * @type number
-     */
-    expenseChange: number | null;
-    /**
-     * @type number
-     */
-    incomeChange: number | null;
-  };
-  /**
-   * @type object
-   */
-  allTime: {
-    /**
-     * @type number
-     */
-    averageMonthlyExpense: number;
-    /**
-     * @type number
-     */
-    averageMonthlyIncome: number;
-    bestMonth: MonthlySummaryItem | null;
-    worstMonth: MonthlySummaryItem | null;
-    /**
-     * @type integer
-     */
-    totalMonths: number;
-    /**
-     * @type integer
-     */
-    totalTransactions: number;
-  };
+    isSelected: boolean;
+  }[];
   /**
    * @type array
    */
-  topCategories: {
+  categories: {
+    /**
+     * @type string, uuid
+     */
+    categoryId: string;
     /**
      * @type string
      */
@@ -88,10 +139,18 @@ export type FinancialInsights = {
     /**
      * @type number
      */
-    percentage: number;
+    share: number;
+    /**
+     * @type number
+     */
+    averageAmount: number | null;
+    /**
+     * @type number
+     */
+    deltaPct: number | null;
+    /**
+     * @type string
+     */
+    signal: CategoriesSignalEnumKey;
   }[];
-  /**
-   * @type array
-   */
-  monthlyHistory: MonthlySummaryItem[];
 };

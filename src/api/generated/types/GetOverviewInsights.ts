@@ -5,6 +5,13 @@
 
 import type { FinancialInsights } from './FinancialInsights.ts';
 
+export type GetOverviewInsightsQueryParams = {
+  /**
+   * @type string | undefined, uuid
+   */
+  periodId?: string;
+};
+
 /**
  * @description Sucesso
  */
@@ -67,5 +74,6 @@ export type GetOverviewInsightsQueryResponse = GetOverviewInsights200;
 
 export type GetOverviewInsightsQuery = {
   Response: GetOverviewInsights200;
+  QueryParams: GetOverviewInsightsQueryParams;
   Errors: GetOverviewInsights400 | GetOverviewInsights401;
 };

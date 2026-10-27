@@ -302,45 +302,73 @@ export interface DashboardOverview {
   previews: DashboardOverviewPreviews;
 }
 
-export type FinancialInsightsCurrentPeriod = {
-  daysElapsed: number;
-  totalDays: number;
-  completionPercentage: number;
-  currentExpense: number;
+export type FinancialInsightsPeriod = {
+  id: string;
+  startDate: string;
+  endDate: string;
+  label: string;
+  isOpen: boolean;
+};
+
+export type FinancialInsightsSpendingSignal =
+  (typeof FinancialInsightsSpendingSignal)[keyof typeof FinancialInsightsSpendingSignal];
+
+export const FinancialInsightsSpendingSignal = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type FinancialInsightsSpending = {
+  income: number;
+  expense: number;
+  upcomingExpense: number;
   projectedExpense: number;
-  isOnTrack: boolean;
-};
-
-export type FinancialInsightsTrend = {
-  previousMonth: MonthlySummaryItem | null;
-  currentMonth: MonthlySummaryItem | null;
   /** @nullable */
-  expenseChange: number | null;
+  averageExpense: number | null;
   /** @nullable */
-  incomeChange: number | null;
+  deltaPct: number | null;
+  signal: FinancialInsightsSpendingSignal;
+  periodsCompared: number;
 };
 
-export type FinancialInsightsAllTime = {
-  averageMonthlyExpense: number;
-  averageMonthlyIncome: number;
-  bestMonth: MonthlySummaryItem | null;
-  worstMonth: MonthlySummaryItem | null;
-  totalMonths: number;
-  totalTransactions: number;
+export type FinancialInsightsHistoryItem = {
+  periodId: string;
+  label: string;
+  startDate: string;
+  endDate: string;
+  income: number;
+  expense: number;
+  projectedExpense: number;
+  isSelected: boolean;
 };
 
-export type FinancialInsightsTopCategoriesItem = {
+export type FinancialInsightsCategoriesItemSignal =
+  (typeof FinancialInsightsCategoriesItemSignal)[keyof typeof FinancialInsightsCategoriesItemSignal];
+
+export const FinancialInsightsCategoriesItemSignal = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type FinancialInsightsCategoriesItem = {
+  categoryId: string;
   name: string;
   amount: number;
-  percentage: number;
+  share: number;
+  /** @nullable */
+  averageAmount: number | null;
+  /** @nullable */
+  deltaPct: number | null;
+  signal: FinancialInsightsCategoriesItemSignal;
 };
 
 export interface FinancialInsights {
-  currentPeriod: FinancialInsightsCurrentPeriod;
-  trend: FinancialInsightsTrend;
-  allTime: FinancialInsightsAllTime;
-  topCategories: FinancialInsightsTopCategoriesItem[];
-  monthlyHistory: MonthlySummaryItem[];
+  period: FinancialInsightsPeriod;
+  spending: FinancialInsightsSpending;
+  history: FinancialInsightsHistoryItem[];
+  categories: FinancialInsightsCategoriesItem[];
 }
 
 export type PlannerOverviewStats = {
@@ -2644,6 +2672,10 @@ export type GetOverviewPlanner401 = {
   success: false;
   error: string;
   details?: unknown;
+};
+
+export type GetOverviewInsightsParams = {
+  periodId?: string;
 };
 
 export type GetOverviewInsights200 = {

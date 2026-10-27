@@ -1,146 +1,83 @@
 {
   "type": "object",
   "properties": {
-    "currentPeriod": {
+    "period": {
       "type": "object",
       "properties": {
-        "daysElapsed": { "type": "integer" },
-        "totalDays": { "type": "integer" },
-        "completionPercentage": { "type": "number" },
-        "currentExpense": { "type": "number" },
+        "id": { "type": "string", "format": "uuid" },
+        "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+        "label": { "type": "string" },
+        "isOpen": { "type": "boolean" }
+      },
+      "required": ["id", "startDate", "endDate", "label", "isOpen"]
+    },
+    "spending": {
+      "type": "object",
+      "properties": {
+        "income": { "type": "number" },
+        "expense": { "type": "number" },
+        "upcomingExpense": { "type": "number" },
         "projectedExpense": { "type": "number" },
-        "isOnTrack": { "type": "boolean" }
+        "averageExpense": { "type": "number", "nullable": true },
+        "deltaPct": { "type": "number", "nullable": true },
+        "signal": { "type": "string", "enum": ["up", "down", "stable"] },
+        "periodsCompared": { "type": "integer" }
       },
       "required": [
-        "daysElapsed",
-        "totalDays",
-        "completionPercentage",
-        "currentExpense",
+        "income",
+        "expense",
+        "upcomingExpense",
         "projectedExpense",
-        "isOnTrack"
+        "averageExpense",
+        "deltaPct",
+        "signal",
+        "periodsCompared"
       ]
     },
-    "trend": {
-      "type": "object",
-      "properties": {
-        "previousMonth": {
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "month": { "type": "string", "example": "2026-04" },
-                "label": { "type": "string", "example": "Abril 2026" },
-                "income": { "type": "number" },
-                "expense": { "type": "number" },
-                "balance": { "type": "number" }
-              },
-              "required": ["month", "label", "income", "expense", "balance"],
-              "x-readme-ref-name": "MonthlySummaryItem"
-            }
-          ],
-          "nullable": true
-        },
-        "currentMonth": {
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "month": { "type": "string", "example": "2026-04" },
-                "label": { "type": "string", "example": "Abril 2026" },
-                "income": { "type": "number" },
-                "expense": { "type": "number" },
-                "balance": { "type": "number" }
-              },
-              "required": ["month", "label", "income", "expense", "balance"],
-              "x-readme-ref-name": "MonthlySummaryItem"
-            }
-          ],
-          "nullable": true
-        },
-        "expenseChange": { "type": "number", "nullable": true },
-        "incomeChange": { "type": "number", "nullable": true }
-      },
-      "required": ["previousMonth", "currentMonth", "expenseChange", "incomeChange"]
-    },
-    "allTime": {
-      "type": "object",
-      "properties": {
-        "averageMonthlyExpense": { "type": "number" },
-        "averageMonthlyIncome": { "type": "number" },
-        "bestMonth": {
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "month": { "type": "string", "example": "2026-04" },
-                "label": { "type": "string", "example": "Abril 2026" },
-                "income": { "type": "number" },
-                "expense": { "type": "number" },
-                "balance": { "type": "number" }
-              },
-              "required": ["month", "label", "income", "expense", "balance"],
-              "x-readme-ref-name": "MonthlySummaryItem"
-            }
-          ],
-          "nullable": true
-        },
-        "worstMonth": {
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "month": { "type": "string", "example": "2026-04" },
-                "label": { "type": "string", "example": "Abril 2026" },
-                "income": { "type": "number" },
-                "expense": { "type": "number" },
-                "balance": { "type": "number" }
-              },
-              "required": ["month", "label", "income", "expense", "balance"],
-              "x-readme-ref-name": "MonthlySummaryItem"
-            }
-          ],
-          "nullable": true
-        },
-        "totalMonths": { "type": "integer" },
-        "totalTransactions": { "type": "integer" }
-      },
-      "required": [
-        "averageMonthlyExpense",
-        "averageMonthlyIncome",
-        "bestMonth",
-        "worstMonth",
-        "totalMonths",
-        "totalTransactions"
-      ]
-    },
-    "topCategories": {
+    "history": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "amount": { "type": "number" },
-          "percentage": { "type": "number" }
-        },
-        "required": ["name", "amount", "percentage"]
-      }
-    },
-    "monthlyHistory": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "month": { "type": "string", "example": "2026-04" },
-          "label": { "type": "string", "example": "Abril 2026" },
+          "periodId": { "type": "string", "format": "uuid" },
+          "label": { "type": "string" },
+          "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+          "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
           "income": { "type": "number" },
           "expense": { "type": "number" },
-          "balance": { "type": "number" }
+          "projectedExpense": { "type": "number" },
+          "isSelected": { "type": "boolean" }
         },
-        "required": ["month", "label", "income", "expense", "balance"],
-        "x-readme-ref-name": "MonthlySummaryItem"
+        "required": [
+          "periodId",
+          "label",
+          "startDate",
+          "endDate",
+          "income",
+          "expense",
+          "projectedExpense",
+          "isSelected"
+        ]
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categoryId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "amount": { "type": "number" },
+          "share": { "type": "number" },
+          "averageAmount": { "type": "number", "nullable": true },
+          "deltaPct": { "type": "number", "nullable": true },
+          "signal": { "type": "string", "enum": ["up", "down", "stable"] }
+        },
+        "required": ["categoryId", "name", "amount", "share", "averageAmount", "deltaPct", "signal"]
       }
     }
   },
-  "required": ["currentPeriod", "trend", "allTime", "topCategories", "monthlyHistory"],
+  "required": ["period", "spending", "history", "categories"],
   "x-readme-ref-name": "FinancialInsights"
 }
