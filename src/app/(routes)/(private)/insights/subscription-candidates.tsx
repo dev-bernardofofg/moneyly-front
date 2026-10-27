@@ -1,7 +1,6 @@
 'use client';
 
 import { BaseButton } from '@/components/clickable/base-button';
-import { Section } from '@/components/cards/section';
 import { FN_UTILS_DATE } from '@/lib/date';
 import { getErrorMessage } from '@/lib/errors';
 import { FN_UTILS_NUMBERS } from '@/lib/number';
@@ -18,7 +17,7 @@ import type { SubscriptionCandidate } from '@/api/generated/types/SubscriptionCa
 import { CustomAxiosError } from '@/types/error.type';
 import { FN_UTILS_STRING } from '@/lib/string';
 import { useQueryClient } from '@tanstack/react-query';
-import { RefreshCcw, Repeat } from 'lucide-react';
+import { Repeat } from 'lucide-react';
 import { toast } from 'sonner';
 
 const CADENCE_LABEL: Record<SubscriptionCandidate['cadence'], string> = {
@@ -27,7 +26,7 @@ const CADENCE_LABEL: Record<SubscriptionCandidate['cadence'], string> = {
   yearly: 'Anual',
 };
 
-const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) => {
+export const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) => {
   const queryClient = useQueryClient();
 
   const { mutate: convert, isPending } = usePostRecurringTransactionsFromSubscription({
@@ -65,7 +64,7 @@ const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) =>
   };
 
   return (
-    <li className="flex items-center justify-between gap-3 py-3">
+    <li className="flex flex-wrap items-center justify-between gap-3 py-3">
       <div className="min-w-0">
         <p className="truncate font-medium text-slate-900 dark:text-slate-100">{candidate.title}</p>
         <p className="truncate text-xs text-muted-foreground">
@@ -91,7 +90,8 @@ const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidate }) =>
   );
 };
 
-export const SubscriptionsSection = () => {
+/** Candidatos a assinatura ainda não cadastrados como recorrência. */
+export const useSubscriptionCandidates = () => {
   const { data, isLoading: isLoadingCandidates } = useGetTransactionsSubscriptions();
   // Candidato cujo título normalizado bate com recorrente ativa já foi convertido
   // (o back 409aria) — a heurística do detector ainda o lista porque as transações
@@ -106,26 +106,5 @@ export const SubscriptionsSection = () => {
   const candidates = (data?.data ?? []).filter(
     (candidate) => !activeRecurringTitles.has(FN_UTILS_STRING.normalizeTitle(candidate.title))
   );
-  const isLoading = isLoadingCandidates || isLoadingRecurring;
-
-  return (
-    <Section Icon={RefreshCcw} title="Possíveis assinaturas" className="p-2" classNameHeader="p-3">
-      {isLoading ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">Carregando...</p>
-      ) : candidates.length === 0 ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">
-          Nenhum gasto recorrente não cadastrado detectado.
-        </p>
-      ) : (
-        <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-          {candidates.map((candidate) => (
-            <SubscriptionRow
-              key={`${candidate.title}-${candidate.categoryId}-${candidate.firstDate}`}
-              candidate={candidate}
-            />
-          ))}
-        </ul>
-      )}
-    </Section>
-  );
+  return { candidates, isLoading: isLoadingCandidates || isLoadingRecurring };
 };
