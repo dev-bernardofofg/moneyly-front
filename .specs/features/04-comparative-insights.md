@@ -3,6 +3,8 @@
 **Status:** Done. Espelha `moneyly-back/.specs/features/04-comparative-insights.md`.
 Contrato: `GET /overview/insights/comparison?periodsBack=` → `ComparativeInsights` (aditivo; `/overview/insights` intacto).
 
+> **Atualização 2026-10-26:** endpoint, hook e `comparison-section.tsx` foram removidos. O comparativo por categoria vs média agora vem de `useGetOverviewInsights` (`categories` e `spending`). O texto abaixo é histórico.
+
 ## UI
 
 - Componente: `src/app/(routes)/(private)/insights/comparison-section.tsx`.

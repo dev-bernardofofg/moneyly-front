@@ -43,7 +43,7 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 ## Profile — `/profile`
 
 - `page.tsx` + `profile-config-finance.form.tsx`; `src/schemas/initial-config.schema.tsx`; guard inicial (`use-initial-config`).
-- Hooks `user/user.ts`: `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`, `/income`. Define `financialDayStart/End` (período financeiro pessoal).
+- Hooks `user/user.ts`: `GET /user/me`, `PUT /user/income-and-period`, `/financial-period`. Define `financialDayStart/End` (período financeiro pessoal).
 
 ## Infra transversal
 
@@ -71,8 +71,8 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 - **F1 Saldo projetado**: Section em `/insights` via `useGetOverviewForecast` (`ForecastResponse`). Detalhe: `.specs/features/01-cash-flow-forecast.md`.
 - **F2 Alertas**: `notification-bell.tsx` no Header global (`useGetNotifications` + patch read/read-all). ⚠️ migration back `0004` não aplicada → runtime erra até `db:push`. Detalhe: `.specs/features/02-budget-alerts.md`.
 
-- **F3 Assinaturas**: `insights/subscriptions-section.tsx` (`useGetTransactionsSubscriptions`) + CTA recorrente. Detalhe: `.specs/features/03-subscription-detector.md`.
-- **F4 Comparativo**: `insights/comparison-section.tsx` (`useGetOverviewInsightsComparison`), cor por signal. Detalhe: `.specs/features/04-comparative-insights.md`.
+- **F3 Assinaturas**: `insights/subscription-candidates.tsx` (`useGetTransactionsSubscriptions`), exibido em `insights/adjustments-section.tsx`, + CTA recorrente. Detalhe: `.specs/features/03-subscription-detector.md`.
+- **F4 Comparativo**: seção removida em 2026-10-26. Comparativo vs média vem de `useGetOverviewInsights` em `insights/spending-by-category-section.tsx` e `insights/adjustments-section.tsx`. Detalhe: `.specs/features/04-comparative-insights.md`.
 
 - **F5 Prévias dashboard**: `dashboard/page.tsx` 3 mini-cards (F1 forecast + `previews.subscriptions`/`comparison` do `useGetOverviewDashboard`), clicáveis → `/insights`. Detalhe: `.specs/features/05-dashboard-previews.md`.
 
@@ -86,7 +86,7 @@ Regen de tipos no commit `5620216` (`Notification.type` virou union com `bill_re
 
 - **F8 Lembrete de contas**: só render — `notification-bell.tsx` diferencia `bill_reminder` pelo `type` (`CalendarClock`/warn). Detalhe: `.specs/features/07-bill-reminders.md`.
 - **F9 Milestone de meta**: render `goal_milestone` (`PartyPopper`/income) + `add-value-to-goal.form.tsx` invalida notifications pós add-amount (notificação é síncrona no back). Detalhe: `.specs/features/08-goal-milestone-alerts.md`.
-- **F10 Converter assinatura**: botão em `insights/subscriptions-section.tsx` → `usePostRecurringTransactionsFromSubscription`; toast com `nextExecution`; 409/400 via `getErrorMessage`; invalida recorrentes+assinaturas. Detalhe: `.specs/features/09-subscription-to-recurring.md`.
+- **F10 Converter assinatura**: botão em `insights/subscription-candidates.tsx` → `usePostRecurringTransactionsFromSubscription`; toast com `nextExecution`; 409/400 via `getErrorMessage`; invalida recorrentes+assinaturas. Detalhe: `.specs/features/09-subscription-to-recurring.md`.
 
 ## Não implementado / parcial
 
