@@ -1,5 +1,5 @@
 import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { FreeBalanceBreakdownSection } from './free-balance-breakdown-section';
 import { buildFreeBalanceMessages } from './free-balance-messages';
@@ -7,49 +7,25 @@ import { buildFreeBalanceMessages } from './free-balance-messages';
 const makeForecast = (
   overrides: {
     components?: Partial<ForecastResponse['freeBalance']['components']>;
-    income?: Partial<ForecastResponse['freeBalance']['income']>;
     total?: number;
-    endDate?: string;
-    occurrences?: ForecastResponse['projected']['occurrences'];
+    confidence?: ForecastResponse['freeBalance']['confidence'];
   } = {}
-): ForecastResponse => {
-  const components = {
-    carryOverBalance: 0,
-    realizedBalance: 150000,
-    futureRecurringIncome: 0,
-    futureRecurringExpense: 30000,
-    pendingVariableIncome: 0,
-    budgetReserve: 25000,
-    goalReserve: 10000,
-    ...overrides.components,
-  };
-
-  return {
-    period: {
-      id: '11111111-1111-1111-1111-111111111111',
-      startDate: '2026-10-01T03:00:00.000Z',
-      endDate: overrides.endDate ?? '2026-11-01T02:59:59.000Z',
-      label: '01/10 a 31/10',
+): ForecastResponse => ({
+  freeBalance: {
+    total: overrides.total ?? 85000,
+    until: '2026-12-03T03:00:00.000Z',
+    confidence: overrides.confidence ?? 'high',
+    components: {
+      accountsBalance: 150000,
+      otherIncome: 0,
+      recurringExpense: 30000,
+      cardBills: 35000,
+      ...overrides.components,
     },
-    realized: { income: 200000, expense: 50000, balance: components.realizedBalance },
-    projected: {
-      recurringIncome: components.futureRecurringIncome,
-      recurringExpense: components.futureRecurringExpense,
-      occurrences: overrides.occurrences ?? [],
-    },
-    projectedEndBalance: 120000,
-    freeBalance: {
-      total: overrides.total ?? 85000,
-      daysRemaining: 12,
-      confidence: 'high',
-      income: { fixed: 180000, variable: 0, pendingVariable: 0, ...overrides.income },
-      commitments: { recurringExpenses: components.futureRecurringExpense },
-      reserves: { budgets: components.budgetReserve, goals: components.goalReserve },
-      components,
-    },
-    asOf: '2026-10-19T13:00:00.000Z',
-  };
-};
+    nextPayment: null,
+    committedAfter: 0,
+  },
+});
 
 afterEach(cleanup);
 
@@ -58,128 +34,78 @@ const messagesOf = (forecast: ForecastResponse) =>
   buildFreeBalanceMessages(forecast).map((message) => message.replace(/\s/g, ' '));
 
 describe('buildFreeBalanceMessages', () => {
-  it('explains bills, reserves and overtime with contract values', () => {
-    const messages = messagesOf(makeForecast({ income: { variable: 20000 } }));
+  it('explains recurring bills, card bills and other income with contract values', () => {
+    const messages = messagesOf(makeForecast({ components: { otherIncome: 20000 } }));
 
     expect(messages).toEqual([
-      'Suas contas futuras consomem R$ 300,00.',
-      'R$ 350,00 estão reservados para orçamento e metas.',
-      'Horas extras adicionaram R$ 200,00 à renda do período.',
+      'Suas contas recorrentes consomem R$ 300,00 até o próximo salário.',
+      'Faturas que vencem até lá somam R$ 350,00.',
+      'Outras entradas previstas adicionam R$ 200,00.',
     ]);
   });
 
   it('names the largest outflow when the free balance is negative', () => {
     const messages = messagesOf(
-      makeForecast({
-        total: -5000,
-        components: { realizedBalance: 10000, futureRecurringExpense: 5000, budgetReserve: 10000 },
-      })
+      makeForecast({ total: -5000, components: { recurringExpense: 5000, cardBills: 10000 } })
     );
 
     expect(messages[0]).toBe(
-      'Saldo Livre negativo: o maior peso vem de reserva de orçamentos (R$ 100,00).'
+      'Saldo Livre negativo: o maior peso vem de faturas de cartão (R$ 100,00).'
     );
   });
 
-  it('flags a historical period', () => {
-    const messages = messagesOf(makeForecast({ endDate: '2026-09-01T02:59:59.000Z' }));
-
-    expect(messages[0]).toBe('Período encerrado: o valor mostra como o período terminou.');
+  it('warns about low and medium confidence', () => {
+    expect(messagesOf(makeForecast({ confidence: 'low' }))).toContain(
+      'Confiança baixa: falta definir o salário ou o saldo inicial de alguma conta.'
+    );
+    expect(messagesOf(makeForecast({ confidence: 'medium' }))).toContain(
+      'Confiança média: alguma conta está com dados atrasados. Faça um check-in.'
+    );
   });
 
-  it('says nothing affects the period when every component is zero', () => {
+  it('says nothing affects the window when every component is zero', () => {
     const messages = messagesOf(
-      makeForecast({ components: { futureRecurringExpense: 0, budgetReserve: 0, goalReserve: 0 } })
+      makeForecast({ components: { recurringExpense: 0, cardBills: 0, otherIncome: 0 } })
     );
 
-    expect(messages).toEqual(['Nenhuma conta futura, reserva ou hora extra afeta este período.']);
+    expect(messages).toEqual(['Nenhuma conta, fatura ou entrada prevista até o próximo salário.']);
   });
 });
 
 describe('FreeBalanceBreakdownSection', () => {
-  it('lists every component so the total can be reconstructed', () => {
+  it('labels the amount as today and lists every component so the total can be reconstructed', () => {
     render(<FreeBalanceBreakdownSection forecast={makeForecast()} loading={false} error={false} />);
 
-    expect(screen.getByText('Saldo realizado').nextSibling).toHaveTextContent('+ R$ 1.500,00');
+    expect(screen.getByText(/Livre para gastar hoje, até 03\/12/)).toBeInTheDocument();
+    expect(screen.getByText('Saldo das contas').nextSibling).toHaveTextContent('+ R$ 1.500,00');
+    expect(screen.getByText('Outras entradas previstas').nextSibling).toHaveTextContent(
+      '+ R$ 0,00'
+    );
     expect(screen.getByText('Contas recorrentes a pagar').nextSibling).toHaveTextContent(
       '− R$ 300,00'
     );
-    expect(screen.getByText('Reserva de orçamentos').nextSibling).toHaveTextContent('− R$ 250,00');
-    expect(screen.getByText('Reserva de metas').nextSibling).toHaveTextContent('− R$ 100,00');
+    expect(screen.getByText('Faturas a pagar').nextSibling).toHaveTextContent('− R$ 350,00');
     expect(screen.getByText('Saldo Livre').nextSibling).toHaveTextContent('R$ 850,00');
   });
 
-  it('shows a negative realized balance as a subtraction', () => {
+  it('shows a negative accounts balance as a subtraction', () => {
     render(
       <FreeBalanceBreakdownSection
-        forecast={makeForecast({ total: -70000, components: { realizedBalance: -25000 } })}
+        forecast={makeForecast({ total: -70000, components: { accountsBalance: -25000 } })}
         loading={false}
         error={false}
       />
     );
 
-    expect(screen.getByText('Saldo realizado').nextSibling).toHaveTextContent('− R$ 250,00');
+    expect(screen.getByText('Saldo das contas').nextSibling).toHaveTextContent('− R$ 250,00');
   });
 
-  it('shows the carried balance only when an opening balance applies', () => {
-    const { rerender } = render(
-      <FreeBalanceBreakdownSection forecast={makeForecast()} loading={false} error={false} />
-    );
-    expect(screen.queryByText('Saldo anterior')).not.toBeInTheDocument();
-
-    rerender(
-      <FreeBalanceBreakdownSection
-        forecast={makeForecast({ components: { carryOverBalance: 97000 } })}
-        loading={false}
-        error={false}
-      />
-    );
-    expect(screen.getByText('Saldo anterior').nextSibling).toHaveTextContent('+ R$ 970,00');
-  });
-
-  it('renders upcoming occurrences', () => {
-    render(
-      <FreeBalanceBreakdownSection
-        forecast={makeForecast({
-          occurrences: [
-            {
-              recurringTransactionId: '22222222-2222-2222-2222-222222222222',
-              title: 'Aluguel',
-              type: 'expense',
-              amount: 30000,
-              date: '2026-10-25T03:00:00.000Z',
-              categoryId: '33333333-3333-3333-3333-333333333333',
-            },
-          ],
-        })}
-        loading={false}
-        error={false}
-      />
-    );
-
-    const item = screen.getByText('Aluguel').closest('li')!;
-    expect(within(item).getByText('25/10')).toBeInTheDocument();
-    expect(item).toHaveTextContent('− R$ 300,00');
-  });
-
-  it('explains when there are no upcoming occurrences', () => {
+  it('no longer shows reserves, pending overtime or remaining days', () => {
     render(<FreeBalanceBreakdownSection forecast={makeForecast()} loading={false} error={false} />);
 
-    expect(
-      screen.getByText('Nenhuma conta ou entrada recorrente prevista até o fim do período.')
-    ).toBeInTheDocument();
-  });
-
-  it('labels the total as final for a historical period', () => {
-    render(
-      <FreeBalanceBreakdownSection
-        forecast={makeForecast({ endDate: '2026-09-01T02:59:59.000Z' })}
-        loading={false}
-        error={false}
-      />
-    );
-
-    expect(screen.getByText('Saldo Livre ao fim do período')).toBeInTheDocument();
+    expect(screen.queryByText(/reserva/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/horas extras pendentes/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/dias restantes|por dia/i)).not.toBeInTheDocument();
   });
 
   it('shows a skeleton while loading and a safe message on error', () => {

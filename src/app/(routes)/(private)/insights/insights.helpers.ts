@@ -4,37 +4,31 @@ import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 export type InsightCategory = FinancialInsights['categories'][number];
 
 export interface CompositionSegment {
-  key: 'free' | 'bills' | 'budgets' | 'goals';
+  key: 'free' | 'recurring' | 'cards';
   label: string;
   value: number;
   color: string;
 }
 
 /**
- * Para onde vai o dinheiro do período (saldo anterior + entradas): o que ainda está livre e o
- * que já tem destino. Soma exata do Saldo Livre: livre + contas + reservas = dinheiro do período.
+ * Para onde vai o dinheiro até o próximo salário (contas + outras entradas): o que ainda está
+ * livre e o que já tem destino. Soma exata do Saldo Livre: livre + recorrentes + faturas = dinheiro.
  * Cores fixas por papel (nunca pela posição), na ordem da paleta categórica.
  */
 export const freeBalanceComposition = (forecast: ForecastResponse) => {
   const { total, components } = forecast.freeBalance;
   const committed: CompositionSegment[] = [
     {
-      key: 'bills',
-      label: 'Contas a pagar',
-      value: components.futureRecurringExpense,
+      key: 'recurring',
+      label: 'Contas recorrentes',
+      value: components.recurringExpense,
       color: 'var(--series-2)',
     },
     {
-      key: 'budgets',
-      label: 'Reservado para orçamentos',
-      value: components.budgetReserve,
+      key: 'cards',
+      label: 'Faturas de cartão',
+      value: components.cardBills,
       color: 'var(--series-3)',
-    },
-    {
-      key: 'goals',
-      label: 'Reservado para metas',
-      value: components.goalReserve,
-      color: 'var(--series-4)',
     },
   ];
   const committedTotal = committed.reduce((sum, segment) => sum + segment.value, 0);
@@ -42,7 +36,7 @@ export const freeBalanceComposition = (forecast: ForecastResponse) => {
 
   return {
     periodMoney: total + committedTotal,
-    // Base da barra: com Saldo Livre negativo, o comprometido passa do dinheiro do período.
+    // Base da barra: com Saldo Livre negativo, o comprometido passa do dinheiro disponível.
     base: free + committedTotal,
     shortfall: total < 0 ? -total : 0,
     segments: [
@@ -51,10 +45,6 @@ export const freeBalanceComposition = (forecast: ForecastResponse) => {
     ].filter((segment) => segment.value > 0) as CompositionSegment[],
   };
 };
-
-/** Quanto dá para gastar por dia sem passar do Saldo Livre; só faz sentido com período aberto. */
-export const dailyAllowance = (total: number, daysRemaining: number) =>
-  total > 0 && daysRemaining > 0 ? Math.floor(total / daysRemaining) : null;
 
 const MAX_CATEGORIES = 6;
 

@@ -5,8 +5,8 @@ import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Info, WalletCards } from 'lucide-react';
-import { buildFreeBalanceMessages, isHistoricalPeriod } from './free-balance-messages';
-import { dailyAllowance, freeBalanceComposition } from './insights.helpers';
+import { buildFreeBalanceMessages } from './free-balance-messages';
+import { freeBalanceComposition } from './insights.helpers';
 
 interface FreeBalanceBreakdownSectionProps {
   forecast?: ForecastResponse;
@@ -38,8 +38,8 @@ const CompositionBar = ({ forecast }: { forecast: ForecastResponse }) => {
     <div className="space-y-2">
       <p className="text-sm text-muted-foreground">
         {periodMoney > 0
-          ? `Do dinheiro deste período (${money(periodMoney)}), veja o que já tem destino:`
-          : 'As contas e reservas do período já passam do dinheiro disponível:'}
+          ? `Do dinheiro disponível até o próximo salário (${money(periodMoney)}), veja o que já tem destino:`
+          : 'As contas e faturas já passam do dinheiro disponível:'}
       </p>
       {/* 2px de gap separa as fatias; a legenda com valores é o rótulo (a cor nunca é a única pista). */}
       <div className="flex h-3 w-full gap-0.5 overflow-hidden rounded" aria-hidden>
@@ -66,7 +66,7 @@ const CompositionBar = ({ forecast }: { forecast: ForecastResponse }) => {
       </ul>
       {shortfall > 0 && (
         <p className="text-sm text-expense">
-          Faltam {money(shortfall)} para cobrir tudo até o fim do período.
+          Faltam {money(shortfall)} para cobrir tudo até o próximo salário.
         </p>
       )}
     </div>
@@ -94,26 +94,23 @@ export const FreeBalanceBreakdownSection = ({
     return (
       <Section Icon={WalletCards} title={TITLE} className="p-2">
         <p role="alert" className="py-5 text-sm text-muted-foreground">
-          Não foi possível detalhar o Saldo Livre deste período.
+          Não foi possível detalhar o Saldo Livre.
         </p>
       </Section>
     );
   }
 
-  const { freeBalance, projected, period } = forecast;
+  const { freeBalance } = forecast;
   const { components } = freeBalance;
-  const historical = isHistoricalPeriod(forecast);
   const messages = buildFreeBalanceMessages(forecast);
-  const perDay = historical ? null : dailyAllowance(freeBalance.total, freeBalance.daysRemaining);
 
   return (
     <Section Icon={WalletCards} title={TITLE} className="p-3" classNameHeader="p-3">
       <div className="space-y-5">
         <div>
           <p className="text-sm text-muted-foreground">
-            {historical
-              ? 'Sobrou livre no fim do período'
-              : `Livre para gastar até ${FN_UTILS_DATE.formatInBusinessTZ(period.endDate, 'dd/MM')}`}
+            Livre para gastar hoje, até{' '}
+            {FN_UTILS_DATE.formatInBusinessTZ(freeBalance.until, 'dd/MM')}
           </p>
           {/* Figura principal da tela: algarismos proporcionais, sem tabular-nums. */}
           <p
@@ -124,13 +121,6 @@ export const FreeBalanceBreakdownSection = ({
           >
             {money(freeBalance.total)}
           </p>
-          {perDay !== null && (
-            <p className="mt-1 text-sm text-muted-foreground">
-              Cerca de <span className="font-medium text-foreground">{money(perDay)} por dia</span>{' '}
-              nos próximos {freeBalance.daysRemaining}{' '}
-              {freeBalance.daysRemaining === 1 ? 'dia' : 'dias'}.
-            </p>
-          )}
         </div>
 
         <CompositionBar forecast={forecast} />
@@ -152,77 +142,27 @@ export const FreeBalanceBreakdownSection = ({
               aria-hidden
             />
           </summary>
-          <div className="grid gap-4 border-t border-slate-200 p-3 dark:border-slate-700 lg:grid-cols-2">
-            <div>
-              <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-                {components.carryOverBalance !== 0 && (
-                  <Line label="Saldo anterior" value={components.carryOverBalance} sign="+" />
+          <div className="border-t border-slate-200 p-3 dark:border-slate-700">
+            <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+              <Line label="Saldo das contas" value={components.accountsBalance} sign="+" />
+              <Line label="Outras entradas previstas" value={components.otherIncome} sign="+" />
+              <Line
+                label="Contas recorrentes a pagar"
+                value={components.recurringExpense}
+                sign="−"
+              />
+              <Line label="Faturas a pagar" value={components.cardBills} sign="−" />
+            </ul>
+            <div className="mt-2 flex items-center justify-between border-t-2 border-slate-300 pt-3 dark:border-slate-600">
+              <span className="font-semibold">Saldo Livre</span>
+              <span
+                className={cn(
+                  'font-bold tabular-nums',
+                  freeBalance.total < 0 ? 'text-expense' : 'text-income'
                 )}
-                <Line label="Saldo realizado" value={components.realizedBalance} sign="+" />
-                <Line
-                  label="Entradas recorrentes previstas"
-                  value={components.futureRecurringIncome}
-                  sign="+"
-                />
-                <Line
-                  label="Horas extras pendentes"
-                  value={components.pendingVariableIncome}
-                  sign="+"
-                />
-                <Line
-                  label="Contas recorrentes a pagar"
-                  value={components.futureRecurringExpense}
-                  sign="−"
-                />
-                <Line label="Reserva de orçamentos" value={components.budgetReserve} sign="−" />
-                <Line label="Reserva de metas" value={components.goalReserve} sign="−" />
-              </ul>
-              <div className="mt-2 flex items-center justify-between border-t-2 border-slate-300 pt-3 dark:border-slate-600">
-                <span className="font-semibold">
-                  {historical ? 'Saldo Livre ao fim do período' : 'Saldo Livre'}
-                </span>
-                <span
-                  className={cn(
-                    'font-bold tabular-nums',
-                    freeBalance.total < 0 ? 'text-expense' : 'text-income'
-                  )}
-                >
-                  {money(freeBalance.total)}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="mb-2 text-sm font-semibold">Próximas ocorrências</h3>
-              {projected.occurrences.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  Nenhuma conta ou entrada recorrente prevista até o fim do período.
-                </p>
-              ) : (
-                <ul className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {projected.occurrences.map((occurrence) => (
-                    <li
-                      key={`${occurrence.recurringTransactionId}-${occurrence.date}`}
-                      className="flex items-center justify-between gap-3 py-2 text-sm"
-                    >
-                      <span className="min-w-0 truncate">
-                        <span className="mr-2 tabular-nums text-muted-foreground">
-                          {FN_UTILS_DATE.formatInBusinessTZ(occurrence.date, 'dd/MM')}
-                        </span>
-                        {occurrence.title}
-                      </span>
-                      <span
-                        className={cn(
-                          'font-medium tabular-nums',
-                          occurrence.type === 'expense' ? 'text-expense' : 'text-income'
-                        )}
-                      >
-                        {occurrence.type === 'expense' ? '−' : '+'} {money(occurrence.amount)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              >
+                {money(freeBalance.total)}
+              </span>
             </div>
           </div>
         </details>

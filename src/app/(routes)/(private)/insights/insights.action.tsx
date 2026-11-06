@@ -12,7 +12,7 @@ export const useInsightsAction = () => {
   const query = { placeholderData: keepPreviousData };
 
   const insights = useGetOverviewInsights(params, { query });
-  const forecast = useGetOverviewForecast(params, { query });
+  const forecast = useGetOverviewForecast({ query });
 
   return {
     insights: insights.data?.data,

@@ -1,51 +1,129 @@
+import type { Account } from '@/api/generated/types/Account';
 import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FreeBalanceSection } from './free-balance-section';
 
-const forecast: ForecastResponse = {
-  period: {
-    id: '11111111-1111-1111-1111-111111111111',
-    startDate: '2026-10-01T00:00:00.000Z',
-    endDate: '2026-10-31T23:59:59.000Z',
-    label: '01/10 a 31/10',
-  },
-  realized: { income: 200000, expense: 50000, balance: 150000 },
-  projected: {
-    recurringIncome: 0,
-    recurringExpense: 30000,
-    occurrences: [],
-  },
-  projectedEndBalance: 120000,
+vi.mock('@/forms/upsert-overtime.form', () => ({
+  UpsertOvertimeForm: () => <div>Formulário de horas</div>,
+}));
+
+const today = new Date('2026-11-11T15:00:00.000Z');
+
+const makeForecast = (
+  overrides: Partial<ForecastResponse['freeBalance']> = {}
+): ForecastResponse => ({
   freeBalance: {
     total: 85000,
-    daysRemaining: 12,
+    until: '2026-12-03T03:00:00.000Z',
     confidence: 'high',
-    income: { fixed: 180000, variable: 20000, pendingVariable: 0 },
-    commitments: { recurringExpenses: 30000 },
-    reserves: { budgets: 25000, goals: 10000 },
     components: {
-      carryOverBalance: 0,
-      realizedBalance: 150000,
-      futureRecurringIncome: 0,
-      futureRecurringExpense: 30000,
-      pendingVariableIncome: 0,
-      budgetReserve: 25000,
-      goalReserve: 10000,
+      accountsBalance: 100000,
+      otherIncome: 0,
+      recurringExpense: 5000,
+      cardBills: 10000,
     },
+    nextPayment: {
+      date: '2026-12-03T03:00:00.000Z',
+      salary: 500000,
+      overtime: 40000,
+      total: 540000,
+    },
+    committedAfter: 30000,
+    ...overrides,
   },
-  asOf: '2026-10-19T10:00:00.000Z',
-};
+});
+
+const accounts = [
+  {
+    id: 'a1',
+    name: 'Inter',
+    type: 'checking',
+    isActive: true,
+    dataThrough: '2026-11-10T03:00:00.000Z',
+    freshness: 'fresh',
+  },
+  {
+    id: 'a2',
+    name: 'Nubank',
+    type: 'credit_card',
+    isActive: true,
+    dataThrough: '2026-11-02T03:00:00.000Z',
+    freshness: 'stale',
+  },
+] as Account[];
 
 afterEach(cleanup);
 
 describe('FreeBalanceSection', () => {
-  it('shows the amount and the calculation summary', () => {
-    render(<FreeBalanceSection forecast={forecast} loading={false} error={false} />);
+  it('shows the amount, the end of the window and the data freshness', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
 
     expect(screen.getByText('R$ 850,00')).toBeInTheDocument();
-    expect(screen.getByText('12 dias restantes')).toBeInTheDocument();
+    expect(screen.getByText(/até 03\/12/)).toBeInTheDocument();
+    expect(
+      screen.getByText('Dados até 02/11 · Inter em dia · Nubank há 9 dias')
+    ).toBeInTheDocument();
     expect(screen.getByText('Confiança alta')).toBeInTheDocument();
+  });
+
+  it('shows the next payment and what is already committed afterwards', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.getByText('Próximo pagamento')).toBeInTheDocument();
+    expect(screen.getByText(/R\$ 5\.000,00/)).toBeInTheDocument();
+    expect(screen.getByText(/R\$ 400,00/)).toBeInTheDocument();
+    expect(screen.getByText('Já comprometido depois')).toBeInTheDocument();
+    expect(screen.getByText('R$ 300,00')).toBeInTheDocument();
+  });
+
+  it('hides the next payment block when there is no salary', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast({ nextPayment: null, confidence: 'low' })}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.queryByText('Próximo pagamento')).not.toBeInTheDocument();
+    expect(screen.getByText('Já comprometido depois')).toBeInTheDocument();
+  });
+
+  it('links to the check-in and opens the overtime form without leaving the page', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.getByRole('link', { name: 'Fazer check-in' })).toHaveAttribute(
+      'href',
+      '/check-in'
+    );
+    expect(screen.getByRole('button', { name: 'Registrar horas' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Ver como é calculado' })).toHaveAttribute(
       'href',
       '/insights'
@@ -53,17 +131,17 @@ describe('FreeBalanceSection', () => {
   });
 
   it('shows a skeleton while the query is pending', () => {
-    render(<FreeBalanceSection loading error={false} />);
+    render(<FreeBalanceSection today={today} loading error={false} />);
 
     expect(screen.getByLabelText('Carregando saldo livre')).toBeInTheDocument();
     expect(screen.queryByText('R$ 850,00')).not.toBeInTheDocument();
   });
 
   it('shows a safe message when the query fails', () => {
-    render(<FreeBalanceSection loading={false} error />);
+    render(<FreeBalanceSection today={today} loading={false} error />);
 
     expect(screen.getByRole('alert')).toHaveTextContent(
-      'Não foi possível calcular quanto está livre para gastar neste período.'
+      'Não foi possível calcular quanto está livre para gastar.'
     );
   });
 });

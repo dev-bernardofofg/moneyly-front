@@ -15,10 +15,7 @@ import { Controller } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { Category, Transaction } from '@/api/generated';
 import { useGetCategories } from '@/api/generated/hooks/categories/categories';
-import {
-  getGetOverviewDashboardQueryKey,
-  getGetOverviewPlannerQueryKey,
-} from '@/api/generated/hooks/overview/overview';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import {
   getGetTransactionsQueryKey,
   getGetTransactionsSummaryQueryKey,
@@ -49,10 +46,9 @@ export const UpsertTransactionForm = ({ transaction }: { transaction?: Transacti
         ? transactionToFormValues(transaction)
         : UpsertTransactionDefaultValues,
       invalidateKeys: [
-        getGetOverviewDashboardQueryKey(),
         getGetTransactionsQueryKey(),
         getGetTransactionsSummaryQueryKey(),
-        getGetOverviewPlannerQueryKey(),
+        ...freeBalanceQueryKeys(),
       ],
       errorFields: ['title', 'amount', 'type', 'category', 'date', 'description'],
       successMessage: {

@@ -1,3 +1,4 @@
+import { useAccounts } from '@/hooks/use-accounts';
 import { usePeriod } from '@/contexts/period-provider';
 import {
   useGetOverviewCardBills,
@@ -47,9 +48,7 @@ export const useDashboardAction = () => {
     data: forecastData,
     isLoading: forecastLoading,
     isError: forecastError,
-  } = useGetOverviewForecast({
-    periodId: selectedPeriodId || undefined,
-  });
+  } = useGetOverviewForecast();
 
   const {
     data: cardBillsData,
@@ -57,6 +56,7 @@ export const useDashboardAction = () => {
     isError: cardBillsError,
   } = useGetOverviewCardBills({ periodId: selectedPeriodId || undefined });
 
+  const { accounts } = useAccounts();
   const forecast = forecastData?.data;
   const previews = overviewData?.data?.previews;
   const subs = previews?.subscriptions;
@@ -68,6 +68,7 @@ export const useDashboardAction = () => {
   return {
     data: {
       forecast,
+      accounts,
       subs,
       cmp,
       recentTransactions,

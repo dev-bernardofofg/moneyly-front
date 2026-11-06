@@ -15,6 +15,7 @@ import { RecentTransactionItem } from '@/api/generated';
 import { ROUTES } from '@/lib/routes';
 import { Loader2, Plus, Receipt, RefreshCcw, Scale } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
 import { AccountsOverviewSection } from './accounts-overview-section';
 import { CardBillsSection } from './card-bills-section';
@@ -24,7 +25,9 @@ import { FreeBalanceSection } from './free-balance-section';
 const DashboardPage = () => {
   const { push } = useRouter();
   const { data, loading } = useDashboardAction();
-  const { forecast, subs, cmp, recentTransactions, chartSeries, stats, cardBills } = data;
+  // Estável durante a vida da página: new Date() no render quebraria a pureza.
+  const [today] = useState(() => new Date());
+  const { forecast, accounts, subs, cmp, recentTransactions, chartSeries, stats, cardBills } = data;
   const { isPostingOverview, forecastLoading, forecastError, cardBillsLoading, cardBillsError } =
     loading;
 
@@ -88,7 +91,13 @@ const DashboardPage = () => {
           className="grid gap-2 lg:grid-cols-2"
           itemClassNames={['min-w-0', 'min-w-0']}
         >
-          <FreeBalanceSection forecast={forecast} loading={forecastLoading} error={forecastError} />
+          <FreeBalanceSection
+            forecast={forecast}
+            accounts={accounts}
+            today={today}
+            loading={forecastLoading}
+            error={forecastError}
+          />
           <div className="grid content-start gap-2">
             <div className="grid grid-cols-2 gap-2">
               {DASHBOARD_STATS_CONFIG.map((stat) => (

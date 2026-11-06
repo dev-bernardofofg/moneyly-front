@@ -1,12 +1,11 @@
+import { getGetAccountsQueryKey } from '@/api/generated/hooks/accounts/accounts';
 import {
   getGetOverviewDashboardQueryKey,
   getGetOverviewForecastQueryKey,
-  getGetOverviewPlannerQueryKey,
 } from '@/api/generated/hooks/overview/overview';
 
-// Sem params: invalida por prefixo, cobrindo todos os períodos em cache.
 export const freeBalanceQueryKeys = () => [
-  getGetOverviewPlannerQueryKey(),
   getGetOverviewForecastQueryKey(),
   getGetOverviewDashboardQueryKey(),
+  getGetAccountsQueryKey(),
 ];

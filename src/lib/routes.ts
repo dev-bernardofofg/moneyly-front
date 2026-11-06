@@ -8,4 +8,5 @@ export const ROUTES = {
   PROFILE: '/profile',
   AUTH: '/auth',
   OVERTIME: '/overtime',
+  CHECK_IN: '/check-in',
 };

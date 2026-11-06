@@ -5,7 +5,6 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
-  dailyAllowance,
   foldCategories,
   freeBalanceComposition,
   risingCategories,
@@ -36,9 +35,8 @@ const forecastWith = (total: number, components: Record<string, number>) =>
     freeBalance: {
       total,
       components: {
-        futureRecurringExpense: 0,
-        budgetReserve: 0,
-        goalReserve: 0,
+        recurringExpense: 0,
+        cardBills: 0,
         ...components,
       },
     },
@@ -105,31 +103,23 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('insights helpers', () => {
   it('splits the period money into free and committed, summing to the whole', () => {
     const composition = freeBalanceComposition(
-      forecastWith(50000, { futureRecurringExpense: 30000, budgetReserve: 20000 })
+      forecastWith(50000, { recurringExpense: 30000, cardBills: 20000 })
     );
 
     expect(composition.periodMoney).toBe(100000);
     expect(composition.shortfall).toBe(0);
     expect(composition.segments.map((segment) => [segment.key, segment.value])).toEqual([
       ['free', 50000],
-      ['bills', 30000],
-      ['budgets', 20000],
+      ['recurring', 30000],
+      ['cards', 20000],
     ]);
   });
 
   it('reports the shortfall when commitments exceed the period money', () => {
-    const composition = freeBalanceComposition(
-      forecastWith(-10000, { futureRecurringExpense: 30000 })
-    );
+    const composition = freeBalanceComposition(forecastWith(-10000, { recurringExpense: 30000 }));
 
     expect(composition.shortfall).toBe(10000);
-    expect(composition.segments.map((segment) => segment.key)).toEqual(['bills']);
-  });
-
-  it('spreads the free balance over the remaining days', () => {
-    expect(dailyAllowance(30000, 10)).toBe(3000);
-    expect(dailyAllowance(-5000, 10)).toBeNull();
-    expect(dailyAllowance(30000, 0)).toBeNull();
+    expect(composition.segments.map((segment) => segment.key)).toEqual(['recurring']);
   });
 
   it('folds the tail of the categories into one row', () => {

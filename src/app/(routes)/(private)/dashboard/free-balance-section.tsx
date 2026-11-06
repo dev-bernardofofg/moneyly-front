@@ -1,16 +1,27 @@
 import { Section } from '@/components/cards/section';
-import { FN_UTILS_NUMBERS } from '@/lib/number';
-import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
+import { BaseButton } from '@/components/clickable/base-button';
+import { BaseDialog } from '@/components/portals/base-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
-import { CalendarDays, CircleGauge, WalletCards } from 'lucide-react';
-import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
+import { UpsertOvertimeForm } from '@/forms/upsert-overtime.form';
+import type { Account } from '@/api/generated/types/Account';
+import type { ForecastResponse } from '@/api/generated/types/ForecastResponse';
+import { FN_UTILS_DATE } from '@/lib/date';
+import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { ROUTES } from '@/lib/routes';
+import { cn } from '@/lib/utils';
+import { CircleGauge, WalletCards } from 'lucide-react';
+import Link from 'next/link';
+import { describeFreshness } from './freshness.helpers';
 
 interface FreeBalanceSectionProps {
   forecast?: ForecastResponse;
+  accounts?: Account[];
+  today: Date;
   loading: boolean;
   error: boolean;
+  // Sem frescor nem ações: usado onde só o valor importa (onboarding).
+  compact?: boolean;
 }
 
 const confidenceLabel = {
@@ -19,7 +30,16 @@ const confidenceLabel = {
   high: 'alta',
 } as const;
 
-export const FreeBalanceSection = ({ forecast, loading, error }: FreeBalanceSectionProps) => {
+const money = FN_UTILS_NUMBERS.formatCurrency;
+
+export const FreeBalanceSection = ({
+  forecast,
+  accounts,
+  today,
+  loading,
+  error,
+  compact = false,
+}: FreeBalanceSectionProps) => {
   if (loading) {
     return (
       <Section Icon={WalletCards} title="Saldo Livre">
@@ -35,39 +55,55 @@ export const FreeBalanceSection = ({ forecast, loading, error }: FreeBalanceSect
     return (
       <Section Icon={WalletCards} title="Saldo Livre">
         <p role="alert" className="py-5 text-sm text-muted-foreground">
-          Não foi possível calcular quanto está livre para gastar neste período.
+          Não foi possível calcular quanto está livre para gastar.
         </p>
       </Section>
     );
   }
 
   const { freeBalance } = forecast;
+  const { nextPayment } = freeBalance;
   const isNegative = freeBalance.total < 0;
 
   return (
     <Section Icon={WalletCards} title="Saldo Livre">
       <div className="rounded-xl bg-primary/10 p-4">
-        <p className="text-sm font-medium text-muted-foreground">
-          Você pode gastar até o fim do período
-        </p>
         <p
           className={cn(
-            'mt-2 text-3xl font-bold tabular-nums',
+            'text-3xl font-bold tabular-nums',
             isNegative ? 'text-expense' : 'text-income'
           )}
         >
-          {FN_UTILS_NUMBERS.formatCurrency(freeBalance.total)}
+          {money(freeBalance.total)}
         </p>
+        <p className="mt-1 text-sm font-medium text-muted-foreground">
+          até {FN_UTILS_DATE.formatInBusinessTZ(freeBalance.until, 'dd/MM')}
+        </p>
+        {!compact && accounts && (
+          <p className="mt-2 text-sm text-muted-foreground">{describeFreshness(accounts, today)}</p>
+        )}
+
+        <dl className="mt-4 space-y-1 text-sm">
+          {nextPayment && (
+            <div className="flex items-baseline justify-between gap-3">
+              <dt className="text-muted-foreground">Próximo pagamento</dt>
+              <dd className="text-right font-medium tabular-nums">
+                salário {money(nextPayment.salary)} + horas {money(nextPayment.overtime)}
+              </dd>
+            </div>
+          )}
+          <div className="flex items-baseline justify-between gap-3">
+            <dt className="text-muted-foreground">Já comprometido depois</dt>
+            <dd className="font-medium tabular-nums">{money(freeBalance.committedAfter)}</dd>
+          </div>
+        </dl>
+
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <CalendarDays className="size-4" aria-hidden />
-            {freeBalance.daysRemaining} dias restantes
-          </span>
           <span className="flex items-center gap-1">
             <CircleGauge className="size-4" aria-hidden />
             Confiança {confidenceLabel[freeBalance.confidence]}
           </span>
-          {/* O detalhamento (renda, contas, reservas) mora em /insights. */}
+          {/* O detalhamento (contas, entradas, recorrentes, faturas) mora em /insights. */}
           <Link
             href={ROUTES.INSIGHTS}
             className="ml-auto font-medium text-primary-strong underline-offset-2 hover:underline"
@@ -75,6 +111,21 @@ export const FreeBalanceSection = ({ forecast, loading, error }: FreeBalanceSect
             Ver como é calculado
           </Link>
         </div>
+
+        {!compact && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href={ROUTES.CHECK_IN} className={buttonVariants({ variant: 'default' })}>
+              Fazer check-in
+            </Link>
+            <BaseDialog
+              title="Registrar horas"
+              description="Registre horas extras sem sair do início"
+              trigger={<BaseButton variant="outline">Registrar horas</BaseButton>}
+            >
+              <UpsertOvertimeForm />
+            </BaseDialog>
+          </div>
+        )}
       </div>
     </Section>
   );
