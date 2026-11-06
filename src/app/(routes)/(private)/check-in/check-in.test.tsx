@@ -71,6 +71,7 @@ const previewOf = (
   accountId: INTER,
   needsAccount: false,
   accountKey: '077:123',
+  requiredAccountType: null,
   through: '2026-11-01T03:00:00.000Z',
   bill: null,
   items,

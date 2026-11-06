@@ -1,6 +1,7 @@
 import type { TransactionImportPreview } from '@/api/generated/types/TransactionImportPreview';
 import { describe, expect, it } from 'vitest';
 import {
+  accountsForFile,
   buildImportPayload,
   type CheckInFile,
   checkInReducer,
@@ -81,6 +82,7 @@ const preview = (
 ): TransactionImportPreview => ({
   accountId: 'account-1',
   needsAccount: false,
+  requiredAccountType: null,
   accountKey: '077:123',
   through: '2026-11-01T03:00:00.000Z',
   bill: null,
@@ -337,6 +339,26 @@ describe('sortCardsFirst', () => {
       checkingA,
       checkingC,
     ]);
+  });
+});
+
+describe('accountsForFile', () => {
+  const accounts = [
+    { id: 'conta', type: 'checking' },
+    { id: 'cartao', type: 'credit_card' },
+  ];
+  const withRequired = (requiredAccountType: TransactionImportPreview['requiredAccountType']) => ({
+    ...createCheckInFile('1', new File([], 'a.pdf')),
+    preview: { requiredAccountType } as TransactionImportPreview,
+  });
+
+  it('offers only the account type the file accepts', () => {
+    expect(accountsForFile(withRequired('checking'), accounts)).toEqual([accounts[0]]);
+    expect(accountsForFile(withRequired('credit_card'), accounts)).toEqual([accounts[1]]);
+  });
+
+  it('offers every account when the file does not say', () => {
+    expect(accountsForFile(withRequired(null), accounts)).toEqual(accounts);
   });
 });
 
