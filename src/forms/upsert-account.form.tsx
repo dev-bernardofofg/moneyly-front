@@ -27,6 +27,9 @@ interface UpsertAccountFormProps {
 
 export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
   const isUpdate = !!account;
+  const savedBalanceDate = account?.openingBalanceDate
+    ? FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'yyyy-MM-dd')
+    : '';
 
   const { form, onCreated, onUpdated, onError, DialogCloseHidden } =
     useUpsertDialog<AccountFormValues>({
@@ -41,9 +44,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
             openingBalance: account.openingBalanceDate
               ? FN_UTILS_STRING.formatCentsToMoneyInput(account.openingBalance)
               : '',
-            openingBalanceDate: account.openingBalanceDate
-              ? FN_UTILS_DATE.formatInBusinessTZ(account.openingBalanceDate, 'yyyy-MM-dd')
-              : '',
+            openingBalanceDate: savedBalanceDate,
           }
         : AccountDefaultValues,
       // Mudar fechamento/vencimento move compras de período: Saldo Livre e lista mudam.
@@ -70,6 +71,13 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
   const updateMutation = usePutAccountsId({ mutation: { onSuccess: onUpdated, onError } });
 
   const isCard = form.watch('type') === 'credit_card';
+
+  // Valor novo costuma ser o saldo de agora. Data escolhida à mão continua valendo.
+  const suggestBalanceDate = (value: string) => {
+    if (!value || form.getValues('openingBalanceDate') !== savedBalanceDate) return;
+    form.setValue('openingBalanceDate', FN_UTILS_DATE.formatInBusinessTZ(new Date(), 'yyyy-MM-dd'));
+    form.clearErrors('openingBalanceDate');
+  };
 
   const handleForm = ({
     name,
@@ -172,6 +180,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
                   type="money"
                   placeholder="0,00"
                   control={form.control}
+                  onValueChange={suggestBalanceDate}
                 />
                 <BaseDatePicker
                   name="openingBalanceDate"
@@ -181,7 +190,7 @@ export const UpsertAccountForm = ({ account }: UpsertAccountFormProps) => {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                Saldo no início desse dia. Lançamentos anteriores já estão nele e não contam de novo
+                Saldo no fim desse dia. Lançamentos até essa data já estão nele e não contam de novo
                 no Saldo Livre.
               </p>
             </>

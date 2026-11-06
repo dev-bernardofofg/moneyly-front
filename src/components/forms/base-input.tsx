@@ -31,6 +31,7 @@ export interface IBaseInput<T extends FieldValues> {
   rightElement?: ReactNode;
   isLoading?: boolean;
   autoFocus?: boolean;
+  onValueChange?: (value: string) => void;
 }
 
 function BaseInputInner<T extends FieldValues>(
@@ -48,6 +49,7 @@ function BaseInputInner<T extends FieldValues>(
     rightElement,
     isLoading,
     autoFocus,
+    onValueChange,
     ...rest
   }: IBaseInput<T>,
   ref: React.ForwardedRef<HTMLInputElement>
@@ -69,8 +71,10 @@ function BaseInputInner<T extends FieldValues>(
           if (isMoney) {
             const maskedValue = maskMoney(e.target.value);
             field.onChange(maskedValue);
+            onValueChange?.(maskedValue);
           } else {
             field.onChange(e);
+            onValueChange?.(e.target.value);
           }
         };
         return (
