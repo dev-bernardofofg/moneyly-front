@@ -15,7 +15,7 @@ Contrato: nenhum endpoint novo — `POST /goals/:id/add-amount` gera a notifica�
 
 - **Render**: `notification-bell.tsx` — `goal_milestone` sempre `severity: "info"`; visual pelo
   `type`: ícone `PartyPopper` + borda/fundo `income`.
-- **Invalidation**: `(routes)/(private)/planner/add-value-to-goal.form.tsx` inclui
+- **Invalidation** (histórico: `/planner` e este form saíram no F21; o front não contribui mais para metas): `(routes)/(private)/planner/add-value-to-goal.form.tsx` incluía
   `getGetNotificationsQueryKey()` nos `invalidateKeys` do `useUpsertDialog` — a notificação já
   existe quando a resposta chega, então o sino atualiza junto com goals/overview.
 - Semântica: `relatedId` → `goalId`, `periodId: null`.

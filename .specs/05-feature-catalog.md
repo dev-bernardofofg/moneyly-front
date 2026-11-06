@@ -12,8 +12,13 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 ## Dashboard — `/dashboard`
 
-- `(routes)/(private)/dashboard/page.tsx` + `src/components/charts/monthly-history-chart.tsx` + `(stats)`.
-- Hooks `overview/overview.ts` (`useGetOverviewDashboard`) + `transactions` (`summary-by-month`). Stats, transações recentes, histórico mensal agregado (R1).
+- `(routes)/(private)/dashboard/page.tsx` + `free-balance-section.tsx` + `freshness.helpers.ts` + `src/components/charts/monthly-history-chart.tsx` + `(stats)`.
+- Hooks `overview/overview.ts` (`useGetOverviewForecast`, `useGetOverviewDashboard`, `useGetOverviewCardBills`) + `accounts` + `transactions` (`summary-by-month`). Saldo Livre com frescor das contas, próximo pagamento, "Fazer check-in" e "Registrar horas" (dialog); stats, transações recentes, histórico mensal agregado (R1).
+
+## Check-in — `/check-in` (F21)
+
+- `check-in/page.tsx` + `check-in.action.tsx` (reducer e importação) + `check-in.helpers.ts` + `check-in-review.tsx` + `import-category-picker.tsx` + `import-statement.helpers.ts`.
+- Hooks `transactions/transactions.ts` (`usePostTransactionsImportPreview`, `usePostTransactionsImport`) + `accounts`. Vários `.ofx`/`.pdf` de uma vez; a prévia é uma chamada por arquivo e o `accountKey` resolve a conta. Conta nova é perguntada uma vez. Só linha sem categoria identificada e `possible_duplicate` pedem revisão. Arquivo inválido falha sozinho; falha ao confirmar mantém a revisão. Tela final mostra o Saldo Livre antes e depois. Detalhe: `.specs/features/01-cash-flow-forecast.md`.
 
 ## Transactions — `/transactions`
 
@@ -22,23 +27,26 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 ## Recurring Transactions — `/recurring-transactions`
 
-- `page.tsx` + `recurring-transaction.table.tsx` + `recurring-transaction-history.dialog.tsx` + `.utils.ts`; form `src/forms/upsert-transaction-recurring.form.tsx`.
-- Hooks `recurring-transactions/*`: CRUD + `{id}/transactions` (histórico) + `deactivate`/`reactivate`. Frequência `daily|weekly|monthly|yearly`; `dayOfMonth` só monthly, `dayOfWeek` (0=dom) só weekly. Materialização é no back (scheduler).
+- `page.tsx` + `recurring-transaction.table.tsx` + `.utils.ts`; form `src/forms/upsert-transaction-recurring.form.tsx`.
+- Hooks `recurring-transactions/*`: CRUD + `deactivate`/`reactivate`. Frequência `daily|weekly|monthly|yearly`; `dayOfMonth` só monthly, `dayOfWeek` (0=dom) só weekly. Recorrência é só previsão (entra no Saldo Livre); o back não cria transação. O histórico saiu da interface no F21.
 
 ## Categories — `/categories`
 
 - `page.tsx` + `category.table.tsx`; form `src/forms/upsert-category.form.tsx`, schema `src/schemas/category.schema.tsx`.
 - Hooks `categories/categories.ts`: list, create, update/{id}, delete/{id}. **Global (`isGlobal`/`userId=null`) não editável/deletável no UI.**
 
-## Planner (Budgets + Goals) — `/planner`
+## Planner (Budgets + Goals) — removido
 
-- `page.tsx` + `add-value-to-goal.form.tsx`; forms `src/forms/upsert-budget.form.tsx`, `upsert-goal.form.tsx`; swipers `src/components/swipers`.
-- Hooks `budgets/budgets.ts` (+`{id}`) e `goals/goals.ts` (+`{id}`, `add-amount`). Budget progress vem calculado do back; status `safe/attention/warning/exceeded` → cores via `src/lib/budget-level.ts`. 1 budget/categoria (back 409 se duplicado). Repassar `periodId`.
+- `/planner` saiu no F21, com `add-value-to-goal.form.tsx`, os forms de orçamento e meta e os swipers. Orçamentos e metas continuam no back, mas o front não os usa e o Saldo Livre não os considera.
+
+## Accounts — `/accounts`
+
+- `page.tsx` + `account-period-summary.tsx` + `transfers-section.tsx`; form `src/forms/upsert-account.form.tsx`. Hooks `accounts/accounts.ts` e `transfers/transfers.ts`. Saldo inicial por conta ("Corrigir saldo") e frescor (`dataThrough`, `freshness`).
 
 ## Overtime — `/overtime`
 
 - `page.tsx` + `overtime.table.tsx`; forms `src/forms/upsert-overtime.form.tsx`, `upsert-company.form.tsx`; schema `src/schemas/overtime.schema.tsx`; `src/components/forms/base-shift-picker.tsx`.
-- Hooks `overtime/overtime.ts` (list paginado por `month`/`year` civil, summary, CRUD) + `companies/companies.ts` (CRUD). Filtra por **mês civil** derivado do `startDate` do período selecionado, não por `periodId`. Valores decimais como string → `parseFloat`. Detalhe: `.specs/features/06-overtime.md`.
+- Hooks `overtime/overtime.ts` (list paginado por `month`/`year` civil, summary, CRUD) + `companies/companies.ts` (CRUD). Filtra por **mês civil** derivado do `startDate` do período selecionado, não por `periodId`. Horas extras não geram transação; as horas do mês M vão com o salário M+1 (`nextPayment.overtime`). Detalhe: `.specs/features/06-overtime.md`.
 
 ## Profile — `/profile`
 
@@ -68,13 +76,13 @@ Mapa tela → arquivos + hooks gerados + regras não-óbvias. Atualizar ao adici
 
 ## F1 / F2 — Done
 
-- **F1 Saldo projetado**: Section em `/insights` via `useGetOverviewForecast` (`ForecastResponse`). Detalhe: `.specs/features/01-cash-flow-forecast.md`.
-- **F2 Alertas**: `notification-bell.tsx` no Header global (`useGetNotifications` + patch read/read-all). ⚠️ migration back `0004` não aplicada → runtime erra até `db:push`. Detalhe: `.specs/features/02-budget-alerts.md`.
+- **F1 Saldo Livre**: seção no dashboard e detalhamento em `/insights` ("Gastos") via `useGetOverviewForecast` (`ForecastResponse`, `{ freeBalance }` sempre para hoje). Refeito no F21. Detalhe: `.specs/features/01-cash-flow-forecast.md`.
+- **F2 Alertas**: desde o F21 o back não roda mais o job de alertas de orçamento. `notification-bell.tsx` no Header global (`useGetNotifications` + patch read/read-all). ⚠️ migration back `0004` não aplicada → runtime erra até `db:push`. Detalhe: `.specs/features/02-budget-alerts.md`.
 
 - **F3 Assinaturas**: `insights/subscription-candidates.tsx` (`useGetTransactionsSubscriptions`), exibido em `insights/adjustments-section.tsx`, + CTA recorrente. Detalhe: `.specs/features/03-subscription-detector.md`.
 - **F4 Comparativo**: seção removida em 2026-10-26. Comparativo vs média vem de `useGetOverviewInsights` em `insights/spending-by-category-section.tsx` e `insights/adjustments-section.tsx`. Detalhe: `.specs/features/04-comparative-insights.md`.
 
-- **F5 Prévias dashboard**: `dashboard/page.tsx` 3 mini-cards (F1 forecast + `previews.subscriptions`/`comparison` do `useGetOverviewDashboard`), clicáveis → `/insights`. Detalhe: `.specs/features/05-dashboard-previews.md`.
+- **F5 Prévias dashboard**: `dashboard/page.tsx` mostra alertas de `previews.subscriptions`/`comparison` do `useGetOverviewDashboard`, clicáveis → `/insights`. Detalhe: `.specs/features/05-dashboard-previews.md`.
 
 ## F7 — Done
 
