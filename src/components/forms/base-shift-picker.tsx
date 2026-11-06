@@ -223,7 +223,7 @@ export function BaseShiftPicker<T extends FieldValues>({
         <Popover open={open} onOpenChange={openPicker}>
           <PopoverTrigger asChild>{trigger}</PopoverTrigger>
           <PopoverContent
-            className="w-[22rem] max-h-[min(calc(100dvh-2rem),32rem)] p-0"
+            className="w-[22rem] max-h-[min(var(--radix-popover-content-available-height),32rem)] p-0"
             align="start"
             sideOffset={4}
             collisionPadding={8}
