@@ -2,8 +2,6 @@
 
 import { BaseButton } from '@/components/clickable/base-button';
 import { InitialConfigForm } from '@/forms/initial-config.form';
-import { UpsertBudgetForm } from '@/forms/upsert-budget.form';
-import { UpsertGoalForm } from '@/forms/upsert-goal.form';
 import { UpsertTransactionRecurringForm } from '@/forms/upsert-transaction-recurring.form';
 import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,7 +17,7 @@ interface InitialConfigDialogProps {
   onSuccess: () => void;
 }
 
-type OptionalStepKey = 'recurring' | 'budget' | 'goal';
+type OptionalStepKey = 'recurring';
 
 const STEPS = [
   {
@@ -33,16 +31,6 @@ const STEPS = [
     description: 'Aluguel, assinaturas e outras contas que se repetem entram na projeção.',
   },
   {
-    key: 'budget',
-    title: 'Primeiro orçamento',
-    description: 'O que sobra de um orçamento fica reservado no Saldo Livre.',
-  },
-  {
-    key: 'goal',
-    title: 'Meta financeira (opcional)',
-    description: 'Uma parte do valor da meta é reservada a cada período.',
-  },
-  {
     key: 'preview',
     title: 'Seu primeiro Saldo Livre',
     description: 'Veja quanto está livre para gastar até receber novamente.',
@@ -51,8 +39,6 @@ const STEPS = [
 
 const savedLabel: Record<OptionalStepKey, (count: number) => string> = {
   recurring: (n) => `${n} ${n === 1 ? 'conta adicionada' : 'contas adicionadas'}.`,
-  budget: (n) => `${n} ${n === 1 ? 'orçamento criado' : 'orçamentos criados'}.`,
-  goal: (n) => `${n} ${n === 1 ? 'meta criada' : 'metas criadas'}.`,
 };
 
 export const InitialConfigDialog = ({
@@ -64,12 +50,10 @@ export const InitialConfigDialog = ({
   const [stepIndex, setStepIndex] = useState(0);
   const [saved, setSaved] = useState<Record<OptionalStepKey, number>>({
     recurring: 0,
-    budget: 0,
-    goal: 0,
   });
 
   const step = STEPS[stepIndex]!;
-  const isOptional = step.key === 'recurring' || step.key === 'budget' || step.key === 'goal';
+  const isOptional = step.key === 'recurring';
   const savedCount = isOptional ? saved[step.key] : 0;
 
   const next = () => setStepIndex((index) => Math.min(index + 1, STEPS.length - 1));
@@ -110,8 +94,6 @@ export const InitialConfigDialog = ({
             {step.key === 'recurring' && (
               <UpsertTransactionRecurringForm onSaved={markSaved('recurring')} />
             )}
-            {step.key === 'budget' && <UpsertBudgetForm onSaved={markSaved('budget')} />}
-            {step.key === 'goal' && <UpsertGoalForm onSaved={markSaved('goal')} />}
             {step.key === 'preview' && <OnboardingPreview />}
 
             {isOptional && (

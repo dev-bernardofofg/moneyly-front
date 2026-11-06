@@ -30,7 +30,6 @@ import {
   usePatchRecurringTransactionsIdReactivate,
 } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import { formatFrequency } from './recurring-transaction.utils';
-import { RecurringTransactionHistoryDialog } from './recurring-transaction-history.dialog';
 
 interface RecurringTransactionTableProps extends BaseTableOptions {
   recurringTransactions: RecurringTransaction[];
@@ -98,10 +97,6 @@ export const RecurringTransactionTable = ({
 
         return (
           <div className="flex items-center gap-2">
-            <RecurringTransactionHistoryDialog
-              recurringTransactionId={item.id}
-              title={item.title}
-            />
             {!isCompletedInstallment && (
               <BaseDialog
                 title="Editar recorrente"

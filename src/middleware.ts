@@ -17,7 +17,6 @@ export function middleware(request: NextRequest) {
     '/categories',
     '/transactions',
     '/recurring-transactions',
-    '/planner',
     '/overtime',
     '/profile',
     '/accounts',

@@ -18,13 +18,6 @@ vi.mock('@/forms/upsert-transaction-recurring.form', () => ({
   UpsertTransactionRecurringForm: ({ onSaved }: { onSaved?: () => void }) =>
     savedButton('Salvar conta', onSaved),
 }));
-vi.mock('@/forms/upsert-budget.form', () => ({
-  UpsertBudgetForm: ({ onSaved }: { onSaved?: () => void }) =>
-    savedButton('Salvar orçamento', onSaved),
-}));
-vi.mock('@/forms/upsert-goal.form', () => ({
-  UpsertGoalForm: ({ onSaved }: { onSaved?: () => void }) => savedButton('Salvar meta', onSaved),
-}));
 vi.mock('@/components/dialogs/onboarding-preview', () => ({
   OnboardingPreview: () => <p>Prévia do Saldo Livre</p>,
 }));
@@ -49,12 +42,12 @@ describe('InitialConfigDialog', () => {
   it('requires income before showing optional steps', () => {
     renderDialog();
 
-    expect(screen.getByText('Etapa 1 de 5')).toBeInTheDocument();
+    expect(screen.getByText('Etapa 1 de 3')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Pular' })).not.toBeInTheDocument();
 
     click('Salvar renda');
 
-    expect(screen.getByText('Etapa 2 de 5')).toBeInTheDocument();
+    expect(screen.getByText('Etapa 2 de 3')).toBeInTheDocument();
     expect(screen.getByText('Primeiras contas recorrentes')).toBeInTheDocument();
   });
 
@@ -63,10 +56,8 @@ describe('InitialConfigDialog', () => {
     click('Salvar renda');
 
     click('Pular');
-    click('Pular');
-    click('Pular');
 
-    expect(screen.getByText('Etapa 5 de 5')).toBeInTheDocument();
+    expect(screen.getByText('Etapa 3 de 3')).toBeInTheDocument();
     expect(screen.getByText('Prévia do Saldo Livre')).toBeInTheDocument();
   });
 
@@ -84,8 +75,6 @@ describe('InitialConfigDialog', () => {
   it('finishes from the preview', () => {
     const { onOpenChange, onSuccess } = renderDialog();
     click('Salvar renda');
-    click('Pular');
-    click('Pular');
     click('Pular');
 
     click('Ir para o dashboard');
