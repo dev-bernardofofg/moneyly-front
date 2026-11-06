@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { BaseSidebar } from './base-sidebar';
@@ -59,5 +59,20 @@ describe('navegação', () => {
     }
     expect(screen.getByText('Mais')).toBeInTheDocument();
     expect(screen.queryByText('Planejamento')).not.toBeInTheDocument();
+  });
+
+  it('botão Mais anuncia o diálogo e o estado aberto', () => {
+    render(<BottomNav />);
+    const more = screen.getByRole('button', { name: 'Mais' });
+
+    expect(more).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(more).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(more);
+
+    expect(screen.getByRole('button', { name: 'Mais', hidden: true })).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
   });
 });

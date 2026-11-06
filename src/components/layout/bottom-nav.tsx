@@ -40,6 +40,8 @@ export const BottomNav = () => {
         })}
 
         <button
+          aria-haspopup="dialog"
+          aria-expanded={moreOpen}
           onClick={() => setMoreOpen(true)}
           className={cn(
             'flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
