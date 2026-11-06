@@ -4,6 +4,7 @@ import {
   useDeleteAccountsIdBillPaymentDueDate,
   usePostAccountsIdBillPayment,
 } from '@/api/generated/hooks/accounts/accounts';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { getGetOverviewCardBillsQueryKey } from '@/api/generated/hooks/overview/overview';
 import type { CardBills } from '@/api/generated/types/CardBills';
 import { BaseButton } from '@/components/clickable/base-button';
@@ -19,7 +20,10 @@ type Bill = CardBills['bills'][number];
 export const BillPaymentStatus = ({ bill }: { bill: Bill }) => {
   const queryClient = useQueryClient();
   const mutation = {
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: getGetOverviewCardBillsQueryKey() }),
+    onSuccess: () =>
+      [getGetOverviewCardBillsQueryKey(), ...freeBalanceQueryKeys()].forEach((queryKey) =>
+        queryClient.invalidateQueries({ queryKey })
+      ),
     onError: (error: unknown) => toast.error(getErrorMessage(error as CustomAxiosError)),
   };
   const markPaid = usePostAccountsIdBillPayment({ mutation });

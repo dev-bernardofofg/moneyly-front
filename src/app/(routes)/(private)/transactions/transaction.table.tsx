@@ -17,6 +17,7 @@ import { Info, PencilIcon, Trash2, TrendingDown, TrendingUp } from 'lucide-react
 import { toast } from 'sonner';
 import { ConfirmActionForm } from '@/forms/confirm-action';
 import { UpsertTransactionForm } from '@/forms/upsert-transaction.form';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { Transaction } from '@/api/generated';
 import {
   getGetTransactionsQueryKey,
@@ -40,8 +41,11 @@ export const TransactionTable = ({
     mutation: {
       onSuccess: () => {
         toast.success('Transação deletada com sucesso');
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsSummaryQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsQueryKey() });
+        [
+          getGetTransactionsSummaryQueryKey(),
+          getGetTransactionsQueryKey(),
+          ...freeBalanceQueryKeys(),
+        ].forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
       },
       onError: (error: CustomAxiosError) => {
         const errorMessage = getErrorMessage(error);

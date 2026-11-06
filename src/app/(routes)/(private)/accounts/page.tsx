@@ -10,11 +10,8 @@ import { getErrorMessage } from '@/lib/errors';
 import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { ConfirmActionForm } from '@/forms/confirm-action';
 import { UpsertAccountForm } from '@/forms/upsert-account.form';
-import {
-  getGetAccountsQueryKey,
-  useDeleteAccountsId,
-  useGetAccounts,
-} from '@/api/generated/hooks/accounts/accounts';
+import { useDeleteAccountsId, useGetAccounts } from '@/api/generated/hooks/accounts/accounts';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import type { CustomAxiosError } from '@/types/error.type';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -34,7 +31,7 @@ const AccountsPage = () => {
     mutation: {
       onSuccess: () => {
         toast.success('Conta removida');
-        queryClient.invalidateQueries({ queryKey: getGetAccountsQueryKey() });
+        freeBalanceQueryKeys().forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
       },
       onError: (error: unknown) => toast.error(getErrorMessage(error as CustomAxiosError)),
     },

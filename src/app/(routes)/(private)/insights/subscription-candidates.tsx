@@ -8,6 +8,7 @@ import {
   getGetRecurringTransactionsQueryKey,
   usePostRecurringTransactionsFromSubscription,
 } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import {
   getGetTransactionsSubscriptionsQueryKey,
   useGetTransactionsSubscriptions,
@@ -37,8 +38,11 @@ export const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidat
           )}.`
         );
         // O back tira da lista o título de recorrente ativa.
-        queryClient.invalidateQueries({ queryKey: getGetRecurringTransactionsQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetTransactionsSubscriptionsQueryKey() });
+        [
+          getGetRecurringTransactionsQueryKey(),
+          getGetTransactionsSubscriptionsQueryKey(),
+          ...freeBalanceQueryKeys(),
+        ].forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
       },
       // 409 (recorrente ativa com mesmo título) e 400 (categoria inexistente) trazem a
       // mensagem em `error` — getErrorMessage já a extrai.

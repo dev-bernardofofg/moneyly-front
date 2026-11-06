@@ -29,6 +29,7 @@ import {
   usePatchRecurringTransactionsIdDeactivate,
   usePatchRecurringTransactionsIdReactivate,
 } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { formatFrequency } from './recurring-transaction.utils';
 
 interface RecurringTransactionTableProps extends BaseTableOptions {
@@ -43,7 +44,9 @@ export const RecurringTransactionTable = ({
   onPaginationChange,
 }: RecurringTransactionTableProps) => {
   const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: getGetRecurringTransactionsQueryKey() });
+    [getGetRecurringTransactionsQueryKey(), ...freeBalanceQueryKeys()].forEach((queryKey) =>
+      queryClient.invalidateQueries({ queryKey })
+    );
 
   const { mutate: deactivate } = usePatchRecurringTransactionsIdDeactivate({
     mutation: {
