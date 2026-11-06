@@ -8,6 +8,7 @@ import { BaseInput } from '@/components/forms/base-input';
 import { BaseSelect } from '@/components/forms/base-select';
 import { DialogFormFooter } from '@/components/forms/dialog-form-footer';
 import { FN_UTILS_DATE } from '@/lib/date';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { useUpsertDialog } from '@/hooks/use-upsert-dialog';
 import { Form } from '@/components/ui/form';
 import { Category, OvertimeRecord } from '@/api/generated';
@@ -48,7 +49,11 @@ export const UpsertOvertimeForm = ({ overtimeRecord }: { overtimeRecord?: Overti
             end: FN_UTILS_DATE.toBusinessDatetimeLocal(overtimeRecord.endTime).slice(11, 16),
           }
         : UpsertOvertimeDefaultValues,
-      invalidateKeys: [getGetOvertimeQueryKey(), getGetOvertimeSummaryQueryKey()],
+      invalidateKeys: [
+        getGetOvertimeQueryKey(),
+        getGetOvertimeSummaryQueryKey(),
+        ...freeBalanceQueryKeys(),
+      ],
       errorFields: [...FIELDS],
       successMessage: {
         create: 'Hora extra registrada com sucesso',

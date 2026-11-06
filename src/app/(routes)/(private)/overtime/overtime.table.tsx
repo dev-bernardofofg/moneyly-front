@@ -5,6 +5,7 @@ import { FN_UTILS_NUMBERS } from '@/lib/number';
 import { BaseButton } from '@/components/clickable/base-button';
 import { BaseDialog } from '@/components/portals/base-dialog';
 import { BaseTable, BaseTableOptions } from '@/components/tables/base-table';
+import { freeBalanceQueryKeys } from '@/api/free-balance-query-keys';
 import { queryClient } from '@/contexts';
 import { getErrorMessage } from '@/lib/errors';
 import { CustomAxiosError } from '@/types/error.type';
@@ -48,6 +49,8 @@ export const OvertimeTable = ({
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getGetOvertimeQueryKey() });
     queryClient.invalidateQueries({ queryKey: getGetOvertimeSummaryQueryKey() });
+    // O próximo pagamento do Saldo Livre soma as horas do mês anterior.
+    freeBalanceQueryKeys().forEach((queryKey) => queryClient.invalidateQueries({ queryKey }));
   };
 
   const { mutate: remove } = useDeleteOvertimeId({
