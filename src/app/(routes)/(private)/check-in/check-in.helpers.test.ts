@@ -9,6 +9,8 @@ import {
   describeImportResult,
   describePreview,
   isException,
+  mergePreview,
+  sortCardsFirst,
   summarizeFiles,
 } from './check-in.helpers';
 import {
@@ -91,6 +93,7 @@ const previewed = (id: string, items: ImportPreviewItem[], overrides = {}) =>
     type: 'previewed',
     id,
     preview: preview(items, overrides),
+    content: 'conteudo',
   })[0]!;
 
 const rowFor = (target: ImportPreviewItem): ImportRowState => initialRowState(target);
@@ -201,6 +204,139 @@ describe('checkInReducer', () => {
 
     expect(next[0]!.status).toBe('confirmFailed');
     expect(next[1]).toBe(second);
+  });
+});
+
+describe('mergePreview', () => {
+  const choose = (file: CheckInFile, title: string, categoryId: string) =>
+    checkInReducer([file], { type: 'categoryChosen', id: file.id, title, categoryId })[0]!;
+
+  it('keeps the file content so nothing needs re-upload', () => {
+    expect(previewed('a', []).content).toBe('conteudo');
+  });
+
+  it('keeps a chosen category and takes fresh suggestions for untouched rows', () => {
+    const file = choose(
+      previewed('a', [uncategorizedItem, categorizedItem]),
+      uncategorizedItem.title,
+      MERCADO
+    );
+
+    const merged = mergePreview(
+      file,
+      preview([uncategorizedItem, { ...categorizedItem, suggestedCategoryId: OUTROS }])
+    );
+
+    expect(merged.rows[uncategorizedItem.externalId]!.categoryId).toBe(MERCADO);
+    expect(merged.rows[categorizedItem.externalId]!.categoryId).toBe(OUTROS);
+    expect(merged.status).toBe('confirming');
+  });
+
+  it('keeps the choice of creating a possible duplicate', () => {
+    const file = checkInReducer([previewed('a', [possibleDuplicate])], {
+      type: 'modeChosen',
+      id: 'a',
+      externalId: possibleDuplicate.externalId,
+      mode: 'create',
+    })[0]!;
+
+    const merged = mergePreview(file, preview([possibleDuplicate]));
+
+    expect(merged.rows[possibleDuplicate.externalId]!.mode).toBe('create');
+    expect(merged.status).toBe('confirming');
+  });
+
+  it('drops rows that are now imported', () => {
+    const file = previewed('a', [uncategorizedItem]);
+
+    const merged = mergePreview(file, preview([{ ...uncategorizedItem, status: 'imported' }]));
+
+    expect(merged.exceptionIds).toEqual([]);
+    expect(buildImportPayload(merged).items).toEqual([]);
+  });
+
+  it('turns a row into a transfer and takes it out of review', () => {
+    const file = previewed('a', [uncategorizedItem]);
+    const transfer = {
+      ...uncategorizedItem,
+      status: 'transfer' as const,
+      transferOf: transferItem.transferOf,
+    };
+
+    const merged = mergePreview(file, preview([transfer]));
+
+    expect(merged.rows[transfer.externalId]).toMatchObject({ mode: 'transfer', selected: true });
+    expect(merged.exceptionIds).toEqual([]);
+    expect(merged.status).toBe('confirming');
+    expect(buildImportPayload(merged).items[0]).toMatchObject({
+      transferOf: transferItem.transferOf!.transactionId,
+    });
+  });
+
+  it('never sends a transfer that is gone', () => {
+    const file = previewed('a', [transferItem]);
+    const gone = { ...transferItem, status: 'new' as const, transferOf: null };
+
+    const merged = mergePreview(file, preview([{ ...gone, suggestionSource: 'rule' }]));
+
+    expect(merged.rows[gone.externalId]!.mode).toBe('create');
+    expect(buildImportPayload(merged).items[0]).not.toHaveProperty('transferOf');
+    expect(buildImportPayload(merged).items[0]).toMatchObject({ categoryId: MERCADO });
+  });
+
+  it('never links to a duplicate that is gone', () => {
+    const file = previewed('a', [possibleDuplicate]);
+    const gone = { ...possibleDuplicate, status: 'new' as const, duplicateOf: null };
+
+    const merged = mergePreview(file, preview([gone]));
+
+    expect(merged.rows[gone.externalId]!.mode).toBe('create');
+    expect(buildImportPayload(merged).items[0]).not.toHaveProperty('duplicateOf');
+  });
+
+  it('keeps reviewed rows listed without asking for review again', () => {
+    const file = choose(previewed('a', [uncategorizedItem]), uncategorizedItem.title, MERCADO);
+
+    const merged = mergePreview(file, preview([uncategorizedItem]));
+
+    expect(merged.exceptionIds).toEqual([uncategorizedItem.externalId]);
+    expect(merged.status).toBe('confirming');
+  });
+
+  it('returns to review when the merge finds a new exception', () => {
+    const file = previewed('a', [categorizedItem]);
+    const duplicate = {
+      ...categorizedItem,
+      status: 'possible_duplicate' as const,
+      duplicateOf: DUPLICATE_OF,
+    };
+
+    const merged = mergePreview(file, preview([duplicate]));
+
+    expect(merged.status).toBe('review');
+    expect(merged.exceptionIds).toEqual([categorizedItem.externalId]);
+    expect(merged.rows[categorizedItem.externalId]!.mode).toBe('link');
+    expect(merged.error).toMatch(/Apareceram novas exceções/);
+  });
+});
+
+describe('sortCardsFirst', () => {
+  it('puts card files first and keeps upload order inside each group', () => {
+    const checkingA = previewed('a', [], { accountId: 'checking' });
+    const cardB = previewed('b', [], { accountId: 'card' });
+    const checkingC = previewed('c', [], { accountId: 'checking' });
+    const cardD = previewed('d', [], { accountId: 'card' });
+    const accounts = [
+      { id: 'checking', type: 'checking' },
+      { id: 'card', type: 'credit_card' },
+    ];
+
+    expect(sortCardsFirst([checkingA, cardB, checkingC, cardD], accounts)).toEqual([
+      cardB,
+      cardD,
+      checkingA,
+      checkingC,
+    ]);
   });
 });
 

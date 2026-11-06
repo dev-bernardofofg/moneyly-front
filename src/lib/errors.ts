@@ -21,7 +21,8 @@ export const getErrorMessage = (error: CustomAxiosError) => {
     return error.data.details.message;
   }
 
-  if (error?.data && 'message' in error.data) {
+  // O interceptor repassa o corpo cru: gateway devolve string, e `in` lança em não-objeto.
+  if (error?.data && typeof error.data === 'object' && 'message' in error.data) {
     return (error.data as { message: string }).message;
   }
 

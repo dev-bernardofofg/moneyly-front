@@ -21,6 +21,8 @@ export type CheckInStatus =
 export interface CheckInFile {
   id: string;
   source: File;
+  // Base64url guardado na primeira leitura: a prévia é refeita sem reenvio do arquivo.
+  content: string | null;
   status: CheckInStatus;
   preview: TransactionImportPreview | null;
   rows: Record<string, ImportRowState>;
@@ -33,7 +35,8 @@ export interface CheckInFile {
 export type CheckInAction =
   | { type: 'added'; files: CheckInFile[] }
   | { type: 'previewing'; id: string }
-  | { type: 'previewed'; id: string; preview: TransactionImportPreview }
+  | { type: 'previewed'; id: string; preview: TransactionImportPreview; content: string }
+  | { type: 'refreshed'; id: string; preview: TransactionImportPreview }
   | { type: 'previewFailed'; id: string; error: string }
   | { type: 'categoryChosen'; id: string; title: string; categoryId: string }
   | { type: 'modeChosen'; id: string; externalId: string; mode: ImportRowState['mode'] }
@@ -51,6 +54,7 @@ export const isException = (item: ImportPreviewItem, row: ImportRowState) =>
 export const createCheckInFile = (id: string, source: File): CheckInFile => ({
   id,
   source,
+  content: null,
   status: 'previewing',
   preview: null,
   rows: {},
@@ -59,7 +63,11 @@ export const createCheckInFile = (id: string, source: File): CheckInFile => ({
   result: null,
 });
 
-const applyPreview = (file: CheckInFile, preview: TransactionImportPreview): CheckInFile => {
+const applyPreview = (
+  file: CheckInFile,
+  preview: TransactionImportPreview,
+  content: string
+): CheckInFile => {
   const rows = Object.fromEntries(
     preview.items.map((item) => [item.externalId, initialRowState(item)])
   );
@@ -72,7 +80,57 @@ const applyPreview = (file: CheckInFile, preview: TransactionImportPreview): Che
       ? 'review'
       : 'ready';
 
-  return { ...file, status, preview, rows, exceptionIds, error: null };
+  return { ...file, status, preview, content, rows, exceptionIds, error: null };
+};
+
+const mergeRow = (
+  item: ImportPreviewItem,
+  previous: ImportPreviewItem | undefined,
+  row: ImportRowState | undefined
+): ImportRowState => {
+  const initial = initialRowState(item);
+  if (!previous || !row) return initial;
+
+  const categoryChosen = row.categoryId !== (previous.suggestedCategoryId ?? '');
+  // Fora de duplicada, o modo antigo pode apontar para uma ponta que já não existe.
+  const keepsMode = item.status === 'possible_duplicate' && previous.status === item.status;
+
+  return {
+    ...initial,
+    categoryId: categoryChosen ? row.categoryId : initial.categoryId,
+    mode: keepsMode ? row.mode : initial.mode,
+  };
+};
+
+// Roda durante a confirmação, sobre a prévia refeita depois de outro arquivo entrar no banco.
+export const mergePreview = (file: CheckInFile, preview: TransactionImportPreview): CheckInFile => {
+  const previousItems = new Map(file.preview?.items.map((item) => [item.externalId, item]));
+  const reviewed = new Set(file.exceptionIds);
+  const rows = Object.fromEntries(
+    preview.items.map((item) => [
+      item.externalId,
+      mergeRow(item, previousItems.get(item.externalId), file.rows[item.externalId]),
+    ])
+  );
+  const exceptionIds = preview.items
+    .filter(
+      (item) =>
+        isException(item, rows[item.externalId]!) ||
+        (item.status === 'new' && reviewed.has(item.externalId))
+    )
+    .map((item) => item.externalId);
+  const awaitsReview = exceptionIds.some((id) => !reviewed.has(id));
+
+  return {
+    ...file,
+    preview,
+    rows,
+    exceptionIds,
+    status: awaitsReview ? 'review' : 'confirming',
+    error: awaitsReview
+      ? 'Apareceram novas exceções depois de importar os outros arquivos. Revise e importe de novo.'
+      : null,
+  };
 };
 
 // Mesma descrição = mesmo estabelecimento: a escolha vale para todas as linhas iguais.
@@ -98,7 +156,9 @@ export const checkInReducer = (files: CheckInFile[], action: CheckInAction): Che
     case 'previewing':
       return update((file) => ({ ...file, status: 'previewing', error: null }));
     case 'previewed':
-      return update((file) => applyPreview(file, action.preview));
+      return update((file) => applyPreview(file, action.preview, action.content));
+    case 'refreshed':
+      return update((file) => mergePreview(file, action.preview));
     case 'previewFailed':
       return update((file) => ({
         ...file,
@@ -149,6 +209,16 @@ export const confirmableFiles = (files: CheckInFile[]) =>
     (file) =>
       ['ready', 'review', 'confirmFailed'].includes(file.status) && !hasMissingCategory(file)
   );
+
+// Com dois ou mais cartões, o pagamento no extrato só marca a fatura se o total dela já existir.
+export const sortCardsFirst = (files: CheckInFile[], accounts: { id: string; type: string }[]) => {
+  const cards = new Set(
+    accounts.filter((account) => account.type === 'credit_card').map((account) => account.id)
+  );
+  const isCard = (file: CheckInFile) => cards.has(file.preview?.accountId ?? '');
+
+  return [...files.filter(isCard), ...files.filter((file) => !isCard(file))];
+};
 
 export const buildImportPayload = (file: CheckInFile): PostTransactionsImportBody => {
   const { accountId, accountKey, through, items, bill } = file.preview!;

@@ -499,4 +499,210 @@ describe('CheckInPage', () => {
       expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent('Para revisar: 1')
     );
   });
+
+  describe('erro com corpo que não é objeto', () => {
+    const BAD_GATEWAY = { status: 502, message: 'Erro inesperado', data: '<html>502</html>' };
+
+    it('na prévia não trava o lote', async () => {
+      previewByFile = {
+        'ruim.ofx': () => Promise.reject(BAD_GATEWAY),
+        'bom.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+      };
+      renderPage();
+
+      upload('ruim.ofx', 'bom.ofx');
+
+      expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado');
+      await waitFor(() => expect(fileCard('bom.ofx').getByText('Pronto')).toBeInTheDocument());
+    });
+
+    it('na confirmação não trava o lote', async () => {
+      confirmMutate.mockRejectedValueOnce(BAD_GATEWAY);
+      previewByFile = {
+        'ruim.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+        'bom.ofx': async () => ({ data: previewOf([item({ externalId: 'acc:9' })]) }),
+      };
+      renderPage();
+
+      upload('ruim.ofx', 'bom.ofx');
+      await waitFor(() => expect(fileCard('bom.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado');
+      await waitFor(() => expect(fileCard('bom.ofx').getByText('Importado')).toBeInTheDocument());
+      expect(fileCard('ruim.ofx').getByRole('button', { name: 'Tentar novamente' })).toBeEnabled();
+    });
+  });
+
+  describe('prévia renovada antes de confirmar', () => {
+    const OTHER_SIDE = { transactionId: 'outra-ponta', accountId: INTER };
+    const asTransfer = (row: ImportPreviewItem): ImportPreviewItem => ({
+      ...row,
+      status: 'transfer',
+      transferOf: OTHER_SIDE,
+    });
+
+    it('transferência entre arquivos do mesmo lote é detectada', async () => {
+      const incoming = item({ externalId: 'nu:1', type: 'income', title: 'PIX Inter' });
+      previewByFile = {
+        'inter.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+        'nubank.ofx': vi
+          .fn()
+          .mockResolvedValueOnce({ data: previewOf([incoming], { accountId: NUBANK }) })
+          .mockResolvedValue({ data: previewOf([asTransfer(incoming)], { accountId: NUBANK }) }),
+      };
+      accounts = [account({}), account({ id: NUBANK, name: 'Nubank', isDefault: false })];
+      renderPage();
+
+      upload('inter.ofx', 'nubank.ofx');
+      await waitFor(() => expect(fileCard('nubank.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      await screen.findByText('Saldo Livre depois');
+      const refreshed = previewMutate.mock.calls[2]![0].data;
+      expect(refreshed).toEqual({ file: contentOf('nubank.ofx'), accountId: NUBANK });
+      const [row] = confirmMutate.mock.calls[1]![0].data.items;
+      expect(row).toMatchObject({ transferOf: OTHER_SIDE.transactionId });
+      expect(row).not.toHaveProperty('categoryId');
+    });
+
+    it('o primeiro arquivo do lote não repete a prévia', async () => {
+      previewByFile = { 'extrato.ofx': async () => ({ data: previewOf([CATEGORIZED]) }) };
+      renderPage();
+
+      upload('extrato.ofx');
+      await waitFor(() => expect(fileCard('extrato.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      await screen.findByText('Saldo Livre depois');
+      expect(previewMutate).toHaveBeenCalledTimes(1);
+    });
+
+    it('nova tentativa repete a prévia e não envia transferOf vencido', async () => {
+      confirmMutate.mockRejectedValueOnce({ data: { error: 'Falha parcial' } });
+      const transfer = asTransfer(item({ externalId: 'acc:7', title: 'PIX Nubank' }));
+      previewByFile = {
+        'extrato.ofx': vi
+          .fn()
+          .mockResolvedValueOnce({ data: previewOf([transfer]) })
+          .mockResolvedValue({ data: previewOf([{ ...transfer, status: 'imported' }]) }),
+      };
+      renderPage();
+
+      upload('extrato.ofx');
+      await waitFor(() => expect(fileCard('extrato.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      fireEvent.click(await screen.findByRole('button', { name: 'Tentar novamente' }));
+
+      await screen.findByText('Saldo Livre depois');
+      expect(previewMutate).toHaveBeenCalledTimes(2);
+      expect(previewMutate.mock.calls[1]![0].data).toEqual({
+        file: contentOf('extrato.ofx'),
+        accountId: INTER,
+      });
+      expect(confirmMutate.mock.calls[0]![0].data.items).toHaveLength(1);
+      expect(confirmMutate.mock.calls[1]![0].data.items).toEqual([]);
+    });
+
+    it('falha ao repetir a prévia mantém a revisão e segue os demais', async () => {
+      previewByFile = {
+        'a.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+        'b.ofx': vi
+          .fn()
+          .mockResolvedValueOnce({ data: previewOf([UNCATEGORIZED]) })
+          .mockRejectedValueOnce({ data: { error: 'Prévia indisponível' } })
+          .mockResolvedValue({ data: previewOf([UNCATEGORIZED]) }),
+        'c.ofx': async () => ({ data: previewOf([item({ externalId: 'acc:8' })]) }),
+      };
+      renderPage();
+
+      upload('a.ofx', 'b.ofx', 'c.ofx');
+      await waitFor(() => expect(fileCard('c.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      expect(await screen.findByRole('alert')).toHaveTextContent('Prévia indisponível');
+      await waitFor(() => expect(fileCard('c.ofx').getByText('Importado')).toBeInTheDocument());
+      expect(fileCard('b.ofx').getByText('BOX CHINA')).toBeInTheDocument();
+      expect(confirmMutate).toHaveBeenCalledTimes(2);
+
+      fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }));
+
+      await screen.findByText('Saldo Livre depois');
+      expect(confirmMutate).toHaveBeenCalledTimes(3);
+    });
+
+    it('nova exceção volta para revisão sem parar os demais', async () => {
+      const row = item({ externalId: 'acc:7', title: 'Mercadinho' });
+      const duplicate = {
+        ...row,
+        status: 'possible_duplicate' as const,
+        duplicateOf: DUPLICATE_OF,
+      };
+      previewByFile = {
+        'a.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+        'b.ofx': vi
+          .fn()
+          .mockResolvedValueOnce({ data: previewOf([row]) })
+          .mockResolvedValue({ data: previewOf([duplicate]) }),
+        'c.ofx': async () => ({ data: previewOf([item({ externalId: 'acc:8' })]) }),
+      };
+      renderPage();
+
+      upload('a.ofx', 'b.ofx', 'c.ofx');
+      await waitFor(() => expect(fileCard('c.ofx').getByText('Pronto')).toBeInTheDocument());
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      await waitFor(() => expect(fileCard('c.ofx').getByText('Importado')).toBeInTheDocument());
+      await waitFor(() => expect(fileCard('b.ofx').getByText('Revisar')).toBeInTheDocument());
+      expect(fileCard('b.ofx').getByRole('alert')).toHaveTextContent('Apareceram novas exceções');
+      expect(fileCard('b.ofx').getByText('Mercadinho')).toBeInTheDocument();
+      expect(confirmMutate).toHaveBeenCalledTimes(2);
+      expect(screen.queryByText('Saldo Livre depois')).not.toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+      await screen.findByText('Saldo Livre depois');
+      expect(confirmMutate).toHaveBeenCalledTimes(3);
+      expect(confirmMutate.mock.calls[2]![0].data.items[0]).toMatchObject({
+        duplicateOf: DUPLICATE_OF,
+      });
+    });
+  });
+
+  it('confirma cartões antes das contas correntes', async () => {
+    const CARD = '44444444-4444-4444-4444-444444444444';
+    accounts = [
+      account({}),
+      account({ id: CARD, name: 'Cartão', type: 'credit_card', isDefault: false }),
+    ];
+    previewByFile = {
+      'extrato.ofx': async () => ({ data: previewOf([CATEGORIZED]) }),
+      'fatura.pdf': async () => ({
+        data: previewOf([item({ externalId: 'card:1' })], { accountId: CARD }),
+      }),
+    };
+    renderPage();
+
+    upload('extrato.ofx', 'fatura.pdf');
+    await waitFor(() => expect(fileCard('fatura.pdf').getByText('Pronto')).toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+
+    await screen.findByText('Saldo Livre depois');
+    expect(confirmMutate.mock.calls.map(([{ data }]) => data.accountId)).toEqual([CARD, INTER]);
+  });
+
+  it('duplo clique em Importar confirma uma vez', async () => {
+    previewByFile = { 'extrato.ofx': async () => ({ data: previewOf([CATEGORIZED]) }) };
+    renderPage();
+
+    upload('extrato.ofx');
+    await waitFor(() => expect(fileCard('extrato.ofx').getByText('Pronto')).toBeInTheDocument());
+    const button = screen.getByRole('button', { name: 'Importar' });
+    fireEvent.click(button);
+    fireEvent.click(button);
+
+    await screen.findByText('Saldo Livre depois');
+    expect(confirmMutate).toHaveBeenCalledTimes(1);
+  });
 });

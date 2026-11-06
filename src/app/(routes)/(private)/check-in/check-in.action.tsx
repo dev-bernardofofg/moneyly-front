@@ -22,6 +22,8 @@ import {
   confirmableFiles,
   createCheckInFile,
   isSupportedFile,
+  mergePreview,
+  sortCardsFirst,
 } from './check-in.helpers';
 import { type ImportRowState, toBase64Url } from './import-statement.helpers';
 
@@ -59,15 +61,15 @@ export const useCheckInAction = () => {
     balance !== null &&
     files.every((file) => file.status === 'done' || file.status === 'failed');
 
-  const previewFile = async (id: string, source: File, accountId?: string) => {
+  const previewFile = async ({ id, source, content }: CheckInFile, accountId?: string) => {
     if (!isSupportedFile(source.name)) {
       dispatch({ type: 'previewFailed', id, error: 'Envie um arquivo .ofx ou .pdf.' });
       return;
     }
     try {
-      const file = toBase64Url(await source.arrayBuffer());
+      const file = content ?? toBase64Url(await source.arrayBuffer());
       const { data } = await preview.mutateAsync({ data: { file, accountId } });
-      dispatch({ type: 'previewed', id, preview: data });
+      dispatch({ type: 'previewed', id, preview: data, content: file });
     } catch (error) {
       dispatch({ type: 'previewFailed', id, error: messageOf(error) });
     }
@@ -76,12 +78,12 @@ export const useCheckInAction = () => {
   const addFiles = async (selected: File[]) => {
     const added = selected.map((source) => createCheckInFile(String(nextId.current++), source));
     dispatch({ type: 'added', files: added });
-    for (const { id, source } of added) await previewFile(id, source);
+    for (const file of added) await previewFile(file);
   };
 
-  const chooseAccount = async ({ id, source }: CheckInFile, accountId: string) => {
-    dispatch({ type: 'previewing', id });
-    await previewFile(id, source, accountId);
+  const chooseAccount = async (file: CheckInFile, accountId: string) => {
+    dispatch({ type: 'previewing', id: file.id });
+    await previewFile(file, accountId);
   };
 
   const invalidateImportedData = () =>
@@ -95,26 +97,42 @@ export const useCheckInAction = () => {
 
   const confirmFiles = async (targets: CheckInFile[]) => {
     setImporting(true);
-    // Numa nova tentativa o saldo já pode ter mudado: "antes" é sempre o da primeira leitura.
-    const before = balance ? balance.before : await readFreeBalance();
+    try {
+      // Numa nova tentativa o saldo já pode ter mudado: "antes" é sempre o da primeira leitura.
+      const before = balance ? balance.before : await readFreeBalance();
 
-    let confirmedAny = false;
-    for (const file of targets) {
-      dispatch({ type: 'confirming', id: file.id });
-      try {
-        const { data } = await confirm.mutateAsync({ data: buildImportPayload(file) });
-        dispatch({ type: 'confirmed', id: file.id, result: data });
-        confirmedAny = true;
-      } catch (error) {
-        dispatch({ type: 'confirmFailed', id: file.id, error: messageOf(error) });
+      let confirmedAny = false;
+      for (const [index, target] of sortCardsFirst(targets, accounts).entries()) {
+        const { id } = target;
+        dispatch({ type: 'confirming', id });
+        try {
+          let file = target;
+          // A prévia só enxerga o banco: transferência entre arquivos do lote só aparece depois
+          // que a outra ponta entra, e confirmação parcial invalida transferOf e duplicateOf.
+          if (index > 0 || balance !== null || target.status === 'confirmFailed') {
+            const { data } = await preview.mutateAsync({
+              data: { file: target.content!, accountId: target.preview!.accountId! },
+            });
+            dispatch({ type: 'refreshed', id, preview: data });
+            file = mergePreview(target, data);
+            if (file.status === 'review') continue;
+          }
+
+          const { data } = await confirm.mutateAsync({ data: buildImportPayload(file) });
+          dispatch({ type: 'confirmed', id, result: data });
+          confirmedAny = true;
+        } catch (error) {
+          dispatch({ type: 'confirmFailed', id, error: messageOf(error) });
+        }
       }
-    }
 
-    if (confirmedAny) {
-      invalidateImportedData();
-      setBalance({ before, after: await readFreeBalance() });
+      if (confirmedAny) {
+        invalidateImportedData();
+        setBalance({ before, after: await readFreeBalance() });
+      }
+    } finally {
+      setImporting(false);
     }
-    setImporting(false);
   };
 
   return {
