@@ -468,10 +468,37 @@ describe('CheckInPage', () => {
     upload('extrato.ofx');
     await waitFor(() => expect(fileCard('extrato.ofx').getByText('Pronto')).toBeInTheDocument());
     fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
-    await screen.findByText('Saldo Livre depois');
+    await screen.findByRole('heading', { name: 'Check-in concluído' });
 
     return view;
   };
+
+  it('tela final leva o foco para o título', async () => {
+    await finishCheckIn();
+
+    expect(screen.getByRole('heading', { name: 'Check-in concluído' })).toHaveFocus();
+  });
+
+  it('tela final anuncia os valores no live region', async () => {
+    readForecast.mockResolvedValueOnce(forecastOf(10000)).mockResolvedValueOnce(forecastOf(7500));
+
+    const { container } = await finishCheckIn();
+
+    const live = container.querySelector('[aria-live="polite"]');
+    expect(live).toHaveTextContent(/Check-in concluído/);
+    expect(live).toHaveTextContent(/Saldo Livre antes R\$\s100,00/);
+    expect(live).toHaveTextContent(/depois R\$\s75,00/);
+  });
+
+  it('live region avisa quando o saldo não pôde ser atualizado', async () => {
+    readForecast.mockResolvedValueOnce(forecastOf(10000)).mockRejectedValueOnce(new Error('off'));
+
+    const { container } = await finishCheckIn();
+
+    expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent(
+      /não foi possível atualizar o Saldo Livre/
+    );
+  });
 
   it('tela final usa cores que passam no contraste', async () => {
     const { container } = await finishCheckIn();
@@ -490,6 +517,34 @@ describe('CheckInPage', () => {
     upload('extrato.ofx');
 
     expect(await screen.findByText(/− R\$\s25,00/)).toHaveClass('text-expense-strong');
+  });
+
+  it('enquanto lê, o campo de arquivo continua focável e ignora novos arquivos', async () => {
+    let finishPreview: (value: { data: TransactionImportPreview }) => void = () => {};
+    previewByFile = {
+      'lento.ofx': () =>
+        new Promise((resolve) => {
+          finishPreview = resolve;
+        }),
+    };
+    renderPage();
+    const input = screen.getByLabelText(FILE_LABEL);
+
+    input.focus();
+    upload('lento.ofx');
+    await waitFor(() => expect(previewMutate).toHaveBeenCalledTimes(1));
+
+    expect(input).not.toBeDisabled();
+    expect(input).toHaveAttribute('aria-disabled', 'true');
+    expect(input).toHaveFocus();
+    expect(fireEvent.click(input)).toBe(false);
+
+    upload('outro.ofx');
+    expect(screen.queryByRole('listitem', { name: 'Arquivo outro.ofx' })).not.toBeInTheDocument();
+
+    finishPreview({ data: previewOf([CATEGORIZED]) });
+    await waitFor(() => expect(input).toHaveAttribute('aria-disabled', 'false'));
+    expect(fireEvent.click(input)).toBe(true);
   });
 
   it('mostra contas com frescor e link para corrigir saldo', () => {

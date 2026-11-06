@@ -25,8 +25,20 @@ import { CheckInFileCard } from './check-in-review';
 
 const money = FN_UTILS_NUMBERS.formatCurrency;
 
-const describeProgress = (files: CheckInFile[], importing: boolean, finished: boolean) => {
-  if (finished) return 'Check-in concluído.';
+const describeBalance = ({ before, after }: FreeBalanceChange) => {
+  if (after === null) return 'Importação concluída, mas não foi possível atualizar o Saldo Livre.';
+  return before === null
+    ? `Saldo Livre depois ${money(after)}.`
+    : `Saldo Livre antes ${money(before)}, depois ${money(after)}.`;
+};
+
+const describeProgress = (
+  files: CheckInFile[],
+  importing: boolean,
+  finished: boolean,
+  balance: FreeBalanceChange | null
+) => {
+  if (finished && balance) return `Check-in concluído. ${describeBalance(balance)}`;
   if (importing) return 'Importando arquivos...';
   if (files.some((file) => file.status === 'previewing')) return 'Lendo arquivos...';
   if (files.length === 0) return '';
@@ -52,8 +64,11 @@ interface FinalSummaryProps {
   onRestart: () => void;
 }
 
+// Identidade estável: o React só chama este ref ao montar a tela final.
+const focusTitle = (title: HTMLHeadingElement | null) => title?.focus();
+
 const FinalSummary = ({ balance, files, onRestart }: FinalSummaryProps) => (
-  <Section Icon={CircleCheck} title="Check-in concluído">
+  <Section Icon={CircleCheck} title="Check-in concluído" titleRef={focusTitle}>
     <div className="space-y-4 py-2">
       <dl className="space-y-1 rounded-xl bg-primary/10 p-4">
         {balance.before !== null && (
@@ -108,7 +123,7 @@ const FileDropZone = ({ busy, onFiles }: FileDropZoneProps) => {
     // Limpar o value esvazia o FileList; copiar antes permite reenviar o mesmo arquivo.
     const selected = Array.from(event.target.files ?? []);
     event.target.value = '';
-    onFiles(selected);
+    if (!busy) onFiles(selected);
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -139,7 +154,11 @@ const FileDropZone = ({ busy, onFiles }: FileDropZoneProps) => {
         type="file"
         multiple
         accept=".ofx,.pdf,application/x-ofx,application/pdf"
-        disabled={busy}
+        // disabled tiraria o foco do campo: ocupado, ele só deixa de abrir o seletor.
+        aria-disabled={busy}
+        onClick={(event) => {
+          if (busy) event.preventDefault();
+        }}
         onChange={handleInput}
         className="sr-only"
       />
@@ -236,7 +255,7 @@ const CheckInPage = () => {
       <div className="min-h-0 overflow-y-auto">
         <div className="mx-auto w-full max-w-3xl space-y-4 p-4 pb-20 md:pb-4">
           <p aria-live="polite" className="min-h-5 text-sm text-muted-foreground">
-            {describeProgress(files, importing, finished)}
+            {describeProgress(files, importing, finished, balance)}
           </p>
 
           {accountsLoading ? (

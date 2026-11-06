@@ -12,6 +12,7 @@ interface SectionProps {
   className?: string;
   classNameHeader?: string;
   classNameContent?: string;
+  titleRef?: React.Ref<HTMLHeadingElement>;
 }
 
 export const Section = ({
@@ -21,6 +22,7 @@ export const Section = ({
   className,
   classNameHeader,
   classNameContent,
+  titleRef,
 }: SectionProps) => {
   return (
     <StaggeredFade className="bg-slate-100 dark:bg-slate-800 rounded-lg dark:border-slate-700 border border-slate-200 size-full">
@@ -28,7 +30,11 @@ export const Section = ({
         <CardHeader
           className={cn('border-b border-slate-200 dark:border-slate-700', classNameHeader)}
         >
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle
+            ref={titleRef}
+            tabIndex={titleRef ? -1 : undefined}
+            className="flex items-center gap-2 outline-hidden"
+          >
             <Icon className="size-5 text-primary-strong" />
             <span className="text-lg font-bold">{title}</span>
           </CardTitle>
