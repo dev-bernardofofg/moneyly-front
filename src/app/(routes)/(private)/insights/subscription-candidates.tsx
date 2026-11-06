@@ -6,7 +6,6 @@ import { getErrorMessage } from '@/lib/errors';
 import { FN_UTILS_NUMBERS } from '@/lib/number';
 import {
   getGetRecurringTransactionsQueryKey,
-  useGetRecurringTransactions,
   usePostRecurringTransactionsFromSubscription,
 } from '@/api/generated/hooks/recurring-transactions/recurring-transactions';
 import {
@@ -15,7 +14,6 @@ import {
 } from '@/api/generated/hooks/transactions/transactions';
 import type { SubscriptionCandidate } from '@/api/generated/types/SubscriptionCandidate';
 import { CustomAxiosError } from '@/types/error.type';
-import { FN_UTILS_STRING } from '@/lib/string';
 import { useQueryClient } from '@tanstack/react-query';
 import { Repeat } from 'lucide-react';
 import { toast } from 'sonner';
@@ -38,8 +36,7 @@ export const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidat
             'dd/MM'
           )}.`
         );
-        // Invalidar recorrentes faz a recém-criada entrar no filtro de títulos da
-        // Section — o candidato some da lista na hora, mesmo que o detector ainda o retorne.
+        // O back tira da lista o título de recorrente ativa.
         queryClient.invalidateQueries({ queryKey: getGetRecurringTransactionsQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetTransactionsSubscriptionsQueryKey() });
       },
@@ -92,19 +89,6 @@ export const SubscriptionRow = ({ candidate }: { candidate: SubscriptionCandidat
 
 /** Candidatos a assinatura ainda não cadastrados como recorrência. */
 export const useSubscriptionCandidates = () => {
-  const { data, isLoading: isLoadingCandidates } = useGetTransactionsSubscriptions();
-  // Candidato cujo título normalizado bate com recorrente ativa já foi convertido
-  // (o back 409aria) — a heurística do detector ainda o lista porque as transações
-  // antigas não ganham vínculo retroativo. Escondemos no client.
-  const { data: recurringData, isLoading: isLoadingRecurring } = useGetRecurringTransactions({
-    limit: 100,
-  });
-
-  const activeRecurringTitles = new Set(
-    (recurringData?.data ?? []).map((r) => FN_UTILS_STRING.normalizeTitle(r.title))
-  );
-  const candidates = (data?.data ?? []).filter(
-    (candidate) => !activeRecurringTitles.has(FN_UTILS_STRING.normalizeTitle(candidate.title))
-  );
-  return { candidates, isLoading: isLoadingCandidates || isLoadingRecurring };
+  const { data, isLoading } = useGetTransactionsSubscriptions();
+  return { candidates: data?.data ?? [], isLoading };
 };
