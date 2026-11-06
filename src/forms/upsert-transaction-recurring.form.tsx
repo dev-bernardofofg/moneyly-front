@@ -250,7 +250,7 @@ export const UpsertTransactionRecurringForm = ({
               control={form.control}
               name="startDate"
               label="Data de início"
-              description="Vazio = criar primeira parcela agora"
+              description="Vazio = começa hoje"
             />
           )}
           <div className={cn('grid gap-2', hasConditionalField ? 'grid-cols-2' : 'grid-cols-1')}>
