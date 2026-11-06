@@ -2439,6 +2439,11 @@ export const PostTransactionsImportBodyBillPaymentsItemType = {
 } as const;
 
 export type PostTransactionsImportBodyBillPaymentsItem = {
+  /**
+   * @minLength 1
+   * @maxLength 200
+   */
+  externalId: string;
   type: PostTransactionsImportBodyBillPaymentsItemType;
   /**
    * @maximum 999999999

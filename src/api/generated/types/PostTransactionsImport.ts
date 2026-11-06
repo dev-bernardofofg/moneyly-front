@@ -144,6 +144,12 @@ export type PostTransactionsImportMutationRequest = {
    */
   billPayments?: {
     /**
+     * @minLength 1
+     * @maxLength 200
+     * @type string
+     */
+    externalId: string;
+    /**
      * @type string
      */
     type: BillPaymentsTypeEnumKey;

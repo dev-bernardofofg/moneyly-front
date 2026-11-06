@@ -242,10 +242,10 @@ export const buildImportPayload = (file: CheckInFile): PostTransactionsImportBod
             : { categoryId: row.categoryId }),
       };
     }),
-    // Pagamento de fatura marca a fatura como paga mesmo sem virar transação.
+    // Pagamento de fatura não vira transação: marca a fatura e, na conta corrente, sai do saldo.
     billPayments: items
       .filter((item) => item.status === 'bill_payment')
-      .map(({ type, amount, date }) => ({ type, amount, date })),
+      .map(({ externalId, type, amount, date }) => ({ externalId, type, amount, date })),
     ...(bill && { billDueDate: bill.dueDate }),
   };
 };

@@ -384,7 +384,9 @@ describe('buildImportPayload', () => {
       accountKey: '077:123',
       through: '2026-11-01T03:00:00.000Z',
       billDueDate: dueDate,
-      billPayments: [{ type: 'income', amount: 382200, date: billPayment.date }],
+      billPayments: [
+        { externalId: 'acc:5', type: 'income', amount: 382200, date: billPayment.date },
+      ],
     });
     expect(payload.items.map((row) => row.externalId)).toEqual(['acc:1', 'acc:3', 'acc:4']);
     expect(payload.items[0]).toMatchObject({ categoryId: MERCADO });
