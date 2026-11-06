@@ -24,26 +24,13 @@ import {
 } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IconType } from '@/lib/utils';
-import {
-  ArrowRightLeft,
-  ChevronUp,
-  Clock,
-  Goal,
-  Home,
-  Lightbulb,
-  LogOut,
-  Moon,
-  RefreshCcw,
-  Sun,
-  TableProperties,
-  WalletCards,
-  User,
-} from 'lucide-react';
+import { ChevronUp, LogOut, Moon, Sun, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/elements/logo';
 import { InstallPWAButton } from '@/components/layout/install-pwa-button';
+import { MORE_NAV_ITEMS, PRIMARY_NAV_ITEMS } from '@/components/layout/navigation';
 
 interface SidebarItemProps {
   href: string;
@@ -112,17 +99,15 @@ export const BaseSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent className="p-2">
-        <SidebarGroupCustom label="Início">
-          <SidebarItem Icon={Home} href="/dashboard" title="Dashboard" />
-          <SidebarItem Icon={Lightbulb} href="/insights" title="Insights" />
+        <SidebarGroupCustom label="Rotina">
+          {PRIMARY_NAV_ITEMS.map(({ href, icon, label }) => (
+            <SidebarItem key={href} Icon={icon} href={href} title={label} />
+          ))}
         </SidebarGroupCustom>
-        <SidebarGroupCustom label="Gestão">
-          <SidebarItem Icon={ArrowRightLeft} href="/transactions" title="Transações" />
-          <SidebarItem Icon={RefreshCcw} href="/recurring-transactions" title="Recorrentes" />
-          <SidebarItem Icon={Clock} href="/overtime" title="Horas Extras" />
-          <SidebarItem Icon={Goal} href="/planner" title="Planejamento" />
-          <SidebarItem Icon={WalletCards} href="/accounts" title="Contas e cartões" />
-          <SidebarItem Icon={TableProperties} href="/categories" title="Categorias" />
+        <SidebarGroupCustom label="Mais">
+          {MORE_NAV_ITEMS.map(({ href, icon, label }) => (
+            <SidebarItem key={href} Icon={icon} href={href} title={label} />
+          ))}
         </SidebarGroupCustom>
       </SidebarContent>
       <div className="p-2">

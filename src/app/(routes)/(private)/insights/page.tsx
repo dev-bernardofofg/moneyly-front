@@ -17,7 +17,7 @@ const InsightsPage = () => {
 
   return (
     <Fade>
-      <Header title="Insights" />
+      <Header title="Gastos" />
       <StaggeredFade variant="page" className="grid content-start gap-2 overflow-y-auto p-1">
         <PeriodNavigatorWrapper />
         <FreeBalanceBreakdownSection

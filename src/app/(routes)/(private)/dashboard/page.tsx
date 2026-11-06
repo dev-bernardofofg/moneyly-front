@@ -55,7 +55,7 @@ const DashboardPage = () => {
   return (
     <Fade>
       <Header
-        title="Dashboard"
+        title="Início"
         actions={[
           <BaseDialog
             key="new-transaction-dialog"

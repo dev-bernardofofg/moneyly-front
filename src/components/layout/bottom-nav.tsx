@@ -2,41 +2,13 @@
 
 import { useAuth } from '@/contexts/auth-provider';
 import { cn } from '@/lib/utils';
-import {
-  ArrowRightLeft,
-  Clock,
-  Goal,
-  Home,
-  Lightbulb,
-  LogOut,
-  Moon,
-  MoreHorizontal,
-  RefreshCcw,
-  Sun,
-  TableProperties,
-  WalletCards,
-  User,
-} from 'lucide-react';
+import { LogOut, Moon, MoreHorizontal, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { MORE_NAV_ITEMS, PRIMARY_NAV_ITEMS } from '@/components/layout/navigation';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-
-const NAV_ITEMS = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/transactions', icon: ArrowRightLeft, label: 'Transações' },
-  { href: '/planner', icon: Goal, label: 'Planejamento' },
-  { href: '/insights', icon: Lightbulb, label: 'Insights' },
-] as const;
-
-const MORE_ITEMS = [
-  { href: '/recurring-transactions', icon: RefreshCcw, label: 'Recorrentes' },
-  { href: '/overtime', icon: Clock, label: 'Horas Extras' },
-  { href: '/accounts', icon: WalletCards, label: 'Contas e cartões' },
-  { href: '/categories', icon: TableProperties, label: 'Categorias' },
-  { href: '/profile', icon: User, label: 'Perfil' },
-] as const;
 
 export const BottomNav = () => {
   const pathname = usePathname();
@@ -45,12 +17,12 @@ export const BottomNav = () => {
   const { signOut } = useAuth();
   const [moreOpen, setMoreOpen] = useState(false);
 
-  const isMoreActive = MORE_ITEMS.some((item) => pathname === item.href);
+  const isMoreActive = MORE_NAV_ITEMS.some((item) => pathname === item.href);
 
   return (
     <>
       <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-16 rounded-t-xl items-center border-t border-border bg-background md:hidden">
-        {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
+        {PRIMARY_NAV_ITEMS.map(({ href, icon: Icon, label }) => {
           const active = pathname === href;
           return (
             <Link
@@ -85,7 +57,7 @@ export const BottomNav = () => {
             <SheetTitle>Mais opções</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col gap-1">
-            {MORE_ITEMS.map(({ href, icon: Icon, label }) => (
+            {MORE_NAV_ITEMS.map(({ href, icon: Icon, label }) => (
               <button
                 key={href}
                 onClick={() => {
