@@ -4,15 +4,25 @@ import { BaseDialog } from '@/components/portals/base-dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { LucideIcon, Plus } from 'lucide-react';
+import Link from 'next/link';
 import { ReactNode, useState } from 'react';
 
-export interface FabAction {
+interface FabBaseAction {
   icon: LucideIcon;
   label: string;
+}
+
+interface FabDialogAction extends FabBaseAction {
   dialogTitle: string;
   dialogDescription?: string;
   children: ReactNode;
 }
+
+interface FabLinkAction extends FabBaseAction {
+  href: string;
+}
+
+export type FabAction = FabDialogAction | FabLinkAction;
 
 // nav: 64px + gap: 8px = bottom-[72px] pro botão
 // itens começam acima do botão: 72 + 56 (size-14) + 12 (gap-3) = 140px
@@ -45,22 +55,35 @@ export const FabSpeedDial = ({ actions }: { actions: FabAction[] }) => {
             <span className="rounded-md border border-border bg-background px-2.5 py-1 text-sm font-medium shadow-md">
               {action.label}
             </span>
-            <BaseDialog
-              title={action.dialogTitle}
-              description={action.dialogDescription}
-              trigger={
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="size-12 rounded-full shadow-md"
-                  onClick={() => setOpen(false)}
-                >
+            {'href' in action ? (
+              <Button
+                asChild
+                size="icon"
+                variant="secondary"
+                className="size-12 rounded-full shadow-md"
+              >
+                <Link href={action.href} aria-label={action.label} onClick={() => setOpen(false)}>
                   <action.icon className="size-5" />
-                </Button>
-              }
-            >
-              {action.children}
-            </BaseDialog>
+                </Link>
+              </Button>
+            ) : (
+              <BaseDialog
+                title={action.dialogTitle}
+                description={action.dialogDescription}
+                trigger={
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="size-12 rounded-full shadow-md"
+                    onClick={() => setOpen(false)}
+                  >
+                    <action.icon className="size-5" />
+                  </Button>
+                }
+              >
+                {action.children}
+              </BaseDialog>
+            )}
           </div>
         ))}
       </div>

@@ -21,9 +21,11 @@ import { TransactionTable } from '@/app/(routes)/(private)/transactions/transact
 import { TRANSACTION_STATS_INTERATOR, useTransactionsAction } from './transaction.action';
 import { ExportCsvButton } from './export-csv-button';
 import { ExportCsvForm } from './export-csv-form';
-import { ImportStatementForm } from './import-statement.form';
 import { AccountFilter } from './account-filter';
+import { buttonVariants } from '@/components/ui/button';
+import { ROUTES } from '@/lib/routes';
 import { Download, FileUp, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 const TransactionsPage = () => {
   const {
@@ -62,14 +64,13 @@ const TransactionsPage = () => {
           </Select>,
           <AccountFilter key="account-filter" value={accountFilter} onChange={setAccountFilter} />,
           <ExportCsvButton key="export-csv" />,
-          <BaseDialog
-            key="import-statement-dialog"
-            title="Importar extrato"
-            description="Envie o OFX do seu banco, revise e confirme as transações."
-            trigger={<BaseButton variant="outline">Importar extrato</BaseButton>}
+          <Link
+            key="check-in-link"
+            href={ROUTES.CHECK_IN}
+            className={buttonVariants({ variant: 'outline' })}
           >
-            <ImportStatementForm />
-          </BaseDialog>,
+            Fazer check-in
+          </Link>,
           <BaseDialog
             key="new-transaction-dialog"
             title="Nova transação"
@@ -113,10 +114,8 @@ const TransactionsPage = () => {
           },
           {
             icon: FileUp,
-            label: 'Importar extrato',
-            dialogTitle: 'Importar extrato',
-            dialogDescription: 'Envie o OFX do seu banco, revise e confirme as transações.',
-            children: <ImportStatementForm />,
+            label: 'Fazer check-in',
+            href: ROUTES.CHECK_IN,
           },
           {
             icon: Plus,

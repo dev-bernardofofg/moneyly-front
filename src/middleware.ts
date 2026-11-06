@@ -12,6 +12,7 @@ export function middleware(request: NextRequest) {
 
   const privateRoutes = [
     '/dashboard',
+    '/check-in',
     '/insights',
     '/categories',
     '/transactions',

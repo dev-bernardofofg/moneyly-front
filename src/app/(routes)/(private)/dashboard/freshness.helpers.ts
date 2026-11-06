@@ -11,7 +11,7 @@ const daysSince = (value: string, today: Date) => {
   return Math.max(0, Math.round((toUtcDay(today) - toUtcDay(value)) / MS_PER_DAY));
 };
 
-const describeAccount = (account: Account, today: Date) => {
+export const describeAccount = (account: Account, today: Date) => {
   if (!account.dataThrough) return `${account.name} sem dados`;
   if (account.freshness === 'fresh') return `${account.name} em dia`;
 
