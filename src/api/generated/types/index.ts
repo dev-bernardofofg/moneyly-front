@@ -837,6 +837,7 @@ export type {
   ItemsSuggestionSourceEnumKey,
   ItemsTypeEnumKey,
   TransactionImportPreview,
+  TransactionImportPreviewRequiredAccountTypeEnumKey,
 } from './TransactionImportPreview.ts';
 export type { TransactionImportResult } from './TransactionImportResult.ts';
 export type { TransactionListSummary } from './TransactionListSummary.ts';
@@ -1046,3 +1047,4 @@ export { transactionTypeEnum } from './Transaction.ts';
 export { itemsStatusEnum } from './TransactionImportPreview.ts';
 export { itemsSuggestionSourceEnum } from './TransactionImportPreview.ts';
 export { itemsTypeEnum } from './TransactionImportPreview.ts';
+export { transactionImportPreviewRequiredAccountTypeEnum } from './TransactionImportPreview.ts';

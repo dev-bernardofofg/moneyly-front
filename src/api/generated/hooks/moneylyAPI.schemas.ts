@@ -396,6 +396,18 @@ export interface SubscriptionCandidate {
 /**
  * @nullable
  */
+export type TransactionImportPreviewRequiredAccountType =
+  | (typeof TransactionImportPreviewRequiredAccountType)[keyof typeof TransactionImportPreviewRequiredAccountType]
+  | null;
+
+export const TransactionImportPreviewRequiredAccountType = {
+  checking: 'checking',
+  credit_card: 'credit_card',
+} as const;
+
+/**
+ * @nullable
+ */
 export type TransactionImportPreviewBill = {
   dueDate: string;
   /** @nullable */
@@ -459,6 +471,8 @@ export interface TransactionImportPreview {
   accountId: string | null;
   needsAccount: boolean;
   accountKey: string;
+  /** @nullable */
+  requiredAccountType: TransactionImportPreviewRequiredAccountType;
   through: string;
   /** @nullable */
   bill: TransactionImportPreviewBill;

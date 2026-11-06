@@ -3,6 +3,14 @@
  * Do not edit manually.
  */
 
+export const transactionImportPreviewRequiredAccountTypeEnum = {
+  checking: 'checking',
+  credit_card: 'credit_card',
+} as const;
+
+export type TransactionImportPreviewRequiredAccountTypeEnumKey =
+  (typeof transactionImportPreviewRequiredAccountTypeEnum)[keyof typeof transactionImportPreviewRequiredAccountTypeEnum];
+
 export const itemsTypeEnum = {
   income: 'income',
   expense: 'expense',
@@ -42,6 +50,10 @@ export type TransactionImportPreview = {
    * @type string
    */
   accountKey: string;
+  /**
+   * @type string
+   */
+  requiredAccountType: TransactionImportPreviewRequiredAccountTypeEnumKey | null;
   /**
    * @type string
    */

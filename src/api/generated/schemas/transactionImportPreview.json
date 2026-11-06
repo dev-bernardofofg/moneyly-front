@@ -4,6 +4,11 @@
     "accountId": { "type": "string", "nullable": true, "format": "uuid" },
     "needsAccount": { "type": "boolean" },
     "accountKey": { "type": "string" },
+    "requiredAccountType": {
+      "type": "string",
+      "nullable": true,
+      "enum": ["checking", "credit_card"]
+    },
     "through": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "bill": {
       "type": "object",
@@ -56,6 +61,14 @@
       }
     }
   },
-  "required": ["accountId", "needsAccount", "accountKey", "through", "bill", "items"],
+  "required": [
+    "accountId",
+    "needsAccount",
+    "accountKey",
+    "requiredAccountType",
+    "through",
+    "bill",
+    "items"
+  ],
   "x-readme-ref-name": "TransactionImportPreview"
 }
