@@ -17,6 +17,8 @@ import { describeFreshness } from './freshness.helpers';
 interface FreeBalanceSectionProps {
   forecast?: ForecastResponse;
   accounts?: Account[];
+  accountsLoading?: boolean;
+  accountsError?: boolean;
   today: Date;
   loading: boolean;
   error: boolean;
@@ -35,6 +37,8 @@ const money = FN_UTILS_NUMBERS.formatCurrency;
 export const FreeBalanceSection = ({
   forecast,
   accounts,
+  accountsLoading = false,
+  accountsError = false,
   today,
   loading,
   error,
@@ -79,11 +83,20 @@ export const FreeBalanceSection = ({
         <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">
           até {FN_UTILS_DATE.formatInBusinessTZ(freeBalance.until, 'dd/MM')}
         </p>
-        {!compact && accounts && (
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            {describeFreshness(accounts, today)}
-          </p>
-        )}
+        {!compact &&
+          (accountsLoading ? (
+            <Skeleton className="mt-2 h-5 w-56" aria-label="Carregando contas" />
+          ) : accountsError ? (
+            <p role="alert" className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              Não foi possível carregar as contas.
+            </p>
+          ) : (
+            accounts && (
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                {describeFreshness(accounts, today)}
+              </p>
+            )
+          ))}
 
         <dl className="mt-4 space-y-1 text-sm">
           {nextPayment && (

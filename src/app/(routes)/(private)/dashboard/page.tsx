@@ -28,8 +28,15 @@ const DashboardPage = () => {
   // Estável durante a vida da página: new Date() no render quebraria a pureza.
   const [today] = useState(() => new Date());
   const { forecast, accounts, subs, cmp, recentTransactions, chartSeries, stats, cardBills } = data;
-  const { isPostingOverview, forecastLoading, forecastError, cardBillsLoading, cardBillsError } =
-    loading;
+  const {
+    isPostingOverview,
+    forecastLoading,
+    forecastError,
+    accountsLoading,
+    accountsError,
+    cardBillsLoading,
+    cardBillsError,
+  } = loading;
 
   const alerts = [
     ...(subs && subs.count > 0
@@ -94,6 +101,8 @@ const DashboardPage = () => {
           <FreeBalanceSection
             forecast={forecast}
             accounts={accounts}
+            accountsLoading={accountsLoading}
+            accountsError={accountsError}
             today={today}
             loading={forecastLoading}
             error={forecastError}

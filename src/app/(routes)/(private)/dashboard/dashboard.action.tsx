@@ -56,7 +56,7 @@ export const useDashboardAction = () => {
     isError: cardBillsError,
   } = useGetOverviewCardBills({ periodId: selectedPeriodId || undefined });
 
-  const { accounts } = useAccounts();
+  const { accounts, isLoading: accountsLoading, isError: accountsError } = useAccounts();
   const forecast = forecastData?.data;
   const previews = overviewData?.data?.previews;
   const subs = previews?.subscriptions;
@@ -80,6 +80,8 @@ export const useDashboardAction = () => {
       isPostingOverview,
       forecastLoading,
       forecastError,
+      accountsLoading,
+      accountsError,
       cardBillsLoading,
       cardBillsError,
     },

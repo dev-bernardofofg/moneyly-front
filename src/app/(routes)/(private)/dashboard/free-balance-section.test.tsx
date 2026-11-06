@@ -161,6 +161,52 @@ describe('FreeBalanceSection', () => {
     expect(screen.getByText(/-R\$\s1,00|R\$\s-1,00/)).toHaveClass('text-expense-strong');
   });
 
+  it('says there is no active account only after /accounts answers', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={[]}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.getByText('Nenhuma conta ativa')).toBeInTheDocument();
+  });
+
+  it('does not claim there is no account while /accounts is loading', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={[]}
+        accountsLoading
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.queryByText('Nenhuma conta ativa')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Carregando contas')).toBeInTheDocument();
+  });
+
+  it('does not claim there is no account when /accounts fails', () => {
+    render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={[]}
+        accountsError
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.queryByText('Nenhuma conta ativa')).not.toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('Não foi possível carregar as contas.');
+  });
+
   it('shows a skeleton while the query is pending', () => {
     render(<FreeBalanceSection today={today} loading error={false} />);
 
