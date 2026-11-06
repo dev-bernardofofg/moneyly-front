@@ -461,6 +461,37 @@ describe('CheckInPage', () => {
     expect(screen.queryByText('Saldo Livre antes')).not.toBeInTheDocument();
   });
 
+  const finishCheckIn = async () => {
+    previewByFile = { 'extrato.ofx': async () => ({ data: previewOf([CATEGORIZED]) }) };
+    const view = renderPage();
+
+    upload('extrato.ofx');
+    await waitFor(() => expect(fileCard('extrato.ofx').getByText('Pronto')).toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: 'Importar' }));
+    await screen.findByText('Saldo Livre depois');
+
+    return view;
+  };
+
+  it('tela final usa cores que passam no contraste', async () => {
+    const { container } = await finishCheckIn();
+
+    expect(container.querySelector('.bg-primary\\/10 .text-muted-foreground')).toBeNull();
+    expect(screen.getByText('Saldo Livre depois')).toHaveClass(
+      'text-slate-600',
+      'dark:text-slate-300'
+    );
+  });
+
+  it('exceção mostra o valor com a cor de texto do tema', async () => {
+    previewByFile = { 'extrato.ofx': async () => ({ data: previewOf([UNCATEGORIZED]) }) };
+    renderPage();
+
+    upload('extrato.ofx');
+
+    expect(await screen.findByText(/− R\$\s25,00/)).toHaveClass('text-expense-strong');
+  });
+
   it('mostra contas com frescor e link para corrigir saldo', () => {
     accounts = [
       account({}),

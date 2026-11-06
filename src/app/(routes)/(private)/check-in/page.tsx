@@ -58,19 +58,19 @@ const FinalSummary = ({ balance, files, onRestart }: FinalSummaryProps) => (
       <dl className="space-y-1 rounded-xl bg-primary/10 p-4">
         {balance.before !== null && (
           <div className="flex items-baseline justify-between gap-3 text-sm">
-            <dt className="text-muted-foreground">Saldo Livre antes</dt>
+            <dt className="text-slate-600 dark:text-slate-300">Saldo Livre antes</dt>
             <dd className="font-medium tabular-nums">{money(balance.before)}</dd>
           </div>
         )}
         {balance.after !== null && (
           <div className="flex items-baseline justify-between gap-3">
-            <dt className="text-sm text-muted-foreground">Saldo Livre depois</dt>
+            <dt className="text-sm text-slate-600 dark:text-slate-300">Saldo Livre depois</dt>
             <dd className="text-2xl font-bold tabular-nums">{money(balance.after)}</dd>
           </div>
         )}
       </dl>
       {balance.after === null && (
-        <p role="alert" className="text-sm text-expense">
+        <p role="alert" className="text-sm text-expense-strong">
           Importação concluída, mas não foi possível atualizar o Saldo Livre.
         </p>
       )}
@@ -242,7 +242,7 @@ const CheckInPage = () => {
           {accountsLoading ? (
             <Skeleton className="h-40 w-full" aria-label="Carregando contas" />
           ) : accountsError ? (
-            <p role="alert" className="text-sm text-expense">
+            <p role="alert" className="text-sm text-expense-strong">
               Não foi possível carregar as contas.
             </p>
           ) : activeAccounts.length === 0 ? (

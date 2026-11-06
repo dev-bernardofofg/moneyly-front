@@ -130,6 +130,37 @@ describe('FreeBalanceSection', () => {
     );
   });
 
+  it('uses text colors that pass WCAG over the tinted block', () => {
+    const { container, rerender } = render(
+      <FreeBalanceSection
+        forecast={makeForecast()}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.getByText('R$ 850,00')).toHaveClass('text-income-strong');
+    expect(container.querySelector('.bg-primary\\/10 .text-muted-foreground')).toBeNull();
+    expect(screen.getByText('Já comprometido depois')).toHaveClass(
+      'text-slate-600',
+      'dark:text-slate-300'
+    );
+
+    rerender(
+      <FreeBalanceSection
+        forecast={makeForecast({ total: -100 })}
+        accounts={accounts}
+        today={today}
+        loading={false}
+        error={false}
+      />
+    );
+
+    expect(screen.getByText(/-R\$\s1,00|R\$\s-1,00/)).toHaveClass('text-expense-strong');
+  });
+
   it('shows a skeleton while the query is pending', () => {
     render(<FreeBalanceSection today={today} loading error={false} />);
 

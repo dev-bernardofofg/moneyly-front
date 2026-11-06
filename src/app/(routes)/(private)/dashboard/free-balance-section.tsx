@@ -71,34 +71,36 @@ export const FreeBalanceSection = ({
         <p
           className={cn(
             'text-3xl font-bold tabular-nums',
-            isNegative ? 'text-expense' : 'text-income'
+            isNegative ? 'text-expense-strong' : 'text-income-strong'
           )}
         >
           {money(freeBalance.total)}
         </p>
-        <p className="mt-1 text-sm font-medium text-muted-foreground">
+        <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">
           até {FN_UTILS_DATE.formatInBusinessTZ(freeBalance.until, 'dd/MM')}
         </p>
         {!compact && accounts && (
-          <p className="mt-2 text-sm text-muted-foreground">{describeFreshness(accounts, today)}</p>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            {describeFreshness(accounts, today)}
+          </p>
         )}
 
         <dl className="mt-4 space-y-1 text-sm">
           {nextPayment && (
             <div className="flex items-baseline justify-between gap-3">
-              <dt className="text-muted-foreground">Próximo pagamento</dt>
+              <dt className="text-slate-600 dark:text-slate-300">Próximo pagamento</dt>
               <dd className="text-right font-medium tabular-nums">
                 salário {money(nextPayment.salary)} + horas {money(nextPayment.overtime)}
               </dd>
             </div>
           )}
           <div className="flex items-baseline justify-between gap-3">
-            <dt className="text-muted-foreground">Já comprometido depois</dt>
+            <dt className="text-slate-600 dark:text-slate-300">Já comprometido depois</dt>
             <dd className="font-medium tabular-nums">{money(freeBalance.committedAfter)}</dd>
           </div>
         </dl>
 
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-600 dark:text-slate-300">
           <span className="flex items-center gap-1">
             <CircleGauge className="size-4" aria-hidden />
             Confiança {confidenceLabel[freeBalance.confidence]}

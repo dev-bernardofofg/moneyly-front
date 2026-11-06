@@ -71,7 +71,7 @@ export const CheckInReview = ({
               <p
                 className={cn(
                   'font-semibold tabular-nums',
-                  item.type === 'expense' ? 'text-expense' : 'text-income'
+                  item.type === 'expense' ? 'text-expense-strong' : 'text-income-strong'
                 )}
               >
                 {item.type === 'expense' ? '−' : '+'} {money(item.amount)}
@@ -147,7 +147,7 @@ const BillSummary = ({ file }: { file: CheckInFile }) => {
         . Todas as linhas contam nessa fatura, inclusive parcelas de compras antigas.
       </p>
       {items.length > 0 && bill.total != null && bill.total !== rowsTotal && (
-        <p role="alert" className="mt-1 text-expense">
+        <p role="alert" className="mt-1 text-expense-strong">
           A soma das compras lidas ({money(rowsTotal)}) não bate com o total da fatura. Confira
           antes de importar.
         </p>
@@ -194,7 +194,7 @@ export const CheckInFileCard = ({
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-expense">
+        <p role="alert" className="text-sm text-expense-strong">
           {error}
         </p>
       )}
@@ -239,7 +239,7 @@ export const CheckInFileCard = ({
       )}
 
       {missingCategory && status !== 'done' && (
-        <p role="alert" className="text-sm text-expense">
+        <p role="alert" className="text-sm text-expense-strong">
           Escolha a categoria de todas as linhas para importar este arquivo.
         </p>
       )}
