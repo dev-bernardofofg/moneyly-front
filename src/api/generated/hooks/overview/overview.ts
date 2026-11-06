@@ -30,7 +30,6 @@ import type {
   GetOverviewForecast200,
   GetOverviewForecast400,
   GetOverviewForecast401,
-  GetOverviewForecastParams,
   GetOverviewInsights200,
   GetOverviewInsights400,
   GetOverviewInsights401,
@@ -38,10 +37,6 @@ import type {
   GetOverviewPeriods200,
   GetOverviewPeriods400,
   GetOverviewPeriods401,
-  GetOverviewPlanner200,
-  GetOverviewPlanner400,
-  GetOverviewPlanner401,
-  GetOverviewPlannerParams,
 } from '../moneylyAPI.schemas.ts';
 
 import { customInstance } from '../../../../lib/axios-instance.ts';
@@ -288,121 +283,6 @@ export function useGetOverviewDashboard<
 }
 
 /**
- * @summary Planejamento financeiro e impacto no Saldo Livre
- */
-export const getOverviewPlanner = (params?: GetOverviewPlannerParams, signal?: AbortSignal) => {
-  return customInstance<GetOverviewPlanner200>({
-    url: `/overview/planner`,
-    method: 'GET',
-    params,
-    signal,
-  });
-};
-
-export const getGetOverviewPlannerQueryKey = (params?: GetOverviewPlannerParams) => {
-  return [`/overview/planner`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetOverviewPlannerQueryOptions = <
-  TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
-  TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(
-  params?: GetOverviewPlannerParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
-  }
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getGetOverviewPlannerQueryKey(params);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewPlanner>>> = ({ signal }) =>
-    getOverviewPlanner(params, signal);
-
-  return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOverviewPlanner>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type GetOverviewPlannerQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getOverviewPlanner>>
->;
-export type GetOverviewPlannerQueryError = GetOverviewPlanner400 | GetOverviewPlanner401;
-
-export function useGetOverviewPlanner<
-  TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
-  TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(
-  params: undefined | GetOverviewPlannerParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getOverviewPlanner>>,
-          TError,
-          Awaited<ReturnType<typeof getOverviewPlanner>>
-        >,
-        'initialData'
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetOverviewPlanner<
-  TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
-  TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(
-  params?: GetOverviewPlannerParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getOverviewPlanner>>,
-          TError,
-          Awaited<ReturnType<typeof getOverviewPlanner>>
-        >,
-        'initialData'
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetOverviewPlanner<
-  TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
-  TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(
-  params?: GetOverviewPlannerParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary Planejamento financeiro e impacto no Saldo Livre
- */
-
-export function useGetOverviewPlanner<
-  TData = Awaited<ReturnType<typeof getOverviewPlanner>>,
-  TError = GetOverviewPlanner400 | GetOverviewPlanner401,
->(
-  params?: GetOverviewPlannerParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewPlanner>>, TError, TData>>;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetOverviewPlannerQueryOptions(params, options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
-
-  return withQueryKey(query, queryOptions.queryKey);
-}
-
-/**
  * @summary Gastos do período por categoria e comparados aos períodos anteriores
  */
 export const getOverviewInsights = (params?: GetOverviewInsightsParams, signal?: AbortSignal) => {
@@ -526,38 +406,32 @@ export function useGetOverviewInsights<
 }
 
 /**
- * @summary Saldo Livre e projeção do período
+ * @summary Saldo Livre calculado para hoje, até o próximo salário
  */
-export const getOverviewForecast = (params?: GetOverviewForecastParams, signal?: AbortSignal) => {
+export const getOverviewForecast = (signal?: AbortSignal) => {
   return customInstance<GetOverviewForecast200>({
     url: `/overview/forecast`,
     method: 'GET',
-    params,
     signal,
   });
 };
 
-export const getGetOverviewForecastQueryKey = (params?: GetOverviewForecastParams) => {
-  return [`/overview/forecast`, ...(params ? [params] : [])] as const;
+export const getGetOverviewForecastQueryKey = () => {
+  return [`/overview/forecast`] as const;
 };
 
 export const getGetOverviewForecastQueryOptions = <
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
   TError = GetOverviewForecast400 | GetOverviewForecast401,
->(
-  params?: GetOverviewForecastParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
-    >;
-  }
-) => {
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>>;
+}) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetOverviewForecastQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getGetOverviewForecastQueryKey();
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getOverviewForecast>>> = ({ signal }) =>
-    getOverviewForecast(params, signal);
+    getOverviewForecast(signal);
 
   return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getOverviewForecast>>,
@@ -575,7 +449,6 @@ export function useGetOverviewForecast<
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
   TError = GetOverviewForecast400 | GetOverviewForecast401,
 >(
-  params: undefined | GetOverviewForecastParams,
   options: {
     query: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
@@ -595,7 +468,6 @@ export function useGetOverviewForecast<
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
   TError = GetOverviewForecast400 | GetOverviewForecast401,
 >(
-  params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
@@ -615,7 +487,6 @@ export function useGetOverviewForecast<
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
   TError = GetOverviewForecast400 | GetOverviewForecast401,
 >(
-  params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
@@ -624,14 +495,13 @@ export function useGetOverviewForecast<
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Saldo Livre e projeção do período
+ * @summary Saldo Livre calculado para hoje, até o próximo salário
  */
 
 export function useGetOverviewForecast<
   TData = Awaited<ReturnType<typeof getOverviewForecast>>,
   TError = GetOverviewForecast400 | GetOverviewForecast401,
 >(
-  params?: GetOverviewForecastParams,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getOverviewForecast>>, TError, TData>
@@ -639,7 +509,7 @@ export function useGetOverviewForecast<
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetOverviewForecastQueryOptions(params, options);
+  const queryOptions = getGetOverviewForecastQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;

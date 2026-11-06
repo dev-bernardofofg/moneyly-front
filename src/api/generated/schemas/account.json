@@ -25,6 +25,9 @@
       "nullable": true,
       "example": "2026-05-17T00:00:00.000Z"
     },
+    "dataThrough": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
+    "statementKey": { "type": "string", "nullable": true },
+    "freshness": { "type": "string", "enum": ["fresh", "stale", "empty"] },
     "isDefault": { "type": "boolean" },
     "isActive": { "type": "boolean" },
     "createdAt": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
@@ -40,6 +43,8 @@
     "creditLimit",
     "openingBalance",
     "openingBalanceDate",
+    "dataThrough",
+    "statementKey",
     "isDefault",
     "isActive",
     "createdAt",

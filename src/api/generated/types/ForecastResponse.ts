@@ -3,13 +3,6 @@
  * Do not edit manually.
  */
 
-export const occurrencesTypeEnum = {
-  income: 'income',
-  expense: 'expense',
-} as const;
-
-export type OccurrencesTypeEnumKey = (typeof occurrencesTypeEnum)[keyof typeof occurrencesTypeEnum];
-
 export const freeBalanceConfidenceEnum = {
   low: 'low',
   medium: 'medium',
@@ -23,100 +16,16 @@ export type ForecastResponse = {
   /**
    * @type object
    */
-  period: {
-    /**
-     * @type string, uuid
-     */
-    id: string;
-    /**
-     * @type string
-     */
-    startDate: string;
-    /**
-     * @type string
-     */
-    endDate: string;
-    /**
-     * @type string
-     */
-    label: string;
-  };
-  /**
-   * @type object
-   */
-  realized: {
-    /**
-     * @type number
-     */
-    income: number;
-    /**
-     * @type number
-     */
-    expense: number;
-    /**
-     * @type number
-     */
-    balance: number;
-  };
-  /**
-   * @type object
-   */
-  projected: {
-    /**
-     * @type number
-     */
-    recurringIncome: number;
-    /**
-     * @type number
-     */
-    recurringExpense: number;
-    /**
-     * @type array
-     */
-    occurrences: {
-      /**
-       * @type string, uuid
-       */
-      recurringTransactionId: string;
-      /**
-       * @type string
-       */
-      title: string;
-      /**
-       * @type string
-       */
-      type: OccurrencesTypeEnumKey;
-      /**
-       * @type number
-       */
-      amount: number;
-      /**
-       * @type string
-       */
-      date: string;
-      /**
-       * @type string, uuid
-       */
-      categoryId: string;
-    }[];
-  };
-  /**
-   * @type number
-   */
-  projectedEndBalance: number;
-  /**
-   * @type object
-   */
   freeBalance: {
     /**
-     * @type number
+     * @description Valor em centavos
+     * @type integer
      */
     total: number;
     /**
-     * @minLength 0
-     * @type integer
+     * @type string
      */
-    daysRemaining: number;
+    until: string;
     /**
      * @type string
      */
@@ -124,78 +33,56 @@ export type ForecastResponse = {
     /**
      * @type object
      */
-    income: {
-      /**
-       * @type number
-       */
-      fixed: number;
-      /**
-       * @type number
-       */
-      variable: number;
-      /**
-       * @type number
-       */
-      pendingVariable: number;
-    };
-    /**
-     * @type object
-     */
-    commitments: {
-      /**
-       * @type number
-       */
-      recurringExpenses: number;
-    };
-    /**
-     * @type object
-     */
-    reserves: {
-      /**
-       * @type number
-       */
-      budgets: number;
-      /**
-       * @type number
-       */
-      goals: number;
-    };
-    /**
-     * @type object
-     */
     components: {
       /**
-       * @type number
+       * @description Valor em centavos
+       * @type integer
        */
-      carryOverBalance: number;
+      accountsBalance: number;
       /**
-       * @type number
+       * @description Valor em centavos
+       * @type integer
        */
-      realizedBalance: number;
+      otherIncome: number;
       /**
-       * @type number
+       * @description Valor em centavos
+       * @type integer
        */
-      futureRecurringIncome: number;
+      recurringExpense: number;
       /**
-       * @type number
+       * @description Valor em centavos
+       * @type integer
        */
-      futureRecurringExpense: number;
-      /**
-       * @type number
-       */
-      pendingVariableIncome: number;
-      /**
-       * @type number
-       */
-      budgetReserve: number;
-      /**
-       * @type number
-       */
-      goalReserve: number;
+      cardBills: number;
     };
+    /**
+     * @type object
+     */
+    nextPayment: {
+      /**
+       * @type string
+       */
+      date: string;
+      /**
+       * @description Valor em centavos
+       * @type integer
+       */
+      salary: number;
+      /**
+       * @description Valor em centavos
+       * @type integer
+       */
+      overtime: number;
+      /**
+       * @description Valor em centavos
+       * @type integer
+       */
+      total: number;
+    } | null;
+    /**
+     * @description Valor em centavos
+     * @type integer
+     */
+    committedAfter: number;
   };
-  /**
-   * @type string
-   */
-  asOf: string;
 };

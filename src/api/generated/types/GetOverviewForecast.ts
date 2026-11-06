@@ -5,13 +5,6 @@
 
 import type { ForecastResponse } from './ForecastResponse.ts';
 
-export type GetOverviewForecastQueryParams = {
-  /**
-   * @type string | undefined, uuid
-   */
-  periodId?: string;
-};
-
 /**
  * @description Sucesso
  */
@@ -74,6 +67,5 @@ export type GetOverviewForecastQueryResponse = GetOverviewForecast200;
 
 export type GetOverviewForecastQuery = {
   Response: GetOverviewForecast200;
-  QueryParams: GetOverviewForecastQueryParams;
   Errors: GetOverviewForecast400 | GetOverviewForecast401;
 };

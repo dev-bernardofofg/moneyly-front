@@ -69,10 +69,6 @@ export type PostOvertimeMutationRequest = {
    */
   companyId: string;
   /**
-   * @type string | undefined, uuid
-   */
-  categoryId?: string;
-  /**
    * @maxLength 500
    * @type string | undefined
    */

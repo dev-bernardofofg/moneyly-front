@@ -31,9 +31,21 @@ export type ItemsSuggestionSourceEnumKey =
 
 export type TransactionImportPreview = {
   /**
+   * @type string, uuid
+   */
+  accountId: string | null;
+  /**
+   * @type boolean
+   */
+  needsAccount: boolean;
+  /**
    * @type string
    */
   accountKey: string;
+  /**
+   * @type string
+   */
+  through: string;
   /**
    * @type object
    */

@@ -371,65 +371,6 @@ export interface FinancialInsights {
   categories: FinancialInsightsCategoriesItem[];
 }
 
-export type PlannerOverviewStats = {
-  totalBudgeted: number;
-  totalSavingsGoal: number;
-  totalSaved: number;
-  savingsProgress: number;
-  budgetPercentage: number;
-  savingsPercentage: number;
-  remainingToSave: number;
-  availableForBudget: number;
-};
-
-export type PlannerOverviewCurrentPeriod = {
-  id: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-};
-
-export type PlannerOverviewFreeBalanceImpact = {
-  budgetReserve: number;
-  goalReserve: number;
-  total: number;
-};
-
-export type PlannerOverviewAlertsItemType =
-  (typeof PlannerOverviewAlertsItemType)[keyof typeof PlannerOverviewAlertsItemType];
-
-export const PlannerOverviewAlertsItemType = {
-  danger: 'danger',
-  warning: 'warning',
-  info: 'info',
-} as const;
-
-export type PlannerOverviewAlertsItemPriority =
-  (typeof PlannerOverviewAlertsItemPriority)[keyof typeof PlannerOverviewAlertsItemPriority];
-
-export const PlannerOverviewAlertsItemPriority = {
-  high: 'high',
-  medium: 'medium',
-  low: 'low',
-} as const;
-
-export type PlannerOverviewAlertsItem = {
-  type: PlannerOverviewAlertsItemType;
-  message: string;
-  priority: PlannerOverviewAlertsItemPriority;
-  category?: string;
-  goal?: string;
-  percentage?: number;
-  daysRemaining?: number;
-};
-
-export interface PlannerOverview {
-  stats: PlannerOverviewStats;
-  currentPeriod: PlannerOverviewCurrentPeriod;
-  freeBalanceImpact: PlannerOverviewFreeBalanceImpact;
-  alerts: PlannerOverviewAlertsItem[];
-}
-
 export type SubscriptionCandidateCadence =
   (typeof SubscriptionCandidateCadence)[keyof typeof SubscriptionCandidateCadence];
 
@@ -514,7 +455,11 @@ export type TransactionImportPreviewItemsItem = {
 };
 
 export interface TransactionImportPreview {
+  /** @nullable */
+  accountId: string | null;
+  needsAccount: boolean;
   accountKey: string;
+  through: string;
   /** @nullable */
   bill: TransactionImportPreviewBill;
   items: TransactionImportPreviewItemsItem[];
@@ -537,6 +482,7 @@ export const NotificationType = {
   spending_alert: 'spending_alert',
   transaction_income: 'transaction_income',
   transaction_expense: 'transaction_expense',
+  check_in_reminder: 'check_in_reminder',
 } as const;
 
 export type NotificationSeverity = (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
@@ -684,42 +630,6 @@ export interface CardBills {
   bills: CardBillsBillsItem[];
 }
 
-export type ForecastResponsePeriod = {
-  id: string;
-  startDate: string;
-  endDate: string;
-  label: string;
-};
-
-export type ForecastResponseRealized = {
-  income: number;
-  expense: number;
-  balance: number;
-};
-
-export type ForecastResponseProjectedOccurrencesItemType =
-  (typeof ForecastResponseProjectedOccurrencesItemType)[keyof typeof ForecastResponseProjectedOccurrencesItemType];
-
-export const ForecastResponseProjectedOccurrencesItemType = {
-  income: 'income',
-  expense: 'expense',
-} as const;
-
-export type ForecastResponseProjectedOccurrencesItem = {
-  recurringTransactionId: string;
-  title: string;
-  type: ForecastResponseProjectedOccurrencesItemType;
-  amount: number;
-  date: string;
-  categoryId: string;
-};
-
-export type ForecastResponseProjected = {
-  recurringIncome: number;
-  recurringExpense: number;
-  occurrences: ForecastResponseProjectedOccurrencesItem[];
-};
-
 export type ForecastResponseFreeBalanceConfidence =
   (typeof ForecastResponseFreeBalanceConfidence)[keyof typeof ForecastResponseFreeBalanceConfidence];
 
@@ -729,49 +639,44 @@ export const ForecastResponseFreeBalanceConfidence = {
   high: 'high',
 } as const;
 
-export type ForecastResponseFreeBalanceIncome = {
-  fixed: number;
-  variable: number;
-  pendingVariable: number;
-};
-
-export type ForecastResponseFreeBalanceCommitments = {
-  recurringExpenses: number;
-};
-
-export type ForecastResponseFreeBalanceReserves = {
-  budgets: number;
-  goals: number;
-};
-
 export type ForecastResponseFreeBalanceComponents = {
-  carryOverBalance: number;
-  realizedBalance: number;
-  futureRecurringIncome: number;
-  futureRecurringExpense: number;
-  pendingVariableIncome: number;
-  budgetReserve: number;
-  goalReserve: number;
+  /** Valor em centavos */
+  accountsBalance: number;
+  /** Valor em centavos */
+  otherIncome: number;
+  /** Valor em centavos */
+  recurringExpense: number;
+  /** Valor em centavos */
+  cardBills: number;
 };
+
+/**
+ * @nullable
+ */
+export type ForecastResponseFreeBalanceNextPayment = {
+  date: string;
+  /** Valor em centavos */
+  salary: number;
+  /** Valor em centavos */
+  overtime: number;
+  /** Valor em centavos */
+  total: number;
+} | null;
 
 export type ForecastResponseFreeBalance = {
+  /** Valor em centavos */
   total: number;
-  /** @minimum 0 */
-  daysRemaining: number;
+  until: string;
   confidence: ForecastResponseFreeBalanceConfidence;
-  income: ForecastResponseFreeBalanceIncome;
-  commitments: ForecastResponseFreeBalanceCommitments;
-  reserves: ForecastResponseFreeBalanceReserves;
   components: ForecastResponseFreeBalanceComponents;
+  /** @nullable */
+  nextPayment: ForecastResponseFreeBalanceNextPayment;
+  /** Valor em centavos */
+  committedAfter: number;
 };
 
 export interface ForecastResponse {
-  period: ForecastResponsePeriod;
-  realized: ForecastResponseRealized;
-  projected: ForecastResponseProjected;
-  projectedEndBalance: number;
   freeBalance: ForecastResponseFreeBalance;
-  asOf: string;
 }
 
 export interface TransactionListSummary {
@@ -788,6 +693,14 @@ export type AccountType = (typeof AccountType)[keyof typeof AccountType];
 export const AccountType = {
   checking: 'checking',
   credit_card: 'credit_card',
+} as const;
+
+export type AccountFreshness = (typeof AccountFreshness)[keyof typeof AccountFreshness];
+
+export const AccountFreshness = {
+  fresh: 'fresh',
+  stale: 'stale',
+  empty: 'empty',
 } as const;
 
 export interface Account {
@@ -813,6 +726,11 @@ export interface Account {
   currentBalance?: number | null;
   /** @nullable */
   openingBalanceDate: string | null;
+  /** @nullable */
+  dataThrough: string | null;
+  /** @nullable */
+  statementKey: string | null;
+  freshness?: AccountFreshness;
   isDefault: boolean;
   isActive: boolean;
   createdAt: string;
@@ -1127,7 +1045,6 @@ export type DeleteCompaniesId404 = {
 
 export type PostOvertimeBody = {
   companyId: string;
-  categoryId?: string;
   /** @maxLength 500 */
   description?: string;
   startTime: string;
@@ -1257,7 +1174,6 @@ export type GetOvertimeExport401 = {
 
 export type PutOvertimeIdBody = {
   companyId?: string;
-  categoryId?: string;
   /** @maxLength 500 */
   description?: string;
   startTime?: string;
@@ -2536,6 +2452,12 @@ export type PostTransactionsImportBody = {
   accountId: string;
   /** @maxItems 500 */
   items: PostTransactionsImportBodyItemsItem[];
+  /**
+   * @minLength 1
+   * @maxLength 200
+   */
+  accountKey: string;
+  through: string;
   billDueDate?: string;
   /** @maxItems 500 */
   billPayments?: PostTransactionsImportBodyBillPaymentsItem[];
@@ -2598,27 +2520,6 @@ export type GetOverviewDashboard401 = {
   details?: unknown;
 };
 
-export type GetOverviewPlannerParams = {
-  periodId?: string;
-};
-
-export type GetOverviewPlanner200 = {
-  data: PlannerOverview;
-  message?: string;
-};
-
-export type GetOverviewPlanner400 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
-export type GetOverviewPlanner401 = {
-  success: false;
-  error: string;
-  details?: unknown;
-};
-
 export type GetOverviewInsightsParams = {
   periodId?: string;
 };
@@ -2638,10 +2539,6 @@ export type GetOverviewInsights401 = {
   success: false;
   error: string;
   details?: unknown;
-};
-
-export type GetOverviewForecastParams = {
-  periodId?: string;
 };
 
 export type GetOverviewForecast200 = {

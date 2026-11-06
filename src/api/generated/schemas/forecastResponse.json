@@ -1,108 +1,62 @@
 {
   "type": "object",
   "properties": {
-    "period": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string", "format": "uuid" },
-        "startDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
-        "endDate": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
-        "label": { "type": "string" }
-      },
-      "required": ["id", "startDate", "endDate", "label"]
-    },
-    "realized": {
-      "type": "object",
-      "properties": {
-        "income": { "type": "number" },
-        "expense": { "type": "number" },
-        "balance": { "type": "number" }
-      },
-      "required": ["income", "expense", "balance"]
-    },
-    "projected": {
-      "type": "object",
-      "properties": {
-        "recurringIncome": { "type": "number" },
-        "recurringExpense": { "type": "number" },
-        "occurrences": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "recurringTransactionId": { "type": "string", "format": "uuid" },
-              "title": { "type": "string" },
-              "type": { "type": "string", "enum": ["income", "expense"] },
-              "amount": { "type": "number" },
-              "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
-              "categoryId": { "type": "string", "format": "uuid" }
-            },
-            "required": ["recurringTransactionId", "title", "type", "amount", "date", "categoryId"]
-          }
-        }
-      },
-      "required": ["recurringIncome", "recurringExpense", "occurrences"]
-    },
-    "projectedEndBalance": { "type": "number" },
     "freeBalance": {
       "type": "object",
       "properties": {
-        "total": { "type": "number" },
-        "daysRemaining": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
+        "until": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
         "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
-        "income": {
-          "type": "object",
-          "properties": {
-            "fixed": { "type": "number" },
-            "variable": { "type": "number" },
-            "pendingVariable": { "type": "number" }
-          },
-          "required": ["fixed", "variable", "pendingVariable"]
-        },
-        "commitments": {
-          "type": "object",
-          "properties": { "recurringExpenses": { "type": "number" } },
-          "required": ["recurringExpenses"]
-        },
-        "reserves": {
-          "type": "object",
-          "properties": { "budgets": { "type": "number" }, "goals": { "type": "number" } },
-          "required": ["budgets", "goals"]
-        },
         "components": {
           "type": "object",
           "properties": {
-            "carryOverBalance": { "type": "number" },
-            "realizedBalance": { "type": "number" },
-            "futureRecurringIncome": { "type": "number" },
-            "futureRecurringExpense": { "type": "number" },
-            "pendingVariableIncome": { "type": "number" },
-            "budgetReserve": { "type": "number" },
-            "goalReserve": { "type": "number" }
+            "accountsBalance": {
+              "type": "integer",
+              "description": "Valor em centavos",
+              "example": 123450
+            },
+            "otherIncome": {
+              "type": "integer",
+              "description": "Valor em centavos",
+              "example": 123450
+            },
+            "recurringExpense": {
+              "type": "integer",
+              "description": "Valor em centavos",
+              "example": 123450
+            },
+            "cardBills": {
+              "type": "integer",
+              "description": "Valor em centavos",
+              "example": 123450
+            }
           },
-          "required": [
-            "carryOverBalance",
-            "realizedBalance",
-            "futureRecurringIncome",
-            "futureRecurringExpense",
-            "pendingVariableIncome",
-            "budgetReserve",
-            "goalReserve"
-          ]
+          "required": ["accountsBalance", "otherIncome", "recurringExpense", "cardBills"]
+        },
+        "nextPayment": {
+          "type": "object",
+          "nullable": true,
+          "properties": {
+            "date": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
+            "salary": { "type": "integer", "description": "Valor em centavos", "example": 123450 },
+            "overtime": {
+              "type": "integer",
+              "description": "Valor em centavos",
+              "example": 123450
+            },
+            "total": { "type": "integer", "description": "Valor em centavos", "example": 123450 }
+          },
+          "required": ["date", "salary", "overtime", "total"]
+        },
+        "committedAfter": {
+          "type": "integer",
+          "description": "Valor em centavos",
+          "example": 123450
         }
       },
-      "required": [
-        "total",
-        "daysRemaining",
-        "confidence",
-        "income",
-        "commitments",
-        "reserves",
-        "components"
-      ]
-    },
-    "asOf": { "type": "string", "example": "2026-05-17T00:00:00.000Z" }
+      "required": ["total", "until", "confidence", "components", "nextPayment", "committedAfter"]
+    }
   },
-  "required": ["period", "realized", "projected", "projectedEndBalance", "freeBalance", "asOf"],
+  "required": ["freeBalance"],
   "x-readme-ref-name": "ForecastResponse"
 }

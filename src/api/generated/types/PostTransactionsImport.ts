@@ -126,6 +126,16 @@ export type PostTransactionsImportMutationRequest = {
     duplicateOf?: string;
   }[];
   /**
+   * @minLength 1
+   * @maxLength 200
+   * @type string
+   */
+  accountKey: string;
+  /**
+   * @type string, date-time
+   */
+  through: string;
+  /**
    * @type string | undefined, date-time
    */
   billDueDate?: string;

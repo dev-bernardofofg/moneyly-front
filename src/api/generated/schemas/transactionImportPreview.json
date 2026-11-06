@@ -1,7 +1,10 @@
 {
   "type": "object",
   "properties": {
+    "accountId": { "type": "string", "nullable": true, "format": "uuid" },
+    "needsAccount": { "type": "boolean" },
     "accountKey": { "type": "string" },
+    "through": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "bill": {
       "type": "object",
       "nullable": true,
@@ -53,6 +56,6 @@
       }
     }
   },
-  "required": ["accountKey", "bill", "items"],
+  "required": ["accountId", "needsAccount", "accountKey", "through", "bill", "items"],
   "x-readme-ref-name": "TransactionImportPreview"
 }

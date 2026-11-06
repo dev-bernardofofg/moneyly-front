@@ -11,7 +11,8 @@
         "goal_milestone",
         "spending_alert",
         "transaction_income",
-        "transaction_expense"
+        "transaction_expense",
+        "check_in_reminder"
       ]
     },
     "severity": { "type": "string", "enum": ["info", "warning", "danger"] },

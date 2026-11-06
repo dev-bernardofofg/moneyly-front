@@ -554,7 +554,7 @@ export const usePutOvertimeId = <
   return useMutation(getPutOvertimeIdMutationOptions(options), queryClient);
 };
 /**
- * @summary Deletar registro e transaction vinculada
+ * @summary Deletar registro de hora extra
  */
 export const deleteOvertimeId = (id: string, signal?: AbortSignal) => {
   return customInstance<DeleteOvertimeId200>({ url: `/overtime/${id}`, method: 'DELETE', signal });
@@ -606,7 +606,7 @@ export type DeleteOvertimeIdMutationError =
 export type DeleteOvertimeIdMutationVariables = { id: string };
 
 /**
- * @summary Deletar registro e transaction vinculada
+ * @summary Deletar registro de hora extra
  */
 export const useDeleteOvertimeId = <
   TError = DeleteOvertimeId400 | DeleteOvertimeId401 | DeleteOvertimeId404,

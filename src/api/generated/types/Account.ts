@@ -10,6 +10,15 @@ export const accountTypeEnum = {
 
 export type AccountTypeEnumKey = (typeof accountTypeEnum)[keyof typeof accountTypeEnum];
 
+export const accountFreshnessEnum = {
+  fresh: 'fresh',
+  stale: 'stale',
+  empty: 'empty',
+} as const;
+
+export type AccountFreshnessEnumKey =
+  (typeof accountFreshnessEnum)[keyof typeof accountFreshnessEnum];
+
 export type Account = {
   /**
    * @type string, uuid
@@ -54,6 +63,18 @@ export type Account = {
    * @type string
    */
   openingBalanceDate: string | null;
+  /**
+   * @type string
+   */
+  dataThrough: string | null;
+  /**
+   * @type string
+   */
+  statementKey: string | null;
+  /**
+   * @type string | undefined
+   */
+  freshness?: AccountFreshnessEnumKey;
   /**
    * @type boolean
    */
