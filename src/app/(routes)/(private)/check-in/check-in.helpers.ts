@@ -220,6 +220,12 @@ export const sortCardsFirst = (files: CheckInFile[], accounts: { id: string; typ
   return [...files.filter(isCard), ...files.filter((file) => !isCard(file))];
 };
 
+// Extrato em cartão vira dívida de fatura: só oferece conta que o arquivo aceita.
+export const accountsForFile = <T extends { type: string }>(file: CheckInFile, accounts: T[]) => {
+  const required = file.preview?.requiredAccountType;
+  return required ? accounts.filter((account) => account.type === required) : accounts;
+};
+
 export const buildImportPayload = (file: CheckInFile): PostTransactionsImportBody => {
   const { accountId, accountKey, through, items, bill } = file.preview!;
 

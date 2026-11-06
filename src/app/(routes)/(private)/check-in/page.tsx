@@ -198,7 +198,7 @@ const CheckInPage = () => {
     activeAccounts,
     accountsLoading,
     accountsError,
-    accountOptions,
+    accountOptionsFor,
     nameById,
     addFiles,
     chooseAccount,
@@ -222,7 +222,7 @@ const CheckInPage = () => {
                 key={file.id}
                 file={file}
                 busy={busy}
-                accountOptions={accountOptions}
+                accountOptions={accountOptionsFor(file)}
                 accountName={nameById.get(file.preview?.accountId ?? '')}
                 onChooseAccount={(accountId) => chooseAccount(file, accountId)}
                 onChooseCategory={(title, categoryId) => chooseCategory(file.id, title, categoryId)}

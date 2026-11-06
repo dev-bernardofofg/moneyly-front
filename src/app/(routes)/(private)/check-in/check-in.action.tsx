@@ -16,6 +16,7 @@ import type { CustomAxiosError } from '@/types/error.type';
 import { useQueryClient } from '@tanstack/react-query';
 import { useReducer, useRef, useState } from 'react';
 import {
+  accountsForFile,
   buildImportPayload,
   type CheckInFile,
   checkInReducer,
@@ -54,7 +55,6 @@ export const useCheckInAction = () => {
   const confirm = usePostTransactionsImport();
 
   const activeAccounts = accounts.filter((account) => account.isActive);
-  const activeIds = new Set(activeAccounts.map((account) => account.id));
   const busy = importing || files.some((file) => file.status === 'previewing');
   const finished =
     !importing &&
@@ -144,7 +144,10 @@ export const useCheckInAction = () => {
     activeAccounts,
     accountsLoading: isLoading,
     accountsError: isError,
-    accountOptions: options.filter((option) => activeIds.has(option.value)),
+    accountOptionsFor: (file: CheckInFile) => {
+      const eligible = new Set(accountsForFile(file, activeAccounts).map(({ id }) => id));
+      return options.filter((option) => eligible.has(option.value));
+    },
     nameById,
     addFiles,
     chooseAccount,

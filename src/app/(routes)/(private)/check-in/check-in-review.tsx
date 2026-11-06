@@ -214,7 +214,9 @@ export const CheckInFileCard = ({
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            Conta nova neste arquivo. Depois de importar, o Moneyly a reconhece sozinho.
+            {accountOptions.length > 0
+              ? 'Conta nova neste arquivo. Depois de importar, o Moneyly a reconhece sozinho.'
+              : 'Nenhuma conta aceita este arquivo. Crie uma em Contas.'}
           </p>
         </div>
       )}
