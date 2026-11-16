@@ -19,6 +19,20 @@ export const describeAccount = (account: Account, today: Date) => {
   return `${account.name} há ${days} ${days === 1 ? 'dia' : 'dias'}`;
 };
 
+const shortDay = (value: string) => FN_UTILS_DATE.formatInBusinessTZ(value, 'dd/MM');
+
+// Fatura não tem período escolhido: o vencimento é o que identifica qual foi enviada.
+export const describeLastImport = (account: Account): string | null => {
+  const { lastImportFrom, lastImportThrough, lastImportDueDate } = account;
+  if (!lastImportThrough) return null;
+  if (lastImportDueDate) return `última fatura: venc. ${shortDay(lastImportDueDate)}`;
+
+  const end = shortDay(lastImportThrough);
+  return lastImportFrom
+    ? `último extrato: ${shortDay(lastImportFrom)} a ${end}`
+    : `último extrato: até ${end}`;
+};
+
 export const describeFreshness = (accounts: Account[], today: Date): string => {
   const active = accounts.filter((account) => account.isActive);
   if (active.length === 0) return 'Nenhuma conta ativa';
