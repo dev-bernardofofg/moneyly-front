@@ -1,6 +1,6 @@
 import type { Account } from '@/api/generated/types/Account';
 import { describe, expect, it } from 'vitest';
-import { describeFreshness } from './freshness.helpers';
+import { describeFreshness, describeLastImport } from './freshness.helpers';
 
 const today = new Date('2026-11-11T15:00:00.000Z');
 
@@ -12,6 +12,9 @@ const makeAccount = (overrides: Partial<Account>): Account =>
     isActive: true,
     dataThrough: null,
     freshness: 'empty',
+    lastImportFrom: null,
+    lastImportThrough: null,
+    lastImportDueDate: null,
     ...overrides,
   }) as Account;
 
@@ -62,5 +65,45 @@ describe('describeFreshness', () => {
       'Nenhum dado importado ainda · Inter sem dados'
     );
     expect(describeFreshness([], today)).toBe('Nenhuma conta ativa');
+  });
+});
+
+describe('describeLastImport', () => {
+  it('shows the period of the last statement', () => {
+    const account = makeAccount({
+      lastImportFrom: '2026-10-10T03:00:00.000Z',
+      lastImportThrough: '2026-11-14T03:00:00.000Z',
+    });
+
+    expect(describeLastImport(account)).toBe('último extrato: 10/10 a 14/11');
+  });
+
+  it('shows only the end when the file has no start', () => {
+    const account = makeAccount({ lastImportThrough: '2026-11-14T03:00:00.000Z' });
+
+    expect(describeLastImport(account)).toBe('último extrato: até 14/11');
+  });
+
+  it('shows the due date when the last file was a bill', () => {
+    const account = makeAccount({
+      type: 'credit_card',
+      lastImportThrough: '2026-11-03T03:00:00.000Z',
+      lastImportDueDate: '2026-11-10T03:00:00.000Z',
+    });
+
+    expect(describeLastImport(account)).toBe('última fatura: venc. 10/11');
+  });
+
+  it('says nothing for an account that never imported', () => {
+    expect(describeLastImport(makeAccount({}))).toBeNull();
+  });
+
+  it('reads days in São Paulo, not in UTC', () => {
+    const account = makeAccount({
+      lastImportFrom: '2026-12-20T03:00:00.000Z',
+      lastImportThrough: '2027-01-05T02:59:59.000Z',
+    });
+
+    expect(describeLastImport(account)).toBe('último extrato: 20/12 a 04/01');
   });
 });

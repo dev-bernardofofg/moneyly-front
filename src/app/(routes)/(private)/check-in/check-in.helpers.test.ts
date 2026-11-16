@@ -84,6 +84,7 @@ const preview = (
   needsAccount: false,
   requiredAccountType: null,
   accountKey: '077:123',
+  from: null,
   through: '2026-11-01T03:00:00.000Z',
   bill: null,
   items,
@@ -415,6 +416,18 @@ describe('buildImportPayload', () => {
     expect(payload.items[1]).toMatchObject({ duplicateOf: DUPLICATE_OF });
     expect(payload.items[1]).not.toHaveProperty('categoryId');
     expect(payload.items[2]).toMatchObject({ transferOf: transferItem.transferOf!.transactionId });
+  });
+
+  it('sends the period start back with the confirmation', () => {
+    const file = previewed('a', [categorizedItem], { from: '2026-10-01T03:00:00.000Z' });
+
+    expect(buildImportPayload(file).from).toBe('2026-10-01T03:00:00.000Z');
+  });
+
+  it('leaves the start out when the file has none', () => {
+    const file = previewed('a', [categorizedItem], { from: null });
+
+    expect(buildImportPayload(file)).not.toHaveProperty('from');
   });
 
   it('sends a file with nothing new, so coverage still updates', () => {

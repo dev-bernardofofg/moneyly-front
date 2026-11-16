@@ -26,6 +26,9 @@ const account = (overrides: Partial<Account>): Account => ({
   openingBalance: 0,
   openingBalanceDate: null,
   dataThrough: new Date().toISOString(),
+  lastImportFrom: null,
+  lastImportThrough: null,
+  lastImportDueDate: null,
   statementKey: null,
   freshness: 'fresh',
   isDefault: true,
@@ -72,6 +75,7 @@ const previewOf = (
   needsAccount: false,
   accountKey: '077:123',
   requiredAccountType: null,
+  from: null,
   through: '2026-11-01T03:00:00.000Z',
   bill: null,
   items,
@@ -563,6 +567,26 @@ describe('CheckInPage', () => {
       'href',
       '/accounts'
     );
+  });
+
+  it('mostra o período do último arquivo ao lado do frescor', () => {
+    accounts = [
+      account({
+        lastImportFrom: '2026-10-10T03:00:00.000Z',
+        lastImportThrough: '2026-11-14T03:00:00.000Z',
+      }),
+      account({
+        id: NUBANK,
+        name: 'Nubank',
+        type: 'credit_card',
+        lastImportThrough: '2026-11-03T03:00:00.000Z',
+        lastImportDueDate: '2026-11-10T03:00:00.000Z',
+      }),
+    ];
+    renderPage();
+
+    expect(screen.getByText('Inter em dia · último extrato: 10/10 a 14/11')).toBeInTheDocument();
+    expect(screen.getByText('Nubank em dia · última fatura: venc. 10/11')).toBeInTheDocument();
   });
 
   it('sem conta ativa aponta para /accounts', () => {
