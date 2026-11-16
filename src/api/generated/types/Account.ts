@@ -70,6 +70,18 @@ export type Account = {
   /**
    * @type string
    */
+  lastImportFrom: string | null;
+  /**
+   * @type string
+   */
+  lastImportThrough: string | null;
+  /**
+   * @type string
+   */
+  lastImportDueDate: string | null;
+  /**
+   * @type string
+   */
   statementKey: string | null;
   /**
    * @type string | undefined

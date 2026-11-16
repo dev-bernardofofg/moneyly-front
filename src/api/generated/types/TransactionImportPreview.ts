@@ -57,6 +57,10 @@ export type TransactionImportPreview = {
   /**
    * @type string
    */
+  from: string | null;
+  /**
+   * @type string
+   */
   through: string;
   /**
    * @type object

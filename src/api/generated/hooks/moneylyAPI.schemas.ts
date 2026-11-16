@@ -473,6 +473,8 @@ export interface TransactionImportPreview {
   accountKey: string;
   /** @nullable */
   requiredAccountType: TransactionImportPreviewRequiredAccountType;
+  /** @nullable */
+  from: string | null;
   through: string;
   /** @nullable */
   bill: TransactionImportPreviewBill;
@@ -742,6 +744,12 @@ export interface Account {
   openingBalanceDate: string | null;
   /** @nullable */
   dataThrough: string | null;
+  /** @nullable */
+  lastImportFrom: string | null;
+  /** @nullable */
+  lastImportThrough: string | null;
+  /** @nullable */
+  lastImportDueDate: string | null;
   /** @nullable */
   statementKey: string | null;
   freshness?: AccountFreshness;
@@ -2476,6 +2484,8 @@ export type PostTransactionsImportBody = {
    * @maxLength 200
    */
   accountKey: string;
+  /** @nullable */
+  from?: string | null;
   through: string;
   billDueDate?: string;
   /** @maxItems 500 */
