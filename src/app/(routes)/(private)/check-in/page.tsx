@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { CircleCheck, Landmark } from 'lucide-react';
 import Link from 'next/link';
 import { type ChangeEvent, type DragEvent, useState } from 'react';
-import { describeAccount } from '../dashboard/freshness.helpers';
+import { describeAccount, describeLastImport } from '../dashboard/freshness.helpers';
 import { type FreeBalanceChange, useCheckInAction } from './check-in.action';
 import {
   type CheckInFile,
@@ -174,7 +174,11 @@ const AccountsFreshness = ({ accounts }: { accounts: Account[] }) => {
       <div className="space-y-3 py-2 text-sm">
         <ul className="space-y-1">
           {accounts.map((account) => (
-            <li key={account.id}>{describeAccount(account, today)}</li>
+            <li key={account.id}>
+              {[describeAccount(account, today), describeLastImport(account)]
+                .filter(Boolean)
+                .join(' · ')}
+            </li>
           ))}
         </ul>
         <Link

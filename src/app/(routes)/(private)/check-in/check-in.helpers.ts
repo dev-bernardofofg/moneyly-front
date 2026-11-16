@@ -227,11 +227,12 @@ export const accountsForFile = <T extends { type: string }>(file: CheckInFile, a
 };
 
 export const buildImportPayload = (file: CheckInFile): PostTransactionsImportBody => {
-  const { accountId, accountKey, through, items, bill } = file.preview!;
+  const { accountId, accountKey, from, through, items, bill } = file.preview!;
 
   return {
     accountId: accountId!,
     accountKey,
+    ...(from ? { from } : {}),
     through,
     items: selectedItems(file).map((item) => {
       const row = file.rows[item.externalId]!;

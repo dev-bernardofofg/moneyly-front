@@ -9,6 +9,7 @@
       "nullable": true,
       "enum": ["checking", "credit_card"]
     },
+    "from": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
     "through": { "type": "string", "example": "2026-05-17T00:00:00.000Z" },
     "bill": {
       "type": "object",
@@ -66,6 +67,7 @@
     "needsAccount",
     "accountKey",
     "requiredAccountType",
+    "from",
     "through",
     "bill",
     "items"

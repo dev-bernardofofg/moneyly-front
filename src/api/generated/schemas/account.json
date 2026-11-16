@@ -26,6 +26,17 @@
       "example": "2026-05-17T00:00:00.000Z"
     },
     "dataThrough": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
+    "lastImportFrom": { "type": "string", "nullable": true, "example": "2026-05-17T00:00:00.000Z" },
+    "lastImportThrough": {
+      "type": "string",
+      "nullable": true,
+      "example": "2026-05-17T00:00:00.000Z"
+    },
+    "lastImportDueDate": {
+      "type": "string",
+      "nullable": true,
+      "example": "2026-05-17T00:00:00.000Z"
+    },
     "statementKey": { "type": "string", "nullable": true },
     "freshness": { "type": "string", "enum": ["fresh", "stale", "empty"] },
     "isDefault": { "type": "boolean" },
@@ -44,6 +55,9 @@
     "openingBalance",
     "openingBalanceDate",
     "dataThrough",
+    "lastImportFrom",
+    "lastImportThrough",
+    "lastImportDueDate",
     "statementKey",
     "isDefault",
     "isActive",

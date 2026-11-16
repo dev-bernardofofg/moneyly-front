@@ -134,6 +134,10 @@ export type PostTransactionsImportMutationRequest = {
   /**
    * @type string, date-time
    */
+  from?: string | null;
+  /**
+   * @type string, date-time
+   */
   through: string;
   /**
    * @type string | undefined, date-time
