@@ -12,7 +12,7 @@ import { ROUTES } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { CircleGauge, WalletCards } from 'lucide-react';
 import Link from 'next/link';
-import { describeFreshness } from './freshness.helpers';
+import { describeFreshness } from './account-freshness.helpers';
 
 interface FreeBalanceSectionProps {
   forecast?: ForecastResponse;

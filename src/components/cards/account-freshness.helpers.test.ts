@@ -1,6 +1,6 @@
 import type { Account } from '@/api/generated/types/Account';
 import { describe, expect, it } from 'vitest';
-import { describeFreshness, describeLastImport } from './freshness.helpers';
+import { describeFreshness, describeLastImport } from './account-freshness.helpers';
 
 const today = new Date('2026-11-11T15:00:00.000Z');
 

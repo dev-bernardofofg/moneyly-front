@@ -20,7 +20,7 @@ import { DASHBOARD_STATS_CONFIG, useDashboardAction } from './dashboard.action';
 import { AccountsOverviewSection } from './accounts-overview-section';
 import { CardBillsSection } from './card-bills-section';
 import { SetupChecklist } from './setup-checklist';
-import { FreeBalanceSection } from './free-balance-section';
+import { FreeBalanceSection } from '@/components/cards/free-balance-section';
 
 const DashboardPage = () => {
   const { push } = useRouter();
