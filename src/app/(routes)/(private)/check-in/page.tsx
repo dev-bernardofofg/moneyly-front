@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { CircleCheck, Landmark } from 'lucide-react';
 import Link from 'next/link';
 import { type ChangeEvent, type DragEvent, useState } from 'react';
-import { describeAccount, describeLastImport } from '../dashboard/freshness.helpers';
+import { describeAccount, describeLastImport } from '@/components/cards/account-freshness.helpers';
 import { type FreeBalanceChange, useCheckInAction } from './check-in.action';
 import {
   type CheckInFile,

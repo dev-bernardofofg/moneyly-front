@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useGetOverviewForecast } from '@/api/generated/hooks/overview/overview';
-import { FreeBalanceSection } from '@/app/(routes)/(private)/dashboard/free-balance-section';
+import { FreeBalanceSection } from '@/components/cards/free-balance-section';
 
 export const OnboardingPreview = () => {
   // Cache do dashboard (aberto atrás do dialog) é anterior aos cadastros do wizard.
